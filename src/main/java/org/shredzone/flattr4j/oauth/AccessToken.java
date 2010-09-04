@@ -32,6 +32,13 @@ public class AccessToken implements Serializable {
     private String token;
     private String secret;
     
+    public AccessToken() {}
+    
+    public AccessToken(String token, String secret) {
+        setToken(token);
+        setSecret(secret);
+    }
+
     public String getToken()            { return token; }
     public void setToken(String token)  { this.token = token; }
     

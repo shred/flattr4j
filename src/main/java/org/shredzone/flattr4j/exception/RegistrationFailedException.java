@@ -16,33 +16,23 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j.oauth;
-
-import java.io.Serializable;
+package org.shredzone.flattr4j.exception;
 
 /**
- * The key and secret of the OAuth consumer. This is your application.
- *
+ * This exception is used when a Thing could not be registered.
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ConsumerKey implements Serializable {
-    private static final long serialVersionUID = -2439158677542078353L;
-    
-    private String key;
-    private String secret;
-    
-    public ConsumerKey() {}
-    
-    public ConsumerKey(String key, String secret) {
-        setKey(key);
-        setSecret(secret);
+public class RegistrationFailedException extends FlattrException {
+    private static final long serialVersionUID = 7637026385151047748L;
+
+    public RegistrationFailedException() {
+        super();
     }
-    
-    public String getKey()              { return key; }
-    public void setKey(String key)      { this.key = key; }
-    
-    public String getSecret()           { return secret; }
-    public void setSecret(String secret) { this.secret = secret; }
+
+    public RegistrationFailedException(String msg) {
+        super(msg);
+    }
 
 }
