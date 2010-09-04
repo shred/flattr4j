@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flattr>
+    <version>0.0.1</version>
+    <thing>
+        <id>bf12b55dc73d89835fff9696b6cc3883</id>
+        <created>1276784931</created>
+        <language>sv_SE</language>
+        <url>http://www.kontilint.se/kontakt</url>
+        <title>Kontakta Kontilint</title>
+        <story><![CDATA[Kontakta Kontilint]]></story>
+        <clicks>0</clicks>
+        <user>
+            <id>244</id>
+            <username>Bomelin</username>
+        </user>
+        <tags>
+            <tag>asd</tag>
+            <tag>fgh</tag>
+            <tag>ert</tag>
+        </tags>
+        <category>
+            <id>text</id>
+            <name>Written text</name>
+        </category>
+        <status>owner</status>
+    </thing>
+</flattr>
