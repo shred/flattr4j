@@ -18,13 +18,14 @@
  */
 package org.shredzone.flattr4j.oauth;
 
+import java.util.EnumSet;
+
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.exception.OAuthException;
-import oauth.signpost.signature.HmacSha1MessageSigner;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
@@ -38,13 +39,13 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
 public class FlattrAuthenticator {
     private final ConsumerKey consumerKey;
     
-    private String requestTokenUrl = "http://api.testweb.flattr.com/oauth/request_token";
-    private String accessTokenUrl = "http://api.testweb.flattr.com/oauth/access_token";
-    private String authorizationUrl = "http://api.testweb.flattr.com/oauth/authenticate";
+    private String requestTokenUrl = "https://api.flattr.com/oauth/request_token";
+    private String accessTokenUrl = "https://api.flattr.com/oauth/access_token";
+    private String authorizationUrl = "https://api.flattr.com/oauth/authenticate";
     
     private String callbackUrl = null;
     
-    private String accessScope = "read,publish";
+    private EnumSet<Scope> scope = EnumSet.of(Scope.READ);
     
     /**
      * The OAuth request token URL from Flattr.
@@ -77,10 +78,11 @@ public class FlattrAuthenticator {
     public void setCallbackUrl(String callbackUrl) { this.callbackUrl = callbackUrl; }
 
     /**
-     * The access scope. Defaults to {@code "read,publish"}.
+     * The access scope. This is a set of rights the consumer needs. The set of rights
+     * is shown to the user on authentication. Defaults to {@value Scope#READ} only.
      */
-    public String getAccessScope()          { return accessScope; }
-    public void setAccessScope(String accessScope) { this.accessScope = accessScope; }
+    public EnumSet<Scope> getScope()        { return scope; }
+    public void setScope(EnumSet<Scope> scope) { this.scope = scope; }
 
     /**
      * Constructs a new instance with the given {@link ConsumerKey}.
@@ -120,6 +122,8 @@ public class FlattrAuthenticator {
      * </ul>
      * This way the user only needs to log in at Flattr, but does not need to enter a PIN
      * to complete the authorization.
+     * <p>
+     * Scope flags need to be properly set before invocation.
      * 
      * @return The generated {@link RequestToken}
      */
@@ -129,7 +133,7 @@ public class FlattrAuthenticator {
             OAuthProvider provider = createProvider();
             String authUrl = provider.retrieveRequestToken(consumer,
                             (callbackUrl != null ? callbackUrl : OAuth.OUT_OF_BAND));
-            authUrl = OAuth.addQueryParameters(authUrl, "access_scope", accessScope);
+            authUrl = OAuth.addQueryParameters(authUrl, "access_scope", buildScopeString());
             
             RequestToken result = new RequestToken();
             result.setToken(consumer.getToken());
@@ -140,7 +144,7 @@ public class FlattrAuthenticator {
             throw new FlattrServiceException("OAuth request token failed", ex);
         }
     }
-
+    
     /**
      * Fetches an {@link AccessToken} from Flattr. This method is just a convenience call
      * that gets the request token and secret from {@link RequestToken} and invokes
@@ -167,6 +171,8 @@ public class FlattrAuthenticator {
      * The returned access token can be serialized or its contents persisted in a
      * database. It is needed to access the Flattr API with a valid authentication until
      * revoked by the user.
+     * <p>
+     * Scope flags are ignored at this call.
      * 
      * @param token
      *            The request token
@@ -199,10 +205,7 @@ public class FlattrAuthenticator {
      * @return {@link OAuthConsumer} that was created
      */
     protected OAuthConsumer createConsumer() {
-        OAuthConsumer consumer = new CommonsHttpOAuthConsumer(consumerKey.getKey(), consumerKey.getSecret());
-        // Flattr requires this signer!
-        consumer.setMessageSigner(new HmacSha1MessageSigner());
-        return consumer;
+        return new CommonsHttpOAuthConsumer(consumerKey.getKey(), consumerKey.getSecret());
     }
 
     /**
@@ -212,7 +215,25 @@ public class FlattrAuthenticator {
      */
     protected OAuthProvider createProvider() {
         OAuthProvider provider = new DefaultOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
+        provider.setOAuth10a(true);
         return provider;
     }
-    
+
+    /**
+     * Builds a scope string for the scope flags set.
+     * 
+     * @return Scope string: scope texts, separated by comma.
+     */
+    private String buildScopeString() {
+        StringBuilder sb = new StringBuilder();
+        
+        if (scope.contains(Scope.READ))    sb.append(",read");
+        if (scope.contains(Scope.PUBLISH)) sb.append(",publish");
+        if (scope.contains(Scope.CLICK))   sb.append(",click");
+        
+        if (sb.length() > 0) sb.deleteCharAt(0);
+        
+        return sb.toString();
+    }
+
 }
