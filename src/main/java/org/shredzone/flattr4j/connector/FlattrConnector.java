@@ -22,7 +22,8 @@ import java.io.Reader;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
- * Interface for connectors that connect to the Flattr API and invoke calls.
+ * Interface for connectors that connect to the Flattr API and invoke calls that need
+ * authentication.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -30,18 +31,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 public interface FlattrConnector {
 
     /**
-     * Opens a raw connection to the given command URL. This connection is anonymous, and
-     * thus only allows a limited set of functions.
-     * 
-     * @param url
-     *            Command URL to be invoked
-     * @return {@link Reader} with the response
-     */
-    Reader rawConnect(String url) throws FlattrException;
-
-    /**
-     * Invokes a Flattr function and returns a {@link Reader} for the result. This
-     * connection requires a valid login.
+     * Invokes a Flattr function and returns a {@link Reader} for the result.
      * 
      * @param url
      *            Command URL to be invoked
@@ -51,7 +41,7 @@ public interface FlattrConnector {
 
     /**
      * Invokes a Flattr function with POST arguments, and returns a {@link Reader} for the
-     * result. This connection requires a valid login.
+     * result.
      * 
      * @param url
      *            Command URL to be invoked

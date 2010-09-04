@@ -21,10 +21,11 @@ package org.shredzone.flattr4j.impl;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.OpenService;
-import org.shredzone.flattr4j.connector.FlattrConnector;
+import org.shredzone.flattr4j.connector.OpenConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
@@ -39,7 +40,7 @@ public class OpenServiceImplTest {
 
     @Test
     public void categoriesTest() throws FlattrException {
-        FlattrConnector connector = new MockCategoriesConnector();
+        OpenConnector connector = new MockCategoriesConnector();
         OpenService service = new OpenServiceImpl(connector);
 
         List<Category> result = service.getCategoryList();
@@ -69,7 +70,7 @@ public class OpenServiceImplTest {
 
     @Test
     public void languagesTest() throws FlattrException {
-        FlattrConnector connector = new MockLanguagesConnector();
+        OpenConnector connector = new MockLanguagesConnector();
         OpenService service = new OpenServiceImpl(connector);
 
         List<Language> result = service.getLanguageList();
@@ -97,10 +98,10 @@ public class OpenServiceImplTest {
         }
     }
 
-    public class MockCategoriesConnector implements FlattrConnector {
+    public class MockCategoriesConnector implements OpenConnector {
         @Override
-        public Reader rawConnect(String url) throws FlattrException {
-            Assert.assertEquals("categories/text", url);
+        public Reader call(String cmd) throws FlattrException {
+            Assert.assertEquals("categories/text", cmd);
 
             StringBuilder body = new StringBuilder();
             body.append("text;Written text\n");
@@ -108,38 +109,18 @@ public class OpenServiceImplTest {
             body.append("video;Video\n");
             return new StringReader(body.toString());
         }
-
-        @Override
-        public Reader call(String url) throws FlattrException {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Reader post(String url, String data) throws FlattrException {
-            throw new UnsupportedOperationException();
-        }
     }
 
-    public class MockLanguagesConnector implements FlattrConnector {
+    public class MockLanguagesConnector implements OpenConnector {
         @Override
-        public Reader rawConnect(String url) throws FlattrException {
-            Assert.assertEquals("languages/text", url);
+        public Reader call(String cmd) throws FlattrException {
+            Assert.assertEquals("languages/text", cmd);
 
             StringBuilder body = new StringBuilder();
             body.append("en_GB;English\n");
             body.append("de_DE;German\n");
             body.append("sv_SE;Swedish\n");
             return new StringReader(body.toString());
-        }
-
-        @Override
-        public Reader call(String url) throws FlattrException {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Reader post(String url, String data) throws FlattrException {
-            throw new UnsupportedOperationException();
         }
     }
 }

@@ -15,7 +15,6 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.impl;
 
@@ -26,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.shredzone.flattr4j.OpenService;
-import org.shredzone.flattr4j.connector.FlattrConnector;
+import org.shredzone.flattr4j.connector.OpenConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.Category;
@@ -40,9 +39,9 @@ import org.shredzone.flattr4j.model.Language;
  */
 public class OpenServiceImpl implements OpenService {
 
-    private final FlattrConnector connector;
+    private final OpenConnector connector;
 
-    public OpenServiceImpl(FlattrConnector connector) {
+    public OpenServiceImpl(OpenConnector connector) {
         this.connector = connector;
     }
 
@@ -50,23 +49,28 @@ public class OpenServiceImpl implements OpenService {
     public List<Category> getCategoryList() throws FlattrException {
         try {
             List<Category> result = new ArrayList<Category>();
+            BufferedReader reader = null;
 
-            BufferedReader reader = new BufferedReader(connector.rawConnect("categories/text"));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] split = line.split(";");
-                if (split.length != 2) {
-                    throw new FlattrServiceException("Invalid line: '" + line + "'");
+            try {
+                reader = new BufferedReader(connector.call("categories/text"));
+    
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] split = line.split(";");
+                    if (split.length != 2) {
+                        throw new FlattrServiceException("Invalid line: '" + line + "'");
+                    }
+    
+                    Category category = new Category();
+                    category.setId(split[0]);
+                    category.setName(split[1]);
+                    result.add(category);
                 }
-
-                Category category = new Category();
-                category.setId(split[0]);
-                category.setName(split[1]);
-                result.add(category);
+    
+                return Collections.unmodifiableList(result);
+            } finally {
+                if (reader != null) reader.close();
             }
-
-            return Collections.unmodifiableList(result);
         } catch (IOException ex) {
             throw new FlattrServiceException("Could not read from stream", ex);
         }
@@ -76,23 +80,28 @@ public class OpenServiceImpl implements OpenService {
     public List<Language> getLanguageList() throws FlattrException {
         try {
             List<Language> result = new ArrayList<Language>();
+            BufferedReader reader = null;
 
-            BufferedReader reader = new BufferedReader(connector.rawConnect("languages/text"));
+            try {
+                reader = new BufferedReader(connector.call("languages/text"));
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] split = line.split(";");
-                if (split.length != 2) {
-                    throw new FlattrServiceException("Invalid line: '" + line + "'");
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] split = line.split(";");
+                    if (split.length != 2) {
+                        throw new FlattrServiceException("Invalid line: '" + line + "'");
+                    }
+    
+                    Language language = new Language();
+                    language.setId(split[0]);
+                    language.setName(split[1]);
+                    result.add(language);
                 }
-
-                Language language = new Language();
-                language.setId(split[0]);
-                language.setName(split[1]);
-                result.add(language);
+    
+                return Collections.unmodifiableList(result);
+            } finally {
+                if (reader != null) reader.close();
             }
-
-            return Collections.unmodifiableList(result);
         } catch (IOException ex) {
             throw new FlattrServiceException("Could not read from stream", ex);
         }

@@ -19,31 +19,23 @@
 package org.shredzone.flattr4j.connector;
 
 import java.io.Reader;
-
-import org.shredzone.flattr4j.connector.OauthConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
- * A {@link FlattrConnector} that uses Oauth for authorization.
+ * Interface for connectors that connect to the Open Data API and invoke calls.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class OauthConnector implements FlattrConnector {
+public interface OpenConnector {
 
-    @Override
-    public Reader rawConnect(String url) throws FlattrException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Reader call(String url) throws FlattrException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Reader post(String url, String data) throws FlattrException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    /**
+     * Invokes a Open Data API function and returns a {@link Reader} for the result.
+     * 
+     * @param cmd
+     *            Command URL to be invoked
+     * @return {@link Reader} with the response
+     */
+    Reader call(String cmd) throws FlattrException;
 
 }
