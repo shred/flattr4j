@@ -22,7 +22,7 @@ package org.shredzone.flattr4j.impl;
 import java.io.Reader;
 
 import org.shredzone.flattr4j.UserService;
-import org.shredzone.flattr4j.connection.FlattrConnector;
+import org.shredzone.flattr4j.connector.FlattrConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;

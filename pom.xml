@@ -28,12 +28,31 @@
         </license>
     </licenses>
     <properties>
+        <commonshttp.version>4.0.1</commonshttp.version>
         <signpost.version>1.2.1.1</signpost.version>
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${commonshttp.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${commonshttp.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>oauth.signpost</groupId>
             <artifactId>signpost-core</artifactId>
+            <version>${signpost.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-commonshttp4</artifactId>
             <version>${signpost.version}</version>
             <scope>compile</scope>
         </dependency>

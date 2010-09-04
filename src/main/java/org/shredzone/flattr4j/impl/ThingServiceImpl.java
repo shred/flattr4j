@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.shredzone.flattr4j.ThingService;
-import org.shredzone.flattr4j.connection.FlattrConnector;
+import org.shredzone.flattr4j.connector.FlattrConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.impl.xml.RegisteredThingXmlParser;

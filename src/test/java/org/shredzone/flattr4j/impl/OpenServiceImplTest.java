@@ -24,7 +24,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.OpenService;
-import org.shredzone.flattr4j.connection.FlattrConnector;
+import org.shredzone.flattr4j.connector.FlattrConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;

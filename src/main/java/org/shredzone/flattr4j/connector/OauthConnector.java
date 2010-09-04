@@ -16,10 +16,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j.connection;
+package org.shredzone.flattr4j.connector;
 
 import java.io.Reader;
-import org.shredzone.flattr4j.connection.OauthConnector;
+
+import org.shredzone.flattr4j.connector.OauthConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /**

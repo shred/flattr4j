@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.shredzone.flattr4j.FeedService;
-import org.shredzone.flattr4j.connection.FlattrConnector;
+import org.shredzone.flattr4j.connector.FlattrConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
