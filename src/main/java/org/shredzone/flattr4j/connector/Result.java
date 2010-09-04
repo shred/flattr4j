@@ -16,33 +16,40 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j;
+package org.shredzone.flattr4j.connector;
+
+import java.io.Reader;
 
 import org.shredzone.flattr4j.exception.FlattrException;
-import java.util.List;
-import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.Language;
 
 /**
- * Service calls for getting generic feed data.
+ * The result of a connector call.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface FeedService {
+public interface Result {
+    
+    /**
+     * Asserts that the result is OK. Throws a matching {@link FlattrException} if it was
+     * not.
+     * 
+     * @return itself
+     * @throws FlattrException
+     *             if the result was not OK
+     */
+    Result assertStatusOk() throws FlattrException;
+    
+    /**
+     * Opens a Reader to the result content.
+     * 
+     * @return Reader
+     */
+    Reader openReader() throws FlattrException;
 
     /**
-     * Gets a list of all Flattr {@link Category}. The result is not cached.
-     * 
-     * @return List of Flattr {@link Category}.
+     * Closes a previously opened Reader. If no Reader was openend, nothing happens.
      */
-    List<Category> getCategoryList() throws FlattrException;
-
-    /**
-     * Gets a list of all Flattr {@link Language}. The result is not cached.
-     * 
-     * @return List of Flattr {@link Language}.
-     */
-    List<Language> getLanguageList() throws FlattrException;
+    void closeReader() throws FlattrException;
 
 }

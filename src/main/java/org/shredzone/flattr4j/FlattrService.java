@@ -21,17 +21,19 @@ package org.shredzone.flattr4j;
 import java.util.List;
 
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.User;
 
 /**
- * Service calls to all thing related functions.
+ * Service calls to the Flattr REST API that requires authorization.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface ThingService {
+public interface FlattrService{
 
     /**
      * Registers a new {@link Thing} at Flattr.
@@ -50,7 +52,7 @@ public interface ThingService {
      * @return {@link RegisteredThing}. Never {@code null}. An exception is thrown when no
      *         such Thing was found.
      */
-    RegisteredThing get(String thingId) throws FlattrException;
+    RegisteredThing getThing(String thingId) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
@@ -85,5 +87,36 @@ public interface ThingService {
      * @return List of all {@link RegisteredThing} of that user
      */
     List<RegisteredThing> getThingList(String userId) throws FlattrException;
+
+    /**
+     * Gets a list of all Flattr {@link Category}. The result is not cached.
+     * 
+     * @return List of Flattr {@link Category}.
+     */
+    List<Category> getCategoryList() throws FlattrException;
+
+    /**
+     * Gets a list of all Flattr {@link Language}. The result is not cached.
+     * 
+     * @return List of Flattr {@link Language}.
+     */
+    List<Language> getLanguageList() throws FlattrException;
+
+    /**
+     * Gets the {@link User} profile of the currently logged in user.
+     * 
+     * @return {@link User} profile of oneself. Never {@code null}.
+     */
+    User getMyself() throws FlattrException;
+
+    /**
+     * Gets the {@link User} profile of the given user id.
+     * 
+     * @param userId
+     *            User id to get a profile for
+     * @return {@link User} profile of that user. Never {@code null}. An exception is
+     *         thrown when there was no such user.
+     */
+    User getUser(String userId) throws FlattrException;
 
 }

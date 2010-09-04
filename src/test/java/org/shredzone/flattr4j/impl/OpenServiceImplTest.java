@@ -25,7 +25,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.OpenService;
-import org.shredzone.flattr4j.connector.OpenConnector;
+import org.shredzone.flattr4j.connector.Connector;
+import org.shredzone.flattr4j.connector.Result;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
@@ -40,7 +41,7 @@ public class OpenServiceImplTest {
 
     @Test
     public void categoriesTest() throws FlattrException {
-        OpenConnector connector = new MockCategoriesConnector();
+        MockCategoriesConnector connector = new MockCategoriesConnector();
         OpenService service = new OpenServiceImpl(connector);
 
         List<Category> result = service.getCategoryList();
@@ -66,11 +67,13 @@ public class OpenServiceImplTest {
         } catch (UnsupportedOperationException ex) {
             // We expected this exception, so everything is fine!
         }
+        
+        connector.assertReaderClosed();
     }
 
     @Test
     public void languagesTest() throws FlattrException {
-        OpenConnector connector = new MockLanguagesConnector();
+        MockLanguagesConnector connector = new MockLanguagesConnector();
         OpenService service = new OpenServiceImpl(connector);
 
         List<Language> result = service.getLanguageList();
@@ -96,31 +99,94 @@ public class OpenServiceImplTest {
         } catch (UnsupportedOperationException ex) {
             // We expected this exception, so everything is fine!
         }
+        
+        connector.assertReaderClosed();
     }
 
-    public class MockCategoriesConnector implements OpenConnector {
+    public class MockCategoriesConnector implements Connector {
+        private MockResult result;
+        
         @Override
-        public Reader call(String cmd) throws FlattrException {
-            Assert.assertEquals("categories/text", cmd);
+        public Result call(String cmd) throws FlattrException {
+            Assert.assertEquals("http://api.flattr.com/odapi/categories/text", cmd);
 
             StringBuilder body = new StringBuilder();
             body.append("text;Written text\n");
             body.append("images;Images\n");
             body.append("video;Video\n");
-            return new StringReader(body.toString());
+            result = new MockResult(body.toString());
+            return result;
+        }
+
+        @Override
+        public Result post(String url, String data) throws FlattrException {
+            throw new UnsupportedOperationException();
+        }
+        
+        public void assertReaderClosed() {
+            if (result != null) {
+                result.assertReaderClosed();
+            }
         }
     }
 
-    public class MockLanguagesConnector implements OpenConnector {
+    public class MockLanguagesConnector implements Connector {
+        private MockResult result;
+
         @Override
-        public Reader call(String cmd) throws FlattrException {
-            Assert.assertEquals("languages/text", cmd);
+        public Result call(String cmd) throws FlattrException {
+            Assert.assertEquals("http://api.flattr.com/odapi/languages/text", cmd);
 
             StringBuilder body = new StringBuilder();
             body.append("en_GB;English\n");
             body.append("de_DE;German\n");
             body.append("sv_SE;Swedish\n");
-            return new StringReader(body.toString());
+            result = new MockResult(body.toString());
+            return result;
         }
+
+        @Override
+        public Result post(String url, String data) throws FlattrException {
+            throw new UnsupportedOperationException();
+        }
+
+        public void assertReaderClosed() {
+            if (result != null) {
+                result.assertReaderClosed();
+            }
+        }
+    }
+    
+    public class MockResult implements Result {
+        private final String body;
+        private boolean opened = false;
+
+        public MockResult(String body) {
+            this.body = body;
+        }
+        
+        @Override
+        public Result assertStatusOk() throws FlattrException {
+            return this;
+        }
+
+        @Override
+        public Reader openReader() throws FlattrException {
+            if (opened) {
+                throw new IllegalStateException("Reader is already open!");
+            }
+            opened = true;
+            return new StringReader(body);
+        }
+
+        @Override
+        public void closeReader() throws FlattrException {
+            opened = false;
+        }
+        
+        public void assertReaderClosed() {
+            if (opened) Assert.fail("Reader was not closed!");
+        }
+        
     }
 }

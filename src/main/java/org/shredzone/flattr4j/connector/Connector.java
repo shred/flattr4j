@@ -22,26 +22,24 @@ import java.io.Reader;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
- * Interface for connectors that connect to the Flattr API and invoke calls that need
- * authentication.
+ * Interface for connectors that connect to the Flattr API.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface FlattrConnector {
+public interface Connector {
 
     /**
-     * Invokes a Flattr function and returns a {@link Reader} for the result.
+     * Invokes a Flattr function.
      * 
      * @param url
      *            Command URL to be invoked
      * @return {@link Reader} with the response
      */
-    Reader call(String url) throws FlattrException;
+    Result call(String url) throws FlattrException;
 
     /**
-     * Invokes a Flattr function with POST arguments, and returns a {@link Reader} for the
-     * result.
+     * Invokes a Flattr function with additional arguments.
      * 
      * @param url
      *            Command URL to be invoked
@@ -49,6 +47,6 @@ public interface FlattrConnector {
      *            Argument data to be sent to the Flattr function
      * @return {@link Reader} with the response
      */
-    Reader post(String url, String data) throws FlattrException;
+    Result post(String url, String data) throws FlattrException;
 
 }
