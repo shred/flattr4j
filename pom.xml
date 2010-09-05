@@ -8,10 +8,11 @@
     </parent>
     <groupId>org.shredzone.flattr4j</groupId>
     <artifactId>flattr4j</artifactId>
-    <name>Flattr 4 Java</name>
+    <name>flattr4j</name>
     <version>0.1-SNAPSHOT</version>
-    <description>A library for accessing Flattr</description>
+    <description>Java support for Flattr</description>
     <inceptionYear>2010</inceptionYear>
+    <packaging>pom</packaging>
     <url>http://flattr4j.shredzone.org</url>
     <licenses>
         <license>
@@ -27,34 +28,8 @@
             <url>LICENSE-APL.txt</url>
         </license>
     </licenses>
-    <properties>
-        <commonshttp.version>4.0.1</commonshttp.version>
-        <signpost.version>1.2.1.1</signpost.version>
-    </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${commonshttp.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${commonshttp.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>oauth.signpost</groupId>
-            <artifactId>signpost-core</artifactId>
-            <version>${signpost.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>oauth.signpost</groupId>
-            <artifactId>signpost-commonshttp4</artifactId>
-            <version>${signpost.version}</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>flattr4j-core</module>
+    </modules>
 </project>
+
