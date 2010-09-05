@@ -28,6 +28,10 @@
             <url>LICENSE-APL.txt</url>
         </license>
     </licenses>
+    <properties>
+        <commonshttp.version>4.0.1</commonshttp.version>
+        <signpost.version>1.2.1.1</signpost.version>
+    </properties>
     <modules>
         <module>flattr4j-core</module>
     </modules>

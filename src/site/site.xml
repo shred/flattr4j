@@ -25,18 +25,18 @@
   <version position="right"/>
   <body>
     <links>
+      <item name="Home" href="index.html"/>
       <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
     </links>
     <breadcrumbs>
       <item name="shredzone.org" href="http://www.shredzone.org"/>
-      <item name="flattr4j" href="../index.html"/>
-      <item name="flattr4j-core" href="index.html"/>
+      <item name="flattr4j" href="index.html"/>
     </breadcrumbs>
-    <menu name="Project">
+    <menu name="Main">
       <item name="Introduction" href="index.html"/>
       <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
     </menu>
+    <menu ref="modules"/>
     <menu ref="reports"/>
   </body>
 </project>
-
