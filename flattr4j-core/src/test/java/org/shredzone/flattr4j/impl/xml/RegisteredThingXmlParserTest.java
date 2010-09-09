@@ -47,6 +47,7 @@ public class RegisteredThingXmlParserTest {
 
         thing = parser.getNext();
         Assert.assertEquals("bf12b55dc73d89835fff9696b6cc3883", thing.getId());
+        Assert.assertEquals("42343", thing.getIntId());
         Assert.assertEquals(new Date(1276784931L * 1000L), thing.getCreated());
         Assert.assertEquals("sv_SE", thing.getLanguage());
         Assert.assertEquals("http://www.kontilint.se/kontakt", thing.getUrl());

@@ -3,6 +3,7 @@
     <version>0.0.1</version>
     <thing>
         <id>bf12b55dc73d89835fff9696b6cc3883</id>
+        <int_id>42343</int_id>
         <created>1276784931</created>
         <language>sv_SE</language>
         <url>http://www.kontilint.se/kontakt</url>

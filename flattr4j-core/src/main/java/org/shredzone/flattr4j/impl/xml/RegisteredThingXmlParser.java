@@ -38,6 +38,7 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
 
     private final static QName QN_THING = new QName("thing");
     private final static QName QN_ID = new QName("id");
+    private final static QName QN_INT_ID = new QName("int_id");
     private final static QName QN_CREATED = new QName("created");
     private final static QName QN_LANGUAGE = new QName("language");
     private final static QName QN_URL = new QName("url");
@@ -91,6 +92,8 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
 
         } else if (tag.equals(QN_ID) && current != null && !insideUser && !insideTags && !insideCategory) {
             current.setId(body);
+        } else if (tag.equals(QN_INT_ID) && current != null) {
+            current.setIntId(body);
         } else if (tag.equals(QN_CREATED) && current != null) {
             try {
                 current.setCreated(new Date(Long.parseLong(body) * 1000));

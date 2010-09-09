@@ -32,6 +32,7 @@ public class RegisteredThing extends Thing {
     private static final long serialVersionUID = 610493674068876984L;
     
     private String id;
+    private String intId;
     private Date created;
     private int clicks;
     private String userId;
@@ -44,6 +45,12 @@ public class RegisteredThing extends Thing {
      */
     public String getId()                   { return id; }
     public void setId(String id)            { this.id = id; }
+
+    /**
+     * Internal Flattr Thing's unique id.
+     */
+    public String getIntId()                { return intId; }
+    public void setIntId(String intId)      { this.intId = intId; }
 
     /**
      * Creation date of the Thing.

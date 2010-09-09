@@ -26,6 +26,7 @@ import java.util.List;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.Connector;
 import org.shredzone.flattr4j.connector.Result;
+import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
@@ -58,6 +59,9 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public RegisteredThing register(Thing thing) throws FlattrException {
+        if (thing == null) throw new ValidationException("thing", "thing is required");
+        thing.validate();
+
         String data = ThingXmlWriter.write(thing);
         Result result = connector.post(baseUrl + "thing/register", data).assertStatusOk();
         try {
@@ -75,6 +79,8 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public RegisteredThing getThing(String thingId) throws FlattrException {
+        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+
         Result result = connector.call(baseUrl + "thing/get/id/" + thingId).assertStatusOk();
         try {
             RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
@@ -91,6 +97,8 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public void click(String thingId) throws FlattrException {
+        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+
         connector.call(baseUrl + "thing/click/id/" + thingId).assertStatusOk();
     }
 
@@ -106,6 +114,8 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public List<RegisteredThing> getThingList(String userId) throws FlattrException {
+        if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
+
         Result result = connector.call(baseUrl + "thing/listbyuser/id/" + userId).assertStatusOk();
         try {
             List<RegisteredThing> list = new ArrayList<RegisteredThing>();
@@ -176,6 +186,8 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public User getUser(String userId) throws FlattrException {
+        if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
+
         Result result = connector.call(baseUrl + "user/get/id/" + userId).assertStatusOk();
         try {
             UserXmlParser parser = new UserXmlParser(result.openReader());

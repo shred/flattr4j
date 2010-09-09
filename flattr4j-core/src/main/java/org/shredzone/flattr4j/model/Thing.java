@@ -21,6 +21,7 @@ package org.shredzone.flattr4j.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.shredzone.flattr4j.exception.ValidationException;
 
 /**
  * A {@link Thing}. {@link RegisteredThing} is derived from this class and contains
@@ -82,5 +83,45 @@ public class Thing implements Serializable {
      */
     public boolean isHidden()                   { return hidden; }
     public void setHidden(boolean hidden)       { this.hidden = hidden; }
+
+    /**
+     * Validates the content of this Thing.
+     *
+     * @throws ValidationException Validation failed. The exception contains the property
+     *          name and a reason message.
+     */
+    public void validate() throws ValidationException {
+        if (url == null || url.isEmpty())
+            throw new ValidationException("url", "url required");
+
+        if (title == null)
+            throw new ValidationException("title", "title required");
+        
+        if (title.length() < 5)
+            throw new ValidationException("title", "title too short (< 5 characters)");
+        
+        if (title.length() > 100)
+            throw new ValidationException("title", "title too long (> 100 characters)");
+
+        if (description == null)
+            throw new ValidationException("description", "description is required");
+
+        if (description.length() < 5)
+            throw new ValidationException("description", "description too short (< 5 characters)");
+
+        if (description.length() > 1000)
+            throw new ValidationException("description", "description too long (> 1000 characters)");
+
+        if (category == null || category.isEmpty())
+            throw new ValidationException("category", "category required");
+
+        for (String tag : tags) {
+            if (tag == null || tag.isEmpty())
+                throw new ValidationException("tags", "tags contains empty tag");
+
+            if (tag.indexOf(',') >= 0)
+                throw new ValidationException("tags", "tag '" + tag + "' contains invalid ','");
+        }
+    }
 
 }
