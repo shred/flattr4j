@@ -34,6 +34,7 @@
     </properties>
     <modules>
         <module>flattr4j-core</module>
+        <module>flattr4j-web</module>
     </modules>
 </project>
 
