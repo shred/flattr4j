@@ -45,6 +45,9 @@ public class FlattrAuthenticator {
     
     private String callbackUrl = null;
     
+    // WORKAROUND: Usually this would be OAuth.OUT_OF_BAND, but Flattr does not accept it
+    private String outOfBandUrl = "";
+    
     private EnumSet<Scope> scope = EnumSet.of(Scope.READ);
     
     /**
@@ -132,7 +135,8 @@ public class FlattrAuthenticator {
             OAuthConsumer consumer = createConsumer();
             OAuthProvider provider = createProvider();
             String authUrl = provider.retrieveRequestToken(consumer,
-                            (callbackUrl != null ? callbackUrl : OAuth.OUT_OF_BAND));
+                            (callbackUrl != null ? callbackUrl : outOfBandUrl));
+            
             authUrl = OAuth.addQueryParameters(authUrl, "access_scope", buildScopeString());
             
             RequestToken result = new RequestToken();
@@ -188,6 +192,9 @@ public class FlattrAuthenticator {
             OAuthConsumer consumer = createConsumer();
             OAuthProvider provider = createProvider();
             consumer.setTokenWithSecret(token, secret);
+            
+            // WORKAROUND: OAUTH_VERIFIER is not sent in OAuth 1.0 mode, but required by Flattr
+            provider.setOAuth10a(true);
             provider.retrieveAccessToken(consumer, pin);
             
             AccessToken result = new AccessToken();
@@ -215,7 +222,6 @@ public class FlattrAuthenticator {
      */
     protected OAuthProvider createProvider() {
         OAuthProvider provider = new DefaultOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
-        provider.setOAuth10a(true);
         return provider;
     }
 
@@ -227,9 +233,10 @@ public class FlattrAuthenticator {
     private String buildScopeString() {
         StringBuilder sb = new StringBuilder();
         
-        if (scope.contains(Scope.READ))    sb.append(",read");
-        if (scope.contains(Scope.PUBLISH)) sb.append(",publish");
-        if (scope.contains(Scope.CLICK))   sb.append(",click");
+        if (scope.contains(Scope.READ))         sb.append(",read");
+        if (scope.contains(Scope.EXTENDEDREAD)) sb.append(",extendedread");
+        if (scope.contains(Scope.PUBLISH))      sb.append(",publish");
+        if (scope.contains(Scope.CLICK))        sb.append(",click");
         
         if (sb.length() > 0) sb.deleteCharAt(0);
         
