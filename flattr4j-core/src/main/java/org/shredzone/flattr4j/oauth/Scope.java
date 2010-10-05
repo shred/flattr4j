@@ -32,6 +32,12 @@ public enum Scope {
     READ,
 
     /**
+     * The application has read access, plus access to private user information
+     * for the authenticated user.
+     */
+    EXTENDEDREAD,
+
+    /**
      * The consumer wants to publish things for the authenticated user.
      */
     PUBLISH,
