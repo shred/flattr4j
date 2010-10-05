@@ -34,7 +34,9 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
 public final class FlattrFactory {
     private static FlattrFactory instance = null;
     
-    private FlattrFactory() {}
+    private FlattrFactory() {
+        // Private constructor
+    }
 
     /**
      * Retrieves an instance of the {@link FlattrFactory}. The factory is a singleton.

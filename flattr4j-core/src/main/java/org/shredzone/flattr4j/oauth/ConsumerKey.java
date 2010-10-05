@@ -32,7 +32,9 @@ public class ConsumerKey implements Serializable {
     private String key;
     private String secret;
     
-    public ConsumerKey() {}
+    public ConsumerKey() {
+        // Default constructor
+    }
     
     public ConsumerKey(String key, String secret) {
         setKey(key);

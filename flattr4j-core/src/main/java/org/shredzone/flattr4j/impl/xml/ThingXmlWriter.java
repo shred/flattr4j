@@ -41,7 +41,9 @@ public final class ThingXmlWriter {
 
     private final static XMLEventFactory FACTORY = XMLEventFactory.newInstance();
 
-    private ThingXmlWriter() {}
+    private ThingXmlWriter() {
+        // Private constructor
+    }
 
     /**
      * Converts a {@link Thing} to its XML representation.
