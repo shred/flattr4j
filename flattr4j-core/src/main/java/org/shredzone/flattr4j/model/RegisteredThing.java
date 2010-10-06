@@ -30,7 +30,9 @@ import java.util.Date;
  */
 public class RegisteredThing extends Thing {
     private static final long serialVersionUID = 610493674068876984L;
-    
+
+    private static final String BASE_URL = "https://flattr.com/thing/";
+
     private String id;
     private String intId;
     private Date created;
@@ -87,6 +89,23 @@ public class RegisteredThing extends Thing {
      */
     public ThingStatus getStatus()          { return status; }
     public void setStatus(ThingStatus status) { this.status = status; }
+
+    /**
+     * Returns the URL to the thing's page at Flattr.
+     * <p>
+     * Currently this value is computed by flattr4j. The returned link may be different to
+     * the official link shown by Flattr. The composition of this link may change in
+     * future releases.
+     */
+    public String getThingUrl() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(BASE_URL).append(intId).append('/');
+        String title = getTitle();
+        if (title != null) {
+            sb.append(title.replaceAll("\\s+", "-").replaceAll("[^a-zA-Z0-9_-]", ""));
+        }
+        return sb.toString();
+    }
 
     @Override
     public boolean equals(Object obj) {
