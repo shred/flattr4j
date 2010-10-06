@@ -26,11 +26,12 @@ import org.shredzone.flattr4j.web.ButtonType;
 /**
  * Builds the JavaScript loader for the Flattr API.
  * <p>
- * The builder uses reasonable default settings that can be overridden with its
- * methods. All methods return a reference to the builder, so methods can be daisy-chained.
+ * The builder uses sensible default settings that can be changed by using its methods.
+ * All methods return a reference to the builder itself, so method calls can be
+ * daisy-chained.
  * <p>
  * Example: <code>String loader = new LoaderBuilder().uid("123456").toString();</code>
- *
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -45,7 +46,7 @@ public class LoaderBuilder {
     private String language = null;
     private String category = null;
     private String prefix = null;
-    
+
     /**
      * Sets the base URL of the Flattr API. Defaults to "http://api.flattr.com". Do not
      * change unless you know what you are doing.
@@ -69,7 +70,7 @@ public class LoaderBuilder {
         this.version = version;
         return this;
     }
-    
+
     /**
      * The builder will return a bare javascript, without an enclosing &lt;script&gt; tag.
      */
@@ -103,7 +104,7 @@ public class LoaderBuilder {
      * @param uid
      *            User ID
      */
-    public LoaderBuilder uid(String uid) {
+    public LoaderBuilder user(String uid) {
         this.uid = uid;
         return this;
     }
@@ -115,7 +116,7 @@ public class LoaderBuilder {
      *            {@link User}
      */
     public LoaderBuilder user(User user) {
-        return uid(user.getId());
+        return user(user.getId());
     }
 
     /**
@@ -160,7 +161,7 @@ public class LoaderBuilder {
         this.category = category;
         return this;
     }
-    
+
     /**
      * Sets the default {@link Category}.
      * 
@@ -170,7 +171,7 @@ public class LoaderBuilder {
     public LoaderBuilder category(Category category) {
         return category(category.getId());
     }
-    
+
     /**
      * Sets a HTML5 key prefix. By default "data-flattr" is used.
      * 
@@ -184,7 +185,7 @@ public class LoaderBuilder {
         this.prefix = prefix;
         return this;
     }
-    
+
     /**
      * Builds a loader script of the current setup.
      */
@@ -192,11 +193,11 @@ public class LoaderBuilder {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         char separator = '?';
-        
+
         if (!bare) {
             sb.append("<script type=\"text/javascript\">/* <![CDATA[ */\n");
         }
-        
+
         String url = baseUrl;
         if (https) {
             url = url.replaceFirst("^http://", "https://");
@@ -208,41 +209,45 @@ public class LoaderBuilder {
         sb.append("s.type = 'text/javascript';");
         sb.append("s.async = true;");
         sb.append("s.src = '").append(url).append("/js/").append(version).append("/load.js");
-        
+
         if (automatic) {
             sb.append(separator).append("mode=auto");
             separator = '&';
         }
-        
+
         if (uid != null) {
             sb.append(separator).append("uid=").append(uid);
             separator = '&';
         }
-        
+
         if (type != null) {
             sb.append(separator).append("button=");
             switch (type) {
-                case COMPACT: sb.append("compact"); break;
-                case DEFAULT: sb.append("default"); break;
+            case COMPACT:
+                sb.append("compact");
+                break;
+            case DEFAULT:
+                sb.append("default");
+                break;
             }
             separator = '&';
         }
-        
+
         if (language != null) {
             sb.append(separator).append("language=").append(language);
             separator = '&';
         }
-        
+
         if (category != null) {
             sb.append(separator).append("category=").append(category);
             separator = '&';
         }
-        
+
         if (prefix != null) {
             sb.append(separator).append("html5-key-prefix").append(prefix);
             separator = '&';
         }
-        
+
         sb.append("';");
         sb.append("t.parentNode.insertBefore(s, t);");
         sb.append("})();\n");
@@ -250,8 +255,8 @@ public class LoaderBuilder {
         if (!bare) {
             sb.append("/* ]]> */</script>");
         }
-        
+
         return sb.toString();
     }
-    
+
 }
