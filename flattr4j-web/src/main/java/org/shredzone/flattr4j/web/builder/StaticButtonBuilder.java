@@ -151,12 +151,10 @@ public class StaticButtonBuilder {
 
         sb.append(" href=\"").append(escape(url)).append('"');
 
-        if (!attributes.isEmpty()) {
-            for (String attr : attributes.keySet()) {
-                sb.append(' ').append(attr).append("=\"");
-                sb.append(escape(attributes.get(attr)));
-                sb.append('"');
-            }
+        for (String attr : attributes.keySet()) {
+            sb.append(' ').append(attr).append("=\"");
+            sb.append(escape(attributes.get(attr)));
+            sb.append('"');
         }
 
         sb.append('>');

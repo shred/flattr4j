@@ -23,24 +23,24 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * An optional HTML attribute for the parent tag.
- *
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class AttributeTag extends BodyTagSupport {
     private static final long serialVersionUID = -3139247850992098426L;
-    
+
     private String name;
     private String value;
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public int doStartTag() throws JspException {
         if (value != null) {

@@ -36,36 +36,41 @@ import org.shredzone.flattr4j.web.builder.StaticButtonBuilder;
 public class StaticTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -7356980489242218537L;
 
-    private StaticButtonBuilder builder = new StaticButtonBuilder();
+    private StaticButtonBuilder builder;
     
     private String var = null;
     private String scope = null;
     
-    public void setThing(String url) {
-        builder.thing(url);
-    }
-    
-    public void setThing(RegisteredThing thing) {
-        builder.thing(thing);
+    public void setThing(Object thing) {
+        setupBuilder();
+        if (thing instanceof RegisteredThing) {
+            builder.thing((RegisteredThing) thing);
+        } else {
+            builder.thing(thing.toString());
+        }
     }
     
     public void setButtonUrl(String url) {
+        setupBuilder();
         builder.buttonUrl(url);
     }
     
-    public void setButton(String type) {
-        builder.button(ButtonType.valueOf(type));
-    }
-    
-    public void setButton(ButtonType type) {
-        builder.button(type);
+    public void setButton(Object type) {
+        setupBuilder();
+        if (type instanceof ButtonType) {
+            builder.button((ButtonType) type);
+        } else {
+            builder.button(ButtonType.valueOf(type.toString().toUpperCase()));
+        }
     }
     
     public void setStyle(String style) {
+        setupBuilder();
         builder.style(style);
     }
     
     public void setStyleClass(String styleClass) {
+        setupBuilder();
         builder.styleClass(styleClass);
     }
     
@@ -79,13 +84,20 @@ public class StaticTag extends BodyTagSupport implements Attributed {
     
     @Override
     public void setAttribute(String name, String value) {
+        setupBuilder();
         builder.attribute(name, value);
     }
 
     @Override
     public int doStartTag() throws JspException {
+        setupBuilder();
+        return EVAL_BODY_INCLUDE;
+    }
+
+    @Override
+    public int doEndTag() throws JspException {
         String tag = builder.toString();
-        
+
         if (var != null) {
             TagUtils.setScopedAttribute(pageContext, var, tag, scope);
 
@@ -97,12 +109,24 @@ public class StaticTag extends BodyTagSupport implements Attributed {
             }
         }
 
-        return EVAL_BODY_INCLUDE;
+        disposeBuilder();
+        return EVAL_PAGE;
     }
 
-    @Override
-    public int doEndTag() throws JspException {
-        return EVAL_PAGE;
+    /**
+     * Creates a new builder instance, if not already done.
+     */
+    protected void setupBuilder() {
+        if (builder == null) {
+            builder = new StaticButtonBuilder();
+        }
+    }
+
+    /**
+     * Disposes the builder instance.
+     */
+    protected void disposeBuilder() {
+        builder = null;
     }
 
 }

@@ -325,9 +325,7 @@ public class ButtonBuilder {
         if (html5) {
             appendHtml5(sb);
         } else {
-            sb.append(" rel=\"flattr;");
             appendAttributes(sb);
-            sb.append('"');
         }
 
         if (!attributes.isEmpty()) {
@@ -355,27 +353,52 @@ public class ButtonBuilder {
      * @param sb  {@link StringBuilder} to append the attributes to
      */
     private void appendAttributes(StringBuilder sb) {
+        boolean header = false;
+
         if (uid != null) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
             sb.append("uid:").append(escape(uid)).append(';');
         }
 
         if (category != null) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
             sb.append("category:").append(escape(category)).append(';');
         }
 
         if (!tags.isEmpty()) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
             sb.append("tags:");
             appendTagList(sb);
             sb.append(';');
         }
 
         if (type != null && type == ButtonType.COMPACT) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
             sb.append("button:compact;");
         }
 
         if (hidden) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
             sb.append("hidden:1;");
         }
+
+        if (header) {
+            sb.append('"');
+        }
+    }
+
+    /**
+     * Appends the header for non-http5 attributes.
+     *
+     * @param sb  {@link StringBuilder} to append the attributes to
+     */
+    private void appendAttributesHeader(StringBuilder sb) {
+        sb.append(" rel=\"flattr;");
     }
 
     /**

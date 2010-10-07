@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.shredzone.flattr4j.model.Category;
@@ -39,74 +40,86 @@ import org.shredzone.flattr4j.web.builder.ButtonBuilder;
 public class ButtonTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -2011193251581466746L;
 
-    private ButtonBuilder builder = new ButtonBuilder();
+    private ButtonBuilder builder;
     
     private boolean descripted = false;
     private String var = null;
     private String scope = null;
     
     public void setUrl(String url) {
+        setupBuilder();
         builder.url(url);
     }
     
-    public void setUser(String uid) {
-        builder.user(uid);
-    }
-    
-    public void setUser(User user) {
-        builder.user(user);
+    public void setUser(Object user) {
+        setupBuilder();
+        if (user instanceof User) {
+            builder.user((User) user);
+        } else {
+            builder.user(user.toString());
+        }
     }
     
     public void setTitle(String title) {
+        setupBuilder();
         builder.title(title);
     }
     
     public void setDescription(String description) {
+        setupBuilder();
         builder.description(description);
         descripted = true;
     }
     
-    public void setCategory(String category) {
-        builder.category(category);
+    public void setCategory(Object category) {
+        setupBuilder();
+        if (category instanceof Category) {
+            builder.category((Category) category);
+        } else {
+            builder.category(category.toString());
+        }
     }
     
-    public void setCategory(Category category) {
-        builder.category(category);
+    public void setLanguage(Object language) {
+        setupBuilder();
+        if (language instanceof Language) {
+            builder.language((Language) language);
+        } else {
+            builder.language(language.toString());
+        }
     }
     
-    public void setLanguage(String language) {
-        builder.language(language);
-    }
-    
-    public void setLanguage(Language language) {
-        builder.language(language);
-    }
-    
-    public void setButton(String type) {
-        builder.button(ButtonType.valueOf(type));
-    }
-    
-    public void setButton(ButtonType type) {
-        builder.button(type);
+    public void setButton(Object type) {
+        setupBuilder();
+        if (type instanceof ButtonType) {
+            builder.button((ButtonType) type);
+        } else {
+            builder.button(ButtonType.valueOf(type.toString().toUpperCase()));
+        }
     }
     
     public void setHidden(boolean hidden) {
+        setupBuilder();
         if (hidden) builder.hidden();
     }
     
     public void setHtml5(boolean html5) {
+        setupBuilder();
         if (html5) builder.html5();
     }
     
     public void setPrefix(String prefix) {
+        setupBuilder();
         builder.prefix(prefix);
     }
     
     public void setStyle(String style) {
+        setupBuilder();
         builder.style(style);
     }
     
     public void setStyleClass(String styleClass) {
+        setupBuilder();
         builder.styleClass(styleClass);
     }
     
@@ -119,20 +132,25 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
     }
 
     public void addTag(String tag) {
+        setupBuilder();
         builder.tag(tag);
     }
     
     public void addTags(Collection<String> tags) {
+        setupBuilder();
         builder.tags(tags);
     }
     
     @Override
     public void setAttribute(String name, String value) {
+        setupBuilder();
         builder.attribute(name, value);
     }
 
     @Override
     public int doStartTag() throws JspException {
+        setupBuilder();
+
         if (descripted) {
             return SKIP_BODY;
         } else {
@@ -143,9 +161,12 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
     @Override
     public int doEndTag() throws JspException {
         if (!descripted) {
-            String body = getBodyContent().getString().trim();
-            if (!body.isEmpty()) {
-                builder.descriptionTruncate(body);
+            BodyContent bc = getBodyContent();
+            if (bc != null) {
+                String description = bc.getString().trim();
+                if (!description.isEmpty()) {
+                    builder.descriptionTruncate(description);
+                }
             }
         }
         
@@ -162,7 +183,24 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
             }
         }
 
+        disposeBuilder();
         return EVAL_PAGE;
+    }
+
+    /**
+     * Creates a new builder instance, if not already done.
+     */
+    protected void setupBuilder() {
+        if (builder == null) {
+            builder = new ButtonBuilder();
+        }
+    }
+
+    /**
+     * Disposes the builder instance.
+     */
+    protected void disposeBuilder() {
+        builder = null;
     }
 
 }

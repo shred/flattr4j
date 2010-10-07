@@ -36,16 +36,17 @@ public final class TagUtils {
 
     /**
      * Set an attribute with the given scope.
-     *
+     * 
      * @param pageContext
-     *      {@link PageContext} of the invoking tag
+     *            {@link PageContext} of the invoking tag
      * @param attribute
-     *      Attribute name
+     *            Attribute name
      * @param value
-     *      Value of that attribute
+     *            Value of that attribute
      * @param scope
-     *      Scope to be used. {@code null} means page scope.
-     * @throws JspException if the scope was unknown
+     *            Scope to be used. {@code null} means page scope.
+     * @throws JspException
+     *             if the scope was unknown
      */
     public static void setScopedAttribute(PageContext pageContext, String attribute, Object value, String scope)
     throws JspException {

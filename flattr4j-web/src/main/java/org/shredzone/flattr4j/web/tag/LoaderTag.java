@@ -38,55 +38,63 @@ import org.shredzone.flattr4j.web.builder.LoaderBuilder;
 public class LoaderTag extends BodyTagSupport {
     private static final long serialVersionUID = -5892160942069969373L;
     
-    private LoaderBuilder builder = new LoaderBuilder();
+    private LoaderBuilder builder;
     private String var;
     private String scope;
 
     public void setBare(boolean bare) {
+        setupBuilder();
         if (bare) builder.bare();
     }
 
     public void setManual(boolean manual) {
+        setupBuilder();
         if (manual) builder.manual();
     }
 
     public void setHttps(boolean https) {
+        setupBuilder();
         if (https) builder.https();
     }
 
-    public void setUser(String uid) {
-        builder.user(uid);
+    public void setUser(Object user) {
+        setupBuilder();
+        if (user instanceof User) {
+            builder.user((User) user);
+        } else {
+            builder.user(user.toString());
+        }
     }
 
-    public void setUser(User user) {
-        builder.user(user);
+    public void setButton(Object type) {
+        setupBuilder();
+        if (type instanceof ButtonType) {
+            builder.button((ButtonType) type);
+        } else {
+            builder.button(ButtonType.valueOf(type.toString().toUpperCase()));
+        }
     }
 
-    public void setButton(String button) {
-        setButton(ButtonType.valueOf(button));
+    public void setLanguage(Object language) {
+        setupBuilder();
+        if (language instanceof Language) {
+            builder.language((Language) language);
+        } else {
+            builder.language(language.toString());
+        }
     }
 
-    public void setButton(ButtonType type) {
-        builder.button(type);
-    }
-
-    public void setLanguage(String language) {
-        builder.language(language);
-    }
-
-    public void setLanguage(Language language) {
-        builder.language(language);
-    }
-
-    public void setCategory(String category) {
-        builder.category(category);
-    }
-
-    public void setCategory(Category category) {
-        builder.category(category);
+    public void setCategory(Object category) {
+        setupBuilder();
+        if (category instanceof Category) {
+            builder.category((Category) category);
+        } else {
+            builder.category(category.toString());
+        }
     }
 
     public void setPrefix(String prefix) {
+        setupBuilder();
         builder.prefix(prefix);
     }
 
@@ -100,8 +108,14 @@ public class LoaderTag extends BodyTagSupport {
 
     @Override
     public int doStartTag() throws JspException {
+        setupBuilder();
+        return EVAL_BODY_INCLUDE;
+    }
+
+    @Override
+    public int doEndTag() throws JspException {
         String tag = builder.toString();
-        
+
         if (var != null) {
             TagUtils.setScopedAttribute(pageContext, var, tag, scope);
 
@@ -113,12 +127,24 @@ public class LoaderTag extends BodyTagSupport {
             }
         }
 
-        return EVAL_BODY_INCLUDE;
+        disposeBuilder();
+        return EVAL_PAGE;
     }
 
-    @Override
-    public int doEndTag() throws JspException {
-        return EVAL_PAGE;
+    /**
+     * Creates a new builder instance, if not already done.
+     */
+    protected void setupBuilder() {
+        if (builder == null) {
+            builder = new LoaderBuilder();
+        }
+    }
+
+    /**
+     * Disposes the builder instance.
+     */
+    protected void disposeBuilder() {
+        builder = null;
     }
 
 }
