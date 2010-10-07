@@ -70,6 +70,5 @@ public class OAuthConnector extends OpenConnector {
         consumer.setTokenWithSecret(accessToken.getToken(), accessToken.getSecret());
         return consumer;
     }
-
     
 }

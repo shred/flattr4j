@@ -41,18 +41,11 @@ public class LanguageXmlParserTest {
         InputStream in = LanguageXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Language.xml");
         LanguageXmlParser parser = new LanguageXmlParser(new InputStreamReader(in, "UTF-8"));
 
-        Language language;
+        Language language1 = parser.getNext();
+        Language language2 = parser.getNext();
+        Assert.assertNull(parser.getNext());
 
-        language = parser.getNext();
-        Assert.assertEquals("sq_AL", language.getId());
-        Assert.assertEquals("Albanian", language.getName());
-
-        language = parser.getNext();
-        Assert.assertEquals("ar_DZ", language.getId());
-        Assert.assertEquals("Arabic", language.getName());
-        
-        language = parser.getNext();
-        Assert.assertNull(language);
+        MockDataHelper.assertLanguageResource(language1, language2);
     }
 
 }

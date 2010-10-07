@@ -15,31 +15,37 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
-package org.shredzone.flattr4j.impl.xml;
+package org.shredzone.flattr4j.oauth;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Thing;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.OAuthProvider;
 
 /**
- * Unit test of the {@link ThingXmlWriter} class.
+ * A mock implementation of {@link FlattrAuthenticator} that is used for unit testing.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ThingXmlWriterTest {
+public class MockFlattrAuthenticator extends FlattrAuthenticator {
 
-    @Test
-    public void writerTest() throws FlattrException {
-        Thing thing = MockDataHelper.createThing();
-        CharSequence thingXml = MockDataHelper.createThingXml();
+    public MockFlattrAuthenticator(ConsumerKey ck) {
+        super(ck);
+    }
 
-        String result = ThingXmlWriter.write(thing);
+    @Override
+    protected OAuthConsumer createConsumer(ConsumerKey ck) {
+        return new MockOAuthConsumer(ck);
+    }
 
-        Assert.assertEquals(thingXml, result);
+    @Override
+    protected OAuthProvider createProvider() {
+        return new MockOAuthProvider(getRequestTokenUrl(), getAccessTokenUrl(), getAuthorizationUrl());
+    }
+
+    @Override
+    public String buildScopeString() {
+        return super.buildScopeString();
     }
 
 }

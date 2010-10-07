@@ -31,7 +31,7 @@ import org.shredzone.flattr4j.model.User;
 
 /**
  * Unit test of the {@link UserXmlParser} class.
- *
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -45,16 +45,7 @@ public class UserXmlParserTest {
         User user;
 
         user = parser.getNext();
-        Assert.assertEquals("244", user.getId());
-        Assert.assertEquals("Bomelin", user.getUsername());
-        Assert.assertEquals("Mattias", user.getFirstname());
-        Assert.assertEquals("Bomelin", user.getLastname());
-        Assert.assertEquals("Skurup", user.getCity());
-        Assert.assertEquals("Sweden", user.getCountry());
-        Assert.assertEquals("https://secure.gravatar.com/avatar/59bc275a1d17a4f2ec448538426803bf?s=120&r=pg", user.getGravatar());
-        Assert.assertEquals("mattias@flattr.com.invalid", user.getEmail());
-        Assert.assertEquals("Flattr meee", user.getDescription());
-        Assert.assertEquals(10, user.getThingcount());
+        MockDataHelper.assertUserResource(user);
 
         user = parser.getNext();
         Assert.assertNull(user);

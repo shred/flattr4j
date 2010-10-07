@@ -21,18 +21,16 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.RegisteredThing;
-import org.shredzone.flattr4j.model.ThingStatus;
 
 /**
  * Unit test of the {@link RegisteredThingXmlParser} class.
- *
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -46,23 +44,7 @@ public class RegisteredThingXmlParserTest {
         RegisteredThing thing;
 
         thing = parser.getNext();
-        Assert.assertEquals("bf12b55dc73d89835fff9696b6cc3883", thing.getId());
-        Assert.assertEquals("42343", thing.getIntId());
-        Assert.assertEquals(new Date(1276784931L * 1000L), thing.getCreated());
-        Assert.assertEquals("sv_SE", thing.getLanguage());
-        Assert.assertEquals("http://www.kontilint.se/kontakt", thing.getUrl());
-        Assert.assertEquals("Kontakta Kontilint", thing.getTitle());
-        Assert.assertEquals("Kontakta Kontilint", thing.getDescription());
-        Assert.assertEquals(0, thing.getClicks());
-        Assert.assertEquals("244", thing.getUserId());
-        Assert.assertEquals("Bomelin", thing.getUserName());
-        Assert.assertEquals(3, thing.getTags().size());
-        Assert.assertEquals("asd", thing.getTags().get(0));
-        Assert.assertEquals("fgh", thing.getTags().get(1));
-        Assert.assertEquals("ert", thing.getTags().get(2));
-        Assert.assertEquals("text", thing.getCategory());
-        Assert.assertEquals("Written text", thing.getCategoryName());
-        Assert.assertEquals(ThingStatus.OWNER, thing.getStatus());
+        MockDataHelper.assertThingResource(thing);
 
         thing = parser.getNext();
         Assert.assertNull(thing);

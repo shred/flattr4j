@@ -41,18 +41,11 @@ public class CategoryXmlParserTest {
         InputStream in = CategoryXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Category.xml");
         CategoryXmlParser parser = new CategoryXmlParser(new InputStreamReader(in, "UTF-8"));
 
-        Category category;
+        Category category1 = parser.getNext();
+        Category category2 = parser.getNext();
+        Assert.assertNull(parser.getNext());
 
-        category = parser.getNext();
-        Assert.assertEquals("text", category.getId());
-        Assert.assertEquals("Written text", category.getName());
-
-        category = parser.getNext();
-        Assert.assertEquals("images", category.getId());
-        Assert.assertEquals("Images", category.getName());
-        
-        category = parser.getNext();
-        Assert.assertNull(category);
+        MockDataHelper.assertCategoryResource(category1, category2);
     }
 
 }

@@ -49,7 +49,7 @@ public class FlattrAuthenticator {
     private String outOfBandUrl = "";
     
     private EnumSet<Scope> scope = EnumSet.of(Scope.READ);
-    
+
     /**
      * The OAuth request token URL from Flattr.
      */
@@ -74,6 +74,9 @@ public class FlattrAuthenticator {
      * retrieve the PIN from a Flattr URL and enter it manually. Use {@code null} if you
      * cannot provide a callback URL, for example on a desktop or handheld device
      * application.
+     * <p>
+     * <em>NOTE:</em> Callback URLs are not (yet?) supported by Flattr. Flattr always
+     * uses the Callback URL that was given in the application registration form.
      * <p>
      * Defaults to {@code null}.
      */
@@ -132,7 +135,7 @@ public class FlattrAuthenticator {
      */
     public RequestToken fetchRequestToken() throws FlattrException {
         try {
-            OAuthConsumer consumer = createConsumer();
+            OAuthConsumer consumer = createConsumer(consumerKey);
             OAuthProvider provider = createProvider();
             String authUrl = provider.retrieveRequestToken(consumer,
                             (callbackUrl != null ? callbackUrl : outOfBandUrl));
@@ -189,7 +192,7 @@ public class FlattrAuthenticator {
      */
     public AccessToken fetchAccessToken(String token, String secret, String pin) throws FlattrException {
         try {
-            OAuthConsumer consumer = createConsumer();
+            OAuthConsumer consumer = createConsumer(consumerKey);
             OAuthProvider provider = createProvider();
             consumer.setTokenWithSecret(token, secret);
             
@@ -208,11 +211,13 @@ public class FlattrAuthenticator {
 
     /**
      * Creates a {@link OAuthConsumer} that can be used for Flattr.
-     * 
+     *
+     * @param consumerKey
+     *      {@link ConsumerKey} to be used
      * @return {@link OAuthConsumer} that was created
      */
-    protected OAuthConsumer createConsumer() {
-        return new CommonsHttpOAuthConsumer(consumerKey.getKey(), consumerKey.getSecret());
+    protected OAuthConsumer createConsumer(ConsumerKey ck) {
+        return new CommonsHttpOAuthConsumer(ck.getKey(), ck.getSecret());
     }
 
     /**
@@ -221,8 +226,7 @@ public class FlattrAuthenticator {
      * @return {@link OAuthProvider} that was created
      */
     protected OAuthProvider createProvider() {
-        OAuthProvider provider = new DefaultOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
-        return provider;
+        return new DefaultOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
     }
 
     /**
@@ -230,7 +234,7 @@ public class FlattrAuthenticator {
      * 
      * @return Scope string: scope texts, separated by comma.
      */
-    private String buildScopeString() {
+    protected String buildScopeString() {
         StringBuilder sb = new StringBuilder();
         
         if (scope.contains(Scope.READ))         sb.append(",read");
