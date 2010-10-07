@@ -1,214 +1,284 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib>
-  <tlibversion>1.0</tlibversion>
-  <jspversion>1.1</jspversion>
-  <shortname>f4j</shortname>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>f4j</short-name>
   <uri>http://flattr4j.shredzone.org/taglib/f4j</uri>
-  <info>Flattr4j Tag Library</info>
+  <description>Flattr4j Tag Library</description>
   <tag>
     <name>attribute</name>
-    <tagclass>org.shredzone.flattr4j.web.tag.AttributeTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <info>An optional HTML attribute for the parent flattr4j tag.</info>
+    <tag-class>org.shredzone.flattr4j.web.tag.AttributeTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>An optional HTML attribute for the parent flattr4j tag.</description>
     <attribute>
       <name>name</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Attribute name</description>
     </attribute>
     <attribute>
       <name>value</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Attribute value</description>
     </attribute>
   </tag>
   <tag>
     <name>button</name>
-    <tagclass>org.shredzone.flattr4j.web.tag.ButtonTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <info>Creates a Flattr button.</info>
+    <tag-class>org.shredzone.flattr4j.web.tag.ButtonTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Creates a Flattr button.</description>
     <attribute>
       <name>url</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>URL of the own page registered with Flattr</description>
     </attribute>
     <attribute>
       <name>user</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>User id or User object</description>
     </attribute>
     <attribute>
       <name>title</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Thing title</description>
     </attribute>
     <attribute>
       <name>description</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Thing description</description>
     </attribute>
     <attribute>
       <name>category</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Thing category (either category ID or Category object)</description>
     </attribute>
     <attribute>
       <name>language</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Thing language (either language ID or Language object)</description>
     </attribute>
     <attribute>
       <name>button</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Button type (or ButtonType object)</description>
     </attribute>
     <attribute>
       <name>hidden</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Hide the thing at Flattr</description>
     </attribute>
     <attribute>
       <name>html5</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Generate a HTML5 link</description>
     </attribute>
     <attribute>
       <name>prefix</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML5 attribute prefix</description>
     </attribute>
     <attribute>
       <name>style</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML style attribute</description>
     </attribute>
     <attribute>
       <name>styleClass</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML class attribute</description>
     </attribute>
     <attribute>
       <name>var</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Write the result to this variable</description>
     </attribute>
     <attribute>
       <name>scope</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Scope to write to</description>
     </attribute>
   </tag>
   <tag>
     <name>loader</name>
-    <tagclass>org.shredzone.flattr4j.web.tag.LoaderTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <info>Creates a JavaScript loader tag.</info>
+    <tag-class>org.shredzone.flattr4j.web.tag.LoaderTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Creates a JavaScript loader tag.</description>
     <attribute>
       <name>bare</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Generate a bare JavaScript without surrounding tag</description>
     </attribute>
     <attribute>
       <name>manual</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Initialize the loader manually</description>
     </attribute>
     <attribute>
       <name>https</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Use https for the loader and the buttons</description>
     </attribute>
     <attribute>
       <name>user</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>User id or User object</description>
     </attribute>
     <attribute>
       <name>button</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Button type (or ButtonType object)</description>
     </attribute>
     <attribute>
       <name>language</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Thing language (either language ID or Language object)</description>
     </attribute>
     <attribute>
       <name>category</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Thing category (either category ID or Category object)</description>
     </attribute>
     <attribute>
       <name>prefix</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML5 attribute prefix</description>
     </attribute>
     <attribute>
       <name>var</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Write the result to this variable</description>
     </attribute>
     <attribute>
       <name>scope</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Scope to write to</description>
     </attribute>
   </tag>
   <tag>
     <name>static</name>
-    <tagclass>org.shredzone.flattr4j.web.tag.StaticTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <info>Creates a static Flattr button.</info>
+    <tag-class>org.shredzone.flattr4j.web.tag.StaticTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Creates a static Flattr button.</description>
     <attribute>
       <name>thing</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>URL of the registered Thing at Flattr</description>
     </attribute>
     <attribute>
       <name>buttonUrl</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>URL of a button image to be used</description>
     </attribute>
     <attribute>
       <name>button</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Object</type>
+      <description>Button type (or ButtonType object)</description>
     </attribute>
     <attribute>
       <name>style</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML style attribute</description>
     </attribute>
     <attribute>
       <name>styleClass</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>HTML class attribute</description>
     </attribute>
     <attribute>
       <name>var</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Write the result to this variable</description>
     </attribute>
     <attribute>
       <name>scope</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Scope to write to</description>
     </attribute>
   </tag>
   <tag>
     <name>tag</name>
-    <tagclass>org.shredzone.flattr4j.web.tag.TagTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <info>An optional Thing tag for the parent button tag.</info>
+    <tag-class>org.shredzone.flattr4j.web.tag.TagTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>An optional Thing tag for the parent button tag.</description>
     <attribute>
       <name>list</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.util.Collection</type>
+      <description>List of tags to add</description>
     </attribute>
     <attribute>
       <name>value</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Tag to add</description>
     </attribute>
   </tag>
 </taglib>
