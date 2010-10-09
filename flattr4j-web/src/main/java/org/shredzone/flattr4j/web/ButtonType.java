@@ -29,22 +29,24 @@ public enum ButtonType {
     /**
      * A button with default size (50 x 60)
      */
-    DEFAULT(50, 60),
+    DEFAULT(50, 60, "http://api.flattr.com/button/button-static-50x60.png"),
 
     /**
      * A button with compact size (100 x 17)
      */
-    COMPACT(100, 17);
-    
+    COMPACT(100, 17, "http://api.flattr.com/button/button-compact-static-100x17.png");
+
     private final int width;
     private final int height;
+    private final String url;
 
     /**
      * Creates an enumeration object.
      */
-    private ButtonType(int width, int height) {
+    private ButtonType(int width, int height, String url) {
         this.width = width;
         this.height = height;
+        this.url = url;
     }
 
     /**
@@ -59,6 +61,13 @@ public enum ButtonType {
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Gets the URL of a static button image.
+     */
+    public String getUrl() {
+        return url;
     }
 
 }
