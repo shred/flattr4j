@@ -119,4 +119,14 @@ public interface FlattrService{
      */
     User getUser(String userId) throws FlattrException;
 
+    /**
+     * Gets the {@link User} profile of the given user name.
+     *
+     * @param name
+     *            User name to get a profile for
+     * @return {@link User} profile of that user. Never {@code null}. An exception is
+     *         thrown when there was no such user.
+     */
+    User getUserByName(String name) throws FlattrException;
+
 }

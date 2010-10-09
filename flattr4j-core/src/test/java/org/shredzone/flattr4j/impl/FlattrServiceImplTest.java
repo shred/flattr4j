@@ -42,7 +42,7 @@ public class FlattrServiceImplTest {
     private static final String BASE = "http://api.flattr.com/rest/0.0.1/";
 
     @Test
-    public void registerTest() throws FlattrException {
+    public void testRegister() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/register");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
         connector.setExpectedData(MockDataHelper.createThingXml());
@@ -58,7 +58,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getThingTest() throws FlattrException {
+    public void testGetThing() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/get/id/12345");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
 
@@ -71,7 +71,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void clickTest() throws FlattrException {
+    public void testClick() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/click/id/12345");
 
         FlattrService service = new FlattrServiceImpl(connector);
@@ -81,7 +81,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getThingListTest() throws FlattrException {
+    public void testGetThingList() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/listbyuser/id/98765");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
 
@@ -95,7 +95,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getCategoryListTest() throws FlattrException {
+    public void testGetCategoryList() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "feed/categories");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Category.xml");
 
@@ -112,7 +112,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getLanguageListTest() throws FlattrException {
+    public void testGetLanguageList() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "feed/languages");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Language.xml");
 
@@ -129,7 +129,7 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getMyselfTest() throws FlattrException {
+    public void testGetMyself() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "user/me");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
@@ -142,12 +142,25 @@ public class FlattrServiceImplTest {
     }
 
     @Test
-    public void getUserTest() throws FlattrException {
+    public void testGetUser() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "user/get/id/98765");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
         User result = service.getUser("98765");
+
+        MockDataHelper.assertUserResource(result);
+
+        connector.assertState();
+    }
+
+    @Test
+    public void testGetUserByName() throws FlattrException {
+        MockConnector connector = new MockConnector(BASE + "user/get/name/blafoo");
+        connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
+
+        FlattrService service = new FlattrServiceImpl(connector);
+        User result = service.getUserByName("blafoo");
 
         MockDataHelper.assertUserResource(result);
 

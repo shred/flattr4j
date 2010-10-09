@@ -19,6 +19,8 @@
  */
 package org.shredzone.flattr4j.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -81,7 +83,8 @@ public class FlattrServiceImpl implements FlattrService {
     public RegisteredThing getThing(String thingId) throws FlattrException {
         if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
-        Result result = connector.call(baseUrl + "thing/get/id/" + thingId).assertStatusOk();
+        Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId));
+        result.assertStatusOk();
         try {
             RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
 
@@ -99,7 +102,7 @@ public class FlattrServiceImpl implements FlattrService {
     public void click(String thingId) throws FlattrException {
         if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
-        connector.call(baseUrl + "thing/click/id/" + thingId).assertStatusOk();
+        connector.call(baseUrl + "thing/click/id/" + urlencode(thingId)).assertStatusOk();
     }
 
     @Override
@@ -116,7 +119,8 @@ public class FlattrServiceImpl implements FlattrService {
     public List<RegisteredThing> getThingList(String userId) throws FlattrException {
         if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
 
-        Result result = connector.call(baseUrl + "thing/listbyuser/id/" + userId).assertStatusOk();
+        Result result = connector.call(baseUrl + "thing/listbyuser/id/" + urlencode(userId));
+        result.assertStatusOk();
         try {
             List<RegisteredThing> list = new ArrayList<RegisteredThing>();
 
@@ -188,7 +192,8 @@ public class FlattrServiceImpl implements FlattrService {
     public User getUser(String userId) throws FlattrException {
         if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
 
-        Result result = connector.call(baseUrl + "user/get/id/" + userId).assertStatusOk();
+        Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId));
+        result.assertStatusOk();
         try {
             UserXmlParser parser = new UserXmlParser(result.openReader());
     
@@ -199,6 +204,40 @@ public class FlattrServiceImpl implements FlattrService {
             return user;
         } finally {
             result.closeReader();
+        }
+    }
+
+    @Override
+    public User getUserByName(String name) throws FlattrException {
+        if (name == null || name.isEmpty()) throw new ValidationException("name", "name is required");
+
+        Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
+        result.assertStatusOk();
+        try {
+            UserXmlParser parser = new UserXmlParser(result.openReader());
+
+            User user = parser.getNext();
+            if (user == null) {
+                throw new NotFoundException("unexpected empty result");
+            }
+            return user;
+        } finally {
+            result.closeReader();
+        }
+    }
+
+    /**
+     * URL encodes the String using UTF-8. Convenience method for a blunder in the
+     * original API.
+     *
+     * @param str String to encode
+     * @return  Encoded string
+     */
+    private String urlencode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalStateException("UTF-8 missing");
         }
     }
 
