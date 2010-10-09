@@ -21,9 +21,10 @@ package org.shredzone.flattr4j.web.builder;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
@@ -62,7 +63,7 @@ public class ButtonBuilder {
     private String styleClass;
     private boolean html5 = false;
     private String prefix = "data-flattr";
-    private Map<String, String> attributes = new HashMap<String, String>();
+    private Map<String, String> attributes = new TreeMap<String, String>();
 
     /**
      * Unique URL to the thing. Always required!
@@ -245,7 +246,7 @@ public class ButtonBuilder {
     /**
      * Adds a custom HTML attribute to the generated link tag. If an attribute has
      * already been added, its value will be replaced. Attributes are written to the
-     * tag in random order.
+     * tag in alphabetical order.
      * <p>
      * Attributes are added without further checks. It is your responsibility to take
      * care for HTML compliance.

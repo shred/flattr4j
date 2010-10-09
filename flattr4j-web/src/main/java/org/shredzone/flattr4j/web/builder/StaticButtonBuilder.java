@@ -19,8 +19,8 @@
 package org.shredzone.flattr4j.web.builder;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.web.ButtonType;
@@ -45,7 +45,7 @@ public class StaticButtonBuilder {
     private ButtonType type;
     private String style;
     private String styleClass;
-    private Map<String, String> attributes = new HashMap<String, String>();
+    private Map<String, String> attributes = new TreeMap<String, String>();
 
     /**
      * Link to the Thing page at Flattr.
@@ -107,8 +107,8 @@ public class StaticButtonBuilder {
 
     /**
      * Adds a custom HTML attribute to the generated link tag. If an attribute has already
-     * been added, its value will be replaced. Attributes are written to the tag in random
-     * order.
+     * been added, its value will be replaced. Attributes are written to the tag in
+     * alphabetical order.
      * <p>
      * Attributes are added without further checks. It is your responsibility to take care
      * for HTML compliance.
@@ -166,17 +166,11 @@ public class StaticButtonBuilder {
                             .append(" border=\"0\"")
                             .append(" />");
             
-        } else if (type == null || type == ButtonType.DEFAULT) {
-            sb.append("<img src=\"http://api.flattr.com/button/button-static-50x60.png\"")
-                            .append(" width=\"50\" height=\"60\"")
-                            .append(" alt=\"Flattr this\"")
-                            .append(" title=\"Flattr this\"")
-                            .append(" border=\"0\"")
-                            .append(" />");
-            
         } else {
-            sb.append("<img src=\"http://api.flattr.com/button/button-compact-static-100x17.png\"")
-                            .append(" width=\"100\" height=\"17\"")
+            ButtonType useType = (type != null ? type : ButtonType.DEFAULT);
+            sb.append("<img src=\"").append(useType.getUrl()).append('"')
+                            .append(" width=\"").append(useType.getWidth()).append('"')
+                            .append(" height=\"").append(useType.getHeight()).append('"')
                             .append(" alt=\"Flattr this\"")
                             .append(" title=\"Flattr this\"")
                             .append(" border=\"0\"")
