@@ -19,7 +19,7 @@
  */
 package org.shredzone.flattr4j.model;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -31,7 +31,7 @@ import org.junit.Test;
 public class ThingTest {
 
     @Test
-    public void propertyTest() {
+    public void testProperty() {
         Thing thing = new Thing();
 
         Assert.assertNull(thing.getUrl());

@@ -34,7 +34,7 @@ import org.shredzone.flattr4j.oauth.RequestToken;
 public class FlattrAuthenticatorTest {
 
     @Test
-    public void fetchRequestTokenTest() throws FlattrException {
+    public void testFetchRequestToken() throws FlattrException {
         ConsumerKey ck = new ConsumerKey("ck-abc", "ck-123");
 
         FlattrAuthenticator auth = new MockFlattrAuthenticator(ck);
@@ -47,7 +47,7 @@ public class FlattrAuthenticatorTest {
     }
 
     @Test
-    public void fetchAccessTokenTest() throws FlattrException {
+    public void testFetchAccessToken() throws FlattrException {
         ConsumerKey ck = new ConsumerKey("ck-abc", "ck-123");
 
         RequestToken token = new RequestToken();
@@ -62,7 +62,7 @@ public class FlattrAuthenticatorTest {
     }
 
     @Test
-    public void buildScopeStringTest() {
+    public void testBuildScopeString() {
         ConsumerKey ck = new ConsumerKey("ck-abc", "ck-123");
         MockFlattrAuthenticator auth = new MockFlattrAuthenticator(ck);
 

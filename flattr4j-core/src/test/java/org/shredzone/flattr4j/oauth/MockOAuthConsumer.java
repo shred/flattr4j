@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.oauth;
 
-import junit.framework.Assert;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
@@ -27,6 +26,7 @@ import oauth.signpost.http.HttpParameters;
 import oauth.signpost.http.HttpRequest;
 import oauth.signpost.signature.OAuthMessageSigner;
 import oauth.signpost.signature.SigningStrategy;
+import org.junit.Assert;
 
 /**
  * A mock implementation of {@link OAuthConsumer} that is used for unit testing.

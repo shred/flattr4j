@@ -33,7 +33,7 @@ import org.shredzone.flattr4j.model.Thing;
 public class ThingXmlWriterTest {
 
     @Test
-    public void writerTest() throws FlattrException {
+    public void testWriter() throws FlattrException {
         Thing thing = MockDataHelper.createThing();
         CharSequence thingXml = MockDataHelper.createThingXml();
 

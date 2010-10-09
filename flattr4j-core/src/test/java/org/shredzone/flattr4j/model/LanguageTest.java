@@ -19,7 +19,7 @@
  */
 package org.shredzone.flattr4j.model;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -31,7 +31,7 @@ import org.junit.Test;
 public class LanguageTest {
 
     @Test
-    public void propertyTest() {
+    public void testProperty() {
         Language language = new Language();
 
         Assert.assertNull(language.getId());
@@ -44,7 +44,7 @@ public class LanguageTest {
     }
 
     @Test
-    public void equalsTest() {
+    public void testEquals() {
         Language lang1 = new Language();
         lang1.setId("de_DE");
 

@@ -19,7 +19,7 @@
  */
 package org.shredzone.flattr4j.model;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -31,7 +31,7 @@ import org.junit.Test;
 public class UserTest {
 
     @Test
-    public void propertyTest() {
+    public void testProperty() {
         User user = new User();
 
         Assert.assertNull(user.getId());
@@ -76,7 +76,7 @@ public class UserTest {
     }
 
     @Test
-    public void equalsTest() {
+    public void testEquals() {
         User user1 = new User();
         user1.setId("foo");
 

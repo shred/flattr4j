@@ -23,8 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.User;
@@ -38,7 +37,7 @@ import org.shredzone.flattr4j.model.User;
 public class UserXmlParserTest {
 
     @Test
-    public void parserTest() throws FlattrException, UnsupportedEncodingException {
+    public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = UserXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/User.xml");
         UserXmlParser parser = new UserXmlParser(new InputStreamReader(in, "UTF-8"));
 

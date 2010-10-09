@@ -36,7 +36,7 @@ import org.shredzone.flattr4j.model.Language;
 public class OpenServiceImplTest {
 
     @Test
-    public void categoriesTest() throws FlattrException {
+    public void testCategories() throws FlattrException {
         String url = "http://api.flattr.com/odapi/categories/text";
 
         StringBuilder body = new StringBuilder();
@@ -76,7 +76,7 @@ public class OpenServiceImplTest {
     }
 
     @Test
-    public void languagesTest() throws FlattrException {
+    public void testLanguages() throws FlattrException {
         String url = "http://api.flattr.com/odapi/languages/text";
 
         StringBuilder body = new StringBuilder();

@@ -22,8 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
@@ -37,7 +36,7 @@ import org.shredzone.flattr4j.model.Category;
 public class CategoryXmlParserTest {
 
     @Test
-    public void parserTest() throws FlattrException, UnsupportedEncodingException {
+    public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = CategoryXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Category.xml");
         CategoryXmlParser parser = new CategoryXmlParser(new InputStreamReader(in, "UTF-8"));
 

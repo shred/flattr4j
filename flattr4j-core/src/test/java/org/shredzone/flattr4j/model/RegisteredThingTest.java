@@ -20,7 +20,7 @@
 package org.shredzone.flattr4j.model;
 
 import java.util.Date;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -32,7 +32,7 @@ import org.junit.Test;
 public class RegisteredThingTest {
 
     @Test
-    public void propertyTest() {
+    public void testProperty() {
         RegisteredThing thing = new RegisteredThing();
 
         Assert.assertNull(thing.getId());
@@ -70,7 +70,7 @@ public class RegisteredThingTest {
     }
 
     @Test
-    public void equalsTest() {
+    public void testEquals() {
         RegisteredThing thing1 = new RegisteredThing();
         thing1.setTitle("Thing number one");
         thing1.setId("fed95464a0e8683364189118e0b521c6");
@@ -103,7 +103,7 @@ public class RegisteredThingTest {
     }
 
     @Test
-    public void thingUrlTest() {
+    public void testThingUrl() {
         RegisteredThing thing = new RegisteredThing();
         thing.setIntId("123456");
         thing.setTitle("This is a  test title: hallå världen");
