@@ -34,7 +34,7 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
 public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
 
     private final ConsumerKey consumerKey;
-    private AccessToken accessToken;
+    private final AccessToken accessToken;
 
     /**
      * Creates a new {@link DefaultFlattrServiceFactory} with the given
@@ -44,17 +44,23 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
      *            {@link ConsumerKey} to be used by this factory
      */
     public DefaultFlattrServiceFactory(ConsumerKey consumerKey) {
-        this.consumerKey = consumerKey;
+        this(consumerKey, null);
     }
 
     /**
-     * Sets an optional {@link AccessToken} to be used by the factory. You may want to use
-     * this method if the application only deals with a single Flattr user.
+     * Creates a new {@link DefaultFlattrServiceFactory} with the given
+     * {@link ConsumerKey} and {@link AccessToken}.
      * 
+     * @param consumerKey
+     *            {@link ConsumerKey} to be used by this factory
      * @param accessToken
      *            {@link AccessToken} to be used by this factory
      */
-    public void setAccessToken(AccessToken accessToken) {
+    public DefaultFlattrServiceFactory(ConsumerKey consumerKey, AccessToken accessToken) {
+        if (consumerKey == null) {
+            throw new IllegalArgumentException("A ConsumerKey is required");
+        }
+        this.consumerKey = consumerKey;
         this.accessToken = accessToken;
     }
 
