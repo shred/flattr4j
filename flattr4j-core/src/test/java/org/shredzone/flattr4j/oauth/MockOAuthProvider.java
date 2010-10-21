@@ -61,7 +61,7 @@ public class MockOAuthProvider implements OAuthProvider {
         Assert.assertNotNull(callbackUrl);
         Assert.assertTrue(callbackUrl.isEmpty() || callbackUrl.startsWith("http"));
 
-        Assert.assertFalse(oauth10a);
+        Assert.assertTrue(oauth10a);
 
         consumer.setTokenWithSecret("req-abc", "req-123");
         return requestUrl + "?mock=true";

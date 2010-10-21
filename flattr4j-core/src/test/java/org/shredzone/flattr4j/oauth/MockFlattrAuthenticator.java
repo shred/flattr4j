@@ -40,7 +40,9 @@ public class MockFlattrAuthenticator extends FlattrAuthenticator {
 
     @Override
     protected OAuthProvider createProvider() {
-        return new MockOAuthProvider(getRequestTokenUrl(), getAccessTokenUrl(), getAuthorizationUrl());
+        OAuthProvider provider = new MockOAuthProvider(getRequestTokenUrl(), getAccessTokenUrl(), getAuthorizationUrl());
+        provider.setOAuth10a(true);
+        return provider;
     }
 
     @Override

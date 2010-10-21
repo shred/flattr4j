@@ -23,8 +23,8 @@ import java.util.EnumSet;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import oauth.signpost.exception.OAuthException;
 
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -75,8 +75,8 @@ public class FlattrAuthenticator {
      * cannot provide a callback URL, for example on a desktop or handheld device
      * application.
      * <p>
-     * <em>NOTE:</em> Callback URLs are not (yet?) supported by Flattr. Flattr always
-     * uses the Callback URL that was given in the application registration form.
+     * <em>NOTE:</em> If you registered your application as "client" type, you MUST NOT
+     * invoke this method.
      * <p>
      * Defaults to {@code null}.
      */
@@ -196,8 +196,6 @@ public class FlattrAuthenticator {
             OAuthProvider provider = createProvider();
             consumer.setTokenWithSecret(token, secret);
             
-            // WORKAROUND: OAUTH_VERIFIER is not sent in OAuth 1.0 mode, but required by Flattr
-            provider.setOAuth10a(true);
             provider.retrieveAccessToken(consumer, pin);
             
             AccessToken result = new AccessToken();
@@ -226,7 +224,9 @@ public class FlattrAuthenticator {
      * @return {@link OAuthProvider} that was created
      */
     protected OAuthProvider createProvider() {
-        return new DefaultOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
+        OAuthProvider provider =  new CommonsHttpOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
+        provider.setOAuth10a(true);
+        return provider;
     }
 
     /**
