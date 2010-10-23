@@ -45,8 +45,7 @@ public class FlattrAuthenticator {
     
     private String callbackUrl = null;
     
-    // WORKAROUND: Usually this would be OAuth.OUT_OF_BAND, but Flattr does not accept it
-    private String outOfBandUrl = "";
+    private String outOfBandUrl = OAuth.OUT_OF_BAND;
     
     private EnumSet<Scope> scope = EnumSet.of(Scope.READ);
 

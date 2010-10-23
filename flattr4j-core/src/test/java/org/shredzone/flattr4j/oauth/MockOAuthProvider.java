@@ -59,7 +59,7 @@ public class MockOAuthProvider implements OAuthProvider {
         Assert.assertEquals("ck-123", consumer.getConsumerSecret());
 
         Assert.assertNotNull(callbackUrl);
-        Assert.assertTrue(callbackUrl.isEmpty() || callbackUrl.startsWith("http"));
+        Assert.assertTrue(callbackUrl.equals("oob") || callbackUrl.startsWith("http"));
 
         Assert.assertTrue(oauth10a);
 
