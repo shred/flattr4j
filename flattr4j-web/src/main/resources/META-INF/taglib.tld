@@ -219,18 +219,18 @@
       <description>URL of the registered Thing at Flattr</description>
     </attribute>
     <attribute>
-      <name>buttonUrl</name>
+      <name>badgeUrl</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
-      <description>URL of a button image to be used</description>
+      <description>URL of a badge image to be used</description>
     </attribute>
     <attribute>
-      <name>button</name>
+      <name>badge</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.Object</type>
-      <description>Button type (or ButtonType object)</description>
+      <description>Badge type (or BadgeType object)</description>
     </attribute>
     <attribute>
       <name>style</name>

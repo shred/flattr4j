@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.shredzone.flattr4j.model.RegisteredThing;
-import org.shredzone.flattr4j.web.ButtonType;
+import org.shredzone.flattr4j.web.BadgeType;
 
 /**
  * Builds a static Flattr button tag. A static button works without JavaScript, but does
@@ -41,8 +41,8 @@ import org.shredzone.flattr4j.web.ButtonType;
  */
 public class StaticButtonBuilder {
     private String url;
-    private String buttonUrl;
-    private ButtonType type;
+    private String badgeUrl;
+    private BadgeType type;
     private String style;
     private String styleClass;
     private Map<String, String> attributes = new TreeMap<String, String>();
@@ -63,30 +63,30 @@ public class StaticButtonBuilder {
     }
 
     /**
-     * Selects the button type to be used. Optional, defaults to the default button.
+     * Selects the badge type to be used. Optional, defaults to the default badge.
      */
-    public StaticButtonBuilder button(ButtonType type) {
+    public StaticButtonBuilder badge(BadgeType type) {
         this.type = type;
         return this;
     }
 
     /**
-     * A URL to a custom button image. If this url is given, an invocation of the
-     * {@link #button(org.shredzone.flattr4j.web.ButtonType)} method is ignored.
+     * A URL to a custom badge image. If this url is given, an invocation of the
+     * {@link #badge(org.shredzone.flattr4j.web.BadgeType)} method is ignored.
      * 
      * @param url
      *            Button image URL
      */
-    public StaticButtonBuilder buttonUrl(String url) {
-        this.buttonUrl = url;
+    public StaticButtonBuilder badgeUrl(String url) {
+        this.badgeUrl = url;
         return this;
     }
 
     /**
-     * A URL to a custom button image. Convenience method that takes an URL object.
+     * A URL to a custom badge image. Convenience method that takes an URL object.
      */
-    public StaticButtonBuilder buttonUrl(URL url) {
-        return buttonUrl(url.toString());
+    public StaticButtonBuilder badgeUrl(URL url) {
+        return badgeUrl(url.toString());
     }
 
     /**
@@ -159,15 +159,15 @@ public class StaticButtonBuilder {
 
         sb.append('>');
 
-        if (buttonUrl != null) {
-            sb.append("<img src=\"").append(escape(buttonUrl)).append('"')
+        if (badgeUrl != null) {
+            sb.append("<img src=\"").append(escape(badgeUrl)).append('"')
                             .append(" alt=\"Flattr this\"")
                             .append(" title=\"Flattr this\"")
                             .append(" border=\"0\"")
                             .append(" />");
             
         } else {
-            ButtonType useType = (type != null ? type : ButtonType.DEFAULT);
+            BadgeType useType = (type != null ? type : BadgeType.DEFAULT);
             sb.append("<img src=\"").append(useType.getUrl()).append('"')
                             .append(" width=\"").append(useType.getWidth()).append('"')
                             .append(" height=\"").append(useType.getHeight()).append('"')

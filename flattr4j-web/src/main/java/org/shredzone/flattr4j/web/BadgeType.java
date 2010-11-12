@@ -19,46 +19,55 @@
 package org.shredzone.flattr4j.web;
 
 /**
- * Type of Flattr button to be used.
+ * Enumeration of static Flattr badges that can be used.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public enum ButtonType {
+public enum BadgeType {
 
     /**
-     * A button with default size (55 x 62)
+     * A static badge with default size (93 x 20)
      */
-    DEFAULT(55, 62),
+    DEFAULT(93, 20, "http://api.flattr.com/button/flattr-badge-large.png"),
 
     /**
-     * A button with compact size (110 x 20)
+     * A static badge with small size (16 x 16)
      */
-    COMPACT(110, 20);
+    SMALL(16, 16, "http://api.flattr.com/button/flattr-badge-small.png");
 
     private final int width;
     private final int height;
+    private final String url;
 
     /**
      * Creates an enumeration object.
      */
-    private ButtonType(int width, int height) {
+    private BadgeType(int width, int height, String url) {
         this.width = width;
         this.height = height;
+        this.url = url;
     }
 
     /**
-     * Image width of the button.
+     * Image width of the badge.
      */
     public int getWidth() {
         return width;
     }
 
     /**
-     * Image height of the button.
+     * Image height of the badge.
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Gets the URL of a static badge image.
+     */
+    public String getUrl() {
+        return url;
     }
 
 }

@@ -24,7 +24,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.shredzone.flattr4j.model.RegisteredThing;
-import org.shredzone.flattr4j.web.ButtonType;
+import org.shredzone.flattr4j.web.BadgeType;
 import org.shredzone.flattr4j.web.builder.StaticButtonBuilder;
 
 /**
@@ -50,17 +50,17 @@ public class StaticTag extends BodyTagSupport implements Attributed {
         }
     }
     
-    public void setButtonUrl(String url) {
+    public void setBadgeUrl(String url) {
         setupBuilder();
-        builder.buttonUrl(url);
+        builder.badgeUrl(url);
     }
     
-    public void setButton(Object type) {
+    public void setBadge(Object type) {
         setupBuilder();
-        if (type instanceof ButtonType) {
-            builder.button((ButtonType) type);
+        if (type instanceof BadgeType) {
+            builder.badge((BadgeType) type);
         } else {
-            builder.button(ButtonType.valueOf(type.toString().toUpperCase()));
+            builder.badge(BadgeType.valueOf(type.toString().toUpperCase()));
         }
     }
     

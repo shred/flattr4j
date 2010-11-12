@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.web.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.shredzone.flattr4j.web.ButtonType;
+import org.shredzone.flattr4j.web.BadgeType;
 
 /**
  * Unit test of the {@link StaticButtonBuilder} class.
@@ -44,8 +44,8 @@ public class StaticButtonBuilderTest {
 
         Assert.assertEquals(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\">"
-                + "<img src=\"http://api.flattr.com/button/button-static-50x60.png\""
-                + " width=\"50\" height=\"60\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
+                + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
+                + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
                 + "</a>",
                 builder.toString()
         );
@@ -55,12 +55,12 @@ public class StaticButtonBuilderTest {
     public void testCompactBuilder() {
         StaticButtonBuilder builder = new StaticButtonBuilder();
         builder.thing("https://flattr.com/thing/123546/a-demo-thing");
-        builder.button(ButtonType.COMPACT);
+        builder.badge(BadgeType.SMALL);
 
         Assert.assertEquals(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\">"
-                + "<img src=\"http://api.flattr.com/button/button-compact-static-100x17.png\""
-                + " width=\"100\" height=\"17\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
+                + "<img src=\"http://api.flattr.com/button/flattr-badge-small.png\""
+                + " width=\"16\" height=\"16\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
                 + "</a>",
                 builder.toString()
         );
@@ -75,8 +75,8 @@ public class StaticButtonBuilderTest {
         Assert.assertEquals(
                 "<a class=\"mybutton\" style=\"display:none;\""
                 + " href=\"https://flattr.com/thing/123546/a-demo-thing\">"
-                + "<img src=\"http://api.flattr.com/button/button-static-50x60.png\""
-                + " width=\"50\" height=\"60\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
+                + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
+                + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
                 + "</a>",
                 builder.toString()
         );
@@ -92,8 +92,8 @@ public class StaticButtonBuilderTest {
         Assert.assertEquals(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\""
                 + " onclick=\"window.alert(&quot;Hello World&quot;)\" target=\"_blank\">"
-                + "<img src=\"http://api.flattr.com/button/button-static-50x60.png\""
-                + " width=\"50\" height=\"60\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
+                + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
+                + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
                 + "</a>",
                 builder.toString()
         );
