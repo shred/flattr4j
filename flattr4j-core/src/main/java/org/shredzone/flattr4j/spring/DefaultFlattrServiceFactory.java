@@ -66,7 +66,7 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
 
     @Override
     public OpenService getOpenService() {
-        return FlattrFactory.newInstance().createOpenService();
+        return FlattrFactory.getInstance().createOpenService();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
         if (at == null) {
             throw new IllegalStateException("An AccessToken is required");
         }
-        return FlattrFactory.newInstance().createFlattrService(consumerKey, at);
+        return FlattrFactory.getInstance().createFlattrService(consumerKey, at);
     }
 
     @Override

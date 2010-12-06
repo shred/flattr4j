@@ -43,7 +43,7 @@ public final class FlattrFactory {
      * 
      * @return {@link FlattrFactory}
      */
-    public static FlattrFactory newInstance() {
+    public static FlattrFactory getInstance() {
         if (instance == null) {
             instance = new FlattrFactory();
         }
