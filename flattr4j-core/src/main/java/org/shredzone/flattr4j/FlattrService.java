@@ -98,7 +98,6 @@ public interface FlattrService{
      */
     List<RegisteredThing> searchThing(String query) throws FlattrException;
 
-
     /**
      * Gets a list of all Flattr {@link Category}. The result is not cached.
      * 

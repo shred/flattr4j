@@ -107,6 +107,14 @@ public class RegisteredThing extends Thing {
         return sb.toString();
     }
 
+    /**
+     * Returns the URL of a PDF document containing a QR code of the Thing. The PDF
+     * can be printed, sticked on the wall, and then flattered using a mobile phone.
+     */
+    public String getQrPdfUrl() {
+        return "https://flattr.com/things/show/id/" + intId + "/qrcode/true";
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof RegisteredThing)) {

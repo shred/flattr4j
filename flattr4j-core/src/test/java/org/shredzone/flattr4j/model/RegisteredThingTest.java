@@ -109,8 +109,10 @@ public class RegisteredThingTest {
         thing.setTitle("This is a  test title: hallå världen");
 
         String url = thing.getThingUrl();
-
         Assert.assertEquals("https://flattr.com/thing/123456/This-is-a-test-title-hall-vrlden", url);
+        
+        String pdfUrl = thing.getQrPdfUrl();
+        Assert.assertEquals("https://flattr.com/things/show/id/123456/qrcode/true", pdfUrl);
     }
 
 }
