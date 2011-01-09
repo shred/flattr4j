@@ -95,6 +95,20 @@ public class FlattrServiceImplTest {
     }
 
     @Test
+    public void testSearchThing() throws FlattrException {
+        MockConnector connector = new MockConnector(BASE + "thing/search/q/gem%C3%BCsekuchen");
+        connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
+
+        FlattrService service = new FlattrServiceImpl(connector);
+        List<RegisteredThing> result = service.searchThing("gemüsekuchen");
+
+        Assert.assertEquals(1, result.size());
+        MockDataHelper.assertThingResource(result.get(0));
+
+        connector.assertState();
+    }
+
+    @Test
     public void testGetCategoryList() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "feed/categories");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Category.xml");

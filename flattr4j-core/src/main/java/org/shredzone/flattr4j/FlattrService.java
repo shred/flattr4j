@@ -89,6 +89,17 @@ public interface FlattrService{
     List<RegisteredThing> getThingList(String userId) throws FlattrException;
 
     /**
+     * Searches for Things and returns a list of matching ones.
+     * 
+     * @param query
+     *            Term to search for
+     * @return List of all matching {@link RegisteredThing}. May be empty but is never
+     *         {@code null}.
+     */
+    List<RegisteredThing> searchThing(String query) throws FlattrException;
+
+
+    /**
      * Gets a list of all Flattr {@link Category}. The result is not cached.
      * 
      * @return List of Flattr {@link Category}.

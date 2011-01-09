@@ -135,6 +135,27 @@ public class FlattrServiceImpl implements FlattrService {
             result.closeReader();
         }
     }
+
+    @Override
+    public List<RegisteredThing> searchThing(String query) throws FlattrException {
+        if (query == null || query.isEmpty()) throw new ValidationException("query", "Search term is required");
+        
+        Result result = connector.call(baseUrl + "thing/search/q/" + urlencode(query));
+        result.assertStatusOk();
+        try {
+            List<RegisteredThing> list = new ArrayList<RegisteredThing>();
+
+            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
+            RegisteredThing thing;
+            while ((thing = parser.getNext()) != null) {
+                list.add(thing);
+            }
+
+            return Collections.unmodifiableList(list);
+        } finally {
+            result.closeReader();
+        }
+    }
     
     @Override
     public List<Category> getCategoryList() throws FlattrException {
