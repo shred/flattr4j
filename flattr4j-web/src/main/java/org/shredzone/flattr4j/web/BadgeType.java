@@ -34,7 +34,21 @@ public enum BadgeType {
     /**
      * A static badge with small size (16 x 16)
      */
-    SMALL(16, 16, "http://api.flattr.com/button/flattr-badge-small.png");
+    SMALL(16, 16, "http://api.flattr.com/button/flattr-badge-small.png"),
+    
+    /**
+     * The classic Flattr button (50 x 60). It's here for compatibility purposes if
+     * required in existing layouts. Do not use in new code.
+     */
+    @Deprecated
+    BUTTON(50, 60, "http://api.flattr.com/button/button-static-50x60.png"),
+    
+    /**
+     * The classic compact Flattr button (100 x 17). It's here for compatibility purposes
+     * if required in existing layouts. Do not use in new code.
+     */
+    @Deprecated
+    COMPACT(100, 17, "http://api.flattr.com/button/button-compact-static-100x17.png");
 
     private final int width;
     private final int height;
