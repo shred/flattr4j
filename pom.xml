@@ -9,7 +9,7 @@
     <groupId>org.shredzone.flattr4j</groupId>
     <artifactId>flattr4j</artifactId>
     <name>flattr4j</name>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <description>Java support for Flattr</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>pom</packaging>
@@ -36,5 +36,11 @@
         <module>flattr4j-core</module>
         <module>flattr4j-web</module>
     </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.shredzone.org/tags/flattr4j/v0.4</connection>
+    <developerConnection>scm:svn:https://svn.shredzone.org/tags/flattr4j/v0.4</developerConnection>
+    <url>http://svn.shredzone.org/tags/flattr4j/v0.4</url>
+  </scm>
 </project>
 
