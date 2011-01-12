@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.impl.xml.MockDataHelper;
+import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
@@ -96,11 +97,13 @@ public class FlattrServiceImplTest {
 
     @Test
     public void testSearchThing() throws FlattrException {
-        MockConnector connector = new MockConnector(BASE + "thing/search/q/gem%C3%BCsekuchen");
+        MockConnector connector = new MockConnector(BASE + "thing/browse/query/foo/tag/bar,bla");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
 
+        BrowseTerm term = new BrowseTerm().query("foo").tag("bar").tag("bla");
+
         FlattrService service = new FlattrServiceImpl(connector);
-        List<RegisteredThing> result = service.searchThing("gemüsekuchen");
+        List<RegisteredThing> result = service.browse(term);
 
         Assert.assertEquals(1, result.size());
         MockDataHelper.assertThingResource(result.get(0));

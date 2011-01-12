@@ -21,6 +21,7 @@ package org.shredzone.flattr4j;
 import java.util.List;
 
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
@@ -89,14 +90,14 @@ public interface FlattrService{
     List<RegisteredThing> getThingList(String userId) throws FlattrException;
 
     /**
-     * Searches for Things and returns a list of matching ones.
+     * Browses for Things and returns a list of matching ones.
      * 
-     * @param query
-     *            Term to search for
+     * @param term
+     *            {@link BrowseTerm} that contains the browse terms
      * @return List of all matching {@link RegisteredThing}. May be empty but is never
      *         {@code null}.
      */
-    List<RegisteredThing> searchThing(String query) throws FlattrException;
+    List<RegisteredThing> browse(BrowseTerm term) throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Category}. The result is not cached.

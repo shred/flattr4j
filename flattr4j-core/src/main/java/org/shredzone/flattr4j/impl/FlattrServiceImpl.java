@@ -19,8 +19,6 @@
  */
 package org.shredzone.flattr4j.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,11 +34,14 @@ import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
 import org.shredzone.flattr4j.impl.xml.RegisteredThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.ThingXmlWriter;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
+import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.User;
+
+import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
 
 /**
  * Default implementation of {@link FlattrService}.
@@ -137,10 +138,10 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<RegisteredThing> searchThing(String query) throws FlattrException {
-        if (query == null || query.isEmpty()) throw new ValidationException("query", "Search term is required");
+    public List<RegisteredThing> browse(BrowseTerm term) throws FlattrException {
+        if (term == null || term.isEmpty()) throw new ValidationException("term", "Browse term must not be empty");
         
-        Result result = connector.call(baseUrl + "thing/search/q/" + urlencode(query));
+        Result result = connector.call(baseUrl + "thing/browse/" + term.toString());
         result.assertStatusOk();
         try {
             List<RegisteredThing> list = new ArrayList<RegisteredThing>();
@@ -244,21 +245,6 @@ public class FlattrServiceImpl implements FlattrService {
             return user;
         } finally {
             result.closeReader();
-        }
-    }
-
-    /**
-     * URL encodes the String using UTF-8. Convenience method for a blunder in the
-     * original API.
-     *
-     * @param str String to encode
-     * @return  Encoded string
-     */
-    private String urlencode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new IllegalStateException("UTF-8 missing");
         }
     }
 
