@@ -20,6 +20,7 @@ package org.shredzone.flattr4j.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,8 @@ public class OpenServiceImpl implements OpenService {
     public List<Category> getCategoryList() throws FlattrException {
         Result result = connector.call(baseUrl + "categories/text").assertStatusOk();
         try {
-            BufferedReader reader = new BufferedReader(result.openReader());
+            InputStreamReader inReader = new InputStreamReader(result.openInputStream(), result.getEncoding());
+            BufferedReader reader = new BufferedReader(inReader);
             List<Category> list = new ArrayList<Category>();
 
             String line;
@@ -73,7 +75,7 @@ public class OpenServiceImpl implements OpenService {
         } catch (IOException ex) {
             throw new FlattrServiceException("Could not read from stream", ex);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -81,7 +83,8 @@ public class OpenServiceImpl implements OpenService {
     public List<Language> getLanguageList() throws FlattrException {
         Result result = connector.call(baseUrl + "languages/text").assertStatusOk();
         try {
-            BufferedReader reader = new BufferedReader(result.openReader());
+            InputStreamReader inReader = new InputStreamReader(result.openInputStream(), result.getEncoding());
+            BufferedReader reader = new BufferedReader(inReader);
             List<Language> list = new ArrayList<Language>();
 
             String line;
@@ -101,7 +104,7 @@ public class OpenServiceImpl implements OpenService {
         } catch (IOException ex) {
             throw new FlattrServiceException("Could not read from stream", ex);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 

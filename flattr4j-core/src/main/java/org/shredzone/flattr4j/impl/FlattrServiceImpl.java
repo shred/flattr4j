@@ -68,7 +68,7 @@ public class FlattrServiceImpl implements FlattrService {
         String data = ThingXmlWriter.write(thing);
         Result result = connector.post(baseUrl + "thing/register", data).assertStatusOk();
         try {
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
+            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
     
             RegisteredThing registered = parser.getNext();
             if (registered == null) {
@@ -76,7 +76,7 @@ public class FlattrServiceImpl implements FlattrService {
             }
             return registered;
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -87,7 +87,7 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId));
         result.assertStatusOk();
         try {
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
+            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
 
             RegisteredThing thing = parser.getNext();
             if (thing == null) {
@@ -95,7 +95,7 @@ public class FlattrServiceImpl implements FlattrService {
             }
             return thing;
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -125,7 +125,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             List<RegisteredThing> list = new ArrayList<RegisteredThing>();
 
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
+            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
             RegisteredThing thing;
             while ((thing = parser.getNext()) != null) {
                 list.add(thing);
@@ -133,7 +133,7 @@ public class FlattrServiceImpl implements FlattrService {
 
             return Collections.unmodifiableList(list);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -146,7 +146,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             List<RegisteredThing> list = new ArrayList<RegisteredThing>();
 
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openReader());
+            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
             RegisteredThing thing;
             while ((thing = parser.getNext()) != null) {
                 list.add(thing);
@@ -154,7 +154,7 @@ public class FlattrServiceImpl implements FlattrService {
 
             return Collections.unmodifiableList(list);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
     
@@ -164,7 +164,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             List<Category> list = new ArrayList<Category>();
 
-            CategoryXmlParser parser = new CategoryXmlParser(result.openReader());
+            CategoryXmlParser parser = new CategoryXmlParser(result.openInputStream());
             Category category;
             while ((category = parser.getNext()) != null) {
                 list.add(category);
@@ -172,7 +172,7 @@ public class FlattrServiceImpl implements FlattrService {
         
             return Collections.unmodifiableList(list);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -182,7 +182,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             List<Language> list = new ArrayList<Language>();
     
-            LanguageXmlParser parser = new LanguageXmlParser(result.openReader());
+            LanguageXmlParser parser = new LanguageXmlParser(result.openInputStream());
             Language language;
             while ((language = parser.getNext()) != null) {
                 list.add(language);
@@ -190,7 +190,7 @@ public class FlattrServiceImpl implements FlattrService {
     
             return Collections.unmodifiableList(list);
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -198,7 +198,7 @@ public class FlattrServiceImpl implements FlattrService {
     public User getMyself() throws FlattrException {
         Result result = connector.call(baseUrl + "user/me").assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openReader());
+            UserXmlParser parser = new UserXmlParser(result.openInputStream());
 
             User user = parser.getNext();
             if (user == null) {
@@ -206,7 +206,7 @@ public class FlattrServiceImpl implements FlattrService {
             }
             return user;
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -217,7 +217,7 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId));
         result.assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openReader());
+            UserXmlParser parser = new UserXmlParser(result.openInputStream());
     
             User user = parser.getNext();
             if (user == null) {
@@ -225,7 +225,7 @@ public class FlattrServiceImpl implements FlattrService {
             }
             return user;
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 
@@ -236,7 +236,7 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
         result.assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openReader());
+            UserXmlParser parser = new UserXmlParser(result.openInputStream());
 
             User user = parser.getNext();
             if (user == null) {
@@ -244,7 +244,7 @@ public class FlattrServiceImpl implements FlattrService {
             }
             return user;
         } finally {
-            result.closeReader();
+            result.closeInputStream();
         }
     }
 

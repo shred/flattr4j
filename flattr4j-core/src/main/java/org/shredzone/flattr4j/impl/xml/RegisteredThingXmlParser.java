@@ -18,7 +18,7 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.Date;
 
 import javax.xml.namespace.QName;
@@ -58,8 +58,8 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     private boolean insideTags = false;
     private boolean insideCategory = false;
 
-    public RegisteredThingXmlParser(Reader reader) throws FlattrException {
-        super(reader);
+    public RegisteredThingXmlParser(InputStream in) throws FlattrException {
+        super(in);
     }
 
     @Override

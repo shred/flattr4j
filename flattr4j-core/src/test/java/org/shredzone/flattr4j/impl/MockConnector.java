@@ -18,10 +18,10 @@
  */
 package org.shredzone.flattr4j.impl;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+
 import org.junit.Assert;
 import org.shredzone.flattr4j.connector.Connector;
 import org.shredzone.flattr4j.connector.Result;
@@ -38,7 +38,7 @@ public class MockConnector implements Connector {
 
     private final String expectedCmd;
 
-    private Reader bodyReader;
+    private InputStream bodyInputStream;
     private CharSequence expectedData;
     private MockResult result;
 
@@ -59,7 +59,11 @@ public class MockConnector implements Connector {
      *            Result body, as a text
      */
     public void setBody(CharSequence body) {
-        bodyReader = new StringReader(body.toString());
+        try {
+            bodyInputStream = new ByteArrayInputStream(body.toString().getBytes("iso-8859-1"));
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalStateException("Unknown encoding");
+        }
     }
 
     /**
@@ -69,11 +73,7 @@ public class MockConnector implements Connector {
      *            Result body, as resource name
      */
     public void setBodyResource(String resource) {
-        try {
-            bodyReader = new InputStreamReader(MockConnector.class.getResourceAsStream(resource), "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new IllegalStateException("UTF-8 missing", ex);
-        }
+        bodyInputStream = MockConnector.class.getResourceAsStream(resource);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MockConnector implements Connector {
     public Result call(String cmd) throws FlattrException {
         if (expectedData != null) Assert.fail("post() expected");
         Assert.assertEquals(expectedCmd, cmd);
-        result = new MockResult(bodyReader);
+        result = new MockResult(bodyInputStream);
         return result;
     }
 
@@ -118,7 +118,7 @@ public class MockConnector implements Connector {
         if (expectedData == null) Assert.fail("call() expected");
         Assert.assertEquals(expectedCmd, cmd);
         Assert.assertEquals(expectedData, data);
-        result = new MockResult(bodyReader);
+        result = new MockResult(bodyInputStream);
         return result;
     }
 

@@ -18,7 +18,7 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.Reader;
+import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 
@@ -41,8 +41,8 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
     private boolean inside = false;
     private Language current = null;
 
-    public LanguageXmlParser(Reader reader) throws FlattrException {
-        super(reader);
+    public LanguageXmlParser(InputStream in) throws FlattrException {
+        super(in);
     }
 
     @Override

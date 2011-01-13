@@ -18,7 +18,7 @@
  */
 package org.shredzone.flattr4j.connector;
 
-import java.io.Reader;
+import java.io.InputStream;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 
@@ -41,15 +41,23 @@ public interface Result {
     Result assertStatusOk() throws FlattrException;
     
     /**
-     * Opens a Reader to the result content.
+     * Opens an {@link InputStream} to the result content.
      * 
-     * @return Reader
+     * @return {@link InputStream}
      */
-    Reader openReader() throws FlattrException;
+    InputStream openInputStream() throws FlattrException;
 
     /**
-     * Closes a previously opened Reader. If no Reader was openend, nothing happens.
+     * Closes a previously opened {@link InputStream}. If no {@link InputStream} was
+     * openend, nothing happens.
      */
-    void closeReader() throws FlattrException;
+    void closeInputStream() throws FlattrException;
+    
+    /**
+     * Gets the encoding of the result content.
+     * 
+     * @return Encoding
+     */
+    String getEncoding() throws FlattrException;
 
 }

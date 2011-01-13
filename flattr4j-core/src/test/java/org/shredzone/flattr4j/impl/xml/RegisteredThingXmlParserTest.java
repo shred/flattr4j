@@ -19,7 +19,6 @@
 package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import org.junit.Assert;
@@ -38,7 +37,7 @@ public class RegisteredThingXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = RegisteredThingXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Thing.xml");
-        RegisteredThingXmlParser parser = new RegisteredThingXmlParser(new InputStreamReader(in, "UTF-8"));
+        RegisteredThingXmlParser parser = new RegisteredThingXmlParser(in);
 
         RegisteredThing thing;
 

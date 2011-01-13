@@ -19,7 +19,7 @@
 package org.shredzone.flattr4j.impl;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 
 import org.junit.Assert;
 import org.shredzone.flattr4j.connector.Result;
@@ -27,24 +27,24 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 
 /**
- * A mock {@link Result} that returns a prepared {@link Reader}.
+ * A mock {@link Result} that returns a prepared {@link InputStream}.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class MockResult implements Result {
-    private final Reader reader;
+    private final InputStream stream;
     private boolean opened = false;
 
     /**
      * Creates a new {@link MockResult} that provides the content of the given
-     * {@link Reader}.
+     * {@link InputStream}.
      * 
-     * @param reader
-     *            {@link Reader} that provides the content
+     * @param stream
+     *            {@link InputStream} that provides the content
      */
-    public MockResult(Reader reader) {
-        this.reader = reader;
+    public MockResult(InputStream stream) {
+        this.stream = stream;
     }
 
     @Override
@@ -54,22 +54,28 @@ public class MockResult implements Result {
     }
 
     @Override
-    public Reader openReader() throws FlattrException {
+    public InputStream openInputStream() throws FlattrException {
         if (opened) {
-            throw new IllegalStateException("Reader is already open!");
+            throw new IllegalStateException("Stream is already open!");
         }
         opened = true;
-        return reader;
+        return stream;
     }
 
     @Override
-    public void closeReader() throws FlattrException {
+    public void closeInputStream() throws FlattrException {
         try {
-            reader.close();
+            stream.close();
         } catch (IOException ex) {
-            throw new FlattrServiceException("Could not close reader", ex);
+            throw new FlattrServiceException("Could not close stream", ex);
+        } finally {
+            opened = false;
         }
-        opened = false;
+    }
+    
+    @Override
+    public String getEncoding() throws FlattrException {
+        return "iso-8859-1";
     }
 
     /**

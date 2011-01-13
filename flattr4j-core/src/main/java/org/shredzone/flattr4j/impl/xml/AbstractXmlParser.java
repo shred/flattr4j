@@ -18,7 +18,7 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,12 +56,12 @@ public abstract class AbstractXmlParser<T> {
     /**
      * Creates a new XML parser for the given XML document.
      * 
-     * @param reader
-     *            Reader for the XML document
+     * @param in
+     *            InputStream for the XML document
      */
-    public AbstractXmlParser(Reader reader) throws FlattrException {
+    public AbstractXmlParser(InputStream in) throws FlattrException {
         try {
-            xmlReader = factory.createXMLEventReader(reader);
+            xmlReader = factory.createXMLEventReader(in);
         } catch (XMLStreamException ex) {
             throw new FlattrServiceException("Could not parse XML response", ex);
         }

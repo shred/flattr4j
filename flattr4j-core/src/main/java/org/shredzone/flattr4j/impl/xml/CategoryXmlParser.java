@@ -18,8 +18,10 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.Reader;
+import java.io.InputStream;
+
 import javax.xml.namespace.QName;
+
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
 
@@ -39,8 +41,8 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
     private boolean inside = false;
     private Category current = null;
 
-    public CategoryXmlParser(Reader reader) throws FlattrException {
-        super(reader);
+    public CategoryXmlParser(InputStream in) throws FlattrException {
+        super(in);
     }
 
     @Override

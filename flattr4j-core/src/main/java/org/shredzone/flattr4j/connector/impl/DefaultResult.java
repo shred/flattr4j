@@ -19,8 +19,7 @@
 package org.shredzone.flattr4j.connector.impl;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,7 +42,7 @@ public class DefaultResult implements Result {
     private static final String RESULT_ENCODING = "iso-8859-1";
     
     private final HttpResponse response;
-    private Reader reader = null;
+    private InputStream stream = null;
 
     /**
      * Creates a new {@link Result} object from a {@link HttpResponse}.
@@ -79,34 +78,39 @@ public class DefaultResult implements Result {
     }
     
     @Override
-    public Reader openReader() throws FlattrException {
-        if (reader == null) {
+    public InputStream openInputStream() throws FlattrException {
+        if (stream == null) {
             try {
                 HttpEntity entity = response.getEntity();
-                
-                String encoding = RESULT_ENCODING;
-                if (entity.getContentEncoding() != null) {
-                    encoding = entity.getContentEncoding().getValue();
-                }
-                
-                reader = new InputStreamReader(entity.getContent(), encoding);
+                stream = entity.getContent();
             } catch (IOException ex) {
                 throw new FlattrServiceException("Could not read response stream", ex);
             }
         }
         
-        return reader;
+        return stream;
     }
     
     @Override
-    public void closeReader() throws FlattrException {
-        if (reader != null) {
+    public void closeInputStream() throws FlattrException {
+        if (stream != null) {
             try {
-                reader.close();
-                reader = null;
+                stream.close();
             } catch (IOException ex) {
                 throw new FlattrServiceException("Could not close stream", ex);
+            } finally {
+                stream = null;
             }
+        }
+    }
+    
+    @Override
+    public String getEncoding() throws FlattrException {
+        HttpEntity entity = response.getEntity();
+        if (entity.getContentEncoding() != null) {
+            return entity.getContentEncoding().getValue();
+        } else {
+            return RESULT_ENCODING;
         }
     }
 
