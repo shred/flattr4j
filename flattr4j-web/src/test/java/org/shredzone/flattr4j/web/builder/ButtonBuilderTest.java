@@ -20,7 +20,10 @@ package org.shredzone.flattr4j.web.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -68,8 +71,8 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
-        builder.category("text").language("en_UK");
-        builder.user("123456");
+        builder.category(Category.withId("text")).language(Language.withId("en_UK"));
+        builder.user(User.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -91,8 +94,8 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
-        builder.category("text").language("en_UK");
-        builder.user("123456");
+        builder.category(Category.withId("text")).language(Language.withId("en_UK"));
+        builder.user(User.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -117,8 +120,8 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
-        builder.category("text").language("en_UK");
-        builder.user("123456");
+        builder.category(Category.withId("text")).language(Language.withId("en_UK"));
+        builder.user(User.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -140,7 +143,7 @@ public class ButtonBuilderTest {
     @Test
     public void testThingBuilder() {
         ButtonBuilder builder = new ButtonBuilder();
-        builder.user("123456").thing(createThing());
+        builder.user(User.withId("123456")).thing(createSubmission());
 
         Assert.assertEquals(
                 "<a class=\"FlattrButton\" href=\"http://flattr4j.shredzone.org/thingy.html\""
@@ -170,12 +173,12 @@ public class ButtonBuilderTest {
      *
      * @return {@link Submission}
      */
-    public static Submission createThing() {
+    public static Submission createSubmission() {
         Submission thing = new Submission();
-        thing.setCategory("text");
+        thing.setCategory(Category.withId("text"));
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
-        thing.setLanguage("en_UK");
+        thing.setLanguage(Language.withId("en_UK"));
         thing.setTitle("A thingy title");
         thing.setUrl("http://flattr4j.shredzone.org/thingy.html");
         thing.addTag("foo");

@@ -66,7 +66,7 @@ public class OpenServiceImpl implements OpenService {
                 }
 
                 Category category = new Category();
-                category.setId(split[0]);
+                category.setCategoryId(split[0]);
                 category.setName(split[1]);
                 list.add(category);
             }
@@ -95,7 +95,7 @@ public class OpenServiceImpl implements OpenService {
                 }
 
                 Language language = new Language();
-                language.setId(split[0]);
+                language.setLanguageId(split[0]);
                 language.setName(split[1]);
                 list.add(language);
             }

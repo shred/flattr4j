@@ -26,8 +26,11 @@ import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.CategoryId;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.LanguageId;
 import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 import org.shredzone.flattr4j.web.builder.ButtonBuilder;
 
@@ -53,10 +56,10 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
     
     public void setUser(Object user) {
         setupBuilder();
-        if (user instanceof User) {
-            builder.user((User) user);
+        if (user instanceof UserId) {
+            builder.user((UserId) user);
         } else {
-            builder.user(user.toString());
+            builder.user(User.withId(user.toString()));
         }
     }
     
@@ -73,19 +76,19 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
     
     public void setCategory(Object category) {
         setupBuilder();
-        if (category instanceof Category) {
-            builder.category((Category) category);
+        if (category instanceof CategoryId) {
+            builder.category((CategoryId) category);
         } else {
-            builder.category(category.toString());
+            builder.category(Category.withId(category.toString()));
         }
     }
     
     public void setLanguage(Object language) {
         setupBuilder();
-        if (language instanceof Language) {
-            builder.language((Language) language);
+        if (language instanceof LanguageId) {
+            builder.language((LanguageId) language);
         } else {
-            builder.language(language.toString());
+            builder.language(Language.withId(language.toString()));
         }
     }
     

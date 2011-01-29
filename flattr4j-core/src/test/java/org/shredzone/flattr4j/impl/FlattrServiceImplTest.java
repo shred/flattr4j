@@ -30,6 +30,7 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserDetails;
 
 /**
@@ -43,12 +44,12 @@ public class FlattrServiceImplTest {
     private static final String BASE = "http://api.flattr.com/rest/0.5/";
 
     @Test
-    public void testRegister() throws FlattrException {
+    public void testSubmission() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/register");
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
         connector.setExpectedData(MockDataHelper.createThingXml());
 
-        Submission thing = MockDataHelper.createThing();
+        Submission thing = MockDataHelper.createSubmission();
 
         FlattrService service = new FlattrServiceImpl(connector);
         Thing result = service.submit(thing);
@@ -64,7 +65,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        Thing result = service.getThing("12345");
+        Thing result = service.getThing(Thing.withId("12345"));
 
         MockDataHelper.assertThingResource(result);
 
@@ -76,7 +77,7 @@ public class FlattrServiceImplTest {
         MockConnector connector = new MockConnector(BASE + "thing/click/id/12345");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        service.click("12345");
+        service.click(Thing.withId("12345"));
 
         connector.assertState();
     }
@@ -150,7 +151,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        UserDetails result = service.getUser("98765");
+        UserDetails result = service.getUser(User.withId("98765"));
 
         MockDataHelper.assertUserResource(result);
 

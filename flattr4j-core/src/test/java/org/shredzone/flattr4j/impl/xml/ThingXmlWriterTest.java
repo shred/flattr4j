@@ -34,7 +34,7 @@ public class ThingXmlWriterTest {
 
     @Test
     public void testWriter() throws FlattrException {
-        Submission thing = MockDataHelper.createThing();
+        Submission thing = MockDataHelper.createSubmission();
         CharSequence thingXml = MockDataHelper.createThingXml();
 
         String result = SubmissionXmlWriter.write(thing);

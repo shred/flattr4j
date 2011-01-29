@@ -60,9 +60,9 @@ public final class SubmissionXmlWriter {
             xml.add(FACTORY.createStartElement("", "", TAG_THING));
             writeTag(xml, "url", submission.getUrl());
             writeCDataTag(xml, "title", submission.getTitle());
-            writeTag(xml, "category", submission.getCategory());
+            writeTag(xml, "category", submission.getCategory().getCategoryId());
             writeCDataTag(xml, "description", submission.getDescription());
-            writeTag(xml, "language", submission.getLanguage());
+            writeTag(xml, "language", submission.getLanguage().getLanguageId());
             writeTag(xml, "hidden", submission.isHidden() ? "1" : "0");
 
             xml.add(FACTORY.createStartElement("", "", TAG_TAGS));

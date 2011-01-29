@@ -27,17 +27,34 @@ import java.io.Serializable;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Language implements Serializable {
+public class Language implements LanguageId, Serializable {
     private static final long serialVersionUID = 3004338782136430145L;
     
     private String id;
     private String name;
 
     /**
+     * Returns a {@link LanguageId} for the given Language id.
+     * 
+     * @param id
+     *            Language id
+     * @return A {@link LanguageId} object for this id
+     */
+    public static LanguageId withId(final String id) {
+        return new LanguageId() {
+            @Override
+            public String getLanguageId() {
+                return id;
+            }
+        };
+    }
+
+    /**
      * Language id to be used with Flattr.
      */
-    public String getId()               { return id; }
-    public void setId(String id)        { this.id = id; }
+    @Override
+    public String getLanguageId()       { return id; }
+    public void setLanguageId(String id)        { this.id = id; }
 
     /**
      * Language name to be used for humans.

@@ -42,13 +42,13 @@ public class BrowseTermTest {
     @Test
     public void testAsBean() {
         Category cat = new Category();
-        cat.setId("category3");
+        cat.setCategoryId("category3");
 
         Language lang = new Language();
-        lang.setId("lang2");
+        lang.setLanguageId("lang2");
 
         User user = new User();
-        user.setId("444231");
+        user.setUserId("444231");
 
         Set<String> langSet = new HashSet<String>();
         langSet.add("lang1");
@@ -80,19 +80,19 @@ public class BrowseTermTest {
     @Test
     public void testAsBuilder() {
         Category cat = new Category();
-        cat.setId("category3");
+        cat.setCategoryId("category3");
 
         Language lang = new Language();
-        lang.setId("lang2");
+        lang.setLanguageId("lang2");
 
         User user = new User();
-        user.setId("444231");
+        user.setUserId("444231");
 
         BrowseTerm term = new BrowseTerm();
         term.query("aQuery");
         term.tag("tag2").tag("tag1").tag("tag2");
-        term.category("category1").category(cat).category("category2");
-        term.language("lang1").language(lang);
+        term.category(Category.withId("category1")).category(cat).category(Category.withId("category2"));
+        term.language(Language.withId("lang1")).language(lang);
         term.user("user1").user(user).user("123456");
 
         Assert.assertFalse(term.isEmpty());
@@ -112,7 +112,7 @@ public class BrowseTermTest {
         term.query("aQuery/bQüery");
         term.tag("täg");
         term.getCategories().add("cätegory");
-        term.language("läng");
+        term.language(Language.withId("läng"));
         term.getUsers().add("üser");
 
         String expected = "query/aQuery%2FbQ%C3%BCery/"
@@ -162,7 +162,7 @@ public class BrowseTermTest {
 
         try {
             BrowseTerm term = new BrowseTerm();
-            term.category("category,category");
+            term.category(Category.withId("category,category"));
             term.toString();
             Assert.fail(); // Exception must have been thrown!
         } catch (IllegalStateException ex) {

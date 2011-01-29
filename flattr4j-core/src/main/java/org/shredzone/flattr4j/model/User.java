@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class User implements Serializable {
+public class User implements UserId, Serializable {
 
     private static final long serialVersionUID = 2406024500321708867L;
     
@@ -35,10 +35,27 @@ public class User implements Serializable {
     private String username;
 
     /**
+     * Returns a {@link UserId} for the given User id.
+     * 
+     * @param id
+     *            User id
+     * @return A {@link UserId} object for this id
+     */
+    public static UserId withId(final String id) {
+        return new UserId() {
+            @Override
+            public String getUserId() {
+                return id;
+            }
+        };
+    }
+
+    /**
      * User id.
      */
-    public String getId()                   { return id; }
-    public void setId(String id)            { this.id = id; }
+    @Override
+    public String getUserId()               { return id; }
+    public void setUserId(String id)        { this.id = id; }
 
     /**
      * User name.

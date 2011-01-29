@@ -18,8 +18,10 @@
  */
 package org.shredzone.flattr4j.exception;
 
+import org.shredzone.flattr4j.model.Submission;
+
 /**
- * This exception is used when a Thing could not be registered.
+ * This exception is used when a thing's {@link Submission} could not be submitted.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$

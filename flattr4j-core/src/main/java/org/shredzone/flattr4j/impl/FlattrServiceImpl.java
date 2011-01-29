@@ -36,18 +36,19 @@ import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickedThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
-import org.shredzone.flattr4j.impl.xml.ThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.SubmissionXmlWriter;
+import org.shredzone.flattr4j.impl.xml.ThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
+import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.Submission;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.model.UserId;
 
 /**
  * Default implementation of {@link FlattrService}.
@@ -87,10 +88,10 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public Thing getThing(String thingId) throws FlattrException {
-        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+    public Thing getThing(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thing id is required");
 
-        Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId));
+        Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId.getThingId()));
         result.assertStatusOk();
         try {
             ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
@@ -106,34 +107,17 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public Thing getThing(ClickedThing click) throws FlattrException {
-        if (click == null) throw new ValidationException("click", "click is required");
-        return getThing(click.getId());
-    }
-    
-    @Override
-    public void click(String thingId) throws FlattrException {
-        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+    public void click(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
-        connector.call(baseUrl + "thing/click/id/" + urlencode(thingId)).assertStatusOk();
+        connector.call(baseUrl + "thing/click/id/" + urlencode(thingId.getThingId())).assertStatusOk();
     }
 
     @Override
-    public void click(Thing thing) throws FlattrException {
-        click(thing.getId());
-    }
-    
-    @Override
-    public ClickCount countClicks(Thing thing) throws FlattrException {
-        if (thing == null) throw new ValidationException("thing", "thing is required");
-        return countClicks(thing.getId());
-    }
-    
-    @Override
-    public ClickCount countClicks(String thingId) throws FlattrException {
-        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+    public ClickCount countClicks(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thingId is required");
         
-        Result result = connector.call(baseUrl + "thing/clicks/thing/" + urlencode(thingId)).assertStatusOk();
+        Result result = connector.call(baseUrl + "thing/clicks/thing/" + urlencode(thingId.getThingId())).assertStatusOk();
         
         try {
             ClickCountXmlParser parser = new ClickCountXmlParser(result.openInputStream());
@@ -222,16 +206,10 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public UserDetails getUser(User user) throws FlattrException {
-        if (user == null) throw new ValidationException("user", "user is required");
-        return getUser(user.getId());
-    }
+    public UserDetails getUser(UserId userId) throws FlattrException {
+        if (userId == null || userId.getUserId().isEmpty()) throw new ValidationException("userId", "userId is required");
 
-    @Override
-    public UserDetails getUser(String userId) throws FlattrException {
-        if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
-
-        Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId));
+        Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId.getUserId()));
         result.assertStatusOk();
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());

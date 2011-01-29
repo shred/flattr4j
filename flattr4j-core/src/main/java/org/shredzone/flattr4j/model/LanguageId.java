@@ -19,18 +19,18 @@
 package org.shredzone.flattr4j.model;
 
 /**
- * All classes implementing this interface, are able to provide a Thing's ID.
+ * All classes implementing this interface, are able to provide a Language ID.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface ThingId {
+public interface LanguageId {
     
     /**
-     * Returns the Thing's ID.
+     * Returns the Language ID.
      * 
-     * @return Thing id
+     * @return Language id
      */
-    String getThingId();
+    String getLanguageId();
 
 }

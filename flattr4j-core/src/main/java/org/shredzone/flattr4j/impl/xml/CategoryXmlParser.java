@@ -67,7 +67,7 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
             current = null;
         
         } else if (QN_ID.equals(tag) && current != null) {
-            current.setId(body);
+            current.setCategoryId(body);
         
         } else if (QN_NAME.equals(tag) && current != null) {
             current.setName(body);

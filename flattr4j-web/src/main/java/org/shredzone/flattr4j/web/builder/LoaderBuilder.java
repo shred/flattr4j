@@ -19,8 +19,11 @@
 package org.shredzone.flattr4j.web.builder;
 
 import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.CategoryId;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.LanguageId;
 import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -99,24 +102,14 @@ public class LoaderBuilder {
     }
 
     /**
-     * Sets the default user ID.
-     * 
-     * @param uid
-     *            User ID
-     */
-    public LoaderBuilder user(String uid) {
-        this.uid = uid;
-        return this;
-    }
-
-    /**
      * Sets the default {@link User}.
      * 
      * @param user
-     *            {@link User}
+     *            {@link UserId}
      */
-    public LoaderBuilder user(User user) {
-        return user(user.getId());
+    public LoaderBuilder user(UserId user) {
+        this.uid = user.getUserId();
+        return this;
     }
 
     /**
@@ -131,34 +124,13 @@ public class LoaderBuilder {
     }
 
     /**
-     * Sets the default language. Must be one of the supported Flattr languages.
-     * 
-     * @param language
-     *            Default language (e.g. "en_US")
-     */
-    public LoaderBuilder language(String language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Sets the default {@link Language}.
      * 
      * @param language
-     *            Default {@link Language}
+     *            Default {@link LanguageId}
      */
-    public LoaderBuilder language(Language language) {
-        return language(language.getId());
-    }
-
-    /**
-     * Sets the default category. Must be one of the supported Flattr categories.
-     * 
-     * @param category
-     *            Default category (e.g. "text")
-     */
-    public LoaderBuilder category(String category) {
-        this.category = category;
+    public LoaderBuilder language(LanguageId language) {
+        this.language = language.getLanguageId();
         return this;
     }
 
@@ -166,10 +138,11 @@ public class LoaderBuilder {
      * Sets the default {@link Category}.
      * 
      * @param category
-     *            Default {@link Category}
+     *            Default {@link CategoryId}
      */
-    public LoaderBuilder category(Category category) {
-        return category(category.getId());
+    public LoaderBuilder category(CategoryId category) {
+        this.category = category.getCategoryId();
+        return this;
     }
 
     /**

@@ -108,7 +108,7 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
             }
 
         } else if (QN_ID.equals(tag) && user != null) {
-            user.setId(body);
+            user.setUserId(body);
 
         } else if (QN_USERNAME.equals(tag) && user != null) {
             user.setUsername(body);

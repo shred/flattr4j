@@ -52,19 +52,19 @@ public class OpenServiceImplTest {
 
         Assert.assertEquals(3, result.size());
 
-        Assert.assertEquals("text", result.get(0).getId());
+        Assert.assertEquals("text", result.get(0).getCategoryId());
         Assert.assertEquals("Written text", result.get(0).getName());
 
-        Assert.assertEquals("images", result.get(1).getId());
+        Assert.assertEquals("images", result.get(1).getCategoryId());
         Assert.assertEquals("Images", result.get(1).getName());
 
-        Assert.assertEquals("video", result.get(2).getId());
+        Assert.assertEquals("video", result.get(2).getCategoryId());
         Assert.assertEquals("Video", result.get(2).getName());
 
         // The list must not be modifiable!
         try {
             Category newcat = new Category();
-            newcat.setId("foo");
+            newcat.setCategoryId("foo");
             newcat.setName("Foo entry");
             result.add(newcat);
             Assert.fail("List is modifiable");
@@ -92,19 +92,19 @@ public class OpenServiceImplTest {
 
         Assert.assertEquals(3, result.size());
 
-        Assert.assertEquals("en_GB", result.get(0).getId());
+        Assert.assertEquals("en_GB", result.get(0).getLanguageId());
         Assert.assertEquals("English", result.get(0).getName());
 
-        Assert.assertEquals("de_DE", result.get(1).getId());
+        Assert.assertEquals("de_DE", result.get(1).getLanguageId());
         Assert.assertEquals("German", result.get(1).getName());
 
-        Assert.assertEquals("sv_SE", result.get(2).getId());
+        Assert.assertEquals("sv_SE", result.get(2).getLanguageId());
         Assert.assertEquals("Swedish", result.get(2).getName());
 
         // The list must not be modifiable!
         try {
             Language newlang = new Language();
-            newlang.setId("tlh_TLH");
+            newlang.setLanguageId("tlh_TLH");
             newlang.setName("Klingon");
             result.add(newlang);
             Assert.fail("List is modifiable");

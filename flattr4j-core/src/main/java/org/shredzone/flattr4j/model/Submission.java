@@ -34,10 +34,10 @@ public class Submission implements Serializable {
     
     private String url;
     private String title;
-    private String category;
     private String description;
     private List<String> tags = new ArrayList<String>();
-    private String language;
+    private CategoryId category;
+    private LanguageId language;
     private boolean hidden = false;
 
     /**
@@ -53,13 +53,6 @@ public class Submission implements Serializable {
     public void setTitle(String title)          { this.title = title; }
 
     /**
-     * Category this Thing belongs to.
-     */
-    public String getCategory()               { return category; }
-    public void setCategory(String category)  { this.category = category; }
-    public void setCategory(Category category) { setCategory(category.getId()); }
-
-    /**
      * A descriptive text about the Thing.
      */
     public String getDescription()              { return description; }
@@ -73,11 +66,17 @@ public class Submission implements Serializable {
     public void addTag(String tag)              { tags.add(tag); }
 
     /**
-     * Language id of the Thing.
+     * The category this Thing belongs to.
      */
-    public String getLanguage()                 { return language; }
-    public void setLanguage(String language)    { this.language = language; }
+    public CategoryId getCategory()             { return category; }
+    public void setCategory(CategoryId category) { this.category = category; }
 
+    /**
+     * The language this Thing is written in.
+     */
+    public LanguageId getLanguage()             { return language; }
+    public void setLanguage(LanguageId language) { this.language = language; }
+    
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
      */
@@ -112,7 +111,7 @@ public class Submission implements Serializable {
         if (description.length() > 1000)
             throw new ValidationException("description", "description too long (> 1000 characters)");
 
-        if (category == null || category.isEmpty())
+        if (category == null || category.getCategoryId().isEmpty())
             throw new ValidationException("category", "category required");
 
         for (String tag : tags) {

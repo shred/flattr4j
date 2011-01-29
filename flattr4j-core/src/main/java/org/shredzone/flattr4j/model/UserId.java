@@ -19,18 +19,18 @@
 package org.shredzone.flattr4j.model;
 
 /**
- * All classes implementing this interface, are able to provide a Thing's ID.
+ * All classes implementing this interface, are able to provide a User's ID.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface ThingId {
+public interface UserId {
     
     /**
-     * Returns the Thing's ID.
+     * Returns the User's ID.
      * 
-     * @return Thing id
+     * @return User id
      */
-    String getThingId();
+    String getUserId();
 
 }

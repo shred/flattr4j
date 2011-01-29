@@ -106,10 +106,10 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
             insideCategory = false;
 
         } else if (QN_ID.equals(tag) && current != null && !insideUser && !insideTags && !insideCategory) {
-            current.setId(body);
+            current.setThingId(body);
 
         } else if (QN_INT_ID.equals(tag) && current != null) {
-            current.setIntId(body);
+            current.setInternalId(body);
         
         } else if (QN_CREATED.equals(tag) && current != null) {
             try {
@@ -119,7 +119,7 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
             }
         
         } else if (QN_LANGUAGE.equals(tag) && current != null) {
-            current.setLanguage(body);
+            current.setLanguageId(body);
         
         } else if (QN_URL.equals(tag) && current != null) {
             current.setUrl(body);
@@ -138,10 +138,10 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
             }
         
         } else if (QN_ID.equals(tag) && current != null && insideUser) {
-            user.setId(body);
+            user.setUserId(body);
             
         } else if (QN_ID.equals(tag) && current != null && insideCategory) {
-            category.setId(body);
+            category.setCategoryId(body);
         
         } else if (QN_USERNAME.equals(tag) && current != null && insideUser) {
             user.setUsername(body);

@@ -35,13 +35,13 @@ public class ThingTest {
     public void testProperty() {
         Thing thing = new Thing();
 
-        Assert.assertNull(thing.getId());
-        thing.setId("fed95464a0e8683364189118e0b521c6");
-        Assert.assertEquals("fed95464a0e8683364189118e0b521c6", thing.getId());
+        Assert.assertNull(thing.getThingId());
+        thing.setThingId("fed95464a0e8683364189118e0b521c6");
+        Assert.assertEquals("fed95464a0e8683364189118e0b521c6", thing.getThingId());
 
-        Assert.assertNull(thing.getIntId());
-        thing.setIntId("123456");
-        Assert.assertEquals("123456", thing.getIntId());
+        Assert.assertNull(thing.getInternalId());
+        thing.setInternalId("123456");
+        Assert.assertEquals("123456", thing.getInternalId());
 
         Date now = new Date();
         Assert.assertNull(thing.getCreated());
@@ -55,9 +55,9 @@ public class ThingTest {
         Assert.assertNull(thing.getUser());
         thing.setUser(new User());
         
-        Assert.assertNull(thing.getUser().getId());
-        thing.getUser().setId("foobar");
-        Assert.assertEquals("foobar", thing.getUser().getId());
+        Assert.assertNull(thing.getUser().getUserId());
+        thing.getUser().setUserId("foobar");
+        Assert.assertEquals("foobar", thing.getUser().getUserId());
 
         Assert.assertNull(thing.getUser().getUsername());
         thing.getUser().setUsername("Mr. Foo Bar");
@@ -66,9 +66,9 @@ public class ThingTest {
         Assert.assertNull(thing.getCategory());
         thing.setCategory(new Category());
         
-        Assert.assertNull(thing.getCategory().getId());
-        thing.getCategory().setId("image");
-        Assert.assertEquals("image", thing.getCategory().getId());
+        Assert.assertNull(thing.getCategory().getCategoryId());
+        thing.getCategory().setCategoryId("image");
+        Assert.assertEquals("image", thing.getCategory().getCategoryId());
 
         Assert.assertNull(thing.getStatus());
         thing.setStatus(ThingStatus.OWNER);
@@ -79,21 +79,21 @@ public class ThingTest {
     public void testEquals() {
         Thing thing1 = new Thing();
         thing1.setTitle("Thing number one");
-        thing1.setId("fed95464a0e8683364189118e0b521c6");
-        thing1.setIntId("13123");
+        thing1.setThingId("fed95464a0e8683364189118e0b521c6");
+        thing1.setInternalId("13123");
 
         Thing thing2 = new Thing();
         thing2.setTitle("Thing number one");
-        thing2.setId("fed95464a0e8683364189118e0b521c6");
-        thing2.setIntId("13123");
+        thing2.setThingId("fed95464a0e8683364189118e0b521c6");
+        thing2.setInternalId("13123");
 
         Thing thing3 = new Thing();
         thing3.setTitle("Thing number three");
-        thing3.setId("b99f4a1a9b8d4d7cb1b2848d8160ca1c");
-        thing3.setIntId("35893");
+        thing3.setThingId("b99f4a1a9b8d4d7cb1b2848d8160ca1c");
+        thing3.setInternalId("35893");
 
         Thing thing4 = new Thing();
-        thing4.setId("fed95464a0e8683364189118e0b521c6");
+        thing4.setThingId("fed95464a0e8683364189118e0b521c6");
 
         Assert.assertTrue("thing1 eq thing2", thing1.equals(thing2));
         Assert.assertTrue("thing2 eq thing1", thing2.equals(thing1));
@@ -111,7 +111,7 @@ public class ThingTest {
     @Test
     public void testThingUrl() {
         Thing thing = new Thing();
-        thing.setIntId("123456");
+        thing.setInternalId("123456");
         thing.setTitle("This is a  test title: hallå världen");
 
         String url = thing.getThingUrl();

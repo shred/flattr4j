@@ -43,19 +43,16 @@ public class SubmissionTest {
         Assert.assertEquals("an example page", thing.getTitle());
 
         Assert.assertNull(thing.getCategory());
-        thing.setCategory(new Category());
-        
-        Assert.assertNull(thing.getCategory());
-        thing.setCategory("text");
-        Assert.assertEquals("text", thing.getCategory());
+        thing.setCategory(Category.withId("text"));
+        Assert.assertEquals("text", thing.getCategory().getCategoryId());
 
         Assert.assertNull(thing.getDescription());
         thing.setDescription("a long description of the example");
         Assert.assertEquals("a long description of the example", thing.getDescription());
 
         Assert.assertNull(thing.getLanguage());
-        thing.setLanguage("en_US");
-        Assert.assertEquals("en_US", thing.getLanguage());
+        thing.setLanguage(Language.withId("en_US"));
+        Assert.assertEquals("en_US", thing.getLanguage().getLanguageId());
 
         Assert.assertFalse(thing.isHidden());
         thing.setHidden(true);

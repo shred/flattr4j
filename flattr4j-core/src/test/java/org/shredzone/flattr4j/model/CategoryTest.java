@@ -34,9 +34,9 @@ public class CategoryTest {
     public void testProperty() {
         Category category = new Category();
 
-        Assert.assertNull(category.getId());
-        category.setId("text");
-        Assert.assertEquals("text", category.getId());
+        Assert.assertNull(category.getCategoryId());
+        category.setCategoryId("text");
+        Assert.assertEquals("text", category.getCategoryId());
 
         Assert.assertNull(category.getName());
         category.setName("Texts");
@@ -46,13 +46,13 @@ public class CategoryTest {
     @Test
     public void testEquals() {
         Category cat1 = new Category();
-        cat1.setId("text");
+        cat1.setCategoryId("text");
 
         Category cat2 = new Category();
-        cat2.setId("text");
+        cat2.setCategoryId("text");
 
         Category cat3 = new Category();
-        cat3.setId("image");
+        cat3.setCategoryId("image");
 
         Assert.assertTrue("cat1 eq cat2", cat1.equals(cat2));
         Assert.assertTrue("cat2 eq cat1", cat2.equals(cat1));

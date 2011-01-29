@@ -27,17 +27,34 @@ import java.io.Serializable;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Category implements Serializable {
+public class Category implements CategoryId, Serializable {
     private static final long serialVersionUID = 7142046970430415794L;
     
     private String id;
     private String name;
 
     /**
+     * Returns a {@link CategoryId} for the given Category id.
+     * 
+     * @param id
+     *            Category id
+     * @return A {@link CategoryId} object for this id
+     */
+    public static CategoryId withId(final String id) {
+        return new CategoryId() {
+            @Override
+            public String getCategoryId() {
+                return id;
+            }
+        };
+    }
+
+    /**
      * Category id to be used with Flattr.
      */
-    public String getId()               { return id; }
-    public void setId(String id)        { this.id = id; }
+    @Override
+    public String getCategoryId()       { return id; }
+    public void setCategoryId(String id){ this.id = id; }
 
     /**
      * Category name to be used for humans.

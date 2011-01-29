@@ -30,7 +30,7 @@ import java.util.List;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Thing implements ThingId, Serializable {
+public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializable {
     private static final long serialVersionUID = 610493674068876984L;
 
     private static final String BASE_URL = "https://flattr.com/thing/";
@@ -49,19 +49,34 @@ public class Thing implements ThingId, Serializable {
     private String language;
     private boolean hidden = false;
 
-
+    /**
+     * Returns a {@link ThingId} for the given Thing id.
+     * 
+     * @param id
+     *            Thing id
+     * @return A {@link ThingId} object for this id
+     */
+    public static ThingId withId(final String id) {
+        return new ThingId() {
+            @Override
+            public String getThingId() {
+                return id;
+            }
+        };
+    }
+    
     /**
      * Thing's unique id at Flattr.
      */
     @Override
-    public String getId()                   { return id; }
-    public void setId(String id)            { this.id = id; }
+    public String getThingId()              { return id; }
+    public void setThingId(String id)       { this.id = id; }
 
     /**
      * Internal Flattr Thing's unique id.
      */
-    public String getIntId()                { return intId; }
-    public void setIntId(String intId)      { this.intId = intId; }
+    public String getInternalId()           { return intId; }
+    public void setInternalId(String intId) { this.intId = intId; }
 
     /**
      * Creation date of the Thing.
@@ -121,8 +136,9 @@ public class Thing implements ThingId, Serializable {
     /**
      * Language id of the Thing.
      */
-    public String getLanguage()                 { return language; }
-    public void setLanguage(String language)    { this.language = language; }
+    @Override
+    public String getLanguageId()               { return language; }
+    public void setLanguageId(String language)  { this.language = language; }
 
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
@@ -155,6 +171,16 @@ public class Thing implements ThingId, Serializable {
         return "https://flattr.com/things/show/id/" + intId + "/qrcode/true";
     }
 
+    @Override
+    public String getUserId() {
+        return user.getUserId();
+    }
+
+    @Override
+    public String getCategoryId() {
+        return category.getCategoryId();
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Thing)) {

@@ -20,6 +20,9 @@ package org.shredzone.flattr4j.web.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -103,8 +106,8 @@ public class LoaderBuilderTest {
     public void testFullBuilder() {
         LoaderBuilder builder = new LoaderBuilder();
         builder.button(ButtonType.COMPACT);
-        builder.category("image").language("fr_FR");
-        builder.user("123456");
+        builder.category(Category.withId("image")).language(Language.withId("fr_FR"));
+        builder.user(User.withId("123456"));
         builder.prefix("data-my");
 
         Assert.assertEquals(

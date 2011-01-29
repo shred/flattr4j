@@ -82,7 +82,7 @@ public class ClickedThingXmlParser extends AbstractXmlParser<ClickedThing> {
             }
             
         } else if (QN_ID.equals(tag) && current != null && insideThing) {
-            current.setId(body);
+            current.setThingId(body);
             
         } else if (QN_TITLE.equals(tag) && current != null && insideThing) {
             current.setTitle(body);

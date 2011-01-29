@@ -34,9 +34,9 @@ public class LanguageTest {
     public void testProperty() {
         Language language = new Language();
 
-        Assert.assertNull(language.getId());
-        language.setId("en_US");
-        Assert.assertEquals("en_US", language.getId());
+        Assert.assertNull(language.getLanguageId());
+        language.setLanguageId("en_US");
+        Assert.assertEquals("en_US", language.getLanguageId());
 
         Assert.assertNull(language.getName());
         language.setName("English");
@@ -46,13 +46,13 @@ public class LanguageTest {
     @Test
     public void testEquals() {
         Language lang1 = new Language();
-        lang1.setId("de_DE");
+        lang1.setLanguageId("de_DE");
 
         Language lang2 = new Language();
-        lang2.setId("de_DE");
+        lang2.setLanguageId("de_DE");
 
         Language lang3 = new Language();
-        lang3.setId("es_ES");
+        lang3.setLanguageId("es_ES");
 
         Assert.assertTrue("lang1 eq lang2", lang1.equals(lang2));
         Assert.assertTrue("lang2 eq lang1", lang2.equals(lang1));

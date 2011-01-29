@@ -68,7 +68,7 @@ public class UserXmlParser extends AbstractXmlParser<UserDetails> {
             current = null;
 
         } else if (QN_ID.equals(tag) && current != null) {
-            current.setId(body);
+            current.setUserId(body);
             
         } else if (QN_USERNAME.equals(tag) && current != null) {
             current.setUsername(body);

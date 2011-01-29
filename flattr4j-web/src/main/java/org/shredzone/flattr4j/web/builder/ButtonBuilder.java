@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.CategoryId;
+import org.shredzone.flattr4j.model.LanguageId;
 import org.shredzone.flattr4j.model.Submission;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -46,7 +46,7 @@ import org.shredzone.flattr4j.web.ButtonType;
 public class ButtonBuilder {
     private static final int MIN_TITLE_LENGTH = 5;
     private static final int MAX_TITLE_LENGTH = 100;
-    
+
     private static final int MIN_DESCRIPTION_LENGTH = 5;
     private static final int MAX_DESCRIPTION_LENGTH = 1000;
 
@@ -74,28 +74,20 @@ public class ButtonBuilder {
     }
 
     /**
-     * Unique URL to the thing. Always required! This is a convenience method that
-     * accepts {@link URL} objects.
+     * Unique URL to the thing. Always required! This is a convenience method that accepts
+     * {@link URL} objects.
      */
     public ButtonBuilder url(URL url) {
         return url(url.toString());
     }
 
     /**
-     * User who published the thing. Required for autosubmit. Optional if the thing
-     * is already published at Flattr.
+     * User who published the thing. Required for autosubmit. Optional if the thing is
+     * already published at Flattr.
      */
-    public ButtonBuilder user(String uid) {
-        this.uid = uid;
+    public ButtonBuilder user(UserId user) {
+        this.uid = user.getUserId();
         return this;
-    }
-
-    /**
-     * User who published the thing. Required for autosubmit. Optional if the thing
-     * is already published at Flattr.
-     */
-    public ButtonBuilder user(User user) {
-        return user(user.getId());
     }
 
     /**
@@ -104,26 +96,30 @@ public class ButtonBuilder {
      */
     public ButtonBuilder title(String title) {
         if (title.length() < MIN_TITLE_LENGTH) {
-            throw new IllegalArgumentException("title must have at least " + MIN_TITLE_LENGTH + " characters.");
+            throw new IllegalArgumentException("title must have at least "
+                + MIN_TITLE_LENGTH + " characters.");
         }
         if (title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("title must not exceed " + MAX_TITLE_LENGTH + " characters.");
+            throw new IllegalArgumentException("title must not exceed "
+                + MAX_TITLE_LENGTH + " characters.");
         }
         this.title = title;
         return this;
     }
 
     /**
-     * Description of the thing. Required for autosubmit. If a description is set, it
-     * must currently be between 5 and 1000 characters long, and must not contain HTML
-     * (except of &lt;br&gt; which is converted to newline).
+     * Description of the thing. Required for autosubmit. If a description is set, it must
+     * currently be between 5 and 1000 characters long, and must not contain HTML (except
+     * of &lt;br&gt; which is converted to newline).
      */
     public ButtonBuilder description(String description) {
         if (description.length() < MIN_DESCRIPTION_LENGTH) {
-            throw new IllegalArgumentException("description must have at least " + MIN_DESCRIPTION_LENGTH + " characters.");
+            throw new IllegalArgumentException("description must have at least "
+                + MIN_DESCRIPTION_LENGTH + " characters.");
         }
         if (description.length() > MAX_DESCRIPTION_LENGTH) {
-            throw new IllegalArgumentException("description must not exceed " + MAX_DESCRIPTION_LENGTH + " characters.");
+            throw new IllegalArgumentException("description must not exceed "
+                + MAX_DESCRIPTION_LENGTH + " characters.");
         }
         this.description = description;
         return this;
@@ -141,35 +137,19 @@ public class ButtonBuilder {
     }
 
     /**
-     * The category the thing is categorized with. Required for autosubmit. Must be
-     * one of the Flattr categories.
-     */
-    public ButtonBuilder category(String category) {
-        this.category = category;
-        return this;
-    }
-
-    /**
      * The category the thing is categorized with. Required for autosubmit.
      */
-    public ButtonBuilder category(Category category) {
-        return category(category.getId());
-    }
-
-    /**
-     * Specifies the language the thing is published in. Optional. Must be one of
-     * the Flattr languages.
-     */
-    public ButtonBuilder language(String language) {
-        this.language = language;
+    public ButtonBuilder category(CategoryId category) {
+        this.category = category.getCategoryId();
         return this;
     }
 
     /**
      * Specifies the language the thing is published in. Optional.
      */
-    public ButtonBuilder language(Language language) {
-        return language(language.getId());
+    public ButtonBuilder language(LanguageId language) {
+        this.language = language.getLanguageId();
+        return this;
     }
 
     /**
@@ -211,10 +191,9 @@ public class ButtonBuilder {
     }
 
     /**
-     * Initializes the builder based on the given {@link Submission}. This is a convenience
-     * method to prepare an autosubmit of a thing. Invoke {@link #user(java.lang.String)}
-     * or {@link #user(org.shredzone.flattr4j.model.User)} together with this method
-     * for a successful autosubmission.
+     * Initializes the builder based on the given {@link Submission}. This is a
+     * convenience method to prepare an autosubmit of a thing. Invoke
+     * {@link #user(UserId)} together with this method for a successful autosubmission.
      */
     public ButtonBuilder thing(Submission thing) {
         url(thing.getUrl());
@@ -244,21 +223,22 @@ public class ButtonBuilder {
     }
 
     /**
-     * Adds a custom HTML attribute to the generated link tag. If an attribute has
-     * already been added, its value will be replaced. Attributes are written to the
-     * tag in alphabetical order.
+     * Adds a custom HTML attribute to the generated link tag. If an attribute has already
+     * been added, its value will be replaced. Attributes are written to the tag in
+     * alphabetical order.
      * <p>
-     * Attributes are added without further checks. It is your responsibility to take
-     * care for HTML compliance.
-     *
+     * Attributes are added without further checks. It is your responsibility to take care
+     * for HTML compliance.
+     * 
      * @param attribute
-     *     HTML attribute to be added
+     *            HTML attribute to be added
      * @param value
-     *     Value of that attribute. The builder takes care for proper HTML escaping.
+     *            Value of that attribute. The builder takes care for proper HTML
+     *            escaping.
      */
     public ButtonBuilder attribute(String attribute, String value) {
         String check = attribute.trim().toLowerCase();
-        if (   "class".equals(check) || "style".equals(check) || "title".equals(check)
+        if ("class".equals(check) || "style".equals(check) || "title".equals(check)
             || "rel".equals(check) || "href".equals(check) || "lang".equals(check)
             || check.startsWith(prefix)) {
             throw new IllegalArgumentException("attribute \"" + check + "\" is reserved");
@@ -277,9 +257,9 @@ public class ButtonBuilder {
     }
 
     /**
-     * Sets a HTML5 key prefix. By default "data-flattr" is used. The setting is only
-     * used in HTML5 mode.
-     *
+     * Sets a HTML5 key prefix. By default "data-flattr" is used. The setting is only used
+     * in HTML5 mode.
+     * 
      * @param prefix
      *            HTML5 key prefix. The string must start with "data-"
      */
@@ -344,14 +324,15 @@ public class ButtonBuilder {
         }
 
         sb.append("</a>");
-        
+
         return sb.toString();
     }
 
     /**
      * Appends thing attributes to the {@link StringBuilder}.
-     *
-     * @param sb  {@link StringBuilder} to append the attributes to
+     * 
+     * @param sb
+     *            {@link StringBuilder} to append the attributes to
      */
     private void appendAttributes(StringBuilder sb) {
         boolean header = false;
@@ -395,8 +376,9 @@ public class ButtonBuilder {
 
     /**
      * Appends the header for non-http5 attributes.
-     *
-     * @param sb  {@link StringBuilder} to append the attributes to
+     * 
+     * @param sb
+     *            {@link StringBuilder} to append the attributes to
      */
     private void appendAttributesHeader(StringBuilder sb) {
         sb.append(" rel=\"flattr;");
@@ -404,8 +386,9 @@ public class ButtonBuilder {
 
     /**
      * Appends thing attributes as HTML 5 attributes {@link StringBuilder}.
-     *
-     * @param sb  {@link StringBuilder} to append the attributes to
+     * 
+     * @param sb
+     *            {@link StringBuilder} to append the attributes to
      */
     private void appendHtml5(StringBuilder sb) {
         if (uid != null) {
@@ -433,10 +416,13 @@ public class ButtonBuilder {
 
     /**
      * Appends a single HTML5 attribute.
-     *
-     * @param sb  {@link StringBuilder} to append the attribute to
-     * @param key  Attribute key
-     * @param value  Value (unescaped)
+     * 
+     * @param sb
+     *            {@link StringBuilder} to append the attribute to
+     * @param key
+     *            Attribute key
+     * @param value
+     *            Value (unescaped)
      */
     private void appendHtml5Attribute(StringBuilder sb, String key, String value) {
         sb.append(' ').append(prefix).append('-').append(key).append("=\"");
@@ -445,8 +431,9 @@ public class ButtonBuilder {
 
     /**
      * Appends a list of all tags, separated by comma.
-     *
-     * @param sb  {@link StringBuilder} to append the tags to
+     * 
+     * @param sb
+     *            {@link StringBuilder} to append the tags to
      */
     private void appendTagList(StringBuilder sb) {
         boolean needsSeparator = false;
@@ -460,11 +447,12 @@ public class ButtonBuilder {
     /**
      * Escapes a string for use in HTML attributes.
      * 
-     * @param str  Attribute to be escaped
-     * @return  Escaped attribute
+     * @param str
+     *            Attribute to be escaped
+     * @return Escaped attribute
      */
     private String escape(String str) {
         return str.replace("&", "&amp;").replace("<", "&lt;").replace("\"", "&quot;");
     }
-    
+
 }

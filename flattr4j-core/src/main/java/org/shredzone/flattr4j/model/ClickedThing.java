@@ -41,8 +41,8 @@ public class ClickedThing implements ThingId, Serializable {
      * The Thing ID that was clicked on.
      */
     @Override
-    public String getId()                       { return id; }
-    public void setId(String id)                { this.id = id; }
+    public String getThingId()                  { return id; }
+    public void setThingId(String id)           { this.id = id; }
     
     /**
      * The Thing title.

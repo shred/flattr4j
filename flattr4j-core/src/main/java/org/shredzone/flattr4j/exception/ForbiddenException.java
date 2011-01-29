@@ -21,8 +21,8 @@ package org.shredzone.flattr4j.exception;
 import org.shredzone.flattr4j.oauth.Scope;
 
 /**
- * This exception is used when the operation is forbidden. There are several causes
- * for this:
+ * This exception is used when the operation is forbidden. There are several causes for
+ * this:
  * <ul>
  * <li>the Flattr account is inactive</li>
  * <li>insufficient permissions, see {@link Scope}</li>

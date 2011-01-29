@@ -46,12 +46,12 @@ public final class MockDataHelper {
      * 
      * @return {@link Submission}
      */
-    public static Submission createThing() {
+    public static Submission createSubmission() {
         Submission thing = new Submission();
-        thing.setCategory("text");
+        thing.setCategory(Category.withId("text"));
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
-        thing.setLanguage("en_UK");
+        thing.setLanguage(Language.withId("en_UK"));
         thing.setTitle("A thingy title");
         thing.setUrl("http://flattr4j.shredzone.org/thingy.html");
         thing.addTag("foo");
@@ -92,10 +92,10 @@ public final class MockDataHelper {
      *            Second {@link Category} object
      */
     public static void assertCategoryResource(Category cat1, Category cat2) {
-        Assert.assertEquals("text", cat1.getId());
+        Assert.assertEquals("text", cat1.getCategoryId());
         Assert.assertEquals("Written text", cat1.getName());
 
-        Assert.assertEquals("images", cat2.getId());
+        Assert.assertEquals("images", cat2.getCategoryId());
         Assert.assertEquals("Images", cat2.getName());
     }
 
@@ -108,10 +108,10 @@ public final class MockDataHelper {
      *            Second {@link Language} object
      */
     public static void assertLanguageResource(Language lang1, Language lang2) {
-        Assert.assertEquals("sq_AL", lang1.getId());
+        Assert.assertEquals("sq_AL", lang1.getLanguageId());
         Assert.assertEquals("Albanian", lang1.getName());
 
-        Assert.assertEquals("ar_DZ", lang2.getId());
+        Assert.assertEquals("ar_DZ", lang2.getLanguageId());
         Assert.assertEquals("Arabic", lang2.getName());
     }
 
@@ -122,21 +122,21 @@ public final class MockDataHelper {
      *            {@link Thing} object
      */
     public static void assertThingResource(Thing thing) {
-        Assert.assertEquals("bf12b55dc73d89835fff9696b6cc3883", thing.getId());
-        Assert.assertEquals("42343", thing.getIntId());
+        Assert.assertEquals("bf12b55dc73d89835fff9696b6cc3883", thing.getThingId());
+        Assert.assertEquals("42343", thing.getInternalId());
         Assert.assertEquals(new Date(1276784931L * 1000L), thing.getCreated());
-        Assert.assertEquals("sv_SE", thing.getLanguage());
+        Assert.assertEquals("sv_SE", thing.getLanguageId());
         Assert.assertEquals("http://www.kontilint.se/kontakt", thing.getUrl());
         Assert.assertEquals("Kontakta Kontilint", thing.getTitle());
         Assert.assertEquals("Kontakta Kontilint", thing.getDescription());
         Assert.assertEquals(0, thing.getClicks());
-        Assert.assertEquals("244", thing.getUser().getId());
+        Assert.assertEquals("244", thing.getUser().getUserId());
         Assert.assertEquals("Bomelin", thing.getUser().getUsername());
         Assert.assertEquals(3, thing.getTags().size());
         Assert.assertEquals("asd", thing.getTags().get(0));
         Assert.assertEquals("fgh", thing.getTags().get(1));
         Assert.assertEquals("ert", thing.getTags().get(2));
-        Assert.assertEquals("text", thing.getCategory().getId());
+        Assert.assertEquals("text", thing.getCategory().getCategoryId());
         Assert.assertEquals("Written text", thing.getCategory().getName());
         Assert.assertEquals(ThingStatus.OWNER, thing.getStatus());
     }
@@ -148,7 +148,7 @@ public final class MockDataHelper {
      *            {@link UserDetails} to assert
      */
     public static void assertUserResource(UserDetails user) {
-        Assert.assertEquals("244", user.getId());
+        Assert.assertEquals("244", user.getUserId());
         Assert.assertEquals("Bomelin", user.getUsername());
         Assert.assertEquals("Mattias", user.getFirstname());
         Assert.assertEquals("Bomelin", user.getLastname());
@@ -169,7 +169,7 @@ public final class MockDataHelper {
     public static void assertClick(ClickedThing click) {
         Assert.assertEquals("12345", click.getClickId());
         Assert.assertEquals(new Date(1291133253L * 1000L), click.getTime());
-        Assert.assertEquals("0282de399c3892aa19165e1a0baaccdc", click.getId());
+        Assert.assertEquals("0282de399c3892aa19165e1a0baaccdc", click.getThingId());
         Assert.assertEquals("Free Brokep", click.getTitle());
         Assert.assertEquals("http://blog.flattr.net/2010/11/free-brokep/", click.getUrl());
     }
@@ -184,7 +184,7 @@ public final class MockDataHelper {
         Assert.assertEquals(231, count.getAnonymousCount());
         Assert.assertEquals(128, count.getPublicCount());
         Assert.assertEquals(1, count.getUsers().size());
-        Assert.assertEquals("244", count.getUsers().get(0).getId());
+        Assert.assertEquals("244", count.getUsers().get(0).getUserId());
         Assert.assertEquals("bomelin", count.getUsers().get(0).getUsername());
     }
 

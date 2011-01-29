@@ -111,47 +111,27 @@ public class BrowseTerm implements Serializable {
     }
 
     /**
-     * Adds a category to restrict the result with. Multiple categories can be set.
-     * 
-     * @param val
-     *            Category string to be set.
-     */
-    public BrowseTerm category(String val) {
-        getCategories().add(val);
-        return this;
-    }
-
-    /**
-     * Adds a {@link Category} to restrict the result with. Multiple categories can be
+     * Adds a {@link CategoryId} to restrict the result with. Multiple categories can be
      * set.
      * 
      * @param val
-     *            {@link Category} to be set.
+     *            {@link CategoryId} to be set.
      */
-    public BrowseTerm category(Category val) {
-        return category(val.getId());
-    }
-
-    /**
-     * Adds a language to restrict the result with. This must be a valid Flattr language
-     * code. Multiple languages can be set.
-     * 
-     * @param val
-     *            Language string to be set.
-     */
-    public BrowseTerm language(String val) {
-        getLanguages().add(val);
+    public BrowseTerm category(CategoryId val) {
+        getCategories().add(val.getCategoryId());
         return this;
     }
 
     /**
-     * Adds a {@link Language} to restrict the result with. Multiple languages can be set.
+     * Adds a {@link LanguageId} to restrict the result with. Multiple languages can be
+     * set.
      * 
      * @param val
-     *            {@link Language} to be set.
+     *            {@link LanguageId} to be set.
      */
-    public BrowseTerm language(Language val) {
-        return language(val.getId());
+    public BrowseTerm language(LanguageId val) {
+        getLanguages().add(val.getLanguageId());
+        return this;
     }
 
     /**
@@ -167,13 +147,13 @@ public class BrowseTerm implements Serializable {
     }
 
     /**
-     * Adds a {@link User} to restrict the result with. Multiple users can be set.
+     * Adds a {@link UserId} to restrict the result with. Multiple users can be set.
      * 
      * @param val
-     *            {@link User} to be set.
+     *            {@link UserId} to be set.
      */
-    public BrowseTerm user(User val) {
-        return user(val.getId());
+    public BrowseTerm user(UserId val) {
+        return user(val.getUserId());
     }
 
     /**

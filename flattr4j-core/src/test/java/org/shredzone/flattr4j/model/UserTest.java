@@ -34,9 +34,9 @@ public class UserTest {
     public void testProperty() {
         UserDetails user = new UserDetails();
 
-        Assert.assertNull(user.getId());
-        user.setId("1701");
-        Assert.assertEquals("1701", user.getId());
+        Assert.assertNull(user.getUserId());
+        user.setUserId("1701");
+        Assert.assertEquals("1701", user.getUserId());
 
         Assert.assertNull(user.getUsername());
         user.setUsername("ncc");
@@ -78,13 +78,13 @@ public class UserTest {
     @Test
     public void testEquals() {
         User user1 = new User();
-        user1.setId("foo");
+        user1.setUserId("foo");
 
         User user2 = new User();
-        user2.setId("foo");
+        user2.setUserId("foo");
 
         User user3 = new User();
-        user3.setId("narf");
+        user3.setUserId("narf");
 
         Assert.assertTrue("user1 eq user2", user1.equals(user2));
         Assert.assertTrue("user2 eq user1", user2.equals(user1));
