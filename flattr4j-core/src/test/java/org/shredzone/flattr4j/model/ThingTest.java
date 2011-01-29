@@ -19,11 +19,12 @@
  */
 package org.shredzone.flattr4j.model;
 
+import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit test of the {@link ThingSubmission} class.
+ * Unit test of the {@link Thing} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -32,43 +33,92 @@ public class ThingTest {
 
     @Test
     public void testProperty() {
-        ThingSubmission thing = new ThingSubmission();
+        Thing thing = new Thing();
 
-        Assert.assertNull(thing.getUrl());
-        thing.setUrl("http://www.example.com/page.html");
-        Assert.assertEquals("http://www.example.com/page.html", thing.getUrl());
+        Assert.assertNull(thing.getId());
+        thing.setId("fed95464a0e8683364189118e0b521c6");
+        Assert.assertEquals("fed95464a0e8683364189118e0b521c6", thing.getId());
 
-        Assert.assertNull(thing.getTitle());
-        thing.setTitle("an example page");
-        Assert.assertEquals("an example page", thing.getTitle());
+        Assert.assertNull(thing.getIntId());
+        thing.setIntId("123456");
+        Assert.assertEquals("123456", thing.getIntId());
+
+        Date now = new Date();
+        Assert.assertNull(thing.getCreated());
+        thing.setCreated(now);
+        Assert.assertEquals(now, thing.getCreated());
+
+        Assert.assertEquals(0, thing.getClicks());
+        thing.setClicks(133);
+        Assert.assertEquals(133, thing.getClicks());
+
+        Assert.assertNull(thing.getUser());
+        thing.setUser(new User());
+        
+        Assert.assertNull(thing.getUser().getId());
+        thing.getUser().setId("foobar");
+        Assert.assertEquals("foobar", thing.getUser().getId());
+
+        Assert.assertNull(thing.getUser().getUsername());
+        thing.getUser().setUsername("Mr. Foo Bar");
+        Assert.assertEquals("Mr. Foo Bar", thing.getUser().getUsername());
 
         Assert.assertNull(thing.getCategory());
         thing.setCategory(new Category());
         
-        Assert.assertNull(thing.getCategory());
-        thing.setCategory("text");
-        Assert.assertEquals("text", thing.getCategory());
+        Assert.assertNull(thing.getCategory().getId());
+        thing.getCategory().setId("image");
+        Assert.assertEquals("image", thing.getCategory().getId());
 
-        Assert.assertNull(thing.getDescription());
-        thing.setDescription("a long description of the example");
-        Assert.assertEquals("a long description of the example", thing.getDescription());
+        Assert.assertNull(thing.getStatus());
+        thing.setStatus(ThingStatus.OWNER);
+        Assert.assertEquals(ThingStatus.OWNER, thing.getStatus());
+    }
 
-        Assert.assertNull(thing.getLanguage());
-        thing.setLanguage("en_US");
-        Assert.assertEquals("en_US", thing.getLanguage());
+    @Test
+    public void testEquals() {
+        Thing thing1 = new Thing();
+        thing1.setTitle("Thing number one");
+        thing1.setId("fed95464a0e8683364189118e0b521c6");
+        thing1.setIntId("13123");
 
-        Assert.assertFalse(thing.isHidden());
-        thing.setHidden(true);
-        Assert.assertTrue(thing.isHidden());
+        Thing thing2 = new Thing();
+        thing2.setTitle("Thing number one");
+        thing2.setId("fed95464a0e8683364189118e0b521c6");
+        thing2.setIntId("13123");
 
-        Assert.assertTrue(thing.getTags().isEmpty());
-        thing.addTag("foo");
-        thing.addTag("bar");
-        thing.addTag("narf");
-        Assert.assertEquals(3, thing.getTags().size());
-        Assert.assertEquals("foo", thing.getTags().get(0));
-        Assert.assertEquals("bar", thing.getTags().get(1));
-        Assert.assertEquals("narf", thing.getTags().get(2));
+        Thing thing3 = new Thing();
+        thing3.setTitle("Thing number three");
+        thing3.setId("b99f4a1a9b8d4d7cb1b2848d8160ca1c");
+        thing3.setIntId("35893");
+
+        Thing thing4 = new Thing();
+        thing4.setId("fed95464a0e8683364189118e0b521c6");
+
+        Assert.assertTrue("thing1 eq thing2", thing1.equals(thing2));
+        Assert.assertTrue("thing2 eq thing1", thing2.equals(thing1));
+        Assert.assertNotSame("thing1 !== thing2", thing2, thing1);
+
+        Assert.assertFalse("thing1 ne thing3", thing1.equals(thing3));
+        Assert.assertFalse("thing3 ne thing1", thing3.equals(thing1));
+        Assert.assertNotSame("thing1 !== thing3", thing3, thing1);
+
+        Assert.assertTrue("thing1 eq thing4", thing1.equals(thing4));
+        Assert.assertTrue("thing4 eq thing1", thing4.equals(thing1));
+        Assert.assertNotSame("thing1 !== thing4", thing4, thing1);
+    }
+
+    @Test
+    public void testThingUrl() {
+        Thing thing = new Thing();
+        thing.setIntId("123456");
+        thing.setTitle("This is a  test title: hallå världen");
+
+        String url = thing.getThingUrl();
+        Assert.assertEquals("https://flattr.com/thing/123456/This-is-a-test-title-hall-vrlden", url);
+        
+        String pdfUrl = thing.getQrPdfUrl();
+        Assert.assertEquals("https://flattr.com/things/show/id/123456/qrcode/true", pdfUrl);
     }
 
 }
