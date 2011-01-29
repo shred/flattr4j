@@ -23,7 +23,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.shredzone.flattr4j.model.RegisteredThing;
+import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.web.BadgeType;
 import org.shredzone.flattr4j.web.builder.StaticButtonBuilder;
 
@@ -43,8 +43,8 @@ public class StaticTag extends BodyTagSupport implements Attributed {
     
     public void setThing(Object thing) {
         setupBuilder();
-        if (thing instanceof RegisteredThing) {
-            builder.thing((RegisteredThing) thing);
+        if (thing instanceof Thing) {
+            builder.thing((Thing) thing);
         } else {
             builder.thing(thing.toString());
         }

@@ -24,8 +24,8 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 import org.shredzone.flattr4j.model.ThingStatus;
 import org.shredzone.flattr4j.model.UserDetails;
 
@@ -42,13 +42,13 @@ public final class MockDataHelper {
     }
 
     /**
-     * Creates a filled {@link Thing}.
+     * Creates a filled {@link ThingSubmission}.
      * 
-     * @return {@link Thing}
+     * @return {@link ThingSubmission}
      */
-    public static Thing createThing() {
-        Thing thing = new Thing();
-        thing.setCategoryId("text");
+    public static ThingSubmission createThing() {
+        ThingSubmission thing = new ThingSubmission();
+        thing.setCategory("text");
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
         thing.setLanguage("en_UK");
@@ -61,7 +61,7 @@ public final class MockDataHelper {
     }
 
     /**
-     * Creates an XML structure that corresponds to the created {@link Thing}.
+     * Creates an XML structure that corresponds to the created {@link ThingSubmission}.
      * 
      * @return XML structure, as String
      */
@@ -119,9 +119,9 @@ public final class MockDataHelper {
      * Asserts the result of the Thing.xml resource.
      * 
      * @param thing
-     *            {@link RegisteredThing} object
+     *            {@link Thing} object
      */
-    public static void assertThingResource(RegisteredThing thing) {
+    public static void assertThingResource(Thing thing) {
         Assert.assertEquals("bf12b55dc73d89835fff9696b6cc3883", thing.getId());
         Assert.assertEquals("42343", thing.getIntId());
         Assert.assertEquals(new Date(1276784931L * 1000L), thing.getCreated());

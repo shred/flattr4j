@@ -27,8 +27,8 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserDetails;
 import org.shredzone.flattr4j.oauth.Scope;
@@ -42,38 +42,45 @@ import org.shredzone.flattr4j.oauth.Scope;
 public interface FlattrService{
 
     /**
-     * Registers a new {@link Thing} at Flattr.
+     * Submits a new Thing to Flattr.
      * 
      * @param thing
-     *            {@link Thing} to be registered.
-     * @return {@link RegisteredThing} as result from the registration.
+     *            {@link ThingSubmission} to be submitted.
+     * @return {@link Thing} as result from the submission.
+     * @throws FlattrException
+     *             when the submission failed
      */
-    RegisteredThing register(Thing thing) throws FlattrException;
+    Thing submit(ThingSubmission thing) throws FlattrException;
 
     /**
-     * Gets a {@link RegisteredThing} with the given Thing id.
+     * Gets a {@link Thing} with the given Thing id.
      * 
      * @param thingId
      *            id of the Thing to be fetched
-     * @return {@link RegisteredThing}. Never {@code null}. An exception is thrown when no
-     *         such Thing was found.
+     * @return {@link Thing}. Never {@code null}.
+     * @throws FlattrException
+     *             when no such thing was found
      */
-    RegisteredThing getThing(String thingId) throws FlattrException;
+    Thing getThing(String thingId) throws FlattrException;
     
     /**
-     * Gets a {@link RegisteredThing} for the given {@link Click}.
+     * Gets a {@link Thing} for the given {@link Click}.
      * 
      * @param click
-     *            {@link Click} to get the {@link RegisteredThing} for
-     * @return {@link RegisteredThing}. Never {@code null}.
+     *            {@link Click} to get the {@link Thing} for
+     * @return {@link Thing}. Never {@code null}.
+     * @throws FlattrException
+     *             when no such thing was found
      */
-    RegisteredThing getThing(Click click) throws FlattrException;
+    Thing getThing(Click click) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
      * 
      * @param thingId
      *            id of the Thing to flattr
+     * @throws FlattrException
+     *             when no such thing was found
      */
     void click(String thingId) throws FlattrException;
 
@@ -81,9 +88,11 @@ public interface FlattrService{
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
      * 
      * @param thing
-     *            {@link RegisteredThing} to flattr
+     *            {@link Thing} to flattr
+     * @throws FlattrException
+     *             when no such thing was found
      */
-    void click(RegisteredThing thing) throws FlattrException;
+    void click(Thing thing) throws FlattrException;
     
     /**
      * Counts the number of clicks that the Thing received.
@@ -91,6 +100,8 @@ public interface FlattrService{
      * @param thingId
      *            id of the Thing
      * @return {@link ClickCount} containing the result
+     * @throws FlattrException
+     *             when no such thing was found
      */
     ClickCount countClicks(String thingId) throws FlattrException;
 
@@ -98,25 +109,31 @@ public interface FlattrService{
      * Counts the number of clicks that the Thing received.
      * 
      * @param thing
-     *            {@link RegisteredThing}
+     *            {@link Thing}
      * @return {@link ClickCount} containing the result
+     * @throws FlattrException
+     *             when no such thing was found
      */
-    ClickCount countClicks(RegisteredThing thing) throws FlattrException;
+    ClickCount countClicks(Thing thing) throws FlattrException;
 
     /**
      * Browses for Things and returns a list of matching ones.
      * 
      * @param term
      *            {@link BrowseTerm} that contains the browse terms
-     * @return List of all matching {@link RegisteredThing}. May be empty but is never
+     * @return List of all matching {@link Thing}. May be empty but is never
      *         {@code null}.
+     * @throws FlattrException
+     *             when the browse operation failed
      */
-    List<RegisteredThing> browse(BrowseTerm term) throws FlattrException;
+    List<Thing> browse(BrowseTerm term) throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Category}. The result is not cached.
      * 
      * @return List of Flattr {@link Category}.
+     * @throws FlattrException
+     *             when the operation failed
      */
     List<Category> getCategoryList() throws FlattrException;
 
@@ -124,6 +141,8 @@ public interface FlattrService{
      * Gets a list of all Flattr {@link Language}. The result is not cached.
      * 
      * @return List of Flattr {@link Language}.
+     * @throws FlattrException
+     *             when the operation failed
      */
     List<Language> getLanguageList() throws FlattrException;
 
@@ -131,6 +150,8 @@ public interface FlattrService{
      * Gets the {@link UserDetails} profile of the currently logged in user.
      * 
      * @return {@link UserDetails} profile of oneself. Never {@code null}.
+     * @throws FlattrException
+     *             when the operation failed
      */
     UserDetails getMyself() throws FlattrException;
 
@@ -139,8 +160,9 @@ public interface FlattrService{
      * 
      * @param userId
      *            User id to get a profile for
-     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
-     *         is thrown when there was no such user.
+     * @return {@link UserDetails} profile of that user. Never {@code null}.
+     * @throws FlattrException
+     *             when there is no such user
      */
     UserDetails getUser(String userId) throws FlattrException;
 
@@ -149,8 +171,9 @@ public interface FlattrService{
      * 
      * @param user
      *            {@link User} to get a profile for
-     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
-     *         is thrown when there was no such user.
+     * @return {@link UserDetails} profile of that user. Never {@code null}.
+     * @throws FlattrException
+     *             when there is no such user
      */
     UserDetails getUser(User user) throws FlattrException;
 
@@ -159,8 +182,9 @@ public interface FlattrService{
      * 
      * @param name
      *            User name to get a profile for
-     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
-     *         is thrown when there was no such user.
+     * @return {@link UserDetails} profile of that user. Never {@code null}.
+     * @throws FlattrException
+     *             when there is no such user
      */
     UserDetails getUserByName(String name) throws FlattrException;
     
@@ -171,6 +195,8 @@ public interface FlattrService{
      * @param period
      *            Start of the evaluation period. Only the month and year is used.
      * @return List of {@link Click}.
+     * @throws FlattrException
+     *             when the list of clicks could not be fetched
      */
     List<Click> getClicks(Calendar period) throws FlattrException;
 

@@ -22,10 +22,10 @@ package org.shredzone.flattr4j.impl.xml;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 
 /**
- * Unit test of the {@link ThingXmlWriter} class.
+ * Unit test of the {@link SubmissionXmlWriter} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -34,10 +34,10 @@ public class ThingXmlWriterTest {
 
     @Test
     public void testWriter() throws FlattrException {
-        Thing thing = MockDataHelper.createThing();
+        ThingSubmission thing = MockDataHelper.createThing();
         CharSequence thingXml = MockDataHelper.createThingXml();
 
-        String result = ThingXmlWriter.write(thing);
+        String result = SubmissionXmlWriter.write(thing);
 
         Assert.assertEquals(thingXml, result);
     }

@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit test of the {@link RegisteredThing} class.
+ * Unit test of the {@link Thing} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -33,7 +33,7 @@ public class RegisteredThingTest {
 
     @Test
     public void testProperty() {
-        RegisteredThing thing = new RegisteredThing();
+        Thing thing = new Thing();
 
         Assert.assertNull(thing.getId());
         thing.setId("fed95464a0e8683364189118e0b521c6");
@@ -77,22 +77,22 @@ public class RegisteredThingTest {
 
     @Test
     public void testEquals() {
-        RegisteredThing thing1 = new RegisteredThing();
+        Thing thing1 = new Thing();
         thing1.setTitle("Thing number one");
         thing1.setId("fed95464a0e8683364189118e0b521c6");
         thing1.setIntId("13123");
 
-        RegisteredThing thing2 = new RegisteredThing();
+        Thing thing2 = new Thing();
         thing2.setTitle("Thing number one");
         thing2.setId("fed95464a0e8683364189118e0b521c6");
         thing2.setIntId("13123");
 
-        RegisteredThing thing3 = new RegisteredThing();
+        Thing thing3 = new Thing();
         thing3.setTitle("Thing number three");
         thing3.setId("b99f4a1a9b8d4d7cb1b2848d8160ca1c");
         thing3.setIntId("35893");
 
-        RegisteredThing thing4 = new RegisteredThing();
+        Thing thing4 = new Thing();
         thing4.setId("fed95464a0e8683364189118e0b521c6");
 
         Assert.assertTrue("thing1 eq thing2", thing1.equals(thing2));
@@ -110,7 +110,7 @@ public class RegisteredThingTest {
 
     @Test
     public void testThingUrl() {
-        RegisteredThing thing = new RegisteredThing();
+        Thing thing = new Thing();
         thing.setIntId("123456");
         thing.setTitle("This is a  test title: hallå världen");
 

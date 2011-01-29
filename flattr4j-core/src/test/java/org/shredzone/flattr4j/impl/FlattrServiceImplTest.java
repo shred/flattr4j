@@ -28,8 +28,8 @@ import org.shredzone.flattr4j.impl.xml.MockDataHelper;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 import org.shredzone.flattr4j.model.UserDetails;
 
 /**
@@ -48,10 +48,10 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
         connector.setExpectedData(MockDataHelper.createThingXml());
 
-        Thing thing = MockDataHelper.createThing();
+        ThingSubmission thing = MockDataHelper.createThing();
 
         FlattrService service = new FlattrServiceImpl(connector);
-        RegisteredThing result = service.register(thing);
+        Thing result = service.submit(thing);
 
         MockDataHelper.assertThingResource(result);
 
@@ -64,7 +64,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        RegisteredThing result = service.getThing("12345");
+        Thing result = service.getThing("12345");
 
         MockDataHelper.assertThingResource(result);
 
@@ -89,7 +89,7 @@ public class FlattrServiceImplTest {
         BrowseTerm term = new BrowseTerm().query("foo").tag("bar").tag("bla");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        List<RegisteredThing> result = service.browse(term);
+        List<Thing> result = service.browse(term);
 
         Assert.assertEquals(1, result.size());
         MockDataHelper.assertThingResource(result.get(0));

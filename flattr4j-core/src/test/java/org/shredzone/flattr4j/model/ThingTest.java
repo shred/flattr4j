@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit test of the {@link Thing} class.
+ * Unit test of the {@link ThingSubmission} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -32,7 +32,7 @@ public class ThingTest {
 
     @Test
     public void testProperty() {
-        Thing thing = new Thing();
+        ThingSubmission thing = new ThingSubmission();
 
         Assert.assertNull(thing.getUrl());
         thing.setUrl("http://www.example.com/page.html");
@@ -45,9 +45,9 @@ public class ThingTest {
         Assert.assertNull(thing.getCategory());
         thing.setCategory(new Category());
         
-        Assert.assertNull(thing.getCategory().getId());
-        thing.getCategory().setId("text");
-        Assert.assertEquals("text", thing.getCategory().getId());
+        Assert.assertNull(thing.getCategory());
+        thing.setCategory("text");
+        Assert.assertEquals("text", thing.getCategory());
 
         Assert.assertNull(thing.getDescription());
         thing.setDescription("a long description of the example");

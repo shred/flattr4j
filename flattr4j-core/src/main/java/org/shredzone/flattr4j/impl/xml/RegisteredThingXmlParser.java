@@ -26,17 +26,17 @@ import javax.xml.namespace.QName;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.RegisteredThing;
+import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingStatus;
 import org.shredzone.flattr4j.model.User;
 
 /**
- * Parses an XML document for {@link RegisteredThing} entries.
+ * Parses an XML document for {@link Thing} entries.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing> {
+public class RegisteredThingXmlParser extends AbstractXmlParser<Thing> {
 
     private final static QName QN_THING = new QName("thing");
     private final static QName QN_ID = new QName("id");
@@ -55,7 +55,7 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     private final static QName QN_NAME = new QName("name");
     private final static QName QN_STATUS = new QName("status");
 
-    private RegisteredThing current = null;
+    private Thing current = null;
     private User user = null;
     private Category category = null;
     private boolean insideUser = false;
@@ -69,7 +69,7 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
         if (QN_THING.equals(tag) && current == null) {
-            current = new RegisteredThing();
+            current = new Thing();
        
         } else if (QN_USER.equals(tag) && current != null) {
             user = new User();
@@ -85,8 +85,8 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     }
 
     @Override
-    protected RegisteredThing parseEndElement(QName tag, String body) throws FlattrException {
-        RegisteredThing result = null;
+    protected Thing parseEndElement(QName tag, String body) throws FlattrException {
+        Thing result = null;
 
         if (QN_THING.equals(tag) && current != null) {
             result = current;

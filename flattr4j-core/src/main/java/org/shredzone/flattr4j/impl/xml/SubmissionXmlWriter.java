@@ -26,47 +26,47 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 
 /**
- * Builds an XML document from a {@link Thing}.
+ * Builds an XML document from a {@link ThingSubmission}.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public final class ThingXmlWriter {
+public final class SubmissionXmlWriter {
 
     private final static String TAG_THING = "thing";
     private final static String TAG_TAGS = "tags";
 
     private final static XMLEventFactory FACTORY = XMLEventFactory.newInstance();
 
-    private ThingXmlWriter() {
+    private SubmissionXmlWriter() {
         // Private constructor
     }
 
     /**
-     * Converts a {@link Thing} to its XML representation.
+     * Converts a {@link ThingSubmission} to its XML representation.
      * 
-     * @param thing
-     *            {@link Thing} to be converted
-     * @return XML document representing that {@link Thing}
+     * @param submission
+     *            {@link ThingSubmission} to be converted
+     * @return XML document representing that {@link ThingSubmission}
      */
-    public static String write(Thing thing) throws FlattrException {
+    public static String write(ThingSubmission submission) throws FlattrException {
         try {
             StringWriter writer = new StringWriter();
             XMLEventWriter xml = XMLOutputFactory.newInstance().createXMLEventWriter(writer);
 
             xml.add(FACTORY.createStartElement("", "", TAG_THING));
-            writeTag(xml, "url", thing.getUrl());
-            writeCDataTag(xml, "title", thing.getTitle());
-            writeTag(xml, "category", thing.getCategory().getId());
-            writeCDataTag(xml, "description", thing.getDescription());
-            writeTag(xml, "language", thing.getLanguage());
-            writeTag(xml, "hidden", thing.isHidden() ? "1" : "0");
+            writeTag(xml, "url", submission.getUrl());
+            writeCDataTag(xml, "title", submission.getTitle());
+            writeTag(xml, "category", submission.getCategory());
+            writeCDataTag(xml, "description", submission.getDescription());
+            writeTag(xml, "language", submission.getLanguage());
+            writeTag(xml, "hidden", submission.isHidden() ? "1" : "0");
 
             xml.add(FACTORY.createStartElement("", "", TAG_TAGS));
-            for (String tag : thing.getTags()) {
+            for (String tag : submission.getTags()) {
                 writeTag(xml, "tag", tag);
             }
             xml.add(FACTORY.createEndElement("", "", TAG_TAGS));

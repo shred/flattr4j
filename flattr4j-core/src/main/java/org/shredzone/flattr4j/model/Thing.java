@@ -20,26 +20,71 @@ package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import org.shredzone.flattr4j.exception.ValidationException;
 
 /**
- * A {@link Thing}. {@link RegisteredThing} is derived from this class and contains
- * additional information about the registration.
+ * A {@link Thing} that has been registered with Flattr. Two {@link Thing} are considered
+ * equal if they contain the same id.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class Thing implements Serializable {
-    private static final long serialVersionUID = -6684005944290342599L;
-    
+    private static final long serialVersionUID = 610493674068876984L;
+
+    private static final String BASE_URL = "https://flattr.com/thing/";
+
+    private String id;
+    private String intId;
+    private Date created;
+    private int clicks;
     private String url;
     private String title;
+    private User user;
+    private ThingStatus status;
     private Category category;
     private String description;
     private List<String> tags = new ArrayList<String>();
     private String language;
     private boolean hidden = false;
+
+
+    /**
+     * Thing's unique id at Flattr.
+     */
+    public String getId()                   { return id; }
+    public void setId(String id)            { this.id = id; }
+
+    /**
+     * Internal Flattr Thing's unique id.
+     */
+    public String getIntId()                { return intId; }
+    public void setIntId(String intId)      { this.intId = intId; }
+
+    /**
+     * Creation date of the Thing.
+     */
+    public Date getCreated()                { return created; }
+    public void setCreated(Date created)    { this.created = created; }
+
+    /**
+     * How many times this Thing was flattred.
+     */
+    public int getClicks()                  { return clicks; }
+    public void setClicks(int clicks)       { this.clicks = clicks; }
+
+    /**
+     * The {@link User} who owns this Thing.
+     */
+    public User getUser()                   { return user; }
+    public void setUser(User user)          { this.user = user; }
+    
+    /**
+     * Status of this Thing.
+     */
+    public ThingStatus getStatus()          { return status; }
+    public void setStatus(ThingStatus status) { this.status = status; }
 
     /**
      * URL of the Thing.
@@ -58,19 +103,6 @@ public class Thing implements Serializable {
      */
     public Category getCategory()               { return category; }
     public void setCategory(Category category)  { this.category = category; }
-
-    /**
-     * Sets the Category by category ID only. This method is useful if only the category
-     * id is known. Use only for registering a Thing!
-     * 
-     * @param categoryId
-     *            Category ID
-     */
-    public void setCategoryId(String categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        setCategory(category);
-    }
 
     /**
      * A descriptive text about the Thing.
@@ -98,43 +130,41 @@ public class Thing implements Serializable {
     public void setHidden(boolean hidden)       { this.hidden = hidden; }
 
     /**
-     * Validates the content of this Thing.
-     *
-     * @throws ValidationException Validation failed. The exception contains the property
-     *          name and a reason message.
+     * Returns the URL to the thing's page at Flattr.
+     * <p>
+     * Currently this value is computed by flattr4j. The returned link may be different to
+     * the official link shown by Flattr. The composition of this link may change in
+     * future releases.
      */
-    public void validate() throws ValidationException {
-        if (url == null || url.isEmpty())
-            throw new ValidationException("url", "url required");
-
-        if (title == null)
-            throw new ValidationException("title", "title required");
-        
-        if (title.length() < 5)
-            throw new ValidationException("title", "title too short (< 5 characters)");
-        
-        if (title.length() > 100)
-            throw new ValidationException("title", "title too long (> 100 characters)");
-
-        if (description == null)
-            throw new ValidationException("description", "description is required");
-
-        if (description.length() < 5)
-            throw new ValidationException("description", "description too short (< 5 characters)");
-
-        if (description.length() > 1000)
-            throw new ValidationException("description", "description too long (> 1000 characters)");
-
-        if (category == null || category.getId() == null || category.getId().isEmpty())
-            throw new ValidationException("category", "category required");
-
-        for (String tag : tags) {
-            if (tag == null || tag.isEmpty())
-                throw new ValidationException("tags", "tags contains empty tag");
-
-            if (tag.indexOf(',') >= 0)
-                throw new ValidationException("tags", "tag '" + tag + "' contains invalid ','");
+    public String getThingUrl() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(BASE_URL).append(intId).append('/');
+        String title = getTitle();
+        if (title != null) {
+            sb.append(title.replaceAll("\\s+", "-").replaceAll("[^a-zA-Z0-9_-]", ""));
         }
+        return sb.toString();
+    }
+
+    /**
+     * Returns the URL of a PDF document containing a QR code of the Thing. The PDF
+     * can be printed, sticked on the wall, and then flattered using a mobile phone.
+     */
+    public String getQrPdfUrl() {
+        return "https://flattr.com/things/show/id/" + intId + "/qrcode/true";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Thing)) {
+            return false;
+        }
+        return id.equals(((Thing) obj).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
 }

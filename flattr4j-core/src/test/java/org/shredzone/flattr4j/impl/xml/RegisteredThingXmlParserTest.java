@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.RegisteredThing;
+import org.shredzone.flattr4j.model.Thing;
 
 /**
  * Unit test of the {@link RegisteredThingXmlParser} class.
@@ -39,7 +39,7 @@ public class RegisteredThingXmlParserTest {
         InputStream in = RegisteredThingXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Thing.xml");
         RegisteredThingXmlParser parser = new RegisteredThingXmlParser(in);
 
-        RegisteredThing thing;
+        Thing thing;
 
         thing = parser.getNext();
         MockDataHelper.assertThingResource(thing);

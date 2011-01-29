@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.shredzone.flattr4j.model.RegisteredThing;
+import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.web.BadgeType;
 
 /**
@@ -58,7 +58,7 @@ public class StaticButtonBuilder {
     /**
      * Link to the Thing page at Flattr.
      */
-    public StaticButtonBuilder thing(RegisteredThing thing) {
+    public StaticButtonBuilder thing(Thing thing) {
         return thing(thing.getThingUrl());
     }
 

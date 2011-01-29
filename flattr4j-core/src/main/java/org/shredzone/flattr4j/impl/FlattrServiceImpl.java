@@ -37,15 +37,15 @@ import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
 import org.shredzone.flattr4j.impl.xml.RegisteredThingXmlParser;
-import org.shredzone.flattr4j.impl.xml.ThingXmlWriter;
+import org.shredzone.flattr4j.impl.xml.SubmissionXmlWriter;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.model.ThingSubmission;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserDetails;
 
@@ -67,16 +67,16 @@ public class FlattrServiceImpl implements FlattrService {
     public void setBaseUrl(String baseUrl)  { this.baseUrl = baseUrl; }
 
     @Override
-    public RegisteredThing register(Thing thing) throws FlattrException {
+    public Thing submit(ThingSubmission thing) throws FlattrException {
         if (thing == null) throw new ValidationException("thing", "thing is required");
         thing.validate();
 
-        String data = ThingXmlWriter.write(thing);
+        String data = SubmissionXmlWriter.write(thing);
         Result result = connector.post(baseUrl + "thing/register", data).assertStatusOk();
         try {
             RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
     
-            RegisteredThing registered = parser.getNext();
+            Thing registered = parser.getNext();
             if (registered == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -87,7 +87,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public RegisteredThing getThing(String thingId) throws FlattrException {
+    public Thing getThing(String thingId) throws FlattrException {
         if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
         Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId));
@@ -95,7 +95,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
 
-            RegisteredThing thing = parser.getNext();
+            Thing thing = parser.getNext();
             if (thing == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -106,7 +106,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public RegisteredThing getThing(Click click) throws FlattrException {
+    public Thing getThing(Click click) throws FlattrException {
         if (click == null) throw new ValidationException("click", "click is required");
         return getThing(click.getThingId());
     }
@@ -119,12 +119,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public void click(RegisteredThing thing) throws FlattrException {
+    public void click(Thing thing) throws FlattrException {
         click(thing.getId());
     }
     
     @Override
-    public ClickCount countClicks(RegisteredThing thing) throws FlattrException {
+    public ClickCount countClicks(Thing thing) throws FlattrException {
         if (thing == null) throw new ValidationException("thing", "thing is required");
         return countClicks(thing.getId());
     }
@@ -149,16 +149,16 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<RegisteredThing> browse(BrowseTerm term) throws FlattrException {
+    public List<Thing> browse(BrowseTerm term) throws FlattrException {
         if (term == null || term.isEmpty()) throw new ValidationException("term", "Browse term must not be empty");
         
         Result result = connector.call(baseUrl + "thing/browse/" + term.toString());
         result.assertStatusOk();
         try {
-            List<RegisteredThing> list = new ArrayList<RegisteredThing>();
+            List<Thing> list = new ArrayList<Thing>();
 
             RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
-            RegisteredThing thing;
+            Thing thing;
             while ((thing = parser.getNext()) != null) {
                 list.add(thing);
             }
