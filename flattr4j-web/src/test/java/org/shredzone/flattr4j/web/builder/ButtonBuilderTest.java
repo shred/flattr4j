@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Submission;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserReference;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -72,7 +72,7 @@ public class ButtonBuilderTest {
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
         builder.category(Category.withId("text")).language(Language.withId("en_UK"));
-        builder.user(User.withId("123456"));
+        builder.user(UserReference.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -95,7 +95,7 @@ public class ButtonBuilderTest {
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
         builder.category(Category.withId("text")).language(Language.withId("en_UK"));
-        builder.user(User.withId("123456"));
+        builder.user(UserReference.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -121,7 +121,7 @@ public class ButtonBuilderTest {
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
         builder.category(Category.withId("text")).language(Language.withId("en_UK"));
-        builder.user(User.withId("123456"));
+        builder.user(UserReference.withId("123456"));
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
@@ -143,7 +143,7 @@ public class ButtonBuilderTest {
     @Test
     public void testThingBuilder() {
         ButtonBuilder builder = new ButtonBuilder();
-        builder.user(User.withId("123456")).thing(createSubmission());
+        builder.user(UserReference.withId("123456")).thing(createSubmission());
 
         Assert.assertEquals(
                 "<a class=\"FlattrButton\" href=\"http://flattr4j.shredzone.org/thingy.html\""

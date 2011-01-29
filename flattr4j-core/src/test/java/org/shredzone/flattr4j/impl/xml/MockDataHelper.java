@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.ThingStatus;
-import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.model.User;
 
 /**
  * A helper class providing and asserting mock data.
@@ -145,9 +145,9 @@ public final class MockDataHelper {
      * Asserts the result of the User.xml resource.
      * 
      * @param thing
-     *            {@link UserDetails} to assert
+     *            {@link User} to assert
      */
-    public static void assertUserResource(UserDetails user) {
+    public static void assertUserResource(User user) {
         Assert.assertEquals("244", user.getUserId());
         Assert.assertEquals("Bomelin", user.getUsername());
         Assert.assertEquals("Mattias", user.getFirstname());

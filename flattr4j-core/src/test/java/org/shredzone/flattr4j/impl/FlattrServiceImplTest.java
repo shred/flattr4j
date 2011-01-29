@@ -30,8 +30,8 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.UserReference;
 import org.shredzone.flattr4j.model.User;
-import org.shredzone.flattr4j.model.UserDetails;
 
 /**
  * Unit test of the {@link FlattrServiceImpl} class.
@@ -138,7 +138,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        UserDetails result = service.getMyself();
+        User result = service.getMyself();
 
         MockDataHelper.assertUserResource(result);
 
@@ -151,7 +151,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        UserDetails result = service.getUser(User.withId("98765"));
+        User result = service.getUser(UserReference.withId("98765"));
 
         MockDataHelper.assertUserResource(result);
 
@@ -164,7 +164,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        UserDetails result = service.getUserByName("blafoo");
+        User result = service.getUserByName("blafoo");
 
         MockDataHelper.assertUserResource(result);
 

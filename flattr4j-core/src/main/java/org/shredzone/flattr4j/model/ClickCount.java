@@ -21,9 +21,9 @@ package org.shredzone.flattr4j.model;
 import java.util.List;
 
 /**
- * Contains the number of clicks to a Thing, along with a list of {@link User} who
- * clicked the Thing.
- *
+ * Contains the number of clicks to a Thing, along with a list of {@link UserReference}
+ * who clicked the Thing.
+ * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -31,7 +31,7 @@ public class ClickCount {
     
     private int anonymousCount;
     private int publicCount;
-    private List<User> users;
+    private List<UserReference> users;
 
     /**
      * Number of anonymous clicks.
@@ -46,9 +46,9 @@ public class ClickCount {
     public void setPublicCount(int publicCount)     { this.publicCount = publicCount; }
 
     /**
-     * List of {@link User} who clicked.
+     * List of {@link UserReference} who clicked.
      */
-    public List<User> getUsers()                    { return users; }
-    public void setUsers(List<User> users)          { this.users = users; }
+    public List<UserReference> getUsers()                    { return users; }
+    public void setUsers(List<UserReference> users)          { this.users = users; }
 
 }

@@ -47,7 +47,7 @@ public class BrowseTermTest {
         Language lang = new Language();
         lang.setLanguageId("lang2");
 
-        User user = new User();
+        UserReference user = new UserReference();
         user.setUserId("444231");
 
         Set<String> langSet = new HashSet<String>();
@@ -85,7 +85,7 @@ public class BrowseTermTest {
         Language lang = new Language();
         lang.setLanguageId("lang2");
 
-        User user = new User();
+        UserReference user = new UserReference();
         user.setUserId("444231");
 
         BrowseTerm term = new BrowseTerm();

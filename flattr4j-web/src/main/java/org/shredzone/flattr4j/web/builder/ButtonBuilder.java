@@ -26,8 +26,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.shredzone.flattr4j.model.CategoryId;
+import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.LanguageId;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 
@@ -187,6 +189,21 @@ public class ButtonBuilder {
      */
     public ButtonBuilder hidden() {
         this.hidden = true;
+        return this;
+    }
+
+    /**
+     * Initializes the builder based on the given {@link Thing}. This is a
+     * convenience method to prepare a link to an existing Thing.
+     */
+    public ButtonBuilder thing(Thing thing) {
+        url(thing.getUrl());
+        title(thing.getTitle());
+        description(thing.getDescription());
+        category(thing.getCategory());
+        language(Language.withId(thing.getLanguageId()));
+        tags(thing.getTags());
+        if (thing.isHidden()) hidden();
         return this;
     }
 

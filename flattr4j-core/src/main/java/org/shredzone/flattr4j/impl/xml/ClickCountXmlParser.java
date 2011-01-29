@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.ClickCount;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserReference;
 
 /**
  * Parses an XML document for {@link ClickCount} entries.
@@ -47,8 +47,8 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
     private final static QName QN_USERNAME = new QName("username");
 
     private ClickCount current = null;
-    private List<User> users;
-    private User user = null;
+    private List<UserReference> users;
+    private UserReference user = null;
     private boolean insideAnonymous = false;
     private boolean insidePublic = false;
 
@@ -60,7 +60,7 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
     protected void parseStartElement(QName tag) throws FlattrException {
         if (QN_CLICKS.equals(tag) && current == null) {
             current = new ClickCount();
-            users = new ArrayList<User>();
+            users = new ArrayList<UserReference>();
             current.setUsers(Collections.unmodifiableList(users));
             
         } else if (QN_ANONYMOUS.equals(tag) && current != null) {
@@ -70,7 +70,7 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
             insidePublic = true;
 
         } else if (QN_USER.equals(tag) && current != null && user == null) {
-            user = new User();
+            user = new UserReference();
         }
     }
 

@@ -47,7 +47,7 @@ import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
-import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserId;
 
 /**
@@ -190,12 +190,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public UserDetails getMyself() throws FlattrException {
+    public User getMyself() throws FlattrException {
         Result result = connector.call(baseUrl + "user/me").assertStatusOk();
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());
 
-            UserDetails user = parser.getNext();
+            User user = parser.getNext();
             if (user == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -206,7 +206,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public UserDetails getUser(UserId userId) throws FlattrException {
+    public User getUser(UserId userId) throws FlattrException {
         if (userId == null || userId.getUserId().isEmpty()) throw new ValidationException("userId", "userId is required");
 
         Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId.getUserId()));
@@ -214,7 +214,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());
     
-            UserDetails user = parser.getNext();
+            User user = parser.getNext();
             if (user == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -225,7 +225,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
     
     @Override
-    public UserDetails getUserByName(String name) throws FlattrException {
+    public User getUserByName(String name) throws FlattrException {
         if (name == null || name.isEmpty()) throw new ValidationException("name", "name is required");
 
         Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
@@ -233,7 +233,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());
 
-            UserDetails user = parser.getNext();
+            User user = parser.getNext();
             if (user == null) {
                 throw new NotFoundException("unexpected empty result");
             }

@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit test of the {@link UserDetails} class.
+ * Unit test of the {@link User} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -32,7 +32,7 @@ public class UserTest {
 
     @Test
     public void testProperty() {
-        UserDetails user = new UserDetails();
+        User user = new User();
 
         Assert.assertNull(user.getUserId());
         user.setUserId("1701");
@@ -77,13 +77,13 @@ public class UserTest {
 
     @Test
     public void testEquals() {
-        User user1 = new User();
+        UserReference user1 = new UserReference();
         user1.setUserId("foo");
 
-        User user2 = new User();
+        UserReference user2 = new UserReference();
         user2.setUserId("foo");
 
-        User user3 = new User();
+        UserReference user3 = new UserReference();
         user3.setUserId("narf");
 
         Assert.assertTrue("user1 eq user2", user1.equals(user2));

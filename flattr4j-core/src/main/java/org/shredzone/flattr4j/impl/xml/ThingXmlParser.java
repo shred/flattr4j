@@ -28,7 +28,7 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingStatus;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserReference;
 
 /**
  * Parses an XML document for {@link Thing} entries.
@@ -56,7 +56,7 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
     private final static QName QN_STATUS = new QName("status");
 
     private Thing current = null;
-    private User user = null;
+    private UserReference user = null;
     private Category category = null;
     private boolean insideUser = false;
     private boolean insideTags = false;
@@ -72,7 +72,7 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
             current = new Thing();
        
         } else if (QN_USER.equals(tag) && current != null) {
-            user = new User();
+            user = new UserReference();
             insideUser = true;
         
         } else if (QN_TAGS.equals(tag) && current != null) {

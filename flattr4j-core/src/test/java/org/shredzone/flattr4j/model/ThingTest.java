@@ -53,7 +53,7 @@ public class ThingTest {
         Assert.assertEquals(133, thing.getClicks());
 
         Assert.assertNull(thing.getUser());
-        thing.setUser(new User());
+        thing.setUser(new UserReference());
         
         Assert.assertNull(thing.getUser().getUserId());
         thing.getUser().setUserId("foobar");

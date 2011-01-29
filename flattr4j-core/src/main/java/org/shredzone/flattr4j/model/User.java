@@ -1,7 +1,7 @@
 /**
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2011 Richard "Shred" Körber
+ * Copyright (C) 2010 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,59 +21,70 @@ package org.shredzone.flattr4j.model;
 import java.io.Serializable;
 
 /**
- * A Flattr {@link User}. Two {@link User} are considered equal if they contain the same
- * id.
+ * Detailled Flattr {@link User}.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class User implements UserId, Serializable {
-
-    private static final long serialVersionUID = 2406024500321708867L;
+public class User extends UserReference implements Serializable {
+    private static final long serialVersionUID = -4198943870341187700L;
     
-    private String id;
-    private String username;
+    private String firstname;
+    private String lastname;
+    private String city;
+    private String country;
+    private String gravatar;
+    private String email;
+    private String description;
+    private int thingcount;
 
     /**
-     * Returns a {@link UserId} for the given User id.
-     * 
-     * @param id
-     *            User id
-     * @return A {@link UserId} object for this id
+     * User's real first name.
      */
-    public static UserId withId(final String id) {
-        return new UserId() {
-            @Override
-            public String getUserId() {
-                return id;
-            }
-        };
-    }
+    public String getFirstname()            { return firstname; }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
 
     /**
-     * User id.
+     * User's real last name. Depends on privacy settings and access scope.
      */
-    @Override
-    public String getUserId()               { return id; }
-    public void setUserId(String id)        { this.id = id; }
+    public String getLastname()             { return lastname; }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
     /**
-     * User name.
+     * City the user lives in. Depends on privacy settings and access scope.
      */
-    public String getUsername()             { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getCity()                 { return city; }
+    public void setCity(String city)        { this.city = city; }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof User)) {
-            return false;
-        }
-        return id.equals(((User) obj).id);
-    }
+    /**
+     * Country the user lives in. Depends on privacy settings and access scope.
+     */
+    public String getCountry()              { return country; }
+    public void setCountry(String country)  { this.country = country; }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+    /**
+     * URL of the user's picture at Gravatar. Depends on privacy settings and access
+     * scope.
+     */
+    public String getGravatar()             { return gravatar; }
+    public void setGravatar(String gravatar) { this.gravatar = gravatar; }
+
+    /**
+     * User's email address. Depends on privacy settings and access scope.
+     */
+    public String getEmail()                { return email; }
+    public void setEmail(String email)      { this.email = email; }
+
+    /**
+     * User's own description.
+     */
+    public String getDescription()          { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    /**
+     * Number of things the user owns.
+     */
+    public int getThingcount()              { return thingcount; }
+    public void setThingcount(int thingcount) { this.thingcount = thingcount; }
 
 }

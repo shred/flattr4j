@@ -24,15 +24,15 @@ import javax.xml.namespace.QName;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
-import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.model.User;
 
 /**
- * Parses an XML document for {@link UserDetails} entries.
+ * Parses an XML document for {@link User} entries.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class UserXmlParser extends AbstractXmlParser<UserDetails> {
+public class UserXmlParser extends AbstractXmlParser<User> {
 
     private final static QName QN_USER = new QName("user");
     private final static QName QN_ID = new QName("id");
@@ -46,7 +46,7 @@ public class UserXmlParser extends AbstractXmlParser<UserDetails> {
     private final static QName QN_DESCRIPTION = new QName("description");
     private final static QName QN_THINGCOUNT = new QName("thingcount");
 
-    private UserDetails current = null;
+    private User current = null;
 
     public UserXmlParser(InputStream in) throws FlattrException {
         super(in);
@@ -55,13 +55,13 @@ public class UserXmlParser extends AbstractXmlParser<UserDetails> {
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
         if (QN_USER.equals(tag) && current == null) {
-            current = new UserDetails();
+            current = new User();
         }
     }
 
     @Override
-    protected UserDetails parseEndElement(QName tag, String body) throws FlattrException {
-        UserDetails result = null;
+    protected User parseEndElement(QName tag, String body) throws FlattrException {
+        User result = null;
 
         if (QN_USER.equals(tag) && current != null) {
             result = current;

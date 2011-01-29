@@ -29,7 +29,7 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.CategoryId;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.LanguageId;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserReference;
 import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 import org.shredzone.flattr4j.web.builder.ButtonBuilder;
@@ -59,7 +59,7 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
         if (user instanceof UserId) {
             builder.user((UserId) user);
         } else {
-            builder.user(User.withId(user.toString()));
+            builder.user(UserReference.withId(user.toString()));
         }
     }
     

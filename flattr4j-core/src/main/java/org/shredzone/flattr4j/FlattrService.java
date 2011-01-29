@@ -31,7 +31,6 @@ import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
-import org.shredzone.flattr4j.model.UserDetails;
 import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.oauth.Scope;
 
@@ -117,42 +116,43 @@ public interface FlattrService{
     List<Language> getLanguageList() throws FlattrException;
 
     /**
-     * Gets the {@link UserDetails} profile of the currently logged in user.
+     * Gets the {@link User} profile of the currently logged in user.
      * 
-     * @return {@link UserDetails} profile of oneself. Never {@code null}.
+     * @return {@link User} profile of oneself. Never {@code null}.
      * @throws FlattrException
      *             when the operation failed
      */
-    UserDetails getMyself() throws FlattrException;
+    User getMyself() throws FlattrException;
 
     /**
-     * Gets the {@link UserDetails} profile of the given {@link User}.
+     * Gets the {@link User} profile of the given user ID.
      * 
      * @param user
      *            {@link UserId} to get a profile for
-     * @return {@link UserDetails} profile of that user. Never {@code null}.
+     * @return {@link User} profile of that user. Never {@code null}.
      * @throws FlattrException
      *             when there is no such user
      */
-    UserDetails getUser(UserId user) throws FlattrException;
+    User getUser(UserId user) throws FlattrException;
 
     /**
-     * Gets the {@link UserDetails} profile of the given user name.
+     * Gets the {@link User} profile of the given user name.
      * 
      * @param name
      *            User name to get a profile for
-     * @return {@link UserDetails} profile of that user. Never {@code null}.
+     * @return {@link User} profile of that user. Never {@code null}.
      * @throws FlattrException
      *             when there is no such user
      */
-    UserDetails getUserByName(String name) throws FlattrException;
+    User getUserByName(String name) throws FlattrException;
     
     /**
-     * Gets a list of {@link ClickedThing} made by the currently logged in user, starting at the
-     * given period. Requires {@link Scope#EXTENDEDREAD} permission.
+     * Gets a list of {@link ClickedThing} made by the currently logged in user, starting
+     * at the given period. Requires {@link Scope#EXTENDEDREAD} permission.
      * 
      * @param period
-     *            Start of the evaluation period. Only the month and year is used.
+     *            Start of the evaluation period. Only the month and year is currently
+     *            used. The other fields should be unset or 0.
      * @return List of {@link ClickedThing}.
      * @throws FlattrException
      *             when the list of clicks could not be fetched

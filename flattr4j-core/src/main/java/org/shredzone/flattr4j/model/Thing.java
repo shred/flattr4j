@@ -41,7 +41,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     private int clicks;
     private String url;
     private String title;
-    private User user;
+    private UserReference user;
     private ThingStatus status;
     private Category category;
     private String description;
@@ -69,38 +69,38 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * Thing's unique id at Flattr.
      */
     @Override
-    public String getThingId()              { return id; }
-    public void setThingId(String id)       { this.id = id; }
+    public String getThingId()                  { return id; }
+    public void setThingId(String id)           { this.id = id; }
 
     /**
      * Internal Flattr Thing's unique id.
      */
-    public String getInternalId()           { return intId; }
-    public void setInternalId(String intId) { this.intId = intId; }
+    public String getInternalId()               { return intId; }
+    public void setInternalId(String intId)     { this.intId = intId; }
 
     /**
      * Creation date of the Thing.
      */
-    public Date getCreated()                { return created; }
-    public void setCreated(Date created)    { this.created = created; }
+    public Date getCreated()                    { return created; }
+    public void setCreated(Date created)        { this.created = created; }
 
     /**
      * How many times this Thing was flattred.
      */
-    public int getClicks()                  { return clicks; }
-    public void setClicks(int clicks)       { this.clicks = clicks; }
+    public int getClicks()                      { return clicks; }
+    public void setClicks(int clicks)           { this.clicks = clicks; }
 
     /**
-     * The {@link User} who owns this Thing.
+     * The {@link UserReference} who owns this Thing.
      */
-    public User getUser()                   { return user; }
-    public void setUser(User user)          { this.user = user; }
+    public UserReference getUser()              { return user; }
+    public void setUser(UserReference user)     { this.user = user; }
     
     /**
      * Status of this Thing.
      */
-    public ThingStatus getStatus()          { return status; }
-    public void setStatus(ThingStatus status) { this.status = status; }
+    public ThingStatus getStatus()              { return status; }
+    public void setStatus(ThingStatus status)   { this.status = status; }
 
     /**
      * URL of the Thing.
