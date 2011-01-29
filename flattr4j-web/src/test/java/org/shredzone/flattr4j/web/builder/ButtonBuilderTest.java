@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.web.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.web.ButtonType;
 
 /**
@@ -166,12 +166,12 @@ public class ButtonBuilderTest {
     }
 
     /**
-     * Creates a filled {@link ThingSubmission}.
+     * Creates a filled {@link Submission}.
      *
-     * @return {@link ThingSubmission}
+     * @return {@link Submission}
      */
-    public static ThingSubmission createThing() {
-        ThingSubmission thing = new ThingSubmission();
+    public static Submission createThing() {
+        Submission thing = new Submission();
         thing.setCategory("text");
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);

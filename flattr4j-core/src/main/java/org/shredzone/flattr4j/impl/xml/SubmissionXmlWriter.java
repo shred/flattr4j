@@ -26,10 +26,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 
 /**
- * Builds an XML document from a {@link ThingSubmission}.
+ * Builds an XML document from a {@link Submission}.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -46,13 +46,13 @@ public final class SubmissionXmlWriter {
     }
 
     /**
-     * Converts a {@link ThingSubmission} to its XML representation.
+     * Converts a {@link Submission} to its XML representation.
      * 
      * @param submission
-     *            {@link ThingSubmission} to be converted
-     * @return XML document representing that {@link ThingSubmission}
+     *            {@link Submission} to be converted
+     * @return XML document representing that {@link Submission}
      */
-    public static String write(ThingSubmission submission) throws FlattrException {
+    public static String write(Submission submission) throws FlattrException {
         try {
             StringWriter writer = new StringWriter();
             XMLEventWriter xml = XMLOutputFactory.newInstance().createXMLEventWriter(writer);

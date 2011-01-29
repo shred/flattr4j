@@ -27,7 +27,7 @@ import java.util.TreeMap;
 
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.web.ButtonType;
 
@@ -211,12 +211,12 @@ public class ButtonBuilder {
     }
 
     /**
-     * Initializes the builder based on the given {@link ThingSubmission}. This is a convenience
+     * Initializes the builder based on the given {@link Submission}. This is a convenience
      * method to prepare an autosubmit of a thing. Invoke {@link #user(java.lang.String)}
      * or {@link #user(org.shredzone.flattr4j.model.User)} together with this method
      * for a successful autosubmission.
      */
-    public ButtonBuilder thing(ThingSubmission thing) {
+    public ButtonBuilder thing(Submission thing) {
         url(thing.getUrl());
         title(thing.getTitle());
         description(thing.getDescription());

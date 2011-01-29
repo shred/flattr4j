@@ -28,7 +28,7 @@ import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserDetails;
 import org.shredzone.flattr4j.oauth.Scope;
@@ -45,12 +45,12 @@ public interface FlattrService{
      * Submits a new Thing to Flattr.
      * 
      * @param thing
-     *            {@link ThingSubmission} to be submitted.
+     *            {@link Submission} to be submitted.
      * @return {@link Thing} as result from the submission.
      * @throws FlattrException
      *             when the submission failed
      */
-    Thing submit(ThingSubmission thing) throws FlattrException;
+    Thing submit(Submission thing) throws FlattrException;
 
     /**
      * Gets a {@link Thing} with the given Thing id.

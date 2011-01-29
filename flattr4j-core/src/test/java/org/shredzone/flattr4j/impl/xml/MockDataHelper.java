@@ -25,7 +25,7 @@ import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.ThingStatus;
 import org.shredzone.flattr4j.model.UserDetails;
 
@@ -42,12 +42,12 @@ public final class MockDataHelper {
     }
 
     /**
-     * Creates a filled {@link ThingSubmission}.
+     * Creates a filled {@link Submission}.
      * 
-     * @return {@link ThingSubmission}
+     * @return {@link Submission}
      */
-    public static ThingSubmission createThing() {
-        ThingSubmission thing = new ThingSubmission();
+    public static Submission createThing() {
+        Submission thing = new Submission();
         thing.setCategory("text");
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
@@ -61,7 +61,7 @@ public final class MockDataHelper {
     }
 
     /**
-     * Creates an XML structure that corresponds to the created {@link ThingSubmission}.
+     * Creates an XML structure that corresponds to the created {@link Submission}.
      * 
      * @return XML structure, as String
      */

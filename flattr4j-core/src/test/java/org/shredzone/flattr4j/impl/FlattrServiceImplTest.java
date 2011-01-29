@@ -29,7 +29,7 @@ import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.UserDetails;
 
 /**
@@ -48,7 +48,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
         connector.setExpectedData(MockDataHelper.createThingXml());
 
-        ThingSubmission thing = MockDataHelper.createThing();
+        Submission thing = MockDataHelper.createThing();
 
         FlattrService service = new FlattrServiceImpl(connector);
         Thing result = service.submit(thing);

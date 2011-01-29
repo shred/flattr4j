@@ -15,31 +15,37 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.impl.xml;
+
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Thing;
 
 /**
- * Unit test of the {@link SubmissionXmlWriter} class.
+ * Unit test of the {@link ThingXmlParser} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ThingXmlWriterTest {
+public class ThingXmlParserTest {
 
     @Test
-    public void testWriter() throws FlattrException {
-        Submission thing = MockDataHelper.createThing();
-        CharSequence thingXml = MockDataHelper.createThingXml();
+    public void testParser() throws FlattrException, UnsupportedEncodingException {
+        InputStream in = ThingXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Thing.xml");
+        ThingXmlParser parser = new ThingXmlParser(in);
 
-        String result = SubmissionXmlWriter.write(thing);
+        Thing thing;
 
-        Assert.assertEquals(thingXml, result);
+        thing = parser.getNext();
+        MockDataHelper.assertThingResource(thing);
+
+        thing = parser.getNext();
+        Assert.assertNull(thing);
     }
 
 }

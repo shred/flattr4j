@@ -30,7 +30,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.exception.ForbiddenException;
 import org.shredzone.flattr4j.exception.NotFoundException;
-import org.shredzone.flattr4j.exception.RegistrationFailedException;
+import org.shredzone.flattr4j.exception.SubmissionFailedException;
 
 /**
  * Default implementation of {@link Result}.
@@ -71,7 +71,7 @@ public class DefaultResult implements Result {
                 throw new NotFoundException(message);
                 
             case HttpStatus.SC_INTERNAL_SERVER_ERROR:   // 500
-                throw new RegistrationFailedException(message);
+                throw new SubmissionFailedException(message);
                 
             default:
                 throw new FlattrServiceException(message);

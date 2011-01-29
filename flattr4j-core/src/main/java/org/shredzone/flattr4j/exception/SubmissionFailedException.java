@@ -15,31 +15,24 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
-package org.shredzone.flattr4j.impl.xml;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Submission;
+package org.shredzone.flattr4j.exception;
 
 /**
- * Unit test of the {@link SubmissionXmlWriter} class.
+ * This exception is used when a Thing could not be registered.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ThingXmlWriterTest {
+public class SubmissionFailedException extends FlattrException {
+    private static final long serialVersionUID = 7637026385151047748L;
 
-    @Test
-    public void testWriter() throws FlattrException {
-        Submission thing = MockDataHelper.createThing();
-        CharSequence thingXml = MockDataHelper.createThingXml();
+    public SubmissionFailedException() {
+        super();
+    }
 
-        String result = SubmissionXmlWriter.write(thing);
-
-        Assert.assertEquals(thingXml, result);
+    public SubmissionFailedException(String msg) {
+        super(msg);
     }
 
 }

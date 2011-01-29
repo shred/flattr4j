@@ -36,7 +36,7 @@ import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
-import org.shredzone.flattr4j.impl.xml.RegisteredThingXmlParser;
+import org.shredzone.flattr4j.impl.xml.ThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.SubmissionXmlWriter;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
@@ -45,7 +45,7 @@ import org.shredzone.flattr4j.model.Click;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.ThingSubmission;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserDetails;
 
@@ -67,14 +67,14 @@ public class FlattrServiceImpl implements FlattrService {
     public void setBaseUrl(String baseUrl)  { this.baseUrl = baseUrl; }
 
     @Override
-    public Thing submit(ThingSubmission thing) throws FlattrException {
+    public Thing submit(Submission thing) throws FlattrException {
         if (thing == null) throw new ValidationException("thing", "thing is required");
         thing.validate();
 
         String data = SubmissionXmlWriter.write(thing);
         Result result = connector.post(baseUrl + "thing/register", data).assertStatusOk();
         try {
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
+            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
     
             Thing registered = parser.getNext();
             if (registered == null) {
@@ -93,7 +93,7 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId));
         result.assertStatusOk();
         try {
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
+            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
 
             Thing thing = parser.getNext();
             if (thing == null) {
@@ -157,7 +157,7 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             List<Thing> list = new ArrayList<Thing>();
 
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
+            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
             Thing thing;
             while ((thing = parser.getNext()) != null) {
                 list.add(thing);
