@@ -30,7 +30,7 @@ import java.util.List;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Thing implements Serializable {
+public class Thing implements ThingId, Serializable {
     private static final long serialVersionUID = 610493674068876984L;
 
     private static final String BASE_URL = "https://flattr.com/thing/";
@@ -53,6 +53,7 @@ public class Thing implements Serializable {
     /**
      * Thing's unique id at Flattr.
      */
+    @Override
     public String getId()                   { return id; }
     public void setId(String id)            { this.id = id; }
 

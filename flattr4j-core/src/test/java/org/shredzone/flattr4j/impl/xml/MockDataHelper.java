@@ -21,7 +21,7 @@ package org.shredzone.flattr4j.impl.xml;
 import java.util.Date;
 import org.junit.Assert;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
@@ -164,14 +164,14 @@ public final class MockDataHelper {
      * Asserts the result of the Click.xml resource.
      * 
      * @param click
-     *            {@link Click} to assert
+     *            {@link ClickedThing} to assert
      */
-    public static void assertClick(Click click) {
-        Assert.assertEquals("12345", click.getId());
-        Assert.assertEquals(new Date(1291133253L * 1000L), click.getClickTime());
-        Assert.assertEquals("0282de399c3892aa19165e1a0baaccdc", click.getThingId());
-        Assert.assertEquals("Free Brokep", click.getThingTitle());
-        Assert.assertEquals("http://blog.flattr.net/2010/11/free-brokep/", click.getThingUrl());
+    public static void assertClick(ClickedThing click) {
+        Assert.assertEquals("12345", click.getClickId());
+        Assert.assertEquals(new Date(1291133253L * 1000L), click.getTime());
+        Assert.assertEquals("0282de399c3892aa19165e1a0baaccdc", click.getId());
+        Assert.assertEquals("Free Brokep", click.getTitle());
+        Assert.assertEquals("http://blog.flattr.net/2010/11/free-brokep/", click.getUrl());
     }
     
     /**

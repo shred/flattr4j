@@ -24,7 +24,7 @@ import java.util.List;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
@@ -64,15 +64,15 @@ public interface FlattrService{
     Thing getThing(String thingId) throws FlattrException;
     
     /**
-     * Gets a {@link Thing} for the given {@link Click}.
+     * Gets a {@link Thing} for the given {@link ClickedThing}.
      * 
      * @param click
-     *            {@link Click} to get the {@link Thing} for
+     *            {@link ClickedThing} to get the {@link Thing} for
      * @return {@link Thing}. Never {@code null}.
      * @throws FlattrException
      *             when no such thing was found
      */
-    Thing getThing(Click click) throws FlattrException;
+    Thing getThing(ClickedThing click) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
@@ -189,15 +189,15 @@ public interface FlattrService{
     UserDetails getUserByName(String name) throws FlattrException;
     
     /**
-     * Gets a list of {@link Click} made by the currently logged in user, starting at the
+     * Gets a list of {@link ClickedThing} made by the currently logged in user, starting at the
      * given period. Requires {@link Scope#EXTENDEDREAD} permission.
      * 
      * @param period
      *            Start of the evaluation period. Only the month and year is used.
-     * @return List of {@link Click}.
+     * @return List of {@link ClickedThing}.
      * @throws FlattrException
      *             when the list of clicks could not be fetched
      */
-    List<Click> getClicks(Calendar period) throws FlattrException;
+    List<ClickedThing> getClicks(Calendar period) throws FlattrException;
 
 }

@@ -34,14 +34,14 @@ import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
-import org.shredzone.flattr4j.impl.xml.ClickXmlParser;
+import org.shredzone.flattr4j.impl.xml.ClickedThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
 import org.shredzone.flattr4j.impl.xml.ThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.SubmissionXmlWriter;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Thing;
@@ -106,9 +106,9 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public Thing getThing(Click click) throws FlattrException {
+    public Thing getThing(ClickedThing click) throws FlattrException {
         if (click == null) throw new ValidationException("click", "click is required");
-        return getThing(click.getThingId());
+        return getThing(click.getId());
     }
     
     @Override
@@ -266,7 +266,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Click> getClicks(Calendar period) throws FlattrException {
+    public List<ClickedThing> getClicks(Calendar period) throws FlattrException {
         if (period == null || !period.isSet(Calendar.YEAR) || !period.isSet(Calendar.MONTH))
             throw new ValidationException("period month and year is required");
         
@@ -279,10 +279,10 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/clicks/period/" + urlencode(pstr));
         result.assertStatusOk();
         try {
-            List<Click> list = new ArrayList<Click>();
+            List<ClickedThing> list = new ArrayList<ClickedThing>();
             
-            ClickXmlParser parser = new ClickXmlParser(result.openInputStream());
-            Click click;
+            ClickedThingXmlParser parser = new ClickedThingXmlParser(result.openInputStream());
+            ClickedThing click;
             while ((click = parser.getNext()) != null) {
                 list.add(click);
             }
