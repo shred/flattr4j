@@ -24,15 +24,15 @@ import javax.xml.namespace.QName;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserDetails;
 
 /**
- * Parses an XML document for {@link User} entries.
+ * Parses an XML document for {@link UserDetails} entries.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class UserXmlParser extends AbstractXmlParser<User> {
+public class UserXmlParser extends AbstractXmlParser<UserDetails> {
 
     private final static QName QN_USER = new QName("user");
     private final static QName QN_ID = new QName("id");
@@ -46,7 +46,7 @@ public class UserXmlParser extends AbstractXmlParser<User> {
     private final static QName QN_DESCRIPTION = new QName("description");
     private final static QName QN_THINGCOUNT = new QName("thingcount");
 
-    private User current = null;
+    private UserDetails current = null;
 
     public UserXmlParser(InputStream in) throws FlattrException {
         super(in);
@@ -54,38 +54,47 @@ public class UserXmlParser extends AbstractXmlParser<User> {
 
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
-        if (tag.equals(QN_USER) && current == null) {
-            current = new User();
+        if (QN_USER.equals(tag) && current == null) {
+            current = new UserDetails();
         }
     }
 
     @Override
-    protected User parseEndElement(QName tag, String body) throws FlattrException {
-        User result = null;
+    protected UserDetails parseEndElement(QName tag, String body) throws FlattrException {
+        UserDetails result = null;
 
-        if (tag.equals(QN_USER) && current != null) {
+        if (QN_USER.equals(tag) && current != null) {
             result = current;
             current = null;
 
-        } else if (tag.equals(QN_ID) && current != null) {
+        } else if (QN_ID.equals(tag) && current != null) {
             current.setId(body);
-        } else if (tag.equals(QN_USERNAME) && current != null) {
+            
+        } else if (QN_USERNAME.equals(tag) && current != null) {
             current.setUsername(body);
-        } else if (tag.equals(QN_FIRSTNAME) && current != null) {
+
+        } else if (QN_FIRSTNAME.equals(tag) && current != null) {
             current.setFirstname(body);
-        } else if (tag.equals(QN_LASTNAME) && current != null) {
+        
+        } else if (QN_LASTNAME.equals(tag) && current != null) {
             current.setLastname(body);
-        } else if (tag.equals(QN_CITY) && current != null) {
+        
+        } else if (QN_CITY.equals(tag) && current != null) {
             current.setCity(body);
-        } else if (tag.equals(QN_COUNTRY) && current != null) {
+        
+        } else if (QN_COUNTRY.equals(tag) && current != null) {
             current.setCountry(body);
-        } else if (tag.equals(QN_GRAVATAR) && current != null) {
+        
+        } else if (QN_GRAVATAR.equals(tag) && current != null) {
             current.setGravatar(body);
-        } else if (tag.equals(QN_EMAIL) && current != null) {
+        
+        } else if (QN_EMAIL.equals(tag) && current != null) {
             current.setEmail(body);
-        } else if (tag.equals(QN_DESCRIPTION) && current != null) {
+        
+        } else if (QN_DESCRIPTION.equals(tag) && current != null) {
             current.setDescription(body);
-        } else if (tag.equals(QN_THINGCOUNT) && current != null) {
+        
+        } else if (QN_THINGCOUNT.equals(tag) && current != null) {
             try {
                 current.setThingcount(Integer.parseInt(body));
             } catch (NumberFormatException ex) {

@@ -15,7 +15,6 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.impl.xml;
 
@@ -25,28 +24,25 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.model.ClickCount;
 
 /**
- * Unit test of the {@link UserXmlParser} class.
- * 
+ * Unit test of the {@link ClickCountXmlParser} class.
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class UserXmlParserTest {
+public class ClickCountXmlParserTest {
 
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
-        InputStream in = UserXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/User.xml");
-        UserXmlParser parser = new UserXmlParser(in);
+        InputStream in = ClickCountXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/ClickCount.xml");
+        ClickCountXmlParser parser = new ClickCountXmlParser(in);
 
-        UserDetails user;
+        ClickCount count = parser.getNext();
+        Assert.assertNull(parser.getNext());
 
-        user = parser.getNext();
-        MockDataHelper.assertUserResource(user);
-
-        user = parser.getNext();
-        Assert.assertNull(user);
+        MockDataHelper.assertClickCount(count);
     }
 
 }

@@ -18,21 +18,29 @@
  */
 package org.shredzone.flattr4j.exception;
 
+import org.shredzone.flattr4j.oauth.Scope;
+
 /**
- * This exception is used when either the Flattr account of the authenticated user or of
- * the call target is currently inactive.
+ * This exception is used when the operation is forbidden. There are several causes
+ * for this:
+ * <ul>
+ * <li>the Flattr account is inactive</li>
+ * <li>insufficient permissions, see {@link Scope}</li>
+ * <li>the operation is not allowed (e.g. flattering an own thing)</li>
+ * </ul>
+ * The message contains the reason for the exception.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class InactiveException extends FlattrException {
+public class ForbiddenException extends FlattrException {
     private static final long serialVersionUID = 1279509373771421366L;
 
-    public InactiveException() {
+    public ForbiddenException() {
         super();
     }
 
-    public InactiveException(String msg) {
+    public ForbiddenException(String msg) {
         super(msg);
     }
 

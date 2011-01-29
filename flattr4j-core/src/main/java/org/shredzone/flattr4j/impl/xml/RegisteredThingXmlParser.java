@@ -25,8 +25,10 @@ import javax.xml.namespace.QName;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
+import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.ThingStatus;
+import org.shredzone.flattr4j.model.User;
 
 /**
  * Parses an XML document for {@link RegisteredThing} entries.
@@ -54,6 +56,8 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     private final static QName QN_STATUS = new QName("status");
 
     private RegisteredThing current = null;
+    private User user = null;
+    private Category category = null;
     private boolean insideUser = false;
     private boolean insideTags = false;
     private boolean insideCategory = false;
@@ -64,13 +68,18 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
 
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
-        if (tag.equals(QN_THING) && current == null) {
+        if (QN_THING.equals(tag) && current == null) {
             current = new RegisteredThing();
-        } else if (tag.equals(QN_USER) && current != null) {
+       
+        } else if (QN_USER.equals(tag) && current != null) {
+            user = new User();
             insideUser = true;
-        } else if (tag.equals(QN_TAGS) && current != null) {
+        
+        } else if (QN_TAGS.equals(tag) && current != null) {
             insideTags = true;
-        } else if (tag.equals(QN_CATEGORY) && current != null) {
+        
+        } else if (QN_CATEGORY.equals(tag) && current != null && category == null) {
+            category = new Category();
             insideCategory = true;
         }
     }
@@ -79,54 +88,71 @@ public class RegisteredThingXmlParser extends AbstractXmlParser<RegisteredThing>
     protected RegisteredThing parseEndElement(QName tag, String body) throws FlattrException {
         RegisteredThing result = null;
 
-        if (tag.equals(QN_THING) && current != null) {
+        if (QN_THING.equals(tag) && current != null) {
             result = current;
             current = null;
 
-        } else if (tag.equals(QN_USER) && current != null) {
+        } else if (QN_USER.equals(tag) && current != null) {
+            current.setUser(user);
+            user = null;
             insideUser = false;
-        } else if (tag.equals(QN_TAGS) && current != null) {
+
+        } else if (QN_TAGS.equals(tag) && current != null) {
             insideTags = false;
-        } else if (tag.equals(QN_CATEGORY) && current != null) {
+        
+        } else if (QN_CATEGORY.equals(tag) && current != null && category != null) {
+            current.setCategory(category);
+            category = null;
             insideCategory = false;
 
-        } else if (tag.equals(QN_ID) && current != null && !insideUser && !insideTags && !insideCategory) {
+        } else if (QN_ID.equals(tag) && current != null && !insideUser && !insideTags && !insideCategory) {
             current.setId(body);
-        } else if (tag.equals(QN_INT_ID) && current != null) {
+
+        } else if (QN_INT_ID.equals(tag) && current != null) {
             current.setIntId(body);
-        } else if (tag.equals(QN_CREATED) && current != null) {
+        
+        } else if (QN_CREATED.equals(tag) && current != null) {
             try {
                 current.setCreated(new Date(Long.parseLong(body) * 1000));
             } catch (NumberFormatException ex) {
                 throw new FlattrServiceException("Invalid creation timestamp: " + body);
             }
-        } else if (tag.equals(QN_LANGUAGE) && current != null) {
+        
+        } else if (QN_LANGUAGE.equals(tag) && current != null) {
             current.setLanguage(body);
-        } else if (tag.equals(QN_URL) && current != null) {
+        
+        } else if (QN_URL.equals(tag) && current != null) {
             current.setUrl(body);
-        } else if (tag.equals(QN_TITLE) && current != null) {
+        
+        } else if (QN_TITLE.equals(tag) && current != null) {
             current.setTitle(body);
-        } else if (tag.equals(QN_STORY) && current != null) {
+        
+        } else if (QN_STORY.equals(tag) && current != null) {
             current.setDescription(body);
-        } else if (tag.equals(QN_CLICKS) && current != null) {
+        
+        } else if (QN_CLICKS.equals(tag) && current != null) {
             try {
                 current.setClicks(Integer.parseInt(body));
             } catch (NumberFormatException ex) {
                 throw new FlattrServiceException("Invalid clicks: " + body);
             }
-        } else if (tag.equals(QN_ID) && current != null) {
-            if (insideUser) {
-                current.setUserId(body);
-            } else if (insideCategory) {
-                current.setCategory(body);
-            }
-        } else if (tag.equals(QN_USERNAME) && current != null && insideUser) {
-            current.setUserName(body);
-        } else if (tag.equals(QN_TAG) && current != null && insideTags) {
+        
+        } else if (QN_ID.equals(tag) && current != null && insideUser) {
+            user.setId(body);
+            
+        } else if (QN_ID.equals(tag) && current != null && insideCategory) {
+            category.setId(body);
+        
+        } else if (QN_USERNAME.equals(tag) && current != null && insideUser) {
+            user.setUsername(body);
+        
+        } else if (QN_TAG.equals(tag) && current != null && insideTags) {
             current.getTags().add(body);
-        } else if (tag.equals(QN_NAME) && current != null && insideCategory) {
-            current.setCategoryName(body);
-        } else if (tag.equals(QN_STATUS) && current != null) {
+        
+        } else if (QN_NAME.equals(tag) && current != null && insideCategory) {
+            category.setName(body);
+        
+        } else if (QN_STATUS.equals(tag) && current != null) {
             try {
                 current.setStatus(ThingStatus.valueOf(body.toUpperCase()));
             } catch (IllegalArgumentException ex) {

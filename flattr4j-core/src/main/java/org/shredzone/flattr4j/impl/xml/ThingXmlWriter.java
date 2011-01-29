@@ -60,7 +60,7 @@ public final class ThingXmlWriter {
             xml.add(FACTORY.createStartElement("", "", TAG_THING));
             writeTag(xml, "url", thing.getUrl());
             writeCDataTag(xml, "title", thing.getTitle());
-            writeTag(xml, "category", thing.getCategory());
+            writeTag(xml, "category", thing.getCategory().getId());
             writeCDataTag(xml, "description", thing.getDescription());
             writeTag(xml, "language", thing.getLanguage());
             writeTag(xml, "hidden", thing.isHidden() ? "1" : "0");

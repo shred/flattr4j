@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flattr>
+    <version>0.5</version>
+    <clicks>
+      <anonymous>
+        <count>231</count>
+      </anonymous>
+      <public>
+        <count>128</count>
+        <users>
+          <user>
+            <id>244</id>
+            <username>bomelin</username>
+         </user>
+      </users>
+    </public>
+  </clicks>
+</flattr>

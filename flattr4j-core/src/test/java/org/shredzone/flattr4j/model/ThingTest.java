@@ -43,8 +43,11 @@ public class ThingTest {
         Assert.assertEquals("an example page", thing.getTitle());
 
         Assert.assertNull(thing.getCategory());
-        thing.setCategory("text");
-        Assert.assertEquals("text", thing.getCategory());
+        thing.setCategory(new Category());
+        
+        Assert.assertNull(thing.getCategory().getId());
+        thing.getCategory().setId("text");
+        Assert.assertEquals("text", thing.getCategory().getId());
 
         Assert.assertNull(thing.getDescription());
         thing.setDescription("a long description of the example");

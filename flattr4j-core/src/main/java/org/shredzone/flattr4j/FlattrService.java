@@ -18,15 +18,20 @@
  */
 package org.shredzone.flattr4j;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserDetails;
+import org.shredzone.flattr4j.oauth.Scope;
 
 /**
  * Service calls to the Flattr REST API that requires authorization.
@@ -54,6 +59,15 @@ public interface FlattrService{
      *         such Thing was found.
      */
     RegisteredThing getThing(String thingId) throws FlattrException;
+    
+    /**
+     * Gets a {@link RegisteredThing} for the given {@link Click}.
+     * 
+     * @param click
+     *            {@link Click} to get the {@link RegisteredThing} for
+     * @return {@link RegisteredThing}. Never {@code null}.
+     */
+    RegisteredThing getThing(Click click) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
@@ -70,24 +84,24 @@ public interface FlattrService{
      *            {@link RegisteredThing} to flattr
      */
     void click(RegisteredThing thing) throws FlattrException;
+    
+    /**
+     * Counts the number of clicks that the Thing received.
+     * 
+     * @param thingId
+     *            id of the Thing
+     * @return {@link ClickCount} containing the result
+     */
+    ClickCount countClicks(String thingId) throws FlattrException;
 
     /**
-     * Gets a list of all Things of the given user.
+     * Counts the number of clicks that the Thing received.
      * 
-     * @param user
-     *            {@link User} to fetch a list of Things for
-     * @return List of all {@link RegisteredThing} of that user
+     * @param thing
+     *            {@link RegisteredThing}
+     * @return {@link ClickCount} containing the result
      */
-    List<RegisteredThing> getThingList(User user) throws FlattrException;
-
-    /**
-     * Gets a list of all Things of the given user.
-     * 
-     * @param userId
-     *            User id to fetch a list of Things for
-     * @return List of all {@link RegisteredThing} of that user
-     */
-    List<RegisteredThing> getThingList(String userId) throws FlattrException;
+    ClickCount countClicks(RegisteredThing thing) throws FlattrException;
 
     /**
      * Browses for Things and returns a list of matching ones.
@@ -114,30 +128,50 @@ public interface FlattrService{
     List<Language> getLanguageList() throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the currently logged in user.
+     * Gets the {@link UserDetails} profile of the currently logged in user.
      * 
-     * @return {@link User} profile of oneself. Never {@code null}.
+     * @return {@link UserDetails} profile of oneself. Never {@code null}.
      */
-    User getMyself() throws FlattrException;
+    UserDetails getMyself() throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the given user id.
+     * Gets the {@link UserDetails} profile of the given user id.
      * 
      * @param userId
      *            User id to get a profile for
-     * @return {@link User} profile of that user. Never {@code null}. An exception is
-     *         thrown when there was no such user.
+     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
+     *         is thrown when there was no such user.
      */
-    User getUser(String userId) throws FlattrException;
+    UserDetails getUser(String userId) throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the given user name.
-     *
+     * Gets the {@link UserDetails} profile of the given {@link User}.
+     * 
+     * @param user
+     *            {@link User} to get a profile for
+     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
+     *         is thrown when there was no such user.
+     */
+    UserDetails getUser(User user) throws FlattrException;
+
+    /**
+     * Gets the {@link UserDetails} profile of the given user name.
+     * 
      * @param name
      *            User name to get a profile for
-     * @return {@link User} profile of that user. Never {@code null}. An exception is
-     *         thrown when there was no such user.
+     * @return {@link UserDetails} profile of that user. Never {@code null}. An exception
+     *         is thrown when there was no such user.
      */
-    User getUserByName(String name) throws FlattrException;
+    UserDetails getUserByName(String name) throws FlattrException;
+    
+    /**
+     * Gets a list of {@link Click} made by the currently logged in user, starting at the
+     * given period. Requires {@link Scope#EXTENDEDREAD} permission.
+     * 
+     * @param period
+     *            Start of the evaluation period. Only the month and year is used.
+     * @return List of {@link Click}.
+     */
+    List<Click> getClicks(Calendar period) throws FlattrException;
 
 }

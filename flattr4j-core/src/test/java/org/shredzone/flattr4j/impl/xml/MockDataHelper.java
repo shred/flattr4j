@@ -21,11 +21,13 @@ package org.shredzone.flattr4j.impl.xml;
 import java.util.Date;
 import org.junit.Assert;
 import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingStatus;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserDetails;
 
 /**
  * A helper class providing and asserting mock data.
@@ -46,7 +48,7 @@ public final class MockDataHelper {
      */
     public static Thing createThing() {
         Thing thing = new Thing();
-        thing.setCategory("text");
+        thing.setCategoryId("text");
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
         thing.setLanguage("en_UK");
@@ -128,14 +130,14 @@ public final class MockDataHelper {
         Assert.assertEquals("Kontakta Kontilint", thing.getTitle());
         Assert.assertEquals("Kontakta Kontilint", thing.getDescription());
         Assert.assertEquals(0, thing.getClicks());
-        Assert.assertEquals("244", thing.getUserId());
-        Assert.assertEquals("Bomelin", thing.getUserName());
+        Assert.assertEquals("244", thing.getUser().getId());
+        Assert.assertEquals("Bomelin", thing.getUser().getUsername());
         Assert.assertEquals(3, thing.getTags().size());
         Assert.assertEquals("asd", thing.getTags().get(0));
         Assert.assertEquals("fgh", thing.getTags().get(1));
         Assert.assertEquals("ert", thing.getTags().get(2));
-        Assert.assertEquals("text", thing.getCategory());
-        Assert.assertEquals("Written text", thing.getCategoryName());
+        Assert.assertEquals("text", thing.getCategory().getId());
+        Assert.assertEquals("Written text", thing.getCategory().getName());
         Assert.assertEquals(ThingStatus.OWNER, thing.getStatus());
     }
 
@@ -143,9 +145,9 @@ public final class MockDataHelper {
      * Asserts the result of the User.xml resource.
      * 
      * @param thing
-     *            {@link User} to assert
+     *            {@link UserDetails} to assert
      */
-    public static void assertUserResource(User user) {
+    public static void assertUserResource(UserDetails user) {
         Assert.assertEquals("244", user.getId());
         Assert.assertEquals("Bomelin", user.getUsername());
         Assert.assertEquals("Mattias", user.getFirstname());
@@ -156,6 +158,34 @@ public final class MockDataHelper {
         Assert.assertEquals("mattias@flattr.com.invalid", user.getEmail());
         Assert.assertEquals("Flattr meee", user.getDescription());
         Assert.assertEquals(10, user.getThingcount());
+    }
+
+    /**
+     * Asserts the result of the Click.xml resource.
+     * 
+     * @param click
+     *            {@link Click} to assert
+     */
+    public static void assertClick(Click click) {
+        Assert.assertEquals("12345", click.getId());
+        Assert.assertEquals(new Date(1291133253L * 1000L), click.getClickTime());
+        Assert.assertEquals("0282de399c3892aa19165e1a0baaccdc", click.getThingId());
+        Assert.assertEquals("Free Brokep", click.getThingTitle());
+        Assert.assertEquals("http://blog.flattr.net/2010/11/free-brokep/", click.getThingUrl());
+    }
+    
+    /**
+     * Asserts the result of the ClickCount.xml resource.
+     * 
+     * @param count
+     *            {@link ClickCount} to assert
+     */
+    public static void assertClickCount(ClickCount count) {
+        Assert.assertEquals(231, count.getAnonymousCount());
+        Assert.assertEquals(128, count.getPublicCount());
+        Assert.assertEquals(1, count.getUsers().size());
+        Assert.assertEquals("244", count.getUsers().get(0).getId());
+        Assert.assertEquals("bomelin", count.getUsers().get(0).getUsername());
     }
 
 }

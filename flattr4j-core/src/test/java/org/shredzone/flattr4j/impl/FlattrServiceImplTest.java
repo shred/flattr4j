@@ -30,7 +30,7 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.UserDetails;
 
 /**
  * Unit test of the {@link FlattrServiceImpl} class.
@@ -40,7 +40,7 @@ import org.shredzone.flattr4j.model.User;
  */
 public class FlattrServiceImplTest {
 
-    private static final String BASE = "http://api.flattr.com/rest/0.0.1/";
+    private static final String BASE = "http://api.flattr.com/rest/0.5/";
 
     @Test
     public void testRegister() throws FlattrException {
@@ -77,20 +77,6 @@ public class FlattrServiceImplTest {
 
         FlattrService service = new FlattrServiceImpl(connector);
         service.click("12345");
-
-        connector.assertState();
-    }
-
-    @Test
-    public void testGetThingList() throws FlattrException {
-        MockConnector connector = new MockConnector(BASE + "thing/listbyuser/id/98765");
-        connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
-
-        FlattrService service = new FlattrServiceImpl(connector);
-        List<RegisteredThing> result = service.getThingList("98765");
-
-        Assert.assertEquals(1, result.size());
-        MockDataHelper.assertThingResource(result.get(0));
 
         connector.assertState();
     }
@@ -151,7 +137,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        User result = service.getMyself();
+        UserDetails result = service.getMyself();
 
         MockDataHelper.assertUserResource(result);
 
@@ -164,7 +150,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        User result = service.getUser("98765");
+        UserDetails result = service.getUser("98765");
 
         MockDataHelper.assertUserResource(result);
 
@@ -177,7 +163,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/User.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        User result = service.getUserByName("blafoo");
+        UserDetails result = service.getUserByName("blafoo");
 
         MockDataHelper.assertUserResource(result);
 

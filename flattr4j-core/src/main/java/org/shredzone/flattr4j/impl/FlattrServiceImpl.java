@@ -19,29 +19,35 @@
  */
 package org.shredzone.flattr4j.impl;
 
+import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.Connector;
 import org.shredzone.flattr4j.connector.Result;
-import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.NotFoundException;
+import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
+import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
+import org.shredzone.flattr4j.impl.xml.ClickXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
 import org.shredzone.flattr4j.impl.xml.RegisteredThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.ThingXmlWriter;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
 import org.shredzone.flattr4j.model.Category;
+import org.shredzone.flattr4j.model.Click;
+import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.RegisteredThing;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.User;
-
-import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
+import org.shredzone.flattr4j.model.UserDetails;
 
 /**
  * Default implementation of {@link FlattrService}.
@@ -51,7 +57,7 @@ import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
  */
 public class FlattrServiceImpl implements FlattrService {
     private final Connector connector;
-    private String baseUrl = "http://api.flattr.com/rest/0.0.1/";
+    private String baseUrl = "http://api.flattr.com/rest/0.5/";
 
     public FlattrServiceImpl(Connector connector) {
         this.connector = connector;
@@ -100,6 +106,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
+    public RegisteredThing getThing(Click click) throws FlattrException {
+        if (click == null) throw new ValidationException("click", "click is required");
+        return getThing(click.getThingId());
+    }
+    
+    @Override
     public void click(String thingId) throws FlattrException {
         if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
@@ -110,28 +122,27 @@ public class FlattrServiceImpl implements FlattrService {
     public void click(RegisteredThing thing) throws FlattrException {
         click(thing.getId());
     }
-
+    
     @Override
-    public List<RegisteredThing> getThingList(User user) throws FlattrException {
-        return getThingList(user.getId());
+    public ClickCount countClicks(RegisteredThing thing) throws FlattrException {
+        if (thing == null) throw new ValidationException("thing", "thing is required");
+        return countClicks(thing.getId());
     }
-
+    
     @Override
-    public List<RegisteredThing> getThingList(String userId) throws FlattrException {
-        if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
-
-        Result result = connector.call(baseUrl + "thing/listbyuser/id/" + urlencode(userId));
-        result.assertStatusOk();
+    public ClickCount countClicks(String thingId) throws FlattrException {
+        if (thingId == null || thingId.isEmpty()) throw new ValidationException("thingId", "thingId is required");
+        
+        Result result = connector.call(baseUrl + "thing/clicks/thing/" + urlencode(thingId)).assertStatusOk();
+        
         try {
-            List<RegisteredThing> list = new ArrayList<RegisteredThing>();
+            ClickCountXmlParser parser = new ClickCountXmlParser(result.openInputStream());
 
-            RegisteredThingXmlParser parser = new RegisteredThingXmlParser(result.openInputStream());
-            RegisteredThing thing;
-            while ((thing = parser.getNext()) != null) {
-                list.add(thing);
+            ClickCount count = parser.getNext();
+            if (count == null) {
+                throw new NotFoundException("unexpected empty result");
             }
-
-            return Collections.unmodifiableList(list);
+            return count;
         } finally {
             result.closeInputStream();
         }
@@ -195,12 +206,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public User getMyself() throws FlattrException {
+    public UserDetails getMyself() throws FlattrException {
         Result result = connector.call(baseUrl + "user/me").assertStatusOk();
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());
 
-            User user = parser.getNext();
+            UserDetails user = parser.getNext();
             if (user == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -211,7 +222,13 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public User getUser(String userId) throws FlattrException {
+    public UserDetails getUser(User user) throws FlattrException {
+        if (user == null) throw new ValidationException("user", "user is required");
+        return getUser(user.getId());
+    }
+
+    @Override
+    public UserDetails getUser(String userId) throws FlattrException {
         if (userId == null || userId.isEmpty()) throw new ValidationException("userId", "userId is required");
 
         Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId));
@@ -219,7 +236,26 @@ public class FlattrServiceImpl implements FlattrService {
         try {
             UserXmlParser parser = new UserXmlParser(result.openInputStream());
     
-            User user = parser.getNext();
+            UserDetails user = parser.getNext();
+            if (user == null) {
+                throw new NotFoundException("unexpected empty result");
+            }
+            return user;
+        } finally {
+            result.closeInputStream();
+        }
+    }
+    
+    @Override
+    public UserDetails getUserByName(String name) throws FlattrException {
+        if (name == null || name.isEmpty()) throw new ValidationException("name", "name is required");
+
+        Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
+        result.assertStatusOk();
+        try {
+            UserXmlParser parser = new UserXmlParser(result.openInputStream());
+
+            UserDetails user = parser.getNext();
             if (user == null) {
                 throw new NotFoundException("unexpected empty result");
             }
@@ -230,19 +266,28 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public User getUserByName(String name) throws FlattrException {
-        if (name == null || name.isEmpty()) throw new ValidationException("name", "name is required");
-
-        Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
+    public List<Click> getClicks(Calendar period) throws FlattrException {
+        if (period == null || !period.isSet(Calendar.YEAR) || !period.isSet(Calendar.MONTH))
+            throw new ValidationException("period month and year is required");
+        
+        String pstr = String.format(
+                        "%04d%02d",
+                        period.get(Calendar.YEAR),
+                        period.get(Calendar.MONTH) + 1
+        );
+        
+        Result result = connector.call(baseUrl + "user/clicks/period/" + urlencode(pstr));
         result.assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openInputStream());
-
-            User user = parser.getNext();
-            if (user == null) {
-                throw new NotFoundException("unexpected empty result");
+            List<Click> list = new ArrayList<Click>();
+            
+            ClickXmlParser parser = new ClickXmlParser(result.openInputStream());
+            Click click;
+            while ((click = parser.getNext()) != null) {
+                list.add(click);
             }
-            return user;
+    
+            return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
         }

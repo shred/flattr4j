@@ -47,9 +47,10 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
 
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
-        if (tag.equals(QN_CATEGORIES)) {
+        if (QN_CATEGORIES.equals(tag)) {
             inside = true;
-        } else if (tag.equals(QN_CATEGORY) && inside) {
+
+        } else if (QN_CATEGORY.equals(tag) && inside) {
             current = new Category();
         }
     }
@@ -57,16 +58,22 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
     @Override
     protected Category parseEndElement(QName tag, String body) throws FlattrException {
         Category result = null;
-        if (tag.equals(QN_CATEGORIES)) {
+        
+        if (QN_CATEGORIES.equals(tag)) {
             inside = false;
-        } else if (tag.equals(QN_CATEGORY) && current != null) {
+        
+        } else if (QN_CATEGORY.equals(tag) && current != null) {
             result = current;
             current = null;
-        } else if (tag.equals(QN_ID) && current != null) {
+        
+        } else if (QN_ID.equals(tag) && current != null) {
             current.setId(body);
-        } else if (tag.equals(QN_NAME) && current != null) {
+        
+        } else if (QN_NAME.equals(tag) && current != null) {
             current.setName(body);
+        
         }
+        
         return result;
     }
 

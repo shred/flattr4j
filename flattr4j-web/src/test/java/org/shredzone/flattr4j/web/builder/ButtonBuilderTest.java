@@ -172,7 +172,7 @@ public class ButtonBuilderTest {
      */
     public static Thing createThing() {
         Thing thing = new Thing();
-        thing.setCategory("text");
+        thing.setCategoryId("text");
         thing.setDescription("This is <em>a new Thing</em>");
         thing.setHidden(false);
         thing.setLanguage("en_UK");

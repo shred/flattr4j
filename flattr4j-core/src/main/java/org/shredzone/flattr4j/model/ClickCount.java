@@ -18,45 +18,37 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * A Flattr {@link User}. Two {@link User} are considered equal if they contain the same
- * id.
- * 
+ * Contains the number of clicks to a Thing, along with a list of {@link User} who
+ * clicked the Thing.
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 2406024500321708867L;
+public class ClickCount {
     
-    private String id;
-    private String username;
+    private int anonymousCount;
+    private int publicCount;
+    private List<User> users;
 
     /**
-     * User id.
+     * Number of anonymous clicks.
      */
-    public String getId()                   { return id; }
-    public void setId(String id)            { this.id = id; }
+    public int getAnonymousCount()                  { return anonymousCount; }
+    public void setAnonymousCount(int anonymousCount) { this.anonymousCount = anonymousCount; }
 
     /**
-     * User name.
+     * Number of public clicks.
      */
-    public String getUsername()             { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public int getPublicCount()                     { return publicCount; }
+    public void setPublicCount(int publicCount)     { this.publicCount = publicCount; }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof User)) {
-            return false;
-        }
-        return id.equals(((User) obj).id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+    /**
+     * List of {@link User} who clicked.
+     */
+    public List<User> getUsers()                    { return users; }
+    public void setUsers(List<User> users)          { this.users = users; }
 
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flattr>
+    <version>0.5</version>
+    <clicks>
+      <click>
+          <id>12345</id>
+          <click_time>1291133253</click_time>
+    <thing>
+      <id>0282de399c3892aa19165e1a0baaccdc</id>
+      <title>Free Brokep</title>
+      <url>http://blog.flattr.net/2010/11/free-brokep/</url>
+    </thing>
+  </click>
+  </clicks>
+</flattr>

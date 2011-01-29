@@ -35,7 +35,7 @@ public class Thing implements Serializable {
     
     private String url;
     private String title;
-    private String category;
+    private Category category;
     private String description;
     private List<String> tags = new ArrayList<String>();
     private String language;
@@ -54,10 +54,23 @@ public class Thing implements Serializable {
     public void setTitle(String title)          { this.title = title; }
 
     /**
-     * Category id this Thing belongs to.
+     * Category this Thing belongs to.
      */
-    public String getCategory()                 { return category; }
-    public void setCategory(String category)    { this.category = category; }
+    public Category getCategory()               { return category; }
+    public void setCategory(Category category)  { this.category = category; }
+
+    /**
+     * Sets the Category by category ID only. This method is useful if only the category
+     * id is known. Use only for registering a Thing!
+     * 
+     * @param categoryId
+     *            Category ID
+     */
+    public void setCategoryId(String categoryId) {
+        Category category = new Category();
+        category.setId(categoryId);
+        setCategory(category);
+    }
 
     /**
      * A descriptive text about the Thing.
@@ -112,7 +125,7 @@ public class Thing implements Serializable {
         if (description.length() > 1000)
             throw new ValidationException("description", "description too long (> 1000 characters)");
 
-        if (category == null || category.isEmpty())
+        if (category == null || category.getId() == null || category.getId().isEmpty())
             throw new ValidationException("category", "category required");
 
         for (String tag : tags) {

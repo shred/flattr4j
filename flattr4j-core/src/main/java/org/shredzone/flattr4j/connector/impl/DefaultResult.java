@@ -28,7 +28,7 @@ import org.apache.http.StatusLine;
 import org.shredzone.flattr4j.connector.Result;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
-import org.shredzone.flattr4j.exception.InactiveException;
+import org.shredzone.flattr4j.exception.ForbiddenException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.RegistrationFailedException;
 
@@ -62,9 +62,10 @@ public class DefaultResult implements Result {
         switch (line.getStatusCode()) {
             case HttpStatus.SC_OK:                      // 200
                 return this;
-                
+
+            case HttpStatus.SC_UNAUTHORIZED:            // 401
             case HttpStatus.SC_FORBIDDEN:               // 403
-                throw new InactiveException(message);
+                throw new ForbiddenException(message);
                 
             case HttpStatus.SC_NOT_FOUND:               // 404
                 throw new NotFoundException(message);

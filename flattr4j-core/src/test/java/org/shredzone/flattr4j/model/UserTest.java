@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit test of the {@link User} class.
+ * Unit test of the {@link UserDetails} class.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -32,7 +32,7 @@ public class UserTest {
 
     @Test
     public void testProperty() {
-        User user = new User();
+        UserDetails user = new UserDetails();
 
         Assert.assertNull(user.getId());
         user.setId("1701");

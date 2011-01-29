@@ -37,9 +37,7 @@ public class RegisteredThing extends Thing {
     private String intId;
     private Date created;
     private int clicks;
-    private String userId;
-    private String userName;
-    private String categoryName;
+    private User user;
     private ThingStatus status;
 
     /**
@@ -67,23 +65,11 @@ public class RegisteredThing extends Thing {
     public void setClicks(int clicks)       { this.clicks = clicks; }
 
     /**
-     * Id of the user who owns this Thing.
+     * The {@link User} who owns this Thing.
      */
-    public String getUserId()               { return userId; }
-    public void setUserId(String userId)    { this.userId = userId; }
-
-    /**
-     * User name of the user who owns this Thing.
-     */
-    public String getUserName()             { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
-
-    /**
-     * Name of the Category this thing is added to.
-     */
-    public String getCategoryName()         { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
-
+    public User getUser()                   { return user; }
+    public void setUser(User user)          { this.user = user; }
+    
     /**
      * Status of this Thing.
      */

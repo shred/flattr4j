@@ -47,9 +47,10 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
 
     @Override
     protected void parseStartElement(QName tag) throws FlattrException {
-        if (tag.equals(QN_LANGUAGES)) {
+        if (QN_LANGUAGES.equals(tag)) {
             inside = true;
-        } else if (tag.equals(QN_LANGUAGE) && inside) {
+            
+        } else if (QN_LANGUAGE.equals(tag) && inside) {
             current = new Language();
         }
     }
@@ -57,16 +58,21 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
     @Override
     protected Language parseEndElement(QName tag, String body) throws FlattrException {
         Language result = null;
-        if (tag.equals(QN_LANGUAGES)) {
+        
+        if (QN_LANGUAGES.equals(tag)) {
             inside = false;
-        } else if (tag.equals(QN_LANGUAGE) && current != null) {
+            
+        } else if (QN_LANGUAGE.equals(tag) && current != null) {
             result = current;
             current = null;
-        } else if (tag.equals(QN_ID) && current != null) {
+            
+        } else if (QN_ID.equals(tag) && current != null) {
             current.setId(body);
-        } else if (tag.equals(QN_NAME) && current != null) {
+            
+        } else if (QN_NAME.equals(tag) && current != null) {
             current.setName(body);
         }
+        
         return result;
     }
 

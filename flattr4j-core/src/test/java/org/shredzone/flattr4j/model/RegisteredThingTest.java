@@ -52,17 +52,23 @@ public class RegisteredThingTest {
         thing.setClicks(133);
         Assert.assertEquals(133, thing.getClicks());
 
-        Assert.assertNull(thing.getUserId());
-        thing.setUserId("foobar");
-        Assert.assertEquals("foobar", thing.getUserId());
+        Assert.assertNull(thing.getUser());
+        thing.setUser(new User());
+        
+        Assert.assertNull(thing.getUser().getId());
+        thing.getUser().setId("foobar");
+        Assert.assertEquals("foobar", thing.getUser().getId());
 
-        Assert.assertNull(thing.getUserName());
-        thing.setUserName("Mr. Foo Bar");
-        Assert.assertEquals("Mr. Foo Bar", thing.getUserName());
+        Assert.assertNull(thing.getUser().getUsername());
+        thing.getUser().setUsername("Mr. Foo Bar");
+        Assert.assertEquals("Mr. Foo Bar", thing.getUser().getUsername());
 
         Assert.assertNull(thing.getCategory());
-        thing.setCategory("image");
-        Assert.assertEquals("image", thing.getCategory());
+        thing.setCategory(new Category());
+        
+        Assert.assertNull(thing.getCategory().getId());
+        thing.getCategory().setId("image");
+        Assert.assertEquals("image", thing.getCategory().getId());
 
         Assert.assertNull(thing.getStatus());
         thing.setStatus(ThingStatus.OWNER);
