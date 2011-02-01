@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flattr>
+  <version>0.5</version>
+  <subscriptions>
+    <subscription>
+      <id>12345</id>
+      <months>12</months>
+      <monthsleft>9</monthsleft>
+      <added>1290986891</added>
+      <thing>
+        <id><![CDATA[a2a2e901cefca2954cbe444c6c91fd0f]]></id>
+        <url><![CDATA[http://www.example.org]]></url>
+        <title><![CDATA[example.org]]></title>
+      </thing>
+    </subscription>
+  </subscriptions>
+</flattr>

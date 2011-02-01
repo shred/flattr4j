@@ -24,6 +24,7 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.ThingStatus;
@@ -186,6 +187,22 @@ public final class MockDataHelper {
         Assert.assertEquals(1, count.getUsers().size());
         Assert.assertEquals("244", count.getUsers().get(0).getUserId());
         Assert.assertEquals("bomelin", count.getUsers().get(0).getUsername());
+    }
+    
+    /**
+     * Assers the result of the Subscription.xml resource.
+     * 
+     * @param sub
+     *            {@link Subscription} to assert
+     */
+    public static void assertSubscription(Subscription sub) {
+        Assert.assertEquals("12345", sub.getSubscriptionId());
+        Assert.assertEquals(12, sub.getMonths());
+        Assert.assertEquals(9, sub.getMonthsLeft());
+        Assert.assertEquals(new Date(1290986891L * 1000L), sub.getAdded());
+        Assert.assertEquals("a2a2e901cefca2954cbe444c6c91fd0f", sub.getThingId());
+        Assert.assertEquals("http://www.example.org", sub.getUrl());
+        Assert.assertEquals("example.org", sub.getTitle());
     }
 
 }

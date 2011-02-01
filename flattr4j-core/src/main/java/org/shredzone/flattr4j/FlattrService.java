@@ -28,6 +28,7 @@ import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
@@ -158,5 +159,14 @@ public interface FlattrService{
      *             when the list of clicks could not be fetched
      */
     List<ClickedThing> getClicks(Calendar period) throws FlattrException;
+    
+    /**
+     * Gets a list of all current {@link Subscription} of the currently logged in user.
+     * 
+     * @return List of {@link Subscription}
+     * @throws FlattrException
+     *             when the list could not be fetched
+     */
+    List<Subscription> getSubscriptions() throws FlattrException;
 
 }

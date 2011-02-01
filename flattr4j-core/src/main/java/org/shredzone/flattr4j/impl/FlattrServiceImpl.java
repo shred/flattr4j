@@ -37,6 +37,7 @@ import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickedThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.LanguageXmlParser;
 import org.shredzone.flattr4j.impl.xml.SubmissionXmlWriter;
+import org.shredzone.flattr4j.impl.xml.SubscriptionXmlParser;
 import org.shredzone.flattr4j.impl.xml.ThingXmlParser;
 import org.shredzone.flattr4j.impl.xml.UserXmlParser;
 import org.shredzone.flattr4j.model.BrowseTerm;
@@ -45,6 +46,7 @@ import org.shredzone.flattr4j.model.ClickCount;
 import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
@@ -265,6 +267,25 @@ public class FlattrServiceImpl implements FlattrService {
                 list.add(click);
             }
     
+            return Collections.unmodifiableList(list);
+        } finally {
+            result.closeInputStream();
+        }
+    }
+    
+    @Override
+    public List<Subscription> getSubscriptions() throws FlattrException {
+        Result result = connector.call(baseUrl + "subscription/list");
+        result.assertStatusOk();
+        try {
+            List<Subscription> list = new ArrayList<Subscription>();
+            
+            SubscriptionXmlParser parser = new SubscriptionXmlParser(result.openInputStream());
+            Subscription sub;
+            while ((sub = parser.getNext()) != null) {
+                list.add(sub);
+            }
+            
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
