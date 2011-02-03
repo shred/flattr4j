@@ -51,7 +51,7 @@ public class OpenServiceImpl implements OpenService {
     }
 
     @Override
-    public List<Category> getCategoryList() throws FlattrException {
+    public List<Category> getCategories() throws FlattrException {
         Result result = connector.call(baseUrl + "categories/text").assertStatusOk();
         try {
             InputStreamReader inReader = new InputStreamReader(result.openInputStream(), result.getEncoding());
@@ -80,7 +80,7 @@ public class OpenServiceImpl implements OpenService {
     }
 
     @Override
-    public List<Language> getLanguageList() throws FlattrException {
+    public List<Language> getLanguages() throws FlattrException {
         Result result = connector.call(baseUrl + "languages/text").assertStatusOk();
         try {
             InputStreamReader inReader = new InputStreamReader(result.openInputStream(), result.getEncoding());

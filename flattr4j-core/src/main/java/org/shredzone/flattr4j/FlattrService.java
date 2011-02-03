@@ -105,7 +105,7 @@ public interface FlattrService{
      * @throws FlattrException
      *             when the operation failed
      */
-    List<Category> getCategoryList() throws FlattrException;
+    List<Category> getCategories() throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Language}. The result is not cached.
@@ -114,7 +114,7 @@ public interface FlattrService{
      * @throws FlattrException
      *             when the operation failed
      */
-    List<Language> getLanguageList() throws FlattrException;
+    List<Language> getLanguages() throws FlattrException;
 
     /**
      * Gets the {@link User} profile of the currently logged in user.

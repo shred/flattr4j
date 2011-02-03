@@ -48,7 +48,7 @@ public class OpenServiceImplTest {
         connector.setBody(body);
         OpenService service = new OpenServiceImpl(connector);
 
-        List<Category> result = service.getCategoryList();
+        List<Category> result = service.getCategories();
 
         Assert.assertEquals(3, result.size());
 
@@ -88,7 +88,7 @@ public class OpenServiceImplTest {
         connector.setBody(body);
         OpenService service = new OpenServiceImpl(connector);
 
-        List<Language> result = service.getLanguageList();
+        List<Language> result = service.getLanguages();
 
         Assert.assertEquals(3, result.size());
 

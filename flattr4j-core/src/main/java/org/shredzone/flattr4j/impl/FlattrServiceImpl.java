@@ -156,7 +156,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
     
     @Override
-    public List<Category> getCategoryList() throws FlattrException {
+    public List<Category> getCategories() throws FlattrException {
         Result result = connector.call(baseUrl + "feed/categories").assertStatusOk();
         try {
             List<Category> list = new ArrayList<Category>();
@@ -174,7 +174,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Language> getLanguageList() throws FlattrException {
+    public List<Language> getLanguages() throws FlattrException {
         Result result = connector.call(baseUrl + "feed/languages").assertStatusOk();
         try {
             List<Language> list = new ArrayList<Language>();

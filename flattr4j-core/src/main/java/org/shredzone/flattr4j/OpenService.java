@@ -37,13 +37,13 @@ public interface OpenService {
      * 
      * @return List of Flattr {@link Category}.
      */
-    List<Category> getCategoryList() throws FlattrException;
+    List<Category> getCategories() throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Language}. The result is not cached.
      * 
      * @return List of Flattr {@link Language}.
      */
-    List<Language> getLanguageList() throws FlattrException;
+    List<Language> getLanguages() throws FlattrException;
 
 }

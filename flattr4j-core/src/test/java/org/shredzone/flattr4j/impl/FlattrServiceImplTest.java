@@ -104,7 +104,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Category.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        List<Category> result = service.getCategoryList();
+        List<Category> result = service.getCategories();
 
         Assert.assertEquals(2, result.size());
 
@@ -121,7 +121,7 @@ public class FlattrServiceImplTest {
         connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Language.xml");
 
         FlattrService service = new FlattrServiceImpl(connector);
-        List<Language> result = service.getLanguageList();
+        List<Language> result = service.getLanguages();
 
         Assert.assertEquals(2, result.size());
 
