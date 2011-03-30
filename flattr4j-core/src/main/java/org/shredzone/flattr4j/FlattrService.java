@@ -64,6 +64,17 @@ public interface FlattrService{
      *             when no such thing was found
      */
     Thing getThing(ThingId thingId) throws FlattrException;
+    
+    /**
+     * Gets a {@link Thing} by its registered URL.
+     * 
+     * @param url
+     *            Thing's URL
+     * @return {@link Thing}. Never {@code null}.
+     * @throws FlattrException
+     *             when no such thing was found
+     */
+    Thing getThingByUrl(String url) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.

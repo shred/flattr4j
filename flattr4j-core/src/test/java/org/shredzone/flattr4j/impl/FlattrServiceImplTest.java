@@ -73,6 +73,19 @@ public class FlattrServiceImplTest {
     }
 
     @Test
+    public void testGetThingByUrl() throws FlattrException {
+        MockConnector connector = new MockConnector(BASE + "thing/get/url/http%3A%2F%2Fflattr4j.shredzone.org");
+        connector.setBodyResource("/org/shredzone/flattr4j/impl/xml/Thing.xml");
+
+        FlattrService service = new FlattrServiceImpl(connector);
+        Thing result = service.getThingByUrl("http://flattr4j.shredzone.org");
+
+        MockDataHelper.assertThingResource(result);
+
+        connector.assertState();
+    }
+
+    @Test
     public void testClick() throws FlattrException {
         MockConnector connector = new MockConnector(BASE + "thing/click/id/12345");
 

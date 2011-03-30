@@ -109,6 +109,25 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
+    public Thing getThingByUrl(String url) throws FlattrException {
+        if (url == null || url.isEmpty()) throw new ValidationException("url", "url is required");
+
+        Result result = connector.call(baseUrl + "thing/get/url/" + urlencode(url));
+        result.assertStatusOk();
+        try {
+            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
+
+            Thing thing = parser.getNext();
+            if (thing == null) {
+                throw new NotFoundException("unexpected empty result");
+            }
+            return thing;
+        } finally {
+            result.closeInputStream();
+        }
+    }
+
+    @Override
     public void click(ThingId thingId) throws FlattrException {
         if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thingId is required");
 
