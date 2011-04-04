@@ -73,6 +73,7 @@ public interface FlattrService{
      * @return {@link Thing}. Never {@code null}.
      * @throws FlattrException
      *             when no such thing was found
+     * @since 1.1
      */
     Thing getThingByUrl(String url) throws FlattrException;
 
