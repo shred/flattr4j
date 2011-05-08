@@ -223,7 +223,7 @@ public class BrowseTerm implements Serializable {
 
         boolean commaRequired = false;
         for (String value : entries) {
-            if (value == null || value.isEmpty()) {
+            if (value == null || value.length() == 0) {
                 continue;
             }
 

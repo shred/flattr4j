@@ -90,7 +90,7 @@ public class Submission implements Serializable {
      *          name and a reason message.
      */
     public void validate() throws ValidationException {
-        if (url == null || url.isEmpty())
+        if (url == null || url.length() == 0)
             throw new ValidationException("url", "url required");
 
         if (title == null)
@@ -111,11 +111,11 @@ public class Submission implements Serializable {
         if (description.length() > 1000)
             throw new ValidationException("description", "description too long (> 1000 characters)");
 
-        if (category == null || category.getCategoryId().isEmpty())
+        if (category == null || category.getCategoryId().length() == 0)
             throw new ValidationException("category", "category required");
 
         for (String tag : tags) {
-            if (tag == null || tag.isEmpty())
+            if (tag == null || tag.length() == 0)
                 throw new ValidationException("tags", "tags contains empty tag");
 
             if (tag.indexOf(',') >= 0)

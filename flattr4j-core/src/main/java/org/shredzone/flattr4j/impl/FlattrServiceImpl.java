@@ -91,7 +91,7 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public Thing getThing(ThingId thingId) throws FlattrException {
-        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thing id is required");
+        if (thingId == null || thingId.getThingId().length() == 0) throw new ValidationException("thingId", "thing id is required");
 
         Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId.getThingId()));
         result.assertStatusOk();
@@ -110,7 +110,7 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public Thing getThingByUrl(String url) throws FlattrException {
-        if (url == null || url.isEmpty()) throw new ValidationException("url", "url is required");
+        if (url == null || url.length() == 0) throw new ValidationException("url", "url is required");
 
         Result result = connector.call(baseUrl + "thing/get/url/" + urlencode(url));
         result.assertStatusOk();
@@ -129,14 +129,14 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public void click(ThingId thingId) throws FlattrException {
-        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thingId is required");
+        if (thingId == null || thingId.getThingId().length() == 0) throw new ValidationException("thingId", "thingId is required");
 
         connector.call(baseUrl + "thing/click/id/" + urlencode(thingId.getThingId())).assertStatusOk();
     }
 
     @Override
     public ClickCount countClicks(ThingId thingId) throws FlattrException {
-        if (thingId == null || thingId.getThingId().isEmpty()) throw new ValidationException("thingId", "thingId is required");
+        if (thingId == null || thingId.getThingId().length() == 0) throw new ValidationException("thingId", "thingId is required");
         
         Result result = connector.call(baseUrl + "thing/clicks/thing/" + urlencode(thingId.getThingId())).assertStatusOk();
         
@@ -228,7 +228,7 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public User getUser(UserId userId) throws FlattrException {
-        if (userId == null || userId.getUserId().isEmpty()) throw new ValidationException("userId", "userId is required");
+        if (userId == null || userId.getUserId().length() == 0) throw new ValidationException("userId", "userId is required");
 
         Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId.getUserId()));
         result.assertStatusOk();
@@ -247,7 +247,7 @@ public class FlattrServiceImpl implements FlattrService {
     
     @Override
     public User getUserByName(String name) throws FlattrException {
-        if (name == null || name.isEmpty()) throw new ValidationException("name", "name is required");
+        if (name == null || name.length() == 0) throw new ValidationException("name", "name is required");
 
         Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
         result.assertStatusOk();
