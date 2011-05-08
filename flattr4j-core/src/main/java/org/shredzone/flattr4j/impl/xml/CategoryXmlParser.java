@@ -20,8 +20,6 @@ package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Category;
 
@@ -33,10 +31,10 @@ import org.shredzone.flattr4j.model.Category;
  */
 public class CategoryXmlParser extends AbstractXmlParser<Category> {
 
-    private final static QName QN_CATEGORIES = new QName("categories");
-    private final static QName QN_CATEGORY = new QName("category");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_NAME = new QName("name");
+    private final static String QN_CATEGORIES = "categories";
+    private final static String QN_CATEGORY = "category";
+    private final static String QN_ID = "id";
+    private final static String QN_NAME = "name";
 
     private boolean inside = false;
     private Category current = null;
@@ -46,7 +44,7 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_CATEGORIES.equals(tag)) {
             inside = true;
 
@@ -56,7 +54,7 @@ public class CategoryXmlParser extends AbstractXmlParser<Category> {
     }
 
     @Override
-    protected Category parseEndElement(QName tag, String body) throws FlattrException {
+    protected Category parseEndElement(String tag, String body) throws FlattrException {
         Category result = null;
         
         if (QN_CATEGORIES.equals(tag)) {

@@ -20,8 +20,6 @@ package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.User;
@@ -34,17 +32,17 @@ import org.shredzone.flattr4j.model.User;
  */
 public class UserXmlParser extends AbstractXmlParser<User> {
 
-    private final static QName QN_USER = new QName("user");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_USERNAME = new QName("username");
-    private final static QName QN_FIRSTNAME = new QName("firstname");
-    private final static QName QN_LASTNAME = new QName("lastname");
-    private final static QName QN_CITY = new QName("city");
-    private final static QName QN_COUNTRY = new QName("country");
-    private final static QName QN_GRAVATAR = new QName("gravatar");
-    private final static QName QN_EMAIL = new QName("email");
-    private final static QName QN_DESCRIPTION = new QName("description");
-    private final static QName QN_THINGCOUNT = new QName("thingcount");
+    private final static String QN_USER = "user";
+    private final static String QN_ID = "id";
+    private final static String QN_USERNAME = "username";
+    private final static String QN_FIRSTNAME = "firstname";
+    private final static String QN_LASTNAME = "lastname";
+    private final static String QN_CITY = "city";
+    private final static String QN_COUNTRY = "country";
+    private final static String QN_GRAVATAR = "gravatar";
+    private final static String QN_EMAIL = "email";
+    private final static String QN_DESCRIPTION = "description";
+    private final static String QN_THINGCOUNT = "thingcount";
 
     private User current = null;
 
@@ -53,14 +51,14 @@ public class UserXmlParser extends AbstractXmlParser<User> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_USER.equals(tag) && current == null) {
             current = new User();
         }
     }
 
     @Override
-    protected User parseEndElement(QName tag, String body) throws FlattrException {
+    protected User parseEndElement(String tag, String body) throws FlattrException {
         User result = null;
 
         if (QN_USER.equals(tag) && current != null) {

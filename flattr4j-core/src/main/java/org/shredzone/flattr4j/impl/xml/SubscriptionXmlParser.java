@@ -21,8 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.util.Date;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.Subscription;
@@ -35,14 +33,14 @@ import org.shredzone.flattr4j.model.Subscription;
  */
 public class SubscriptionXmlParser extends AbstractXmlParser<Subscription> {
 
-    private final static QName QN_SUBSCRIPTION = new QName("subscription");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_MONTHS = new QName("months");
-    private final static QName QN_MONTHSLEFT = new QName("monthsleft");
-    private final static QName QN_ADDED = new QName("added");
-    private final static QName QN_THING = new QName("thing");
-    private final static QName QN_TITLE = new QName("title");
-    private final static QName QN_URL = new QName("url");
+    private final static String QN_SUBSCRIPTION = "subscription";
+    private final static String QN_ID = "id";
+    private final static String QN_MONTHS = "months";
+    private final static String QN_MONTHSLEFT = "monthsleft";
+    private final static String QN_ADDED = "added";
+    private final static String QN_THING = "thing";
+    private final static String QN_TITLE = "title";
+    private final static String QN_URL = "url";
 
     private Subscription current = null;
     private boolean insideThing = false;
@@ -52,7 +50,7 @@ public class SubscriptionXmlParser extends AbstractXmlParser<Subscription> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_SUBSCRIPTION.equals(tag) && current == null) {
             current = new Subscription();
             
@@ -62,7 +60,7 @@ public class SubscriptionXmlParser extends AbstractXmlParser<Subscription> {
     }
 
     @Override
-    protected Subscription parseEndElement(QName tag, String body) throws FlattrException {
+    protected Subscription parseEndElement(String tag, String body) throws FlattrException {
         Subscription result = null;
 
         if (QN_SUBSCRIPTION.equals(tag) && current != null) {

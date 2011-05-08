@@ -21,8 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.util.Date;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.ClickedThing;
@@ -35,12 +33,12 @@ import org.shredzone.flattr4j.model.ClickedThing;
  */
 public class ClickedThingXmlParser extends AbstractXmlParser<ClickedThing> {
 
-    private final static QName QN_CLICK = new QName("click");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_CLICK_TIME = new QName("click_time");
-    private final static QName QN_THING = new QName("thing");
-    private final static QName QN_TITLE = new QName("title");
-    private final static QName QN_URL = new QName("url");
+    private final static String QN_CLICK = "click";
+    private final static String QN_ID = "id";
+    private final static String QN_CLICK_TIME = "click_time";
+    private final static String QN_THING = "thing";
+    private final static String QN_TITLE = "title";
+    private final static String QN_URL = "url";
 
     private ClickedThing current = null;
     private boolean insideThing = false;
@@ -50,7 +48,7 @@ public class ClickedThingXmlParser extends AbstractXmlParser<ClickedThing> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_CLICK.equals(tag) && current == null) {
             current = new ClickedThing();
             
@@ -60,7 +58,7 @@ public class ClickedThingXmlParser extends AbstractXmlParser<ClickedThing> {
     }
 
     @Override
-    protected ClickedThing parseEndElement(QName tag, String body) throws FlattrException {
+    protected ClickedThing parseEndElement(String tag, String body) throws FlattrException {
         ClickedThing result = null;
 
         if (QN_CLICK.equals(tag) && current != null) {

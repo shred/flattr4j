@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -38,8 +37,8 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
  * An abstract, simple XML parser for parsing the responses of the Flattr API. The goal of
  * this class is to provide a lightweight instead of a full featured XML parser. The
  * document is not validated, but a correct document structure is just expected. Derived
- * classes need to implement {@link #parseStartElement(QName)} and
- * {@link #parseEndElement(QName, String)} to analyze the document structure and creating
+ * classes need to implement {@link #parseStartElement(String)} and
+ * {@link #parseEndElement(String, String)} to analyze the document structure and creating
  * result objects.
  * 
  * @param T
@@ -81,12 +80,12 @@ public abstract class AbstractXmlParser<T> {
                 if (event.isStartElement()) {
                     stringStack.add(0, new StringBuilder());
                     StartElement element = (StartElement) event;
-                    parseStartElement(element.getName());
+                    parseStartElement(element.getName().toString());
 
                 } else if (event.isEndElement()) {
                     String str = stringStack.remove(0).toString().trim();
                     EndElement element = (EndElement) event;
-                    T result = parseEndElement(element.getName(), str);
+                    T result = parseEndElement(element.getName().toString(), str);
                     if (result != null) {
                         return result;
                     }
@@ -111,7 +110,7 @@ public abstract class AbstractXmlParser<T> {
      * @param tag
      *            Start tag that was found
      */
-    protected abstract void parseStartElement(QName tag) throws FlattrException;
+    protected abstract void parseStartElement(String tag) throws FlattrException;
 
     /**
      * The end of an XML element was found.
@@ -123,6 +122,6 @@ public abstract class AbstractXmlParser<T> {
      * @return Newly created object, or {@code null} if no new object could be created for
      *         now
      */
-    protected abstract T parseEndElement(QName tag, String body) throws FlattrException;
+    protected abstract T parseEndElement(String tag, String body) throws FlattrException;
     
 }

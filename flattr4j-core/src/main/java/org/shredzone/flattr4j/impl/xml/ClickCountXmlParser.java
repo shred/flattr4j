@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.ClickCount;
@@ -38,13 +36,13 @@ import org.shredzone.flattr4j.model.UserReference;
  */
 public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
 
-    private final static QName QN_CLICKS = new QName("clicks");
-    private final static QName QN_ANONYMOUS = new QName("anonymous");
-    private final static QName QN_PUBLIC = new QName("public");
-    private final static QName QN_COUNT = new QName("count");
-    private final static QName QN_USER = new QName("user");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_USERNAME = new QName("username");
+    private final static String QN_CLICKS = "clicks";
+    private final static String QN_ANONYMOUS = "anonymous";
+    private final static String QN_PUBLIC = "public";
+    private final static String QN_COUNT = "count";
+    private final static String QN_USER = "user";
+    private final static String QN_ID = "id";
+    private final static String QN_USERNAME = "username";
 
     private ClickCount current = null;
     private List<UserReference> users;
@@ -57,7 +55,7 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_CLICKS.equals(tag) && current == null) {
             current = new ClickCount();
             users = new ArrayList<UserReference>();
@@ -75,7 +73,7 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
     }
 
     @Override
-    protected ClickCount parseEndElement(QName tag, String body) throws FlattrException {
+    protected ClickCount parseEndElement(String tag, String body) throws FlattrException {
         ClickCount result = null;
 
         if (QN_CLICKS.equals(tag) && current != null) {

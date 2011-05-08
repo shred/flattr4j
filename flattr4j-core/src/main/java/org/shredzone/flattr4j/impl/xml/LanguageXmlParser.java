@@ -20,8 +20,6 @@ package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Language;
 
@@ -33,10 +31,10 @@ import org.shredzone.flattr4j.model.Language;
  */
 public class LanguageXmlParser extends AbstractXmlParser<Language> {
 
-    private final static QName QN_LANGUAGES = new QName("languages");
-    private final static QName QN_LANGUAGE = new QName("language");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_NAME = new QName("name");
+    private final static String QN_LANGUAGES = "languages";
+    private final static String QN_LANGUAGE = "language";
+    private final static String QN_ID = "id";
+    private final static String QN_NAME = "name";
 
     private boolean inside = false;
     private Language current = null;
@@ -46,7 +44,7 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_LANGUAGES.equals(tag)) {
             inside = true;
             
@@ -56,7 +54,7 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
     }
 
     @Override
-    protected Language parseEndElement(QName tag, String body) throws FlattrException {
+    protected Language parseEndElement(String tag, String body) throws FlattrException {
         Language result = null;
         
         if (QN_LANGUAGES.equals(tag)) {

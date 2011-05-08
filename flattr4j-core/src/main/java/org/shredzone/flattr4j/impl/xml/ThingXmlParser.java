@@ -21,8 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.util.Date;
 
-import javax.xml.namespace.QName;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.Category;
@@ -38,22 +36,22 @@ import org.shredzone.flattr4j.model.UserReference;
  */
 public class ThingXmlParser extends AbstractXmlParser<Thing> {
 
-    private final static QName QN_THING = new QName("thing");
-    private final static QName QN_ID = new QName("id");
-    private final static QName QN_INT_ID = new QName("int_id");
-    private final static QName QN_CREATED = new QName("created");
-    private final static QName QN_LANGUAGE = new QName("language");
-    private final static QName QN_URL = new QName("url");
-    private final static QName QN_TITLE = new QName("title");
-    private final static QName QN_STORY = new QName("story");
-    private final static QName QN_CLICKS = new QName("clicks");
-    private final static QName QN_USER = new QName("user");
-    private final static QName QN_USERNAME = new QName("username");
-    private final static QName QN_TAGS = new QName("tags");
-    private final static QName QN_TAG = new QName("tag");
-    private final static QName QN_CATEGORY = new QName("category");
-    private final static QName QN_NAME = new QName("name");
-    private final static QName QN_STATUS = new QName("status");
+    private final static String QN_THING = "thing";
+    private final static String QN_ID = "id";
+    private final static String QN_INT_ID = "int_id";
+    private final static String QN_CREATED = "created";
+    private final static String QN_LANGUAGE = "language";
+    private final static String QN_URL = "url";
+    private final static String QN_TITLE = "title";
+    private final static String QN_STORY = "story";
+    private final static String QN_CLICKS = "clicks";
+    private final static String QN_USER = "user";
+    private final static String QN_USERNAME = "username";
+    private final static String QN_TAGS = "tags";
+    private final static String QN_TAG = "tag";
+    private final static String QN_CATEGORY = "category";
+    private final static String QN_NAME = "name";
+    private final static String QN_STATUS = "status";
 
     private Thing current = null;
     private UserReference user = null;
@@ -67,7 +65,7 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
     }
 
     @Override
-    protected void parseStartElement(QName tag) throws FlattrException {
+    protected void parseStartElement(String tag) throws FlattrException {
         if (QN_THING.equals(tag) && current == null) {
             current = new Thing();
        
@@ -85,7 +83,7 @@ public class ThingXmlParser extends AbstractXmlParser<Thing> {
     }
 
     @Override
-    protected Thing parseEndElement(QName tag, String body) throws FlattrException {
+    protected Thing parseEndElement(String tag, String body) throws FlattrException {
         Thing result = null;
 
         if (QN_THING.equals(tag) && current != null) {
