@@ -19,14 +19,15 @@
 package org.shredzone.flattr4j.impl.xml;
 
 import java.util.Date;
+
 import org.junit.Assert;
 import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.ClickCount;
+import org.shredzone.flattr4j.model.ClickedThing;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.ThingStatus;
 import org.shredzone.flattr4j.model.User;
 

@@ -18,8 +18,6 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.InputStream;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Language;
 
@@ -38,10 +36,6 @@ public class LanguageXmlParser extends AbstractXmlParser<Language> {
 
     private boolean inside = false;
     private Language current = null;
-
-    public LanguageXmlParser(InputStream in) throws FlattrException {
-        super(in);
-    }
 
     @Override
     protected void parseStartElement(String tag) throws FlattrException {

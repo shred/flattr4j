@@ -21,6 +21,7 @@ package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,15 +39,15 @@ public class UserXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = UserXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/User.xml");
-        UserXmlParser parser = new UserXmlParser(in);
+        UserXmlParser parser = new UserXmlParser();
+        parser.parse(in);
 
-        User user;
+        List<User> result = parser.getList();
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
 
-        user = parser.getNext();
+        User user = result.get(0);
         MockDataHelper.assertUserResource(user);
-
-        user = parser.getNext();
-        Assert.assertNull(user);
     }
 
 }

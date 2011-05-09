@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,10 +48,6 @@ public class ClickCountXmlParser extends AbstractXmlParser<ClickCount> {
     private UserReference user = null;
     private boolean insideAnonymous = false;
     private boolean insidePublic = false;
-
-    public ClickCountXmlParser(InputStream in) throws FlattrException {
-        super(in);
-    }
 
     @Override
     protected void parseStartElement(String tag) throws FlattrException {

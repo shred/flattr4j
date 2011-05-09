@@ -21,7 +21,6 @@ package org.shredzone.flattr4j.impl;
 
 import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.Connector;
 import org.shredzone.flattr4j.connector.Result;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.impl.xml.CategoryXmlParser;
 import org.shredzone.flattr4j.impl.xml.ClickCountXmlParser;
@@ -77,13 +75,9 @@ public class FlattrServiceImpl implements FlattrService {
         String data = SubmissionXmlWriter.write(thing);
         Result result = connector.post(baseUrl + "thing/register", data).assertStatusOk();
         try {
-            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
-    
-            Thing registered = parser.getNext();
-            if (registered == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return registered;
+            ThingXmlParser parser = new ThingXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -96,13 +90,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/get/id/" + urlencode(thingId.getThingId()));
         result.assertStatusOk();
         try {
-            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
-
-            Thing thing = parser.getNext();
-            if (thing == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return thing;
+            ThingXmlParser parser = new ThingXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -115,13 +105,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/get/url/" + urlencode(url));
         result.assertStatusOk();
         try {
-            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
-
-            Thing thing = parser.getNext();
-            if (thing == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return thing;
+            ThingXmlParser parser = new ThingXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -141,13 +127,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/clicks/thing/" + urlencode(thingId.getThingId())).assertStatusOk();
         
         try {
-            ClickCountXmlParser parser = new ClickCountXmlParser(result.openInputStream());
-
-            ClickCount count = parser.getNext();
-            if (count == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return count;
+            ClickCountXmlParser parser = new ClickCountXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -160,14 +142,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "thing/browse/" + term.toString());
         result.assertStatusOk();
         try {
-            List<Thing> list = new ArrayList<Thing>();
-
-            ThingXmlParser parser = new ThingXmlParser(result.openInputStream());
-            Thing thing;
-            while ((thing = parser.getNext()) != null) {
-                list.add(thing);
-            }
-
+            ThingXmlParser parser = new ThingXmlParser();
+            parser.parse(result.openInputStream());
+            List<Thing> list = parser.getList();
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
@@ -178,14 +155,9 @@ public class FlattrServiceImpl implements FlattrService {
     public List<Category> getCategories() throws FlattrException {
         Result result = connector.call(baseUrl + "feed/categories").assertStatusOk();
         try {
-            List<Category> list = new ArrayList<Category>();
-
-            CategoryXmlParser parser = new CategoryXmlParser(result.openInputStream());
-            Category category;
-            while ((category = parser.getNext()) != null) {
-                list.add(category);
-            }
-        
+            CategoryXmlParser parser = new CategoryXmlParser();
+            parser.parse(result.openInputStream());
+            List<Category> list = parser.getList();
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
@@ -196,14 +168,9 @@ public class FlattrServiceImpl implements FlattrService {
     public List<Language> getLanguages() throws FlattrException {
         Result result = connector.call(baseUrl + "feed/languages").assertStatusOk();
         try {
-            List<Language> list = new ArrayList<Language>();
-    
-            LanguageXmlParser parser = new LanguageXmlParser(result.openInputStream());
-            Language language;
-            while ((language = parser.getNext()) != null) {
-                list.add(language);
-            }
-    
+            LanguageXmlParser parser = new LanguageXmlParser();
+            parser.parse(result.openInputStream());
+            List<Language> list = parser.getList();
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
@@ -214,13 +181,9 @@ public class FlattrServiceImpl implements FlattrService {
     public User getMyself() throws FlattrException {
         Result result = connector.call(baseUrl + "user/me").assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openInputStream());
-
-            User user = parser.getNext();
-            if (user == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return user;
+            UserXmlParser parser = new UserXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -233,13 +196,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/get/id/" + urlencode(userId.getUserId()));
         result.assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openInputStream());
-    
-            User user = parser.getNext();
-            if (user == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return user;
+            UserXmlParser parser = new UserXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -252,13 +211,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/get/name/" + urlencode(name));
         result.assertStatusOk();
         try {
-            UserXmlParser parser = new UserXmlParser(result.openInputStream());
-
-            User user = parser.getNext();
-            if (user == null) {
-                throw new NotFoundException("unexpected empty result");
-            }
-            return user;
+            UserXmlParser parser = new UserXmlParser();
+            parser.parse(result.openInputStream());
+            return parser.getSingle();
         } finally {
             result.closeInputStream();
         }
@@ -278,14 +233,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "user/clicks/period/" + urlencode(pstr));
         result.assertStatusOk();
         try {
-            List<ClickedThing> list = new ArrayList<ClickedThing>();
-            
-            ClickedThingXmlParser parser = new ClickedThingXmlParser(result.openInputStream());
-            ClickedThing click;
-            while ((click = parser.getNext()) != null) {
-                list.add(click);
-            }
-    
+            ClickedThingXmlParser parser = new ClickedThingXmlParser();
+            parser.parse(result.openInputStream());
+            List<ClickedThing> list = parser.getList();
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();
@@ -297,14 +247,9 @@ public class FlattrServiceImpl implements FlattrService {
         Result result = connector.call(baseUrl + "subscription/list");
         result.assertStatusOk();
         try {
-            List<Subscription> list = new ArrayList<Subscription>();
-            
-            SubscriptionXmlParser parser = new SubscriptionXmlParser(result.openInputStream());
-            Subscription sub;
-            while ((sub = parser.getNext()) != null) {
-                list.add(sub);
-            }
-            
+            SubscriptionXmlParser parser = new SubscriptionXmlParser();
+            parser.parse(result.openInputStream());
+            List<Subscription> list = parser.getList();
             return Collections.unmodifiableList(list);
         } finally {
             result.closeInputStream();

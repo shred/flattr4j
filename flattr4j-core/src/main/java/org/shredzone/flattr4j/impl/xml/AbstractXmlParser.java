@@ -19,19 +19,19 @@
 package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
+import org.shredzone.flattr4j.exception.NotFoundException;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * An abstract, simple XML parser for parsing the responses of the Flattr API. The goal of
@@ -46,62 +46,60 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public abstract class AbstractXmlParser<T> {
+public abstract class AbstractXmlParser<T> extends DefaultHandler {
 
-    private final XMLInputFactory factory = XMLInputFactory.newInstance();
-    private XMLEventReader xmlReader;
-    private List<StringBuilder> stringStack = new LinkedList<StringBuilder>();
+    private final SAXParserFactory factory = SAXParserFactory.newInstance();
+    private final List<T> resultList = new ArrayList<T>();
+    private final List<StringBuilder> stringStack = new LinkedList<StringBuilder>();
 
     /**
-     * Creates a new XML parser for the given XML document.
+     * Parses the given XML document and adds the result to the result list.
      * 
      * @param in
      *            InputStream for the XML document
      */
-    public AbstractXmlParser(InputStream in) throws FlattrException {
+    public void parse(InputStream in) throws FlattrException {
         try {
-            xmlReader = factory.createXMLEventReader(in);
-        } catch (XMLStreamException ex) {
+            SAXParser parser = factory.newSAXParser();
+            parser.parse(in, this);
+        } catch (SAXException ex) {
+            if (ex.getCause() instanceof FlattrException) {
+                throw (FlattrException) ex.getCause();
+            } else {
+                throw new FlattrServiceException("Could not parse XML response", ex);
+            }
+        } catch (Exception ex) {
             throw new FlattrServiceException("Could not parse XML response", ex);
         }
     }
 
     /**
-     * Returns the next object that was found in the XML document.
+     * Returns a list of objects that was found in the XML document.
      * 
-     * @return The next Object that was created by the XML document data, or {@code null}
-     *         if the end of the document was reached.
+     * @return A List of Object that was created by the XML document data. May
+     *         be empty, but never {@code null}.
      */
-    public T getNext() throws FlattrException {
-        try {
-            while (xmlReader.hasNext()) {
-                XMLEvent event = xmlReader.nextEvent();
+    public List<T> getList() throws FlattrException {
+        return resultList;
+    }
 
-                if (event.isStartElement()) {
-                    stringStack.add(0, new StringBuilder());
-                    StartElement element = (StartElement) event;
-                    parseStartElement(element.getName().toString());
-
-                } else if (event.isEndElement()) {
-                    String str = stringStack.remove(0).toString().trim();
-                    EndElement element = (EndElement) event;
-                    T result = parseEndElement(element.getName().toString(), str);
-                    if (result != null) {
-                        return result;
-                    }
-
-                } else if (event.isCharacters()) {
-                    Characters characters = (Characters) event;
-                    if (!stringStack.isEmpty()) {
-                        stringStack.get(0).append(characters.getData());
-                    }
-                }
-            }
-        } catch (XMLStreamException ex) {
-            throw new FlattrException("Bad XML", ex);
+    /**
+     * Returns the only object of the XML document.
+     * 
+     * @return The object returned by the XML document data.
+     * @throws NotFoundException
+     *             if there was not even a single object in the result.
+     * @throws FlattrServiceException
+     *             if there was more than one object in the result.
+     */
+    public T getSingle() throws FlattrException {
+        if (resultList.isEmpty()) {
+            throw new NotFoundException("unexpected empty result");
+        } else if (resultList.size() > 1) {
+            throw new FlattrServiceException("unexpected result size: " + resultList.size() + " != 1");
+        } else {
+            return resultList.get(0);
         }
-
-        return null;
     }
 
     /**
@@ -123,5 +121,35 @@ public abstract class AbstractXmlParser<T> {
      *         now
      */
     protected abstract T parseEndElement(String tag, String body) throws FlattrException;
+    
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        try {
+            stringStack.add(0, new StringBuilder());
+            parseStartElement(qName.toLowerCase());
+        } catch (FlattrException ex) {
+            throw new SAXException(ex);
+        }
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        try {
+            String str = stringStack.remove(0).toString().trim();
+            T result = parseEndElement(qName.toLowerCase(), str);
+            if (result != null) {
+                resultList.add(result);
+            }
+        } catch (FlattrException ex) {
+            throw new SAXException(ex);
+        }
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        if (!stringStack.isEmpty()) {
+            stringStack.get(0).append(ch, start, length);
+        }
+    }
     
 }

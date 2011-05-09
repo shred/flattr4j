@@ -21,7 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Subscription;
@@ -37,11 +36,10 @@ public class SubscriptionXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = SubscriptionXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Subscription.xml");
-        SubscriptionXmlParser parser = new SubscriptionXmlParser(in);
+        SubscriptionXmlParser parser = new SubscriptionXmlParser();
+        parser.parse(in);
 
-        Subscription sub = parser.getNext();
-        Assert.assertNull(parser.getNext());
-
+        Subscription sub = parser.getSingle();
         MockDataHelper.assertSubscription(sub);
     }
 

@@ -18,8 +18,6 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.InputStream;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.model.User;
@@ -45,10 +43,6 @@ public class UserXmlParser extends AbstractXmlParser<User> {
     private final static String QN_THINGCOUNT = "thingcount";
 
     private User current = null;
-
-    public UserXmlParser(InputStream in) throws FlattrException {
-        super(in);
-    }
 
     @Override
     protected void parseStartElement(String tag) throws FlattrException {

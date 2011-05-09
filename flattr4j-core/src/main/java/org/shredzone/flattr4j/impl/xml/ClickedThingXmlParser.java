@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.InputStream;
 import java.util.Date;
 
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -42,10 +41,6 @@ public class ClickedThingXmlParser extends AbstractXmlParser<ClickedThing> {
 
     private ClickedThing current = null;
     private boolean insideThing = false;
-
-    public ClickedThingXmlParser(InputStream in) throws FlattrException {
-        super(in);
-    }
 
     @Override
     protected void parseStartElement(String tag) throws FlattrException {

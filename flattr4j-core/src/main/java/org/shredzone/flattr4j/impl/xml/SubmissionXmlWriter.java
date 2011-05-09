@@ -18,13 +18,6 @@
  */
 package org.shredzone.flattr4j.impl.xml;
 
-import java.io.StringWriter;
-
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Submission;
 
@@ -35,11 +28,6 @@ import org.shredzone.flattr4j.model.Submission;
  * @version $Revision$
  */
 public final class SubmissionXmlWriter {
-
-    private final static String TAG_THING = "thing";
-    private final static String TAG_TAGS = "tags";
-
-    private final static XMLEventFactory FACTORY = XMLEventFactory.newInstance();
 
     private SubmissionXmlWriter() {
         // Private constructor
@@ -53,65 +41,43 @@ public final class SubmissionXmlWriter {
      * @return XML document representing that {@link Submission}
      */
     public static String write(Submission submission) throws FlattrException {
-        try {
-            StringWriter writer = new StringWriter();
-            XMLEventWriter xml = XMLOutputFactory.newInstance().createXMLEventWriter(writer);
-
-            xml.add(FACTORY.createStartElement("", "", TAG_THING));
-            writeTag(xml, "url", submission.getUrl());
-            writeCDataTag(xml, "title", submission.getTitle());
-            writeTag(xml, "category", submission.getCategory().getCategoryId());
-            writeCDataTag(xml, "description", submission.getDescription());
-            writeTag(xml, "language", submission.getLanguage().getLanguageId());
-            writeTag(xml, "hidden", submission.isHidden() ? "1" : "0");
-
-            xml.add(FACTORY.createStartElement("", "", TAG_TAGS));
-            for (String tag : submission.getTags()) {
-                writeTag(xml, "tag", tag);
-            }
-            xml.add(FACTORY.createEndElement("", "", TAG_TAGS));
-
-            xml.add(FACTORY.createEndElement("", "", TAG_THING));
-            xml.flush();
-            xml.close();
-            
-            return writer.toString();
-        } catch (XMLStreamException ex) {
-            throw new FlattrException("Could not generate XML", ex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<thing>");
+        sb.append("<url>").append(escape(submission.getUrl())).append("</url>");
+        sb.append("<title>").append(cdata(submission.getTitle())).append("</title>");
+        sb.append("<category>").append(escape(submission.getCategory().getCategoryId())).append("</category>");
+        sb.append("<description>").append(cdata(submission.getDescription())).append("</description>");
+        sb.append("<language>").append(escape(submission.getLanguage().getLanguageId())).append("</language>");
+        sb.append("<hidden>").append(submission.isHidden() ? 1 : 0).append("</hidden>");
+        sb.append("<tags>");
+        for (String tag : submission.getTags()) {
+            sb.append("<tag>").append(escape(tag)).append("</tag>");
         }
+        sb.append("</tags>");
+        sb.append("</thing>");
+        return sb.toString();
     }
-
+    
     /**
-     * Writes a tag with a simple text body.
+     * Simple XML escape for a character sequence.
      * 
-     * @param xml
-     *            Writer to write to
-     * @param tag
-     *            tag to be created
-     * @param body
-     *            content of that element
+     * @param str
+     *            String to be escaped
+     * @return Escaped string
      */
-    private static void writeTag(XMLEventWriter xml, String tag, String body) throws XMLStreamException {
-            xml.add(FACTORY.createStartElement("", "", tag));
-            xml.add(FACTORY.createCharacters(body));
-            xml.add(FACTORY.createEndElement("", "", tag));
+    private static String escape(String str) {
+        return str.replace("&", "&amp;").replace("<", "&lt;").replace("\"", "&quot;");
     }
-
+    
     /**
-     * Writes a tag with a complex text body. The body is especially prepared for HTML
-     * content.
+     * CDATA escape for a character sequence.
      * 
-     * @param xml
-     *            Writer to write to
-     * @param tag
-     *            tag to be created
-     * @param body
-     *            content of that element
+     * @param str
+     *            String to be escaped
+     * @return Escaped string
      */
-    private static void writeCDataTag(XMLEventWriter xml, String tag, String body) throws XMLStreamException {
-            xml.add(FACTORY.createStartElement("", "", tag));
-            xml.add(FACTORY.createCData(body));
-            xml.add(FACTORY.createEndElement("", "", tag));
+    private static String cdata(String str) {
+        return "<![CDATA[" + str.replace("]]>", "]]]]><![CDATA[>") + "]]>";
     }
 
 }

@@ -20,6 +20,7 @@ package org.shredzone.flattr4j.impl.xml;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,15 +38,15 @@ public class ThingXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = ThingXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Thing.xml");
-        ThingXmlParser parser = new ThingXmlParser(in);
+        ThingXmlParser parser = new ThingXmlParser();
+        parser.parse(in);
 
-        Thing thing;
+        List<Thing> result = parser.getList();
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
 
-        thing = parser.getNext();
+        Thing thing = result.get(0);
         MockDataHelper.assertThingResource(thing);
-
-        thing = parser.getNext();
-        Assert.assertNull(thing);
     }
 
 }

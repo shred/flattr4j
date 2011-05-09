@@ -21,7 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.ClickCount;
@@ -37,11 +36,10 @@ public class ClickCountXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = ClickCountXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/ClickCount.xml");
-        ClickCountXmlParser parser = new ClickCountXmlParser(in);
+        ClickCountXmlParser parser = new ClickCountXmlParser();
+        parser.parse(in);
 
-        ClickCount count = parser.getNext();
-        Assert.assertNull(parser.getNext());
-
+        ClickCount count = parser.getSingle();
         MockDataHelper.assertClickCount(count);
     }
 

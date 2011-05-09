@@ -21,7 +21,6 @@ package org.shredzone.flattr4j.impl.xml;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.ClickedThing;
@@ -37,11 +36,10 @@ public class ClickedThingXmlParserTest {
     @Test
     public void testParser() throws FlattrException, UnsupportedEncodingException {
         InputStream in = ClickedThingXmlParserTest.class.getResourceAsStream("/org/shredzone/flattr4j/impl/xml/Click.xml");
-        ClickedThingXmlParser parser = new ClickedThingXmlParser(in);
+        ClickedThingXmlParser parser = new ClickedThingXmlParser();
+        parser.parse(in);
 
-        ClickedThing click = parser.getNext();
-        Assert.assertNull(parser.getNext());
-
+        ClickedThing click = parser.getSingle();
         MockDataHelper.assertClick(click);
     }
 
