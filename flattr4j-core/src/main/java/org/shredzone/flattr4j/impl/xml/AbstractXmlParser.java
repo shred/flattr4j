@@ -23,14 +23,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -60,8 +61,9 @@ public abstract class AbstractXmlParser<T> extends DefaultHandler {
      */
     public void parse(InputStream in) throws FlattrException {
         try {
-            SAXParser parser = factory.newSAXParser();
-            parser.parse(in, this);
+            XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+            xmlReader.setContentHandler(this);
+            xmlReader.parse(new InputSource(in));
         } catch (SAXException ex) {
             if (ex.getCause() instanceof FlattrException) {
                 throw (FlattrException) ex.getCause();
@@ -126,7 +128,7 @@ public abstract class AbstractXmlParser<T> extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         try {
             stringStack.add(0, new StringBuilder());
-            parseStartElement(qName.toLowerCase());
+            parseStartElement(choose(localName, qName).toLowerCase());
         } catch (FlattrException ex) {
             throw new SAXException(ex);
         }
@@ -136,7 +138,7 @@ public abstract class AbstractXmlParser<T> extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         try {
             String str = stringStack.remove(0).toString().trim();
-            T result = parseEndElement(qName.toLowerCase(), str);
+            T result = parseEndElement(choose(localName, qName).toLowerCase(), str);
             if (result != null) {
                 resultList.add(result);
             }
@@ -149,6 +151,24 @@ public abstract class AbstractXmlParser<T> extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (!stringStack.isEmpty()) {
             stringStack.get(0).append(ch, start, length);
+        }
+    }
+    
+    /**
+     * Chooses between localName and qName, depending on what contains content. Android
+     * uses localName instead of qName, so this method is required.
+     * 
+     * @param localName
+     *            LocalName or empty string
+     * @param qName
+     *            QName or empty string
+     * @return The string that contained content
+     */
+    private String choose(String localName, String qName) {
+        if (qName != null && qName.length() > 0) {
+            return qName;
+        } else {
+            return localName;
         }
     }
     
