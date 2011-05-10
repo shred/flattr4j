@@ -55,28 +55,20 @@ public class FlattrHttpClient extends DefaultHttpClient  {
     protected SSLSocketFactory createSSLSocketFactory() {
         synchronized (this) {
             if (sslSocketFactory == null) {
-                KeyStore trustStore = null;
-                try {
-                    trustStore = KeyStore.getInstance("BKS");
-                } catch (KeyStoreException ex) {
-                    return SSLSocketFactory.getSocketFactory();
-                }
-
                 try {
                     InputStream in = null;
                     try {
+                        KeyStore trustStore = KeyStore.getInstance("BKS");
                         in = FlattrHttpClient.class.getResourceAsStream("flattr.bks");
                         trustStore.load(in, "flattr4j".toCharArray());
+                        sslSocketFactory = new SSLSocketFactory(trustStore);
                     } finally {
                         if (in != null) {
                             in.close();
                         }
                     }
-
-                    sslSocketFactory = new SSLSocketFactory(trustStore);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new RuntimeException("Could not create SSL Socket Factory", ex);
+                    sslSocketFactory = SSLSocketFactory.getSocketFactory();
                 }
             }
             return sslSocketFactory;
