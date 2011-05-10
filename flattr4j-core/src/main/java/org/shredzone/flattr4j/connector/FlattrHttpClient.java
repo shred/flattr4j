@@ -37,42 +37,41 @@ import org.apache.http.impl.conn.SingleClientConnManager;
  */
 public class FlattrHttpClient extends DefaultHttpClient  {
     
-    private SSLSocketFactory sslSocketFactory;
+    private static SSLSocketFactory sslSocketFactory;
+    
+    static {
+        try {
+            InputStream in = null;
+            try {
+                KeyStore trustStore = KeyStore.getInstance("BKS");
+                in = FlattrHttpClient.class.getResourceAsStream("flattr.bks");
+                trustStore.load(in, "flattr4j".toCharArray());
+                sslSocketFactory = new SSLSocketFactory(trustStore);
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
+            }
+        } catch (Exception ex) {
+            sslSocketFactory = SSLSocketFactory.getSocketFactory();
+        }
+    }
+    
+    /**
+     * Gets a SSLSocketFactory suited for connecting to Flattr.
+     * 
+     * @return SSLSocketFactory
+     */
+    public static SSLSocketFactory getSocketFactory() {
+        return sslSocketFactory;
+    }
     
     @Override
     protected ClientConnectionManager createClientConnectionManager() {
         SchemeRegistry registry = new SchemeRegistry();
         registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        registry.register(new Scheme("https", createSSLSocketFactory(), 443));
+        registry.register(new Scheme("https", FlattrHttpClient.getSocketFactory(), 443));
         return new SingleClientConnManager(getParams(), registry);
-    }
-    
-    /**
-     * Creates an SSLSocketFactory that accepts Flattr signatures.
-     * 
-     * @return SSLSocketFactory that was created
-     */
-    protected SSLSocketFactory createSSLSocketFactory() {
-        synchronized (this) {
-            if (sslSocketFactory == null) {
-                try {
-                    InputStream in = null;
-                    try {
-                        KeyStore trustStore = KeyStore.getInstance("BKS");
-                        in = FlattrHttpClient.class.getResourceAsStream("flattr.bks");
-                        trustStore.load(in, "flattr4j".toCharArray());
-                        sslSocketFactory = new SSLSocketFactory(trustStore);
-                    } finally {
-                        if (in != null) {
-                            in.close();
-                        }
-                    }
-                } catch (Exception ex) {
-                    sslSocketFactory = SSLSocketFactory.getSocketFactory();
-                }
-            }
-            return sslSocketFactory;
-        }
     }
     
 }
