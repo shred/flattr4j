@@ -27,6 +27,8 @@ import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import oauth.signpost.exception.OAuthException;
 
+import org.apache.http.client.HttpClient;
+import org.shredzone.flattr4j.connector.FlattrHttpClient;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 
@@ -223,9 +225,20 @@ public class FlattrAuthenticator {
      * @return {@link OAuthProvider} that was created
      */
     protected OAuthProvider createProvider() {
-        OAuthProvider provider =  new CommonsHttpOAuthProvider(requestTokenUrl, accessTokenUrl, authorizationUrl);
+        OAuthProvider provider = new CommonsHttpOAuthProvider(
+                        requestTokenUrl, accessTokenUrl, authorizationUrl,
+                        createHttpClient());
         provider.setOAuth10a(true);
         return provider;
+    }
+    
+    /**
+     * Creates a {@link HttpClient} for sending the request.
+     * 
+     * @return {@link HttpClient}
+     */
+    protected HttpClient createHttpClient() {
+        return new FlattrHttpClient();
     }
 
     /**

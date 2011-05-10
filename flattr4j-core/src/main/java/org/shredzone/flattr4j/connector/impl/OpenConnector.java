@@ -27,8 +27,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.shredzone.flattr4j.connector.Connector;
+import org.shredzone.flattr4j.connector.FlattrHttpClient;
 import org.shredzone.flattr4j.connector.Result;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
@@ -69,7 +69,7 @@ public class OpenConnector implements Connector {
      * @return {@link HttpClient}
      */
     protected HttpClient createHttpClient() {
-        return new DefaultHttpClient();
+        return new FlattrHttpClient();
     }
 
     /**
