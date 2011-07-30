@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.connector;
 
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
+
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
