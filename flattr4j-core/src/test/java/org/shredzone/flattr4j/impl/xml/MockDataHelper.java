@@ -146,7 +146,7 @@ public final class MockDataHelper {
     /**
      * Asserts the result of the User.xml resource.
      * 
-     * @param thing
+     * @param user
      *            {@link User} to assert
      */
     public static void assertUserResource(User user) {

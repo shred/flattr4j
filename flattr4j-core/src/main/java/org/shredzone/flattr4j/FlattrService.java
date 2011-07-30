@@ -80,7 +80,7 @@ public interface FlattrService{
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
      * 
-     * @param thing
+     * @param thingId
      *            {@link ThingId} to flattr
      * @throws FlattrException
      *             when no such thing was found
@@ -90,7 +90,7 @@ public interface FlattrService{
     /**
      * Counts the number of clicks that the Thing received.
      * 
-     * @param thing
+     * @param thingId
      *            {@link Thing}
      * @return {@link ClickCount} containing the result
      * @throws FlattrException

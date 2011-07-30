@@ -69,7 +69,7 @@ public class MockConnector implements Connector {
     /**
      * Sets the resource of the result body to be used.
      * 
-     * @param body
+     * @param resource
      *            Result body, as resource name
      */
     public void setBodyResource(String resource) {

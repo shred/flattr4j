@@ -86,7 +86,7 @@ public class FlattrAuthenticator {
 
     /**
      * The access scope. This is a set of rights the consumer needs. The set of rights
-     * is shown to the user on authentication. Defaults to {@value Scope#READ} only.
+     * is shown to the user on authentication. Defaults to {@link Scope#READ} only.
      */
     public EnumSet<Scope> getScope()        { return scope; }
     public void setScope(EnumSet<Scope> scope) { this.scope = scope; }
@@ -211,7 +211,7 @@ public class FlattrAuthenticator {
     /**
      * Creates a {@link OAuthConsumer} that can be used for Flattr.
      *
-     * @param consumerKey
+     * @param ck
      *      {@link ConsumerKey} to be used
      * @return {@link OAuthConsumer} that was created
      */
