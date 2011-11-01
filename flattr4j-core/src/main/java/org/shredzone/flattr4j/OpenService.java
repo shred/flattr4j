@@ -26,6 +26,9 @@ import org.shredzone.flattr4j.model.Language;
 /**
  * Offers service calls for open functions. Unlike all other services, these service calls
  * do not need a valid login at Flattr, but can be used anonymously.
+ * <p>
+ * In API v2, the open service contains a lot more calls that do not require
+ * authentication.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$

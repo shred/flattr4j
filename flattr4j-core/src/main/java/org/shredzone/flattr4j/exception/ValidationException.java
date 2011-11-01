@@ -23,7 +23,10 @@ package org.shredzone.flattr4j.exception;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Meaning changed in API v2: this exception will report a validation error on
+ *             web service side.
  */
+@Deprecated
 public class ValidationException extends FlattrException {
     private static final long serialVersionUID = -2697425041366996066L;
     

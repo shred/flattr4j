@@ -42,24 +42,32 @@ public class User extends UserReference implements Serializable {
      * User's real first name.
      */
     public String getFirstname()            { return firstname; }
+    
+    @Deprecated
     public void setFirstname(String firstname) { this.firstname = firstname; }
 
     /**
      * User's real last name. Depends on privacy settings and access scope.
      */
     public String getLastname()             { return lastname; }
+
+    @Deprecated
     public void setLastname(String lastname) { this.lastname = lastname; }
 
     /**
      * City the user lives in. Depends on privacy settings and access scope.
      */
     public String getCity()                 { return city; }
+    
+    @Deprecated
     public void setCity(String city)        { this.city = city; }
 
     /**
      * Country the user lives in. Depends on privacy settings and access scope.
      */
     public String getCountry()              { return country; }
+    
+    @Deprecated
     public void setCountry(String country)  { this.country = country; }
 
     /**
@@ -67,24 +75,35 @@ public class User extends UserReference implements Serializable {
      * scope.
      */
     public String getGravatar()             { return gravatar; }
+    
+    @Deprecated
     public void setGravatar(String gravatar) { this.gravatar = gravatar; }
 
     /**
      * User's email address. Depends on privacy settings and access scope.
      */
     public String getEmail()                { return email; }
+    
+    @Deprecated
     public void setEmail(String email)      { this.email = email; }
 
     /**
      * User's own description.
      */
     public String getDescription()          { return description; }
+    
+    @Deprecated
     public void setDescription(String description) { this.description = description; }
 
     /**
      * Number of things the user owns.
+     * 
+     * @deprecated Not supported in API v2
      */
+    @Deprecated
     public int getThingcount()              { return thingcount; }
+    
+    @Deprecated
     public void setThingcount(int thingcount) { this.thingcount = thingcount; }
 
 }

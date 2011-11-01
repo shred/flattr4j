@@ -23,7 +23,9 @@ package org.shredzone.flattr4j.model;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Not supported by API v2.
  */
+@Deprecated
 public enum ThingStatus {
 
     /**

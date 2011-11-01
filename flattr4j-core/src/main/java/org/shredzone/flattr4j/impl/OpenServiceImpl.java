@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.OpenService;
 import org.shredzone.flattr4j.connector.Connector;
 import org.shredzone.flattr4j.connector.Result;
@@ -38,7 +39,9 @@ import org.shredzone.flattr4j.model.Language;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Major changes, see {@link FlattrService}.
  */
+@Deprecated
 public class OpenServiceImpl implements OpenService {
     private final Connector connector;
     private String baseUrl = "http://api.flattr.com/odapi/";

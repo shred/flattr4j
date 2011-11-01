@@ -36,7 +36,9 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Major changes of the connection handling in V2
  */
+@Deprecated
 public class OAuthConnector extends OpenConnector {
 
     private ConsumerKey consumerKey;

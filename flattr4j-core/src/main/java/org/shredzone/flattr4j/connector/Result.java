@@ -27,7 +27,9 @@ import org.shredzone.flattr4j.exception.FlattrException;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Major changes of the connection handling in V2
  */
+@Deprecated
 public interface Result {
     
     /**

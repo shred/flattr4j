@@ -50,7 +50,9 @@ import static org.shredzone.flattr4j.util.ServiceUtils.urlencode;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Not supported by API v2.
  */
+@Deprecated
 public class BrowseTerm implements Serializable {
     private static final long serialVersionUID = 6549162014192571214L;
     

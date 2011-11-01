@@ -34,6 +34,8 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
 
 /**
  * Helps through the OAuth authentication process at Flattr.
+ * <p>
+ * In API v2, OAuth2 is used, which drastically changes the authentication process.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -54,19 +56,28 @@ public class FlattrAuthenticator {
     /**
      * The OAuth request token URL from Flattr.
      */
+    @Deprecated
     public String getRequestTokenUrl()      { return requestTokenUrl; }
+
+    @Deprecated
     public void setRequestTokenUrl(String requestTokenUrl) { this.requestTokenUrl = requestTokenUrl; }
 
     /**
      * The OAuth access token URL from Flattr.
      */
+    @Deprecated
     public String getAccessTokenUrl()       { return accessTokenUrl; }
+    
+    @Deprecated
     public void setAccessTokenUrl(String accessTokenUrl) { this.accessTokenUrl = accessTokenUrl; }
 
     /**
      * The OAuth authorization URL from Flattr.
      */
+    @Deprecated
     public String getAuthorizationUrl()     { return authorizationUrl; }
+    
+    @Deprecated
     public void setAuthorizationUrl(String authorizationUrl) { this.authorizationUrl = authorizationUrl; }
 
     /**
@@ -113,7 +124,7 @@ public class FlattrAuthenticator {
         consumerKey.setKey(key);
         consumerKey.setSecret(secret);
     }
-    
+
     /**
      * Fetches a {@link RequestToken} from Flattr. When this method returns, the user is
      * required to visit the url given in {@link RequestToken#getAuthUrl()} and retrieve a
@@ -133,7 +144,11 @@ public class FlattrAuthenticator {
      * Scope flags need to be properly set before invocation.
      * 
      * @return The generated {@link RequestToken}
+     * @deprecated Instead of fetching a {@link RequestToken}, the URL is returned
+     *             directly by the autenticate() method. To identify the calling principal
+     *             on the callback url, a "state" parameter may be passed as well.
      */
+    @Deprecated
     public RequestToken fetchRequestToken() throws FlattrException {
         try {
             OAuthConsumer consumer = createConsumer(consumerKey);
@@ -152,7 +167,7 @@ public class FlattrAuthenticator {
             throw new FlattrServiceException("OAuth request token failed", ex);
         }
     }
-    
+
     /**
      * Fetches an {@link AccessToken} from Flattr. This method is just a convenience call
      * that gets the request token and secret from {@link RequestToken} and invokes
@@ -166,7 +181,10 @@ public class FlattrAuthenticator {
      *            The PIN that was returned from Flattr
      * @return {@link AccessToken} that allows access to the Flattr API
      * @see #fetchAccessToken(String, String, String)
+     * @deprecated {@link RequestToken} is not used any more. Only the PIN (called code)
+     *             is passed to fetchAccessToken().
      */
+    @Deprecated
     public AccessToken fetchAccessToken(RequestToken token, String pin) throws FlattrException {
         return fetchAccessToken(token.getToken(), token.getSecret(), pin);
     }
@@ -190,6 +208,8 @@ public class FlattrAuthenticator {
      *            The PIN that was returned from Flattr
      * @return {@link AccessToken} giving access to the Flattr API for the authenticated
      *         user
+     * @deprecated {@link RequestToken} is not used any more. Only the PIN (called code)
+     *             is passed to fetchAccessToken().
      */
     public AccessToken fetchAccessToken(String token, String secret, String pin) throws FlattrException {
         try {
@@ -214,7 +234,9 @@ public class FlattrAuthenticator {
      * @param ck
      *      {@link ConsumerKey} to be used
      * @return {@link OAuthConsumer} that was created
+     * @deprecated Not used in OAuth2
      */
+    @Deprecated
     protected OAuthConsumer createConsumer(ConsumerKey ck) {
         return new CommonsHttpOAuthConsumer(ck.getKey(), ck.getSecret());
     }
@@ -223,7 +245,9 @@ public class FlattrAuthenticator {
      * Creates a {@link OAuthProvider} that can be used for Flattr.
      * 
      * @return {@link OAuthProvider} that was created
+     * @deprecated Not used in OAuth2
      */
+    @Deprecated
     protected OAuthProvider createProvider() {
         OAuthProvider provider = new CommonsHttpOAuthProvider(
                         requestTokenUrl, accessTokenUrl, authorizationUrl,
@@ -236,7 +260,9 @@ public class FlattrAuthenticator {
      * Creates a {@link HttpClient} for sending the request.
      * 
      * @return {@link HttpClient}
+     * @deprecated
      */
+    @Deprecated
     protected HttpClient createHttpClient() {
         return new FlattrHttpClient();
     }

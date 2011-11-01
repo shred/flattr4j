@@ -29,7 +29,9 @@ import org.shredzone.flattr4j.model.Subscription;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated API v2 does not use XML for communication
  */
+@Deprecated
 public class SubscriptionXmlParser extends AbstractXmlParser<Subscription> {
 
     private final static String QN_SUBSCRIPTION = "subscription";

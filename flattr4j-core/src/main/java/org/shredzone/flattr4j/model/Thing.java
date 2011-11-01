@@ -70,42 +70,65 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      */
     @Override
     public String getThingId()                  { return id; }
+    
+    @Deprecated
     public void setThingId(String id)           { this.id = id; }
 
     /**
      * Internal Flattr Thing's unique id.
+     * 
+     * @deprecated There is no internal ID any more
      */
+    @Deprecated
     public String getInternalId()               { return intId; }
+
+    @Deprecated
     public void setInternalId(String intId)     { this.intId = intId; }
 
     /**
      * Creation date of the Thing.
      */
     public Date getCreated()                    { return created; }
+
+    @Deprecated
     public void setCreated(Date created)        { this.created = created; }
 
     /**
      * How many times this Thing was flattred.
      */
     public int getClicks()                      { return clicks; }
+
+    @Deprecated
     public void setClicks(int clicks)           { this.clicks = clicks; }
 
     /**
      * The {@link UserReference} who owns this Thing.
+     *
+     * @deprecated only {@link #getUserId()} is available in v2
      */
+    @Deprecated
     public UserReference getUser()              { return user; }
+
+    @Deprecated
     public void setUser(UserReference user)     { this.user = user; }
     
     /**
      * Status of this Thing.
+     *
+     * @deprecated Status is not supported in v2
      */
+    @Deprecated
     public ThingStatus getStatus()              { return status; }
+
+    @Deprecated
     public void setStatus(ThingStatus status)   { this.status = status; }
 
     /**
      * URL of the Thing.
      */
     public String getUrl()                      { return url; }
+
+    @Deprecated
     public void setUrl(String url)              { this.url = url; }
 
     /**
@@ -116,8 +139,13 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Category this Thing belongs to.
+     * 
+     * @deprecated Only {@link #getCategoryId()} is supported in v2
      */
+    @Deprecated
     public Category getCategory()               { return category; }
+
+    @Deprecated
     public void setCategory(Category category)  { this.category = category; }
 
     /**
@@ -152,7 +180,10 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * Currently this value is computed by flattr4j. The returned link may be different to
      * the official link shown by Flattr. The composition of this link may change in
      * future releases.
+     * 
+     * @deprecated Replaced by a method "getLink()"
      */
+    @Deprecated
     public String getThingUrl() {
         StringBuilder sb = new StringBuilder();
         sb.append(BASE_URL).append(intId).append('/');

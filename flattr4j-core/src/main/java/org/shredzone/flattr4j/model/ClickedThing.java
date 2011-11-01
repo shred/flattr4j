@@ -26,7 +26,9 @@ import java.util.Date;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @deprecated Not supported by API v2.
  */
+@Deprecated
 public class ClickedThing implements ThingId, Serializable {
 
     private static final long serialVersionUID = 7390599041226931054L;
