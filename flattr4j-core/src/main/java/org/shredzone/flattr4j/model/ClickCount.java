@@ -26,9 +26,7 @@ import java.util.List;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Not supported by API v2.
  */
-@Deprecated
 public class ClickCount {
     
     private int anonymousCount;

@@ -38,9 +38,7 @@ import org.shredzone.flattr4j.exception.FlattrServiceException;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Major changes of the connection handling in V2
  */
-@Deprecated
 public class OpenConnector implements Connector {
     private static final String POST_ENCODING = "utf-8";
 

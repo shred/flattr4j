@@ -22,13 +22,10 @@ import java.io.Serializable;
 
 /**
  * A request token.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated OAuth2 does not use request tokens. Instead, the application passes an own
- *             identifier as "status" parameter to the authentication process.
  */
-@Deprecated
 public class RequestToken implements Serializable {
     private static final long serialVersionUID = 4364281809783036307L;
     

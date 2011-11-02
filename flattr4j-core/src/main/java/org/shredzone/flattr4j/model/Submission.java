@@ -88,9 +88,7 @@ public class Submission implements Serializable {
      *
      * @throws ValidationException Validation failed. The exception contains the property
      *          name and a reason message.
-     * @deprecated Validation is performed on server side now.
      */
-    @Deprecated
     public void validate() throws ValidationException {
         if (url == null || url.length() == 0)
             throw new ValidationException("url", "url required");

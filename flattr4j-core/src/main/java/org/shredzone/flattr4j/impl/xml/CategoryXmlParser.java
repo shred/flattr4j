@@ -26,9 +26,7 @@ import org.shredzone.flattr4j.model.Category;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated API v2 does not use XML for communication
  */
-@Deprecated
 public class CategoryXmlParser extends AbstractXmlParser<Category> {
 
     private final static String QN_CATEGORIES = "categories";

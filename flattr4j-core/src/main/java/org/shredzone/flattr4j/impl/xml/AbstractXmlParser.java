@@ -46,9 +46,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *            Target object type that is created by the parser.
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated API v2 does not use XML for communication
  */
-@Deprecated
 public abstract class AbstractXmlParser<T> extends DefaultHandler {
 
     private final SAXParserFactory factory = SAXParserFactory.newInstance();

@@ -55,9 +55,7 @@ import org.shredzone.flattr4j.model.UserId;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Major changes, see {@link FlattrService}.
  */
-@Deprecated
 public class FlattrServiceImpl implements FlattrService {
     private final Connector connector;
     private String baseUrl = "http://api.flattr.com/rest/0.5/";
@@ -66,10 +64,7 @@ public class FlattrServiceImpl implements FlattrService {
         this.connector = connector;
     }
     
-    @Deprecated
     public String getBaseUrl()              { return baseUrl; }
-
-    @Deprecated
     public void setBaseUrl(String baseUrl)  { this.baseUrl = baseUrl; }
 
     @Override

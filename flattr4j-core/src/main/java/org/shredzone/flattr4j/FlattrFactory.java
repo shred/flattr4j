@@ -62,10 +62,7 @@ public final class FlattrFactory {
      * @param accessTokenSecret
      *            Access token secret
      * @return Created {@link FlattrService}
-     * @deprecated When moving to API v2, only "accessToken" needs to be passed to this
-     *             method.
      */
-    @Deprecated
     public FlattrService createFlattrService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         ConsumerKey ck = new ConsumerKey(consumerKey, consumerSecret);
         AccessToken at = new AccessToken(accessToken, accessTokenSecret);
@@ -80,10 +77,7 @@ public final class FlattrFactory {
      * @param accessToken
      *            {@link AccessToken} instance
      * @return Created {@link FlattrService}
-     * @deprecated When moving to API v2, only "accessToken" needs to be passed to this
-     *             method.
      */
-    @Deprecated
     public FlattrService createFlattrService(ConsumerKey consumerKey, AccessToken accessToken) {
         OAuthConnector connector = new OAuthConnector();
         connector.setConsumerKey(consumerKey);

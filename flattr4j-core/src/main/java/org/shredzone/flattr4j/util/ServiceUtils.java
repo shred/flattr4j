@@ -26,9 +26,7 @@ import java.net.URLEncoder;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Removed in 2.0
  */
-@Deprecated
 public final class ServiceUtils {
 
     private ServiceUtils() {

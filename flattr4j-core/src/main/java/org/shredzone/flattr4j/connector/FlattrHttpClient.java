@@ -34,9 +34,7 @@ import org.apache.http.impl.conn.SingleClientConnManager;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Moves to package org.shredzone.flattr4j.connector.impl
  */
-@Deprecated
 public class FlattrHttpClient extends DefaultHttpClient  {
     
     private static SSLSocketFactory sslSocketFactory;

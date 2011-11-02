@@ -36,10 +36,6 @@ public class AccessToken implements Serializable {
         // Default constructor
     }
     
-    /**
-     * @deprecated OAuth2 does not use a separate secret. The token is sufficient.
-     */
-    @Deprecated
     public AccessToken(String token, String secret) {
         setToken(token);
         setSecret(secret);
@@ -48,16 +44,7 @@ public class AccessToken implements Serializable {
     public String getToken()            { return token; }
     public void setToken(String token)  { this.token = token; }
     
-    /**
-     * @deprecated OAuth2 does not use a separate secret.
-     */
-    @Deprecated
     public String getSecret()           { return secret; }
-    
-    /**
-     * @deprecated OAuth2 does not use a separate secret.
-     */
-    @Deprecated
     public void setSecret(String secret) { this.secret = secret; }
 
 }

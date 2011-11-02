@@ -28,10 +28,7 @@ public enum Scope {
 
     /**
      * The consumer needs public user information and thing information.
-     * 
-     * @deprecated a basic right in API v2 which does not need to be set explicitly
      */
-    @Deprecated
     READ,
 
     /**
@@ -42,18 +39,12 @@ public enum Scope {
 
     /**
      * The consumer wants to publish things for the authenticated user.
-     * 
-     * @deprecated called "THING" in API v2
      */
-    @Deprecated
     PUBLISH,
 
     /**
      * The consumer wants to click things for the authenticated user.
-     * 
-     * @deprecated called "FLATTR" in API v2
      */
-    @Deprecated
     CLICK;
     
 }

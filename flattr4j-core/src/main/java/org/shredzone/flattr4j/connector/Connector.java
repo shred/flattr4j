@@ -35,9 +35,7 @@ public interface Connector {
      * @param url
      *            Command URL to be invoked
      * @return {@link Reader} with the response
-     * @deprecated Major changes of the connection handling in V2
      */
-    @Deprecated
     Result call(String url) throws FlattrException;
 
     /**
@@ -48,9 +46,7 @@ public interface Connector {
      * @param data
      *            Argument data to be sent to the Flattr function
      * @return {@link Reader} with the response
-     * @deprecated Major changes of the connection handling in V2
      */
-    @Deprecated
     Result post(String url, String data) throws FlattrException;
 
 }

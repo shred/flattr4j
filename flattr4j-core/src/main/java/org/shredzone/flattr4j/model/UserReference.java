@@ -26,11 +26,7 @@ import java.io.Serializable;
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated In API v2, users are referenced by their name only, which is used as ID.
- *             This class is now obsolete, and its method moved to {@link User}. Just
- *             use {@link User} directly.
  */
-@Deprecated
 public class UserReference implements UserId, Serializable {
 
     private static final long serialVersionUID = 2406024500321708867L;
@@ -44,9 +40,7 @@ public class UserReference implements UserId, Serializable {
      * @param id
      *            User id
      * @return A {@link UserId} object for this id
-     * @deprecated Moved to User
      */
-    @Deprecated
     public static UserId withId(final String id) {
         return new UserId() {
             @Override

@@ -51,10 +51,7 @@ public interface FlattrService{
      * @return {@link Thing} as result from the submission.
      * @throws FlattrException
      *             when the submission failed
-     * @deprecated API v2 only returns a ThingId. Use a subsequent
-     *             {@link #getThing(ThingId)} to fetch the actual {@link Thing}.
      */
-    @Deprecated
     Thing submit(Submission thing) throws FlattrException;
 
     /**
@@ -77,10 +74,7 @@ public interface FlattrService{
      * @throws FlattrException
      *             when no such thing was found
      * @since 1.1
-     * @deprecated API v2 only returns a ThingId. Use a subsequent
-     *             {@link #getThing(ThingId)} to fetch the actual {@link Thing}.
      */
-    @Deprecated
     Thing getThingByUrl(String url) throws FlattrException;
 
     /**
@@ -101,9 +95,7 @@ public interface FlattrService{
      * @return {@link ClickCount} containing the result
      * @throws FlattrException
      *             when no such thing was found
-     * @deprecated Not supported by API v2.
      */
-    @Deprecated
     ClickCount countClicks(ThingId thingId) throws FlattrException;
 
     /**
@@ -115,9 +107,7 @@ public interface FlattrService{
      *         {@code null}.
      * @throws FlattrException
      *             when the browse operation failed
-     * @deprecated Not supported by API v2. 
      */
-    @Deprecated
     List<Thing> browse(BrowseTerm term) throws FlattrException;
 
     /**
@@ -166,10 +156,7 @@ public interface FlattrService{
      * @return {@link User} profile of that user. Never {@code null}.
      * @throws FlattrException
      *             when there is no such user
-     * @deprecated In API v2, the user ID is the username, so {@link #getUser(UserId)}
-     *             entirely replaces this method.
      */
-    @Deprecated
     User getUserByName(String name) throws FlattrException;
     
     /**
@@ -182,9 +169,7 @@ public interface FlattrService{
      * @return List of {@link ClickedThing}.
      * @throws FlattrException
      *             when the list of clicks could not be fetched
-     * @deprecated Not supported by API v2.
      */
-    @Deprecated
     List<ClickedThing> getClicks(Calendar period) throws FlattrException;
     
     /**
@@ -193,9 +178,7 @@ public interface FlattrService{
      * @return List of {@link Subscription}
      * @throws FlattrException
      *             when the list could not be fetched
-     * @deprecated Not supported by API v2.
      */
-    @Deprecated
     List<Subscription> getSubscriptions() throws FlattrException;
 
 }

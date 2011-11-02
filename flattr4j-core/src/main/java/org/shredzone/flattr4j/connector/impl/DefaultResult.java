@@ -37,9 +37,7 @@ import org.shredzone.flattr4j.exception.SubmissionFailedException;
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
- * @deprecated Major changes of the connection handling in V2
  */
-@Deprecated
 public class DefaultResult implements Result {
     private static final String RESULT_ENCODING = "iso-8859-1";
     
