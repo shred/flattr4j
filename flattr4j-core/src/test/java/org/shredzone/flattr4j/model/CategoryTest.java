@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,52 +15,45 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.model;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
- * Unit test of the {@link Category} class.
+ * Unit test of the {@link Category} and {@link CategoryId} classes.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 596 $
  */
 public class CategoryTest {
 
     @Test
-    public void testProperty() {
-        Category category = new Category();
-
-        Assert.assertNull(category.getCategoryId());
-        category.setCategoryId("text");
-        Assert.assertEquals("text", category.getCategoryId());
-
-        Assert.assertNull(category.getName());
-        category.setName("Texts");
-        Assert.assertEquals("Texts", category.getName());
+    public void testId() throws FlattrException {
+        CategoryId id = Category.withId("abc123");
+        Assert.assertEquals("abc123", id.getCategoryId());
     }
 
     @Test
-    public void testEquals() {
-        Category cat1 = new Category();
-        cat1.setCategoryId("text");
-
-        Category cat2 = new Category();
-        cat2.setCategoryId("text");
-
-        Category cat3 = new Category();
-        cat3.setCategoryId("image");
-
-        Assert.assertTrue("cat1 eq cat2", cat1.equals(cat2));
-        Assert.assertTrue("cat2 eq cat1", cat2.equals(cat1));
-        Assert.assertNotSame("cat1 !== cat2", cat2, cat1);
-
-        Assert.assertFalse("cat1 eq cat3", cat1.equals(cat3));
-        Assert.assertFalse("cat3 eq cat1", cat3.equals(cat1));
-        Assert.assertNotSame("cat1 !== cat3", cat3, cat1);
+    public void testModel() throws FlattrException {
+        Category cat = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
+        Assert.assertEquals("images", cat.getCategoryId());
+        Assert.assertEquals("Images", cat.getName());
     }
 
+    @Test
+    public void testEquals() throws FlattrException {
+        Category cat1 = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
+        Category cat2 = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
+        Category cat3 = new Category(new FlattrObject("{\"id\":\"audio\",\"text\":\"Audio\"}"));
+        
+        Assert.assertTrue(cat1.equals(cat2));
+        Assert.assertTrue(cat2.equals(cat1));
+        Assert.assertFalse(cat1.equals(cat3));
+        Assert.assertFalse(cat3.equals(cat1));
+    }
+    
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,23 +18,21 @@
  */
 package org.shredzone.flattr4j.exception;
 
-import org.shredzone.flattr4j.model.Submission;
-
 /**
- * This exception is used when a thing's {@link Submission} could not be submitted.
+ * This exception is thrown when the rate limit was exceeded. The rate counter will be
+ * reset after a while.
+ * <p>
+ * <em>Note:</em> The call limitation is posed by the Flattr API. This is not a limitation
+ * of flattr4j.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: -1 $
  */
-public class SubmissionFailedException extends FlattrException {
-    private static final long serialVersionUID = 7637026385151047748L;
+public class RateLimitExceededException extends FlattrServiceException {
+    private static final long serialVersionUID = 2052032965034468567L;
 
-    public SubmissionFailedException() {
-        super();
-    }
-
-    public SubmissionFailedException(String msg) {
-        super(msg);
+    public RateLimitExceededException(String code, String msg) {
+        super(code, msg);
     }
 
 }

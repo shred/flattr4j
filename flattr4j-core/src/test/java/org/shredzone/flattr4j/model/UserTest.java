@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,84 +15,46 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.model;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Unit test of the {@link User} class.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 596 $
  */
 public class UserTest {
 
     @Test
-    public void testProperty() {
-        User user = new User();
-
-        Assert.assertNull(user.getUserId());
-        user.setUserId("1701");
-        Assert.assertEquals("1701", user.getUserId());
-
-        Assert.assertNull(user.getUsername());
-        user.setUsername("ncc");
-        Assert.assertEquals("ncc", user.getUsername());
-
-        Assert.assertNull(user.getFirstname());
-        user.setFirstname("James T.");
-        Assert.assertEquals("James T.", user.getFirstname());
-
-        Assert.assertNull(user.getLastname());
-        user.setLastname("Kirk");
-        Assert.assertEquals("Kirk", user.getLastname());
-
-        Assert.assertNull(user.getCity());
-        user.setCity("Iowa");
-        Assert.assertEquals("Iowa", user.getCity());
-
-        Assert.assertNull(user.getCountry());
-        user.setCountry("USA");
-        Assert.assertEquals("USA", user.getCountry());
-
-        Assert.assertNull(user.getGravatar());
-        user.setGravatar("GRAVATARURL");
-        Assert.assertEquals("GRAVATARURL", user.getGravatar());
-
-        Assert.assertNull(user.getEmail());
-        user.setEmail("kirk@enterprise.sfl");
-        Assert.assertEquals("kirk@enterprise.sfl", user.getEmail());
-
-        Assert.assertNull(user.getDescription());
-        user.setDescription("captain of a famous starship");
-        Assert.assertEquals("captain of a famous starship", user.getDescription());
-
-        Assert.assertEquals(0, user.getThingcount());
-        user.setThingcount(33);
-        Assert.assertEquals(33, user.getThingcount());
+    public void testId() throws FlattrException {
+        UserId id = User.withId("abc123");
+        Assert.assertEquals("abc123", id.getUserId());
     }
 
     @Test
-    public void testEquals() {
-        UserReference user1 = new UserReference();
-        user1.setUserId("foo");
-
-        UserReference user2 = new UserReference();
-        user2.setUserId("foo");
-
-        UserReference user3 = new UserReference();
-        user3.setUserId("narf");
-
-        Assert.assertTrue("user1 eq user2", user1.equals(user2));
-        Assert.assertTrue("user2 eq user1", user2.equals(user1));
-        Assert.assertNotSame("user1 !== user2", user2, user1);
-
-        Assert.assertFalse("user1 eq user3", user1.equals(user3));
-        Assert.assertFalse("user3 eq user1", user3.equals(user1));
-        Assert.assertNotSame("user1 !== user3", user3, user1);
+    public void testModel() throws FlattrException, IOException {
+        User user = ModelGenerator.createUser();
+        ModelGenerator.assertUser(user);
+    }
+    
+    @Test
+    public void testEquals() throws FlattrException {
+        User user1 = new User(new FlattrObject("{\"username\":\"simon_g\"}"));
+        User user2 = new User(new FlattrObject("{\"username\":\"simon_g\"}"));
+        User user3 = new User(new FlattrObject("{\"username\":\"sherlock_h\"}"));
+        
+        Assert.assertTrue(user1.equals(user2));
+        Assert.assertTrue(user2.equals(user1));
+        Assert.assertFalse(user1.equals(user3));
+        Assert.assertFalse(user3.equals(user1));
     }
 
 }

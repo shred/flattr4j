@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,42 +24,11 @@ package org.shredzone.flattr4j.exception;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ValidationException extends FlattrException {
-    private static final long serialVersionUID = -2697425041366996066L;
+public class ValidationException extends FlattrServiceException {
+    private static final long serialVersionUID = 7637026385151047748L;
+
+    public ValidationException(String code, String msg) {
+        super(code, msg);
+    }
     
-    private String property;
-
-    /**
-     * Creates a new ValidationException.
-     *
-     * @param property
-     *          Name of the parameter or property that failed validation
-     */
-    public ValidationException(String property) {
-        super();
-        this.property = property;
-    }
-
-    /**
-     * Creates a new ValidationException.
-     *
-     * @param property
-     *          Name of the parameter or property that failed validation
-     * @param msg
-     *          Reason why the property failed validation
-     */
-    public ValidationException(String property, String msg) {
-        super(msg);
-        this.property = property;
-    }
-
-    /**
-     * Name of the property that failed validation.
-     *
-     * @return Property name
-     */
-    public String getProperty() {
-        return property;
-    }
-
 }

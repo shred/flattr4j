@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,34 +16,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j.model;
+package org.shredzone.flattr4j.connector;
 
 /**
- * An enumeration of stati a thing can have.
- *
+ * Enumeration of request types.
+ * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 448 $
  */
-public enum ThingStatus {
-
-    /**
-     * The authenticated user may flattr the thing.
-     */
-    OK,
-
-    /**
-     * The authenticated user owns the thing and thus cannot flattr it.
-     */
-    OWNER,
-
-    /**
-     * The owner or the authenticated user is inactive and can't give or receive flattrs.
-     */
-    INACTIVE,
-
-    /**
-     * The authenticated user has already clicked.
-     */
-    CLICKED;
-
+public enum RequestType {
+    GET, POST, PATCH, DELETE;
 }

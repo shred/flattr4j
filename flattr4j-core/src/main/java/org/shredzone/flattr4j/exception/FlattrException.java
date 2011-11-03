@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,8 @@
 package org.shredzone.flattr4j.exception;
 
 /**
- * A generic Flattr exception. More detailed exceptions are derived from this.
+ * A generic Flattr exception, like a network error or an unexpected response from the
+ * Flattr web service. More detailed exceptions are derived from this.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$

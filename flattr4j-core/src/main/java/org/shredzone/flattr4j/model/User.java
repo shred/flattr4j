@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,6 +19,9 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
  * Detailled Flattr {@link User}.
@@ -26,65 +29,151 @@ import java.io.Serializable;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class User extends UserReference implements Serializable {
-    private static final long serialVersionUID = -4198943870341187700L;
-    
-    private String firstname;
-    private String lastname;
-    private String city;
-    private String country;
-    private String gravatar;
-    private String email;
-    private String description;
-    private int thingcount;
+public class User implements UserId, Serializable {
+    private static final long serialVersionUID = 594781523400164895L;
+
+    private FlattrObject data;
+
+    /**
+     * Returns a {@link UserId} for the given User id.
+     * 
+     * @param id
+     *            User id
+     * @return A {@link UserId} object for this id
+     */
+    public static UserId withId(final String id) {
+        return new UserId() {
+            @Override
+            public String getUserId() {
+                return id;
+            }
+        };
+    }
+
+    public User(FlattrObject data) {
+        this.data = data;
+    }
+
+    /**
+     * User id.
+     */
+    @Override
+    public String getUserId() {
+        return data.get("username");
+    }
+
+    /**
+     * URL that returns details of this resource as JSON.
+     */
+    public String getResource() {
+        return data.get("resource");
+    }
+
+    /**
+     * Human readable link to this resource at Flattr.
+     */
+    public String getLink() {
+        return data.get("link");
+    }
 
     /**
      * User's real first name.
      */
-    public String getFirstname()            { return firstname; }
-    public void setFirstname(String firstname) { this.firstname = firstname; }
+    public String getFirstname() {
+        return data.get("firstname");
+    }
 
     /**
-     * User's real last name. Depends on privacy settings and access scope.
+     * User's real last name.
      */
-    public String getLastname()             { return lastname; }
-    public void setLastname(String lastname) { this.lastname = lastname; }
+    public String getLastname() {
+        return data.get("lastname");
+    }
 
     /**
-     * City the user lives in. Depends on privacy settings and access scope.
+     * City the user lives in.
      */
-    public String getCity()                 { return city; }
-    public void setCity(String city)        { this.city = city; }
+    public String getCity() {
+        return data.get("city");
+    }
 
     /**
-     * Country the user lives in. Depends on privacy settings and access scope.
+     * Country the user lives in.
      */
-    public String getCountry()              { return country; }
-    public void setCountry(String country)  { this.country = country; }
+    public String getCountry() {
+        return data.get("country");
+    }
 
     /**
-     * URL of the user's picture at Gravatar. Depends on privacy settings and access
-     * scope.
+     * User's email address.
      */
-    public String getGravatar()             { return gravatar; }
-    public void setGravatar(String gravatar) { this.gravatar = gravatar; }
-
-    /**
-     * User's email address. Depends on privacy settings and access scope.
-     */
-    public String getEmail()                { return email; }
-    public void setEmail(String email)      { this.email = email; }
+    public String getEmail() {
+        return data.get("email");
+    }
 
     /**
      * User's own description.
      */
-    public String getDescription()          { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getDescription() {
+        return data.get("about");
+    }
+    
+    /**
+     * URL of the user's picture at Gravatar. 
+     */
+    public String getGravatar() {
+        return data.get("avatar");
+    }
 
     /**
-     * Number of things the user owns.
+     * ZIP
+     * 
+     * @since 2.0
      */
-    public int getThingcount()              { return thingcount; }
-    public void setThingcount(int thingcount) { this.thingcount = thingcount; }
+    public String getZip() {
+        return data.get("zip");
+    }
+
+    /**
+     * Province.
+     * 
+     * @since 2.0
+     */
+    public String getProvince() {
+        return data.get("province");
+    }
+
+    /**
+     * Cellphone number.
+     * 
+     * @since 2.0
+     */
+    public String getCellphone() {
+        return data.get("cellphone");
+    }
+    
+    /**
+     * Registration date.
+     * 
+     * @since 2.0
+     */
+    public Date getRegisteredAt() {
+        return data.getDate("registered_at");
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        String pk = getUserId();
+        if (pk == null || obj == null || !(obj instanceof User)) {
+            return false;
+        }
+        return pk.equals(((User) obj).getUserId());
+    }
+
+    @Override
+    public int hashCode() {
+        String pk = getUserId();
+        return (pk != null ? pk.hashCode() : 0);
+    }
 
 }

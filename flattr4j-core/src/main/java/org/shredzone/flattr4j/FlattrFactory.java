@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,8 @@
  */
 package org.shredzone.flattr4j;
 
-import org.shredzone.flattr4j.connector.impl.OAuthConnector;
-import org.shredzone.flattr4j.connector.impl.OpenConnector;
+import org.shredzone.flattr4j.connector.impl.FlattrConnector;
 import org.shredzone.flattr4j.impl.FlattrServiceImpl;
-import org.shredzone.flattr4j.impl.OpenServiceImpl;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.ConsumerKey;
 
@@ -53,6 +51,32 @@ public final class FlattrFactory {
     /**
      * Creates a {@link FlattrService} for the given consumer and access token.
      * 
+     * @param accessToken
+     *            Access token
+     * @return Created {@link FlattrService}
+     * @since 2.0
+     */
+    public FlattrService createFlattrService(String accessToken) {
+        return createFlattrService(new AccessToken(accessToken));
+    }
+
+    /**
+     * Creates a {@link FlattrService} for the given consumer and access token.
+     * 
+     * @param accessToken
+     *            {@link AccessToken} instance
+     * @return Created {@link FlattrService}
+     * @since 2.0
+     */
+    public FlattrService createFlattrService(AccessToken accessToken) {
+        FlattrConnector connector = new FlattrConnector();
+        connector.setAccessToken(accessToken);
+        return new FlattrServiceImpl(connector);
+    }
+    
+    /**
+     * Creates a {@link FlattrService} for the given consumer and access token.
+     * 
      * @param consumerKey
      *            Consumer key
      * @param consumerSecret
@@ -62,13 +86,15 @@ public final class FlattrFactory {
      * @param accessTokenSecret
      *            Access token secret
      * @return Created {@link FlattrService}
+     * @deprecated Consumer key is not required any more. Use
+     *             {@link #createFlattrService(org.shredzone.flattr4j.oauth.AccessToken)}
+     *             instead.
      */
+    @Deprecated
     public FlattrService createFlattrService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
-        ConsumerKey ck = new ConsumerKey(consumerKey, consumerSecret);
-        AccessToken at = new AccessToken(accessToken, accessTokenSecret);
-        return createFlattrService(ck, at);
+        return createFlattrService(new AccessToken(accessToken));
     }
-
+ 
     /**
      * Creates a {@link FlattrService} for the given consumer and access token.
      * 
@@ -77,12 +103,13 @@ public final class FlattrFactory {
      * @param accessToken
      *            {@link AccessToken} instance
      * @return Created {@link FlattrService}
+     * @deprecated Consumer key is not required any more. Use
+     *             {@link #createFlattrService(org.shredzone.flattr4j.oauth.AccessToken)}
+     *             instead.
      */
+    @Deprecated
     public FlattrService createFlattrService(ConsumerKey consumerKey, AccessToken accessToken) {
-        OAuthConnector connector = new OAuthConnector();
-        connector.setConsumerKey(consumerKey);
-        connector.setAccessToken(accessToken);
-        return new FlattrServiceImpl(connector);
+        return createFlattrService(accessToken);
     }
 
     /**
@@ -91,8 +118,7 @@ public final class FlattrFactory {
      * @return Created {@link OpenService}
      */
     public OpenService createOpenService() {
-        OpenConnector connector = new OpenConnector();
-        return new OpenServiceImpl(connector);
+        return new FlattrServiceImpl(new FlattrConnector());
     }
 
 }

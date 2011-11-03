@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
         if (at == null) {
             throw new IllegalStateException("An AccessToken is required");
         }
-        return FlattrFactory.getInstance().createFlattrService(consumerKey, at);
+        return FlattrFactory.getInstance().createFlattrService(at);
     }
 
     @Override

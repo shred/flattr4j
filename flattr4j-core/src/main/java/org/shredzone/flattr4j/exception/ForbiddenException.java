@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ import org.shredzone.flattr4j.oauth.Scope;
  * This exception is used when the operation is forbidden. There are several causes for
  * this:
  * <ul>
- * <li>the Flattr account is inactive</li>
  * <li>insufficient permissions, see {@link Scope}</li>
  * <li>the operation is not allowed (e.g. flattering an own thing)</li>
  * </ul>
@@ -33,15 +32,11 @@ import org.shredzone.flattr4j.oauth.Scope;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class ForbiddenException extends FlattrException {
+public class ForbiddenException extends FlattrServiceException {
     private static final long serialVersionUID = 1279509373771421366L;
 
-    public ForbiddenException() {
-        super();
-    }
-
-    public ForbiddenException(String msg) {
-        super(msg);
+    public ForbiddenException(String code, String msg) {
+        super(code, msg);
     }
 
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,57 +15,78 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 package org.shredzone.flattr4j.model;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * Unit test of the {@link Submission} class.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 596 $
  */
 public class SubmissionTest {
 
     @Test
-    public void testProperty() {
-        Submission thing = new Submission();
+    public void testModel() throws FlattrException, IOException {
+        Submission sub = new Submission();
+        
+        Assert.assertNull("url", sub.getUrl());
+        sub.setUrl("http://flattr4j.shredzone.org");
+        Assert.assertEquals("url", "http://flattr4j.shredzone.org", sub.getUrl());
+        
+        Assert.assertEquals("{\"url\":\"http://flattr4j.shredzone.org\"}", sub.toFlattrObject().toString());
+        
+        Assert.assertNull("title", sub.getTitle());
+        sub.setTitle("flattr4j");
+        Assert.assertEquals("title", "flattr4j", sub.getTitle());
+        
+        Assert.assertNull("description", sub.getDescription());
+        sub.setDescription("A Flattr library for Java");
+        Assert.assertEquals("description", "A Flattr library for Java", sub.getDescription());
 
-        Assert.assertNull(thing.getUrl());
-        thing.setUrl("http://www.example.com/page.html");
-        Assert.assertEquals("http://www.example.com/page.html", thing.getUrl());
+        Assert.assertNull("category", sub.getCategory());
+        sub.setCategory(Category.withId("text"));
+        Assert.assertEquals("category", "text", sub.getCategory().getCategoryId());
 
-        Assert.assertNull(thing.getTitle());
-        thing.setTitle("an example page");
-        Assert.assertEquals("an example page", thing.getTitle());
+        Assert.assertNull("language", sub.getLanguage());
+        sub.setLanguage(Language.withId("en_UK"));
+        Assert.assertEquals("language", "en_UK", sub.getLanguage().getLanguageId());
+        
+        Assert.assertNull(sub.isHidden());
+        sub.setHidden(false);
+        Assert.assertFalse("hidden", sub.isHidden());
+        
+        Assert.assertTrue("tags", sub.getTags().isEmpty());
+        sub.addTag("foo");
+        sub.getTags().add("bar");
+        Assert.assertEquals("tags", 2, sub.getTags().size());
+        Assert.assertEquals("tags", "foo", sub.getTags().get(0));
+        Assert.assertEquals("tags", "bar", sub.getTags().get(1));
 
-        Assert.assertNull(thing.getCategory());
-        thing.setCategory(Category.withId("text"));
-        Assert.assertEquals("text", thing.getCategory().getCategoryId());
-
-        Assert.assertNull(thing.getDescription());
-        thing.setDescription("a long description of the example");
-        Assert.assertEquals("a long description of the example", thing.getDescription());
-
-        Assert.assertNull(thing.getLanguage());
-        thing.setLanguage(Language.withId("en_US"));
-        Assert.assertEquals("en_US", thing.getLanguage().getLanguageId());
-
-        Assert.assertFalse(thing.isHidden());
-        thing.setHidden(true);
-        Assert.assertTrue(thing.isHidden());
-
-        Assert.assertTrue(thing.getTags().isEmpty());
-        thing.addTag("foo");
-        thing.addTag("bar");
-        thing.addTag("narf");
-        Assert.assertEquals(3, thing.getTags().size());
-        Assert.assertEquals("foo", thing.getTags().get(0));
-        Assert.assertEquals("bar", thing.getTags().get(1));
-        Assert.assertEquals("narf", thing.getTags().get(2));
+        FlattrObject data = sub.toFlattrObject();
+        Assert.assertEquals("url", "http://flattr4j.shredzone.org", data.get("url"));
+        Assert.assertEquals("title", "flattr4j", data.get("title"));
+        Assert.assertEquals("description", "A Flattr library for Java", data.get("description"));
+        Assert.assertEquals("category", "text", data.get("category"));
+        Assert.assertEquals("language", "en_UK", data.get("language"));
+        Assert.assertFalse("hidden", data.getBoolean("hidden"));
+        Assert.assertEquals("tags", "foo,bar", data.get("tags"));
     }
-
+    
+    @Test(expected = MarshalException.class)
+    public void testException() throws FlattrException {
+        Submission sub = new Submission();
+        sub.setUrl("http://flattr4j.shredzone.org");
+        sub.addTag("foo,bar");
+        sub.toFlattrObject();
+    }
+    
 }

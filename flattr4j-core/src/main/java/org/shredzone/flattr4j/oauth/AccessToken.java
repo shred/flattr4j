@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,21 +30,16 @@ public class AccessToken implements Serializable {
     private static final long serialVersionUID = 7715751842047101911L;
     
     private String token;
-    private String secret;
     
     public AccessToken() {
         // Default constructor
     }
-    
-    public AccessToken(String token, String secret) {
-        setToken(token);
-        setSecret(secret);
+
+    public AccessToken(String token) {
+        this.token = token;
     }
 
     public String getToken()            { return token; }
     public void setToken(String token)  { this.token = token; }
-    
-    public String getSecret()           { return secret; }
-    public void setSecret(String secret) { this.secret = secret; }
 
 }

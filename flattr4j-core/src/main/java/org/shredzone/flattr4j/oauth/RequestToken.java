@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,10 @@ import java.io.Serializable;
  * A request token.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 605 $
+ * @deprecated Not used in OAuth2. Do not use in new code!
  */
+@Deprecated
 public class RequestToken implements Serializable {
     private static final long serialVersionUID = 4364281809783036307L;
     

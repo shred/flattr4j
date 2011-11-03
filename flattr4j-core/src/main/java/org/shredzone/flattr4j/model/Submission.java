@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,10 @@ package org.shredzone.flattr4j.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.shredzone.flattr4j.exception.ValidationException;
+
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * A {@link Submission}.
@@ -38,7 +41,7 @@ public class Submission implements Serializable {
     private List<String> tags = new ArrayList<String>();
     private CategoryId category;
     private LanguageId language;
-    private boolean hidden = false;
+    private Boolean hidden;
 
     /**
      * URL of the Thing.
@@ -80,47 +83,52 @@ public class Submission implements Serializable {
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
      */
-    public boolean isHidden()                   { return hidden; }
-    public void setHidden(boolean hidden)       { this.hidden = hidden; }
+    public Boolean isHidden()                   { return hidden; }
+    public void setHidden(Boolean hidden)       { this.hidden = hidden; }
 
     /**
-     * Validates the content of this Thing.
-     *
-     * @throws ValidationException Validation failed. The exception contains the property
-     *          name and a reason message.
+     * Returns the submission as {@link FlattrObject}.
+     * 
+     * @return {@link FlattrObject} of this submission.
+     * @since 2.0
      */
-    public void validate() throws ValidationException {
-        if (url == null || url.length() == 0)
-            throw new ValidationException("url", "url required");
-
-        if (title == null)
-            throw new ValidationException("title", "title required");
+    public FlattrObject toFlattrObject() throws FlattrException {
+        FlattrObject result = new FlattrObject();
+        result.put("url", url);
         
-        if (title.length() < 5)
-            throw new ValidationException("title", "title too short (< 5 characters)");
-        
-        if (title.length() > 100)
-            throw new ValidationException("title", "title too long (> 100 characters)");
-
-        if (description == null)
-            throw new ValidationException("description", "description is required");
-
-        if (description.length() < 5)
-            throw new ValidationException("description", "description too short (< 5 characters)");
-
-        if (description.length() > 1000)
-            throw new ValidationException("description", "description too long (> 1000 characters)");
-
-        if (category == null || category.getCategoryId().length() == 0)
-            throw new ValidationException("category", "category required");
-
-        for (String tag : tags) {
-            if (tag == null || tag.length() == 0)
-                throw new ValidationException("tags", "tags contains empty tag");
-
-            if (tag.indexOf(',') >= 0)
-                throw new ValidationException("tags", "tag '" + tag + "' contains invalid ','");
+        if (hidden != null) {
+            result.put("hidden", hidden);
         }
-    }
 
+        if (title != null) {
+            result.put("title", title);
+        }
+
+        if (description != null) {
+            result.put("description", description);
+        }
+
+        if (category != null) {
+            result.put("category", category.getCategoryId());
+        }
+
+        if (language != null) {
+            result.put("language", language.getLanguageId());
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String tag : tags) {
+            if (tag.indexOf(',') >= 0) {
+                throw new MarshalException("tag '" + tag + "' contains invalid character ','");
+            }
+            sb.append(',').append(tag);
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(0);
+            result.put("tags", sb.toString());
+        }
+
+        return result;
+    }
+    
 }

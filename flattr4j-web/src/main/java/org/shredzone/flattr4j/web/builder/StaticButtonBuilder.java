@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ public class StaticButtonBuilder {
      * Link to the Thing page at Flattr.
      */
     public StaticButtonBuilder thing(Thing thing) {
-        return thing(thing.getThingUrl());
+        return thing(thing.getLink().toString());
     }
 
     /**

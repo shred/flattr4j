@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,15 +24,11 @@ package org.shredzone.flattr4j.exception;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class NotFoundException extends FlattrException {
+public class NotFoundException extends FlattrServiceException {
     private static final long serialVersionUID = -1178705084339857902L;
 
-    public NotFoundException() {
-        super();
-    }
-
-    public NotFoundException(String msg) {
-        super(msg);
+    public NotFoundException(String code, String msg) {
+        super(code, msg);
     }
 
 }

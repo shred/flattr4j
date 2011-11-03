@@ -1,4 +1,4 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
  * Copyright (C) 2011 Richard "Shred" Körber
@@ -16,37 +16,32 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j.util;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+package org.shredzone.flattr4j.exception;
 
 /**
- * Utility methods used by the services.
- * 
+ * This runtime exception is thrown when the data couldn't be properly marshalled or
+ * unmarshalled.
+ *
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision:$
  */
-public final class ServiceUtils {
+public class MarshalException extends RuntimeException {
+    private static final long serialVersionUID = 961055160464831870L;
 
-    private ServiceUtils() {
-        // Service class without constructor
+    public MarshalException() {
+        super();
     }
 
-    /**
-     * URL encodes the String using UTF-8. Convenience method for a blunder in the
-     * original API.
-     * 
-     * @param str
-     *            String to encode
-     * @return Encoded string
-     */
-    public static String urlencode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new IllegalStateException("UTF-8 missing");
-        }
+    public MarshalException(String msg) {
+        super(msg);
     }
-    
+
+    public MarshalException(Throwable cause) {
+        super(cause);
+    }
+
+    public MarshalException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
 }

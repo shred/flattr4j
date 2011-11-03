@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.CategoryId;
 import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.LanguageId;
-import org.shredzone.flattr4j.model.UserReference;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserId;
 import org.shredzone.flattr4j.web.ButtonType;
 import org.shredzone.flattr4j.web.builder.LoaderBuilder;
@@ -65,7 +65,7 @@ public class LoaderTag extends BodyTagSupport {
         if (user instanceof UserId) {
             builder.user((UserId) user);
         } else {
-            builder.user(UserReference.withId(user.toString()));
+            builder.user(User.withId(user.toString()));
         }
     }
 

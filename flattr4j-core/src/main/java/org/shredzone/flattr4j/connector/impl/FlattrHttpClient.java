@@ -1,4 +1,4 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
  * Copyright (C) 2011 Richard "Shred" Körber
@@ -16,11 +16,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.shredzone.flattr4j.connector;
+package org.shredzone.flattr4j.connector.impl;
 
 import java.io.InputStream;
 import java.security.KeyStore;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -28,6 +29,8 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 
 /**
  * A Flattr HTTP Client that also supports https connections on Android.
@@ -71,7 +74,11 @@ public class FlattrHttpClient extends DefaultHttpClient  {
         SchemeRegistry registry = new SchemeRegistry();
         registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         registry.register(new Scheme("https", FlattrHttpClient.getSocketFactory(), 443));
-        return new SingleClientConnManager(getParams(), registry);
+        
+        HttpParams params = getParams();
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
+        
+        return new SingleClientConnManager(params, registry);
     }
     
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,56 +18,36 @@
  */
 package org.shredzone.flattr4j.oauth;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.EnumSet;
+import java.util.UUID;
 
-import oauth.signpost.OAuth;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
-import oauth.signpost.exception.OAuthException;
-
-import org.apache.http.client.HttpClient;
-import org.shredzone.flattr4j.connector.FlattrHttpClient;
+import org.shredzone.flattr4j.connector.Connection;
+import org.shredzone.flattr4j.connector.Connector;
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.connector.RequestType;
+import org.shredzone.flattr4j.connector.impl.FlattrConnector;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.exception.FlattrServiceException;
 
 /**
- * Helps through the OAuth authentication process at Flattr.
+ * Helps through the OAuth2 authentication process at Flattr.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
+ * @see <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-21">IETF OAuth V2</a>
  */
 public class FlattrAuthenticator {
+    private static final String ENCODING = "utf-8";
+
     private final ConsumerKey consumerKey;
     
-    private String requestTokenUrl = "https://api.flattr.com/oauth/request_token";
-    private String accessTokenUrl = "https://api.flattr.com/oauth/access_token";
-    private String authorizationUrl = "https://api.flattr.com/oauth/authenticate";
+    private String requestTokenUrl = "https://flattr.com/oauth/authorize";
+    private String accessTokenUrl = "http://flattr.com/oauth/token";
     
     private String callbackUrl = null;
     
-    private String outOfBandUrl = OAuth.OUT_OF_BAND;
-    
-    private EnumSet<Scope> scope = EnumSet.of(Scope.READ);
-
-    /**
-     * The OAuth request token URL from Flattr.
-     */
-    public String getRequestTokenUrl()      { return requestTokenUrl; }
-    public void setRequestTokenUrl(String requestTokenUrl) { this.requestTokenUrl = requestTokenUrl; }
-
-    /**
-     * The OAuth access token URL from Flattr.
-     */
-    public String getAccessTokenUrl()       { return accessTokenUrl; }
-    public void setAccessTokenUrl(String accessTokenUrl) { this.accessTokenUrl = accessTokenUrl; }
-
-    /**
-     * The OAuth authorization URL from Flattr.
-     */
-    public String getAuthorizationUrl()     { return authorizationUrl; }
-    public void setAuthorizationUrl(String authorizationUrl) { this.authorizationUrl = authorizationUrl; }
+    private EnumSet<Scope> scope = EnumSet.noneOf(Scope.class);
 
     /**
      * A callback URL. If set, it is invoked by Flattr in order to transport the PIN that
@@ -76,8 +56,10 @@ public class FlattrAuthenticator {
      * cannot provide a callback URL, for example on a desktop or handheld device
      * application.
      * <p>
-     * <em>NOTE:</em> If you registered your application as "client" type, you MUST NOT
-     * invoke this method.
+     * <em>NOTE:</em> This callback URL must <em>exactly</em> match the URL that was used
+     * on registration, or the authentication process will fail.
+     * <em>NOTE:</em> If you registered your application as "client" type, callback url
+     * <em>must be</em> {@code null}.
      * <p>
      * Defaults to {@code null}.
      */
@@ -86,7 +68,7 @@ public class FlattrAuthenticator {
 
     /**
      * The access scope. This is a set of rights the consumer needs. The set of rights
-     * is shown to the user on authentication. Defaults to {@link Scope#READ} only.
+     * is shown to the user on authentication. Defaults to none.
      */
     public EnumSet<Scope> getScope()        { return scope; }
     public void setScope(EnumSet<Scope> scope) { this.scope = scope; }
@@ -109,9 +91,144 @@ public class FlattrAuthenticator {
      *            Consumer secret
      */
     public FlattrAuthenticator(String key, String secret) {
-        consumerKey = new ConsumerKey();
-        consumerKey.setKey(key);
-        consumerKey.setSecret(secret);
+        this(new ConsumerKey(key, secret));
+    }
+
+    /**
+     * Authenticates this application against Flattr. The user is required to visit the
+     * returned url and retrieve a code. The code needs to be passed to
+     * {@link #fetchAccessToken(String)} in order to complete the authorization.
+     * <p>
+     * When a callback url was set, Flattr will forward the user to this url with the
+     * following GET parameters:
+     * <ul>
+     * <li>{@code code}: the code</li>
+     * </ul>
+     * This way the user only needs to log in at Flattr, but does not need to copy a code
+     * to complete the authorization.
+     * <p>
+     * Scope flags need to be set properly before invocation.
+     * 
+     * @return The authentication URL that the user must visit
+     * @since 2.0
+     */
+    public String authenticate() throws FlattrException {
+        return authenticate(null);
+    }
+
+    /**
+     * Authenticates this application against Flattr. The user is required to visit the
+     * returned url and retrieve a code. The code needs to be passed to
+     * {@link #fetchAccessToken(String)} in order to complete the authorization.
+     * <p>
+     * When a callback url was set, Flattr will forward the user to this url with the
+     * following GET parameters:
+     * <ul>
+     * <li>{@code code}: the code</li>
+     * <li>{@code state}: the value of the state parameter, if it was set</li>
+     * </ul>
+     * This way the user only needs to log in at Flattr, but does not need to copy a code
+     * to complete the authorization.
+     * <p>
+     * Scope flags need to be set properly before invocation.
+     * 
+     * @param state
+     *          A value that is passed to the callback URL, to maintain state between
+     *          request and callback. Optional, may be {@code null}.
+     * @return The authentication URL that the user must visit
+     * @since 2.0
+     */
+    public String authenticate(String state) throws FlattrException {
+        try {
+            StringBuilder url = new StringBuilder();
+            url.append(requestTokenUrl);
+            url.append("?response_type=code");
+            url.append("&client_id=").append(URLEncoder.encode(consumerKey.getKey(), ENCODING));
+    
+            if (callbackUrl != null) {
+                url.append("&redirect_uri=").append(URLEncoder.encode(callbackUrl, ENCODING));
+            }
+            
+            if (!scope.isEmpty()) {
+                url.append("&scope=").append(URLEncoder.encode(buildScopeString(), ENCODING));
+            }
+            
+            if (state != null) {
+                url.append("&state=").append(URLEncoder.encode(state, ENCODING));
+            }
+            
+            return url.toString();
+        } catch (UnsupportedEncodingException ex) {
+            // should never be thrown, as "utf-8" encoding is available on any VM
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Fetches an {@link AccessToken} that gives access to the Flattr API. After the user
+     * entered the code (or when the callback url was invoked), this method is invoked to
+     * complete the authorization process.
+     * <p>
+     * The returned access token can be serialized or its contents persisted in a
+     * database. It is needed to access the Flattr API with a valid authentication until
+     * revoked by the user.
+     * 
+     * @param code
+     *            The code that was returned from Flattr
+     * @return {@link AccessToken} giving access to the Flattr API for the authenticated
+     *         user
+     */
+    public AccessToken fetchAccessToken(String code) throws FlattrException {
+        Connector connector = createConnector();
+
+        Connection conn = connector.create(RequestType.POST)
+                .url(accessTokenUrl)
+                .key(consumerKey)
+                .form("code", code)
+                .form("grant_type", "authorization_code");
+
+        if (callbackUrl != null) {
+            conn.form("redirect_uri", callbackUrl);
+        }
+
+        try {
+            FlattrObject response = conn.singleResult();
+            String accessToken = response.get("access_token");
+            String tokenType = response.get("token_type");
+
+            if (!"bearer".equals(tokenType)) {
+                throw new FlattrException("Unknown token type " + tokenType);
+            }
+            
+            return new AccessToken(accessToken);
+        } finally {
+            conn.close();
+        }
+    }
+
+    /**
+     * Creates a {@link Connector} for sending requests with basic authentication.
+     * 
+     * @return {@link Connector}
+     */
+    protected Connector createConnector() {
+        return new FlattrConnector();
+    }
+
+    /**
+     * Builds a scope string for the scope flags set.
+     * 
+     * @return Scope string: scope texts, separated by comma.
+     */
+    @SuppressWarnings("deprecation")
+    protected String buildScopeString() {
+        StringBuilder sb = new StringBuilder();
+        
+        if (scope.contains(Scope.FLATTR) || scope.contains(Scope.CLICK)) sb.append(" flattr");
+        if (scope.contains(Scope.THING) || scope.contains(Scope.PUBLISH)) sb.append(" thing");
+        if (scope.contains(Scope.EXTENDEDREAD)) sb.append(" extendedread");
+        
+        return sb.toString().trim();
     }
     
     /**
@@ -121,11 +238,11 @@ public class FlattrAuthenticator {
      * {@link #fetchAccessToken(String, String, String)} in order to complete the
      * authorization.
      * <p>
-     * When a callback url was set, Flattr will invoke this url with these parameters:
+     * <em>NOTE:</em> Since 2.0, the following parameters are passed to the callback url:
      * <ul>
-     * <li>{@code oauth_token}: the request token</li>
-     * <li>{@code oauth_token_secret}: the request token secret</li>
-     * <li>{@code oauth_verifier} the PIN</li>
+     * <li>{@code code}: the code (was {@code oauth_verifier})</li>
+     * <li>{@code state}: the request token (was {@code oauth_token}), for your internal
+     * use to find the matching principal for the access token.</li>
      * </ul>
      * This way the user only needs to log in at Flattr, but does not need to enter a PIN
      * to complete the authorization.
@@ -133,24 +250,17 @@ public class FlattrAuthenticator {
      * Scope flags need to be properly set before invocation.
      * 
      * @return The generated {@link RequestToken}
+     * @deprecated Use {@link #authenticate(java.lang.String)} instead. Do not use in new
+     *             code!
      */
+    @Deprecated
     public RequestToken fetchRequestToken() throws FlattrException {
-        try {
-            OAuthConsumer consumer = createConsumer(consumerKey);
-            OAuthProvider provider = createProvider();
-            String authUrl = provider.retrieveRequestToken(consumer,
-                            (callbackUrl != null ? callbackUrl : outOfBandUrl));
-            
-            authUrl = OAuth.addQueryParameters(authUrl, "access_scope", buildScopeString());
-            
-            RequestToken result = new RequestToken();
-            result.setToken(consumer.getToken());
-            result.setSecret(consumer.getTokenSecret());
-            result.setAuthUrl(authUrl);
-            return result;
-        } catch (OAuthException ex) {
-            throw new FlattrServiceException("OAuth request token failed", ex);
-        }
+        RequestToken result = new RequestToken();
+        String code = UUID.randomUUID().toString();
+        result.setToken(code);
+        result.setSecret(code);
+        result.setAuthUrl(authenticate(code));
+        return result;
     }
     
     /**
@@ -161,16 +271,20 @@ public class FlattrAuthenticator {
      * or was serialized.
      * 
      * @param token
-     *            {@link RequestToken} from {@link #fetchRequestToken()}
+     *            {@link RequestToken} from {@link #fetchRequestToken()}. It is ignored
+     *            since 2.0.
      * @param pin
      *            The PIN that was returned from Flattr
      * @return {@link AccessToken} that allows access to the Flattr API
      * @see #fetchAccessToken(String, String, String)
+     * @deprecated Use {@link #fetchAccessToken(java.lang.String)} instead. Do not use in
+     *             new code!
      */
+    @Deprecated
     public AccessToken fetchAccessToken(RequestToken token, String pin) throws FlattrException {
-        return fetchAccessToken(token.getToken(), token.getSecret(), pin);
+        return fetchAccessToken(pin);
     }
-
+    
     /**
      * Fetches an {@link AccessToken} that gives access to the Flattr API. After the user
      * entered the PIN (or when the callback url was invoked), this method is invoked to
@@ -183,80 +297,19 @@ public class FlattrAuthenticator {
      * Scope flags are ignored at this call.
      * 
      * @param token
-     *            The request token
+     *            The request token. It is ignored since 2.0.
      * @param secret
-     *            The request token secret
+     *            The request token secret. It is ignored since 2.0.
      * @param pin
      *            The PIN that was returned from Flattr
      * @return {@link AccessToken} giving access to the Flattr API for the authenticated
      *         user
+     * @deprecated Use {@link #fetchAccessToken(java.lang.String)} instead. Do not use in
+     *             new code!
      */
+    @Deprecated
     public AccessToken fetchAccessToken(String token, String secret, String pin) throws FlattrException {
-        try {
-            OAuthConsumer consumer = createConsumer(consumerKey);
-            OAuthProvider provider = createProvider();
-            consumer.setTokenWithSecret(token, secret);
-            
-            provider.retrieveAccessToken(consumer, pin);
-            
-            AccessToken result = new AccessToken();
-            result.setToken(consumer.getToken());
-            result.setSecret(consumer.getTokenSecret());
-            return result;
-        } catch (OAuthException ex) {
-            throw new FlattrServiceException("OAuth request token failed", ex);
-        }
-    }
-
-    /**
-     * Creates a {@link OAuthConsumer} that can be used for Flattr.
-     *
-     * @param ck
-     *      {@link ConsumerKey} to be used
-     * @return {@link OAuthConsumer} that was created
-     */
-    protected OAuthConsumer createConsumer(ConsumerKey ck) {
-        return new CommonsHttpOAuthConsumer(ck.getKey(), ck.getSecret());
-    }
-
-    /**
-     * Creates a {@link OAuthProvider} that can be used for Flattr.
-     * 
-     * @return {@link OAuthProvider} that was created
-     */
-    protected OAuthProvider createProvider() {
-        OAuthProvider provider = new CommonsHttpOAuthProvider(
-                        requestTokenUrl, accessTokenUrl, authorizationUrl,
-                        createHttpClient());
-        provider.setOAuth10a(true);
-        return provider;
-    }
-    
-    /**
-     * Creates a {@link HttpClient} for sending the request.
-     * 
-     * @return {@link HttpClient}
-     */
-    protected HttpClient createHttpClient() {
-        return new FlattrHttpClient();
-    }
-
-    /**
-     * Builds a scope string for the scope flags set.
-     * 
-     * @return Scope string: scope texts, separated by comma.
-     */
-    protected String buildScopeString() {
-        StringBuilder sb = new StringBuilder();
-        
-        if (scope.contains(Scope.READ))         sb.append(",read");
-        if (scope.contains(Scope.EXTENDEDREAD)) sb.append(",extendedread");
-        if (scope.contains(Scope.PUBLISH))      sb.append(",publish");
-        if (scope.contains(Scope.CLICK))        sb.append(",click");
-        
-        if (sb.length() > 0) sb.deleteCharAt(0);
-        
-        return sb.toString();
+        return fetchAccessToken(pin);
     }
 
 }

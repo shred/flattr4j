@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,36 +19,30 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * A {@link Thing} that has been registered with Flattr. Two {@link Thing} are considered
  * equal if they contain the same id.
+ * <p>
+ * This class is not threadsafe.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializable {
-    private static final long serialVersionUID = 610493674068876984L;
-
-    private static final String BASE_URL = "https://flattr.com/thing/";
-
-    private String id;
-    private String intId;
-    private Date created;
-    private int clicks;
-    private String url;
-    private String title;
-    private UserReference user;
-    private ThingStatus status;
-    private Category category;
-    private String description;
-    private List<String> tags = new ArrayList<String>();
-    private String language;
-    private boolean hidden = false;
-
+    private static final long serialVersionUID = 2822280427303390055L;
+    
+    private FlattrObject data;
+    private transient List<String> tags = null;
+    private Set<String> updatedKeys = new HashSet<String>();
+    
     /**
      * Returns a {@link ThingId} for the given Thing id.
      * 
@@ -65,102 +59,217 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         };
     }
     
+    public Thing(FlattrObject data) {
+        this.data = data;
+    }
+    
     /**
      * Thing's unique id at Flattr.
      */
     @Override
-    public String getThingId()                  { return id; }
-    public void setThingId(String id)           { this.id = id; }
+    public String getThingId() {
+        return data.get("id");
+    }
 
     /**
-     * Internal Flattr Thing's unique id.
+     * URL that returns details of this resource as JSON.
      */
-    public String getInternalId()               { return intId; }
-    public void setInternalId(String intId)     { this.intId = intId; }
+    public String getResource() {
+        return data.get("resource");
+    }
+
+    /**
+     * Human readable link to this resource at Flattr.
+     */
+    public String getLink() {
+        return data.get("link");
+    }
 
     /**
      * Creation date of the Thing.
      */
-    public Date getCreated()                    { return created; }
-    public void setCreated(Date created)        { this.created = created; }
+    public Date getCreated() {
+        return data.getDate("created_at");
+    }
 
     /**
      * How many times this Thing was flattred.
      */
-    public int getClicks()                      { return clicks; }
-    public void setClicks(int clicks)           { this.clicks = clicks; }
-
-    /**
-     * The {@link UserReference} who owns this Thing.
-     */
-    public UserReference getUser()              { return user; }
-    public void setUser(UserReference user)     { this.user = user; }
-    
-    /**
-     * Status of this Thing.
-     */
-    public ThingStatus getStatus()              { return status; }
-    public void setStatus(ThingStatus status)   { this.status = status; }
+    public int getClicks() {
+        return data.getInt("flattrs");
+    }
 
     /**
      * URL of the Thing.
      */
-    public String getUrl()                      { return url; }
-    public void setUrl(String url)              { this.url = url; }
+    public String getUrl() {
+        return data.get("url");
+    }
 
     /**
      * Title of the Thing.
      */
-    public String getTitle()                    { return title; }
-    public void setTitle(String title)          { this.title = title; }
+    public String getTitle() {
+        return data.get("title");
+    }
+    
+    public void setTitle(String title) {
+        data.put("title", title);
+        updatedKeys.add("title");
+    }
+
+    /**
+     * User this Thing belongs to
+     */
+    @Override
+    public String getUserId() { 
+        return data.getSubString("owner", "username");
+    }
 
     /**
      * Category this Thing belongs to.
      */
-    public Category getCategory()               { return category; }
-    public void setCategory(Category category)  { this.category = category; }
+    @Override
+    public String getCategoryId() {
+        return data.get("category");
+    }
+    
+    public void setCategory(CategoryId category) {
+        data.put("category", category.getCategoryId());
+        updatedKeys.add("category");
+    }
 
     /**
      * A descriptive text about the Thing.
      */
-    public String getDescription()              { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getDescription() {
+        return data.get("description");
+    }
+    
+    public void setDescription(String description) {
+        data.put("description", description);
+        updatedKeys.add("description");
+    }
 
     /**
      * Tags this Thing is tagged with.
      */
-    public List<String> getTags()               { return tags; }
-    public void setTags(List<String> tags)      { this.tags = tags; }
-    public void addTag(String tag)              { tags.add(tag); }
-
+    public List<String> getTags() {
+        if (tags == null) {
+            tags = data.getStrings("tags");
+        }
+        return tags;
+    }
+    
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+        updatedKeys.add("tags");
+    }
+    
+    public void addTag(String tag) {
+        if (tags == null) {
+            tags = data.getStrings("tags");
+        }
+        tags.add(tag);
+        updatedKeys.add("tags");
+    }
+    
     /**
      * Language id of the Thing.
      */
     @Override
-    public String getLanguageId()               { return language; }
-    public void setLanguageId(String language)  { this.language = language; }
+    public String getLanguageId() {
+        return data.get("language");
+    }
+    
+    public void setLanguage(LanguageId language) {
+        data.put("language", language.getLanguageId());
+        updatedKeys.add("language");
+    }
 
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
      */
-    public boolean isHidden()                   { return hidden; }
-    public void setHidden(boolean hidden)       { this.hidden = hidden; }
+    public boolean isHidden() {
+        return data.getBoolean("hidden");
+    }
+    
+    public void setHidden(boolean hidden) {
+        data.put("hidden", hidden);
+        updatedKeys.add("hidden");
+    }
 
     /**
-     * Returns the URL to the thing's page at Flattr.
-     * <p>
-     * Currently this value is computed by flattr4j. The returned link may be different to
-     * the official link shown by Flattr. The composition of this link may change in
-     * future releases.
+     * Number of Flattrs in this period.
+     * 
+     * @since 2.0
      */
-    public String getThingUrl() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(BASE_URL).append(intId).append('/');
-        String title = getTitle();
-        if (title != null) {
-            sb.append(title.replaceAll("\\s+", "-").replaceAll("[^a-zA-Z0-9_-]", ""));
+    public int getClicksThisPeriod() {
+        return data.getInt("flattrs_current_period");
+    }
+
+    /**
+     * Is this Thing flattred?
+     * 
+     * @since 2.0
+     */
+    public boolean isFlattred() {
+        return data.getBoolean("flattred");
+    }
+
+    /**
+     * Date of last Flattr.
+     * 
+     * @since 2.0
+     */
+    public Date getLastFlattr() {
+        return data.getDate("last_flattr_at");
+    }
+
+    /**
+     * Date of last Update.
+     * 
+     * @since 2.0
+     */
+    public Date getUpdated() {
+        return data.getDate("updated_at");
+    }
+    
+    /**
+     * Returns a {@link FlattrObject} for the updates that have been applied to this
+     * Thing.
+     * 
+     * @return {@link FlattrObject} for the updates, or {@code null} if this Thing was not
+     *         modified.
+     * @since 2.0
+     */
+    public FlattrObject toUpdate() {
+        if (updatedKeys.isEmpty()) {
+            return null;
         }
-        return sb.toString();
+        
+        data.putStrings("tags", tags);
+
+        FlattrObject result = new FlattrObject();
+        for (String key : updatedKeys) {
+            if ("tags".equals(key)) {
+                // Strangely, tags are expected to be a comma separated string
+                StringBuilder sb = new StringBuilder();
+                for (String tag : tags) {
+                    if (tag.indexOf(',') > 0) {
+                        throw new MarshalException("tag '" + tag + "' contains invalid character ','");
+                    }
+                    sb.append(',').append(tag);
+                }
+                if (sb.length() > 0) {
+                    sb.deleteCharAt(0);
+                }
+                result.put(key, sb.toString());
+            } else {
+                result.put(key, data.getObject(key));
+            }
+        }
+        return result;
     }
 
     /**
@@ -168,30 +277,22 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * can be printed, sticked on the wall, and then flattered using a mobile phone.
      */
     public String getQrPdfUrl() {
-        return "https://flattr.com/things/show/id/" + intId + "/qrcode/true";
+        return "https://flattr.com/thing/qr/" + getThingId();
     }
 
-    @Override
-    public String getUserId() {
-        return user.getUserId();
-    }
-
-    @Override
-    public String getCategoryId() {
-        return category.getCategoryId();
-    }
-    
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Thing)) {
+        String pk = getThingId();
+        if (pk == null || obj == null || !(obj instanceof Thing)) {
             return false;
         }
-        return id.equals(((Thing) obj).id);
+        return pk.equals(((Thing) obj).getThingId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        String pk = getThingId();
+        return (pk != null ? pk.hashCode() : 0);
     }
 
 }

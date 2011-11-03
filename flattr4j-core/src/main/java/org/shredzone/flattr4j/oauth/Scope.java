@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,9 +27,18 @@ package org.shredzone.flattr4j.oauth;
 public enum Scope {
 
     /**
-     * The consumer needs public user information and thing information.
+     * The consumer wants to flattr things.
+     * 
+     * @since 2.0
      */
-    READ,
+    FLATTR,
+    
+    /**
+     * The consumer wants to create things.
+     * 
+     * @since 2.0
+     */
+    THING,
 
     /**
      * The application has read access, plus access to private user information
@@ -38,13 +47,27 @@ public enum Scope {
     EXTENDEDREAD,
 
     /**
-     * The consumer wants to publish things for the authenticated user.
-     */
-    PUBLISH,
-
-    /**
      * The consumer wants to click things for the authenticated user.
+     * 
+     * @deprecated Use {@link #FLATTR} instead
      */
-    CLICK;
+    @Deprecated
+    CLICK,
+    
+    /**
+     * The consumer wants to publish things for the authenticated user.
+     * 
+     * @deprecated Use {@link #THING} instead
+     */
+    @Deprecated
+    PUBLISH,
+    
+    /**
+     * The consumer needs public user information and thing information.
+     * 
+     * @deprecated This scope is granted by default and does not need to be set explicitly
+     */
+    @Deprecated
+    READ;
     
 }

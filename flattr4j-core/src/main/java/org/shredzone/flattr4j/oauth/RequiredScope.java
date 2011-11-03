@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,31 +15,31 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
-package org.shredzone.flattr4j.impl.xml;
+package org.shredzone.flattr4j.oauth;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Submission;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Unit test of the {@link SubmissionXmlWriter} class.
- * 
+ * Annotates that authentication is required for invocating this call, and lists the
+ * scopes that are required.
+ *
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: 577 $
  */
-public class ThingXmlWriterTest {
-
-    @Test
-    public void testWriter() throws FlattrException {
-        Submission thing = MockDataHelper.createSubmission();
-        CharSequence thingXml = MockDataHelper.createThingXml();
-
-        String result = SubmissionXmlWriter.write(thing);
-
-        Assert.assertEquals(thingXml, result);
-    }
-
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RequiredScope {
+    
+    /**
+     * Set of scopes that are required to invoke the annotated call. An empty result
+     * means that only authentication is required.
+     */
+    Scope[] value() default {};
+    
 }

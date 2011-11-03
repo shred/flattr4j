@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,167 +18,139 @@
  */
 package org.shredzone.flattr4j;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.BrowseTerm;
-import org.shredzone.flattr4j.model.Category;
-import org.shredzone.flattr4j.model.ClickCount;
-import org.shredzone.flattr4j.model.ClickedThing;
-import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Submission;
-import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
-import org.shredzone.flattr4j.model.UserId;
+import org.shredzone.flattr4j.oauth.RequiredScope;
 import org.shredzone.flattr4j.oauth.Scope;
 
 /**
- * Service calls to the Flattr REST API that requires authorization.
+ * Service calls to the Flattr REST API which require authorization.
+ * <p>
+ * All calls will decrement the remaining rate by one, unless noted otherwise.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public interface FlattrService{
+public interface FlattrService extends OpenService {
+
+    /**
+     * Creates a new Thing.
+     * 
+     * @param thing
+     *            {@link Submission} to be submitted
+     * @return {@link ThingId} as result from the submission.
+     * @since 2.0
+     */
+    @RequiredScope(Scope.THING)
+    ThingId create(Submission thing) throws FlattrException;
 
     /**
      * Submits a new Thing to Flattr.
+     * <p>
+     * Uses two rates.
      * 
      * @param thing
-     *            {@link Submission} to be submitted.
+     *            {@link Submission} to be submitted
      * @return {@link Thing} as result from the submission.
-     * @throws FlattrException
-     *             when the submission failed
+     * @deprecated Use {@link #create(org.shredzone.flattr4j.model.Submission)} instead
      */
+    @Deprecated
+    @RequiredScope(Scope.THING)
     Thing submit(Submission thing) throws FlattrException;
-
-    /**
-     * Gets a {@link Thing} for the given {@link ThingId}.
-     * 
-     * @param thingId
-     *            {@link ThingId} of the Thing to be fetched
-     * @return {@link Thing}. Never {@code null}.
-     * @throws FlattrException
-     *             when no such thing was found
-     */
-    Thing getThing(ThingId thingId) throws FlattrException;
     
     /**
-     * Gets a {@link Thing} by its registered URL.
+     * Updates a Thing. Only the "title", "description", "category", "language", "tags"
+     * and "hidden" properties can be updated, changes to other properties will be
+     * ignored.
+     * <p>
+     * <em>Note:</em> A HTTP {@code PATCH} request is sent to the web service, which is
+     * not a HTTP standard method and might be blocked by some proxies.
      * 
-     * @param url
-     *            Thing's URL
-     * @return {@link Thing}. Never {@code null}.
-     * @throws FlattrException
-     *             when no such thing was found
-     * @since 1.1
+     * @param thing
+     *            {@link Thing} to be modified
+     * @since 2.0
      */
-    Thing getThingByUrl(String url) throws FlattrException;
+    @RequiredScope(Scope.THING)
+    void update(Thing thing) throws FlattrException;
+
+    /**
+     * Deletes a Thing.
+     * <p>
+     * <em>Note:</em> A HTTP {@code DELETE} request is sent to the web service, which
+     * might be blocked by some proxies.
+     * 
+     * @param thingId
+     *            {@link ThingId} to delete
+     * @since 2.0
+     */
+    @RequiredScope(Scope.THING)
+    void delete(ThingId thingId) throws FlattrException;
 
     /**
      * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
      * 
      * @param thingId
      *            {@link ThingId} to flattr
-     * @throws FlattrException
-     *             when no such thing was found
      */
+    @RequiredScope(Scope.FLATTR)
     void click(ThingId thingId) throws FlattrException;
-    
-    /**
-     * Counts the number of clicks that the Thing received.
-     * 
-     * @param thingId
-     *            {@link Thing}
-     * @return {@link ClickCount} containing the result
-     * @throws FlattrException
-     *             when no such thing was found
-     */
-    ClickCount countClicks(ThingId thingId) throws FlattrException;
-
-    /**
-     * Browses for Things and returns a list of matching ones.
-     * 
-     * @param term
-     *            {@link BrowseTerm} that contains the browse terms
-     * @return List of all matching {@link Thing}. May be empty but is never
-     *         {@code null}.
-     * @throws FlattrException
-     *             when the browse operation failed
-     */
-    List<Thing> browse(BrowseTerm term) throws FlattrException;
-
-    /**
-     * Gets a list of all Flattr {@link Category}. The result is not cached.
-     * 
-     * @return List of Flattr {@link Category}.
-     * @throws FlattrException
-     *             when the operation failed
-     */
-    List<Category> getCategories() throws FlattrException;
-
-    /**
-     * Gets a list of all Flattr {@link Language}. The result is not cached.
-     * 
-     * @return List of Flattr {@link Language}.
-     * @throws FlattrException
-     *             when the operation failed
-     */
-    List<Language> getLanguages() throws FlattrException;
 
     /**
      * Gets the {@link User} profile of the currently logged in user.
      * 
-     * @return {@link User} profile of oneself. Never {@code null}.
-     * @throws FlattrException
-     *             when the operation failed
+     * @return {@link User} profile of oneself
      */
+    @RequiredScope()
     User getMyself() throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the given user ID.
+     * Browses all {@link Thing} submitted by the currently logged in user.
      * 
-     * @param user
-     *            {@link UserId} to get a profile for
-     * @return {@link User} profile of that user. Never {@code null}.
-     * @throws FlattrException
-     *             when there is no such user
+     * @return List of {@link Thing}
+     * @since 2.0
      */
-    User getUser(UserId user) throws FlattrException;
+    @RequiredScope()
+    List<Thing> browseByMyself() throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the given user name.
+     * Browses all {@link Thing} submitted by the currently logged in user.
      * 
-     * @param name
-     *            User name to get a profile for
-     * @return {@link User} profile of that user. Never {@code null}.
-     * @throws FlattrException
-     *             when there is no such user
+     * @param count
+     *            Number of entries per page, or {@code null} to turn off paging
+     * @param page
+     *            Page number, or {@code null} to turn off paging
+     * @return List of {@link Thing}
+     * @since 2.0
      */
-    User getUserByName(String name) throws FlattrException;
-    
-    /**
-     * Gets a list of {@link ClickedThing} made by the currently logged in user, starting
-     * at the given period. Requires {@link Scope#EXTENDEDREAD} permission.
-     * 
-     * @param period
-     *            Start of the evaluation period. Only the month and year is currently
-     *            used. The other fields should be unset or 0.
-     * @return List of {@link ClickedThing}.
-     * @throws FlattrException
-     *             when the list of clicks could not be fetched
-     */
-    List<ClickedThing> getClicks(Calendar period) throws FlattrException;
-    
-    /**
-     * Gets a list of all current {@link Subscription} of the currently logged in user.
-     * 
-     * @return List of {@link Subscription}
-     * @throws FlattrException
-     *             when the list could not be fetched
-     */
-    List<Subscription> getSubscriptions() throws FlattrException;
+    @RequiredScope()
+    List<Thing> browseByMyself(Long count, Long page) throws FlattrException;
 
+    /**
+     * Returns all {@link Flattr} submitted by the currently logged in user.
+     * 
+     * @return List of {@link Flattr}
+     * @since 2.0
+     */
+    @RequiredScope()
+    List<Flattr> getMyFlattrs() throws FlattrException;
+
+    /**
+     * Returns all {@link Flattr} submitted by the currently logged in user.
+     * 
+     * @param count
+     *            Number of entries per page, or {@code null} to turn off paging
+     * @param page
+     *            Page number, or {@code null} to turn off paging
+     * @return List of {@link Flattr}
+     * @since 2.0
+     */
+    @RequiredScope()
+    List<Flattr> getMyFlattrs(Long count, Long page) throws FlattrException;
+    
 }

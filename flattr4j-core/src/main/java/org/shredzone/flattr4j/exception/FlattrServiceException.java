@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,7 @@
 package org.shredzone.flattr4j.exception;
 
 /**
- * This exception is used when a communication failure with the Flattr API occured. For
- * example there can be network related reasons, or unparseable responses from Flattr.
- * Usually there is a detailed exception in the cause property.
+ * This exception is used when the Flattr API returned an error.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -29,15 +27,23 @@ package org.shredzone.flattr4j.exception;
 public class FlattrServiceException extends FlattrException {
     private static final long serialVersionUID = -7058726202855943210L;
 
-    public FlattrServiceException() {
-        super();
-    }
+    private final String code;
 
-    public FlattrServiceException(String msg) {
+    public FlattrServiceException(String code, String msg) {
         super(msg);
+        this.code = code;
     }
-
-    public FlattrServiceException(String msg, Throwable cause) {
-        super(msg, cause);
+    
+    /**
+     * Returns a system error code passed from Flattr, to further identify this error.
+     */
+    public String getCode() {
+        return code;
     }
+    
+    @Override
+    public String toString() {
+        return code + ": " + super.toString();
+    }
+    
 }

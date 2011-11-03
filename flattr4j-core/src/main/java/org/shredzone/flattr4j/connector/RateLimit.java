@@ -18,33 +18,31 @@
  */
 package org.shredzone.flattr4j.connector;
 
-import org.shredzone.flattr4j.exception.FlattrException;
-
 /**
- * Interface for connectors that connect to the Flattr API.
+ * Keeps the maximum rate of allowed calls and the remaining number of calls.
+ * <p>
+ * <em>Note:</em> The call limitation is posed by the Flattr API. This is not a limitation
+ * of flattr4j.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision$
+ * @version $Revision: -1 $
  */
-public interface Connector {
+public class RateLimit {
+    private Long limit;
+    private Long remaining;
+    
+    /**
+     * The maximum rate of allowed calls per time span. {@code null} if there is no such
+     * information available.
+     */
+    public Long getLimit()                      { return limit; }
+    public void setLimit(Long limit)            { this.limit = limit; }
 
     /**
-     * Creates a new {@link Connection} for a call with request type
-     * {@link RequestType#GET}.
-     * 
-     * @return {@link Connection} that was created
-     * @since 2.0
+     * The remaining rate of allowed calls per time span. {@code null} if there is no such
+     * information available.
      */
-    Connection create() throws FlattrException;
-
-    /**
-     * Creates a new {@link Connection} for a call with the given request type.
-     * 
-     * @param type
-     *            {@link RequestType} to be used
-     * @return {@link Connection} that was created
-     * @since 2.0
-     */
-    Connection create(RequestType type) throws FlattrException;
+    public Long getRemaining()                  { return remaining; }
+    public void setRemaining(Long remaining)    { this.remaining = remaining; }
 
 }

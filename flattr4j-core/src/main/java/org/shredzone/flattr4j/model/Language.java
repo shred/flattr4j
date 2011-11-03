@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@ package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
 
+import org.shredzone.flattr4j.connector.FlattrObject;
+
 /**
  * A single Language that is available for Things. Two {@link Language} are considered
  * equal if they contain the same id.
@@ -28,10 +30,9 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class Language implements LanguageId, Serializable {
-    private static final long serialVersionUID = 3004338782136430145L;
+    private static final long serialVersionUID = -2166187856968632922L;
     
-    private String id;
-    private String name;
+    private FlattrObject data;
 
     /**
      * Returns a {@link LanguageId} for the given Language id.
@@ -49,30 +50,40 @@ public class Language implements LanguageId, Serializable {
         };
     }
 
+    public Language(FlattrObject data) {
+        this.data = data;
+    }
+    
     /**
      * Language id to be used with Flattr.
      */
     @Override
-    public String getLanguageId()       { return id; }
-    public void setLanguageId(String id)        { this.id = id; }
+    public String getLanguageId() {
+        return data.get("id");
+    }
 
     /**
      * Language name to be used for humans.
      */
-    public String getName()             { return name; }
-    public void setName(String name)    { this.name = name; }
-
+    public String getName() {
+        return data.get("text");
+    }
+    
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Language)) {
+        String pk = getLanguageId();
+
+        if (pk == null || obj == null || !(obj instanceof Language)) {
             return false;
         }
-        return id.equals(((Language) obj).id);
+        
+        return pk.equals(((Language) obj).getLanguageId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        String pk = getLanguageId();
+        return (pk != null ? pk.hashCode() : 0);
     }
-
+    
 }

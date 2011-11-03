@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ package org.shredzone.flattr4j.oauth;
 import java.io.Serializable;
 
 /**
- * The key and secret of the OAuth consumer. This is your application.
+ * The key and secret of the OAuth2 client. This is your application's key.
  *
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -37,8 +37,8 @@ public class ConsumerKey implements Serializable {
     }
     
     public ConsumerKey(String key, String secret) {
-        setKey(key);
-        setSecret(secret);
+        this.key = key;
+        this.secret = secret;
     }
     
     public String getKey()              { return key; }

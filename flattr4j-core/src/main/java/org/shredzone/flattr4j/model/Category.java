@@ -1,7 +1,7 @@
-/**
+/*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2010 Richard "Shred" Körber
+ * Copyright (C) 2011 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@ package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
 
+import org.shredzone.flattr4j.connector.FlattrObject;
+
 /**
  * A single Category that is available for Things. Two {@link Category} are considered
  * equal if they contain the same id.
@@ -28,10 +30,9 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class Category implements CategoryId, Serializable {
-    private static final long serialVersionUID = 7142046970430415794L;
-    
-    private String id;
-    private String name;
+    private static final long serialVersionUID = 6749493295567461888L;
+
+    private FlattrObject data;
 
     /**
      * Returns a {@link CategoryId} for the given Category id.
@@ -48,31 +49,41 @@ public class Category implements CategoryId, Serializable {
             }
         };
     }
-
+    
+    public Category(FlattrObject data) {
+        this.data = data;
+    }
+    
     /**
      * Category id to be used with Flattr.
      */
     @Override
-    public String getCategoryId()       { return id; }
-    public void setCategoryId(String id){ this.id = id; }
+    public String getCategoryId() {
+        return data.get("id");
+    }
 
     /**
      * Category name to be used for humans.
      */
-    public String getName()             { return name; }
-    public void setName(String name)    { this.name = name; }
-
+    public String getName() {
+        return data.get("text");
+    }
+    
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Category)) {
+        String pk = getCategoryId();
+
+        if (pk == null || obj == null || !(obj instanceof Category)) {
             return false;
         }
-        return id.equals(((Category) obj).id);
+        
+        return pk.equals(((Category) obj).getCategoryId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        String pk = getCategoryId();
+        return (pk != null ? pk.hashCode() : 0);
     }
-
+    
 }
