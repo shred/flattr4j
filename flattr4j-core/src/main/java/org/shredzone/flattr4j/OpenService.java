@@ -63,17 +63,17 @@ public interface OpenService {
     Thing getThingByUrl(String url) throws FlattrException;
 
     /**
-     * Browses all {@link Thing} submitted by the given user.
+     * Gets all {@link Thing} submitted by the given user.
      * 
      * @param user
      *            {@link UserId} to find the Things of
      * @return List of {@link Thing} submitted by the user
      * @since 2.0
      */
-    List<Thing> browseByUser(UserId user) throws FlattrException;
+    List<Thing> getThings(UserId user) throws FlattrException;
 
     /**
-     * Browses all {@link Thing} submitted by the given user.
+     * Gets all {@link Thing} submitted by the given user.
      * 
      * @param user
      *            {@link UserId} to find the Things of
@@ -84,7 +84,7 @@ public interface OpenService {
      * @return List of {@link Thing} submitted by the user
      * @since 2.0
      */
-    List<Thing> browseByUser(UserId user, Long count, Long page) throws FlattrException;
+    List<Thing> getThings(UserId user, Long count, Long page) throws FlattrException;
 
     /**
      * Gets the {@link User} profile of the given user ID.

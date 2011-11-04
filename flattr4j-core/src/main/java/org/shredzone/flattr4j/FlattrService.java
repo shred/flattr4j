@@ -110,16 +110,16 @@ public interface FlattrService extends OpenService {
     User getMyself() throws FlattrException;
 
     /**
-     * Browses all {@link Thing} submitted by the currently logged in user.
+     * Returns all {@link Thing} submitted by the currently logged in user.
      * 
      * @return List of {@link Thing}
      * @since 2.0
      */
     @RequiredScope()
-    List<Thing> browseByMyself() throws FlattrException;
+    List<Thing> getMyThings() throws FlattrException;
 
     /**
-     * Browses all {@link Thing} submitted by the currently logged in user.
+     * Returns all {@link Thing} submitted by the currently logged in user.
      * 
      * @param count
      *            Number of entries per page, or {@code null} to turn off paging
@@ -129,7 +129,7 @@ public interface FlattrService extends OpenService {
      * @since 2.0
      */
     @RequiredScope()
-    List<Thing> browseByMyself(Long count, Long page) throws FlattrException;
+    List<Thing> getMyThings(Long count, Long page) throws FlattrException;
 
     /**
      * Returns all {@link Flattr} submitted by the currently logged in user.

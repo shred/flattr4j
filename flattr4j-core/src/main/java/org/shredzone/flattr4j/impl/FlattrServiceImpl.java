@@ -160,12 +160,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Thing> browseByMyself() throws FlattrException {
-        return browseByMyself(null, null);
+    public List<Thing> getMyThings() throws FlattrException {
+        return getMyThings(null, null);
     }
 
     @Override
-    public List<Thing> browseByMyself(Long count, Long page) throws FlattrException {
+    public List<Thing> getMyThings(Long count, Long page) throws FlattrException {
         Connection conn = getConnector().create()
                 .call("user/things")
                 .rateLimit(lastRateLimit);
@@ -265,12 +265,12 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Thing> browseByUser(UserId user) throws FlattrException {
-        return browseByUser(user, null, null);
+    public List<Thing> getThings(UserId user) throws FlattrException {
+        return getThings(user, null, null);
     }
 
     @Override
-    public List<Thing> browseByUser(UserId user, Long count, Long page) throws FlattrException {
+    public List<Thing> getThings(UserId user, Long count, Long page) throws FlattrException {
         if (user == null || user.getUserId().length() == 0)
             throw new IllegalArgumentException("user is required");
 
