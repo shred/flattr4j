@@ -50,14 +50,13 @@ public class FlattrAuthenticator {
     private EnumSet<Scope> scope = EnumSet.noneOf(Scope.class);
 
     /**
-     * A callback URL. If set, it is invoked by Flattr in order to transport the PIN that
-     * is required for the access token. {@code null} means that the user is required to
-     * retrieve the PIN from a Flattr URL and enter it manually. Use {@code null} if you
-     * cannot provide a callback URL, for example on a desktop or handheld device
-     * application.
+     * A callback URL. If set, the user is forwarded to this URL in order to pass the
+     * valication code. {@code null} means that the user is required to retrieve the code
+     * from Flattr and enter it manually. Use {@code null} if you cannot provide a
+     * callback URL, for example on a desktop or handheld device application.
      * <p>
      * <em>NOTE:</em> This callback URL must <em>exactly</em> match the URL that was used
-     * on registration, or the authentication process will fail.
+     * on registration. Otherwise the authentication process will fail.
      * <em>NOTE:</em> If you registered your application as "client" type, callback url
      * <em>must be</em> {@code null}.
      * <p>
@@ -68,7 +67,7 @@ public class FlattrAuthenticator {
 
     /**
      * The access scope. This is a set of rights the consumer needs. The set of rights
-     * is shown to the user on authentication. Defaults to none.
+     * is shown to the user on authentication. Defaults to an empty set.
      */
     public EnumSet<Scope> getScope()        { return scope; }
     public void setScope(EnumSet<Scope> scope) { this.scope = scope; }
@@ -100,7 +99,7 @@ public class FlattrAuthenticator {
      * {@link #fetchAccessToken(String)} in order to complete the authorization.
      * <p>
      * When a callback url was set, Flattr will forward the user to this url with the
-     * following GET parameters:
+     * following GET parameter:
      * <ul>
      * <li>{@code code}: the code</li>
      * </ul>
@@ -125,7 +124,7 @@ public class FlattrAuthenticator {
      * following GET parameters:
      * <ul>
      * <li>{@code code}: the code</li>
-     * <li>{@code state}: the value of the state parameter, if it was set</li>
+     * <li>{@code state}: the value of the state parameter that was given</li>
      * </ul>
      * This way the user only needs to log in at Flattr, but does not need to copy a code
      * to complete the authorization.
@@ -133,9 +132,10 @@ public class FlattrAuthenticator {
      * Scope flags need to be set properly before invocation.
      * 
      * @param state
-     *          A value that is passed to the callback URL, to maintain state between
-     *          request and callback. Optional, may be {@code null}.
-     * @return The authentication URL that the user must visit
+     *          A value that is passed to the callback URL, to maintain state and
+     *          reidentify the user between request and callback. Optional, may be
+     *          {@code null}.
+     * @return The authentication URL the user must visit
      * @since 2.0
      */
     public String authenticate(String state) throws FlattrException {
@@ -169,9 +169,9 @@ public class FlattrAuthenticator {
      * entered the code (or when the callback url was invoked), this method is invoked to
      * complete the authorization process.
      * <p>
-     * The returned access token can be serialized or its contents persisted in a
-     * database. It is needed to access the Flattr API with a valid authentication until
-     * revoked by the user.
+     * The returned access token can be serialized or the {@link AccessToken#getToken()}
+     * persisted in a database. It is needed to access the Flattr API with a valid
+     * authentication. The token is valid until revoked by the user.
      * 
      * @param code
      *            The code that was returned from Flattr
@@ -207,7 +207,7 @@ public class FlattrAuthenticator {
     }
 
     /**
-     * Creates a {@link Connector} for sending requests with basic authentication.
+     * Creates a {@link Connector} for sending requests.
      * 
      * @return {@link Connector}
      */
@@ -218,7 +218,7 @@ public class FlattrAuthenticator {
     /**
      * Builds a scope string for the scope flags set.
      * 
-     * @return Scope string: scope texts, separated by comma.
+     * @return Scope string: scope texts, separated by spaces.
      */
     @SuppressWarnings("deprecation")
     protected String buildScopeString() {

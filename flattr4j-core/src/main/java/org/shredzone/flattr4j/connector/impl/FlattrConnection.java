@@ -40,7 +40,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -264,10 +263,10 @@ public class FlattrConnection implements Connection {
     @Override
     public FlattrObject singleResult() throws FlattrException {
         Collection<FlattrObject> result = result();
-        switch (result.size()) {
-            case 0: return null;
-            case 1: return result.iterator().next();
-            default: throw new MarshalException("Expected 1, but got " + result.size() + " result rows");
+        if (result.size() == 1) {
+            return result.iterator().next();
+        } else {
+            throw new MarshalException("Expected 1, but got " + result.size() + " result rows");
         }
     }
     
@@ -350,7 +349,7 @@ public class FlattrConnection implements Connection {
     
     /**
      * Assert that the HTTP result is OK, otherwise generate and throw an appropriate
-     * error message.
+     * {@link FlattrException}.
      */
     private void assertStatusOk() throws FlattrException {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -388,19 +387,19 @@ public class FlattrConnection implements Connection {
     }
     
     /**
-     * Creates a {@link HttpClient} for sending the request.
+     * Creates a {@link AbstractHttpClient} for sending the request.
      * 
-     * @return {@link HttpClient}
+     * @return {@link AbstractHttpClient}
      */
     protected AbstractHttpClient createHttpClient() {
         return new FlattrHttpClient();
     }
     
     /**
-     * Disposes a {@link HttpClient}, releasing all resources.
+     * Disposes a {@link AbstractHttpClient}, releasing all resources.
      * 
      * @param cl
-     *            {@link HttpClient} to release
+     *            {@link AbstractHttpClient} to release
      */
     protected void disposeHttpClient(AbstractHttpClient cl) {
         cl.getConnectionManager().shutdown();

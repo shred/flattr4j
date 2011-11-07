@@ -49,7 +49,8 @@ public final class FlattrFactory {
     }
 
     /**
-     * Creates a {@link FlattrService} for the given consumer and access token.
+     * Creates a {@link FlattrService} for the given access token. The returned service is
+     * associated to the user of the access token.
      * 
      * @param accessToken
      *            Access token
@@ -61,7 +62,8 @@ public final class FlattrFactory {
     }
 
     /**
-     * Creates a {@link FlattrService} for the given consumer and access token.
+     * Creates a {@link FlattrService} for the given access token. The returned service is
+     * associated to the user of the access token.
      * 
      * @param accessToken
      *            {@link AccessToken} instance

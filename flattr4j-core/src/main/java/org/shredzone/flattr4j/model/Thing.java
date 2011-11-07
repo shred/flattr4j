@@ -23,13 +23,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.shredzone.flattr4j.FlattrService;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * A {@link Thing} that has been registered with Flattr. Two {@link Thing} are considered
- * equal if they contain the same id.
+ * equal if they contain the same id. Some properties of a {@link Thing} can be modified
+ * by setters. After that, invoke
+ * {@link FlattrService#update(org.shredzone.flattr4j.model.Thing)} to persist the
+ * changes.
  * <p>
  * This class is not threadsafe.
  * 
@@ -253,7 +257,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         FlattrObject result = new FlattrObject();
         for (String key : updatedKeys) {
             if ("tags".equals(key)) {
-                // Strangely, tags are expected to be a comma separated string
+                // Strangely, tags are expected to be joined in a comma separated string
                 StringBuilder sb = new StringBuilder();
                 for (String tag : tags) {
                     if (tag.indexOf(',') > 0) {

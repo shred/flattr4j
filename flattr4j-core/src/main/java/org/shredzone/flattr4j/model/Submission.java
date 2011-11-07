@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
- * A {@link Submission}.
+ * A {@link Submission} is used for creating new Things.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$

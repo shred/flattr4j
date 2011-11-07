@@ -248,7 +248,7 @@ public class FlattrServiceImpl implements FlattrService {
         
         try {
             FlattrObject data = conn.singleResult();
-            if (data.get("message").equals("found")) {
+            if ("found".equals(data.get("message"))) {
                 String loc = data.get("location");
                 Matcher m = ID_PATTERN.matcher(loc);
                 if (m.matches()) {

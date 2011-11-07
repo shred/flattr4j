@@ -24,7 +24,7 @@ import java.util.Date;
 import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
- * Detailled Flattr {@link User}.
+ * A {@link User}. Two {@link User} are considered equal if they contain the same id.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
@@ -126,7 +126,7 @@ public class User implements UserId, Serializable {
     }
 
     /**
-     * ZIP
+     * User's ZIP.
      * 
      * @since 2.0
      */
@@ -135,7 +135,7 @@ public class User implements UserId, Serializable {
     }
 
     /**
-     * Province.
+     * User's province.
      * 
      * @since 2.0
      */
@@ -144,7 +144,7 @@ public class User implements UserId, Serializable {
     }
 
     /**
-     * Cellphone number.
+     * User's cellphone number.
      * 
      * @since 2.0
      */

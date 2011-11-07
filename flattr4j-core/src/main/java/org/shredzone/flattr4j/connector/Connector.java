@@ -21,7 +21,7 @@ package org.shredzone.flattr4j.connector;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
- * Interface for connectors that connect to the Flattr API.
+ * Interface for connectors that create connections to the Flattr API.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$

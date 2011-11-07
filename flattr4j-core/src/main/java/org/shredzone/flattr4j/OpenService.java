@@ -57,7 +57,7 @@ public interface OpenService {
      * 
      * @param url
      *            Thing's URL
-     * @return {@link ThingId} of the URL that was found, {@code null} otherwise
+     * @return {@link Thing} of the URL that was found, {@code null} if nothing was found
      * @since 2.0
      */
     Thing getThingByUrl(String url) throws FlattrException;

@@ -21,11 +21,12 @@ package org.shredzone.flattr4j.connector;
 import java.util.Collection;
 
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.exception.MarshalException;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.ConsumerKey;
 
 /**
- * Prepares a connection against the Flattr API for a single call.
+ * Builds and executes a single call against the Flattr API.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision: 448 $
@@ -98,9 +99,8 @@ public interface Connection {
     Connection query(String name, String value);
 
     /**
-     * Data to be transported to the call, as {@link FlattrObject}. Requires
-     * {@link RequestType#POST} or {@link RequestType#PATCH}, otherwise an exception
-     * will be raised.
+     * Data to be transported to the call. Requires {@link RequestType#POST} or
+     * {@link RequestType#PATCH}, otherwise an exception will be thrown.
      * 
      * @param data
      *            Data to be sent
@@ -110,7 +110,7 @@ public interface Connection {
 
     /**
      * Form parameter to be sent. Requires {@link RequestType#POST}, otherwise an
-     * exception will be raised. Do not mix with {@link #data(FlattrObject)}.
+     * exception will be thrown. Do not mix with {@link #data(FlattrObject)}.
      * 
      * @param name
      *            Parameter name
@@ -130,18 +130,21 @@ public interface Connection {
     Connection rateLimit(RateLimit limit);
 
     /**
-     * Invokes the call and returns an {@link FlattrObject} as response.
+     * Invokes the call and returns a single {@link FlattrObject} as response.
      * 
-     * @return result
+     * @return result {@link FlattrObject}, never {@code null}
      * @throws FlattrException
      *             if the call could not be invoked or the web service returned an error
+     * @throws MarshalException
+     *             if more or less than a single FlattrObject were returned
      */
     FlattrObject singleResult() throws FlattrException;
 
     /**
      * Invokes the call and returns a Collection of {@link FlattrObject} as response.
      * 
-     * @return result
+     * @return result collection of {@link FlattrObject}, may be empty but never
+     *         {@code null}
      * @throws FlattrException
      *             if the call could not be invoked or the web service returned an error
      */

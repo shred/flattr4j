@@ -44,7 +44,7 @@ public interface FlattrService extends OpenService {
      * 
      * @param thing
      *            {@link Submission} to be submitted
-     * @return {@link ThingId} as result from the submission.
+     * @return {@link ThingId} of the {@link Thing} that was created
      * @since 2.0
      */
     @RequiredScope(Scope.THING)
@@ -65,12 +65,7 @@ public interface FlattrService extends OpenService {
     Thing submit(Submission thing) throws FlattrException;
     
     /**
-     * Updates a Thing. Only the "title", "description", "category", "language", "tags"
-     * and "hidden" properties can be updated, changes to other properties will be
-     * ignored.
-     * <p>
-     * <em>Note:</em> A HTTP {@code PATCH} request is sent to the web service, which is
-     * not a HTTP standard method and might be blocked by some proxies.
+     * Updates a Thing.
      * 
      * @param thing
      *            {@link Thing} to be modified
@@ -81,9 +76,6 @@ public interface FlattrService extends OpenService {
 
     /**
      * Deletes a Thing.
-     * <p>
-     * <em>Note:</em> A HTTP {@code DELETE} request is sent to the web service, which
-     * might be blocked by some proxies.
      * 
      * @param thingId
      *            {@link ThingId} to delete
@@ -93,7 +85,7 @@ public interface FlattrService extends OpenService {
     void delete(ThingId thingId) throws FlattrException;
 
     /**
-     * Clicks on a Thing. This means that the Thing is flattr-ed by the logged in user.
+     * Clicks on a Thing. This means that the Thing is flattr-ed by the associated user.
      * 
      * @param thingId
      *            {@link ThingId} to flattr
@@ -102,7 +94,7 @@ public interface FlattrService extends OpenService {
     void click(ThingId thingId) throws FlattrException;
 
     /**
-     * Gets the {@link User} profile of the currently logged in user.
+     * Gets the {@link User} profile of the associated user.
      * 
      * @return {@link User} profile of oneself
      */
@@ -110,7 +102,7 @@ public interface FlattrService extends OpenService {
     User getMyself() throws FlattrException;
 
     /**
-     * Returns all {@link Thing} submitted by the currently logged in user.
+     * Returns all {@link Thing} submitted by the associated user.
      * 
      * @return List of {@link Thing}
      * @since 2.0
@@ -119,7 +111,7 @@ public interface FlattrService extends OpenService {
     List<Thing> getMyThings() throws FlattrException;
 
     /**
-     * Returns all {@link Thing} submitted by the currently logged in user.
+     * Returns all {@link Thing} submitted by the associated user.
      * 
      * @param count
      *            Number of entries per page, or {@code null} to turn off paging
@@ -132,7 +124,7 @@ public interface FlattrService extends OpenService {
     List<Thing> getMyThings(Long count, Long page) throws FlattrException;
 
     /**
-     * Returns all {@link Flattr} submitted by the currently logged in user.
+     * Returns all {@link Flattr} submitted by the associated user.
      * 
      * @return List of {@link Flattr}
      * @since 2.0
@@ -141,7 +133,7 @@ public interface FlattrService extends OpenService {
     List<Flattr> getMyFlattrs() throws FlattrException;
 
     /**
-     * Returns all {@link Flattr} submitted by the currently logged in user.
+     * Returns all {@link Flattr} submitted by the associated user.
      * 
      * @param count
      *            Number of entries per page, or {@code null} to turn off paging

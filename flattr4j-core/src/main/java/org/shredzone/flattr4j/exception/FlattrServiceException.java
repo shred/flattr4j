@@ -19,7 +19,7 @@
 package org.shredzone.flattr4j.exception;
 
 /**
- * This exception is used when the Flattr API returned an error.
+ * This exception is used when the Flattr web service returned an error.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision$
