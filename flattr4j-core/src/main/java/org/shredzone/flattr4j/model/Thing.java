@@ -275,13 +275,23 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         }
         return result;
     }
-
+    
     /**
      * Returns the URL of a PDF document containing a QR code of the Thing. The PDF
      * can be printed, sticked on the wall, and then flattered using a mobile phone.
      */
     public String getQrPdfUrl() {
         return "https://flattr.com/thing/qr/" + getThingId();
+    }
+
+    /**
+     * Returns the URL to the thing's page at Flattr.
+     * 
+     * @deprecated Replaced by a method "getLink()"
+     */
+    @Deprecated
+    public String getThingUrl() {
+        return getLink();
     }
 
     @Override
