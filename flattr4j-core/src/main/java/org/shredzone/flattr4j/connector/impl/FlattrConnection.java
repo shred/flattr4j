@@ -235,7 +235,7 @@ public class FlattrConnection implements Connection {
 
             List<FlattrObject> result;
             
-            Object resultData = readData();
+            Object resultData = new JSONTokener(readResponse()).nextValue();
             if (resultData instanceof JSONArray) {
                 JSONArray array = (JSONArray) resultData;
                 result = new ArrayList<FlattrObject>(array.length());
@@ -315,11 +315,11 @@ public class FlattrConnection implements Connection {
     }
     
     /**
-     * Reads the returned data from the HTTP response.
+     * Reads the returned HTTP response as string.
      * 
-     * @return Data read
+     * @return Response read
      */
-    private Object readData() throws IOException, JSONException {
+    protected String readResponse() throws IOException {
         HttpEntity entity = response.getEntity();
 
         Charset charset = Charset.forName(ENCODING);
@@ -341,7 +341,7 @@ public class FlattrConnection implements Connection {
                 sb.append(buffer, 0, len);
             }
             
-            return new JSONTokener(sb.toString()).nextValue();
+            return sb.toString();
         } finally {
             in.close();
         }
@@ -357,7 +357,7 @@ public class FlattrConnection implements Connection {
         }
 
         try {
-            JSONObject errorData = (JSONObject) readData();
+            JSONObject errorData = (JSONObject) new JSONTokener(readResponse()).nextValue();
             String error = errorData.optString("error");
             String desc = errorData.optString("error_description");
             

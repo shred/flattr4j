@@ -99,7 +99,11 @@ public class FlattrServiceImpl implements FlattrService {
         FlattrObject update = thing.toUpdate();
         
         if (update != null) { // Thing was modified.
-            Connection conn = getConnector().create(RequestType.PATCH)
+// <workaround> PATCH is broken at the moment...
+//            Connection conn = getConnector().create(RequestType.PATCH)
+            update.put("_method", "patch");
+            Connection conn = getConnector().create(RequestType.POST)
+// </workaround>
                     .call("things/:id")
                     .parameter("id", thing.getThingId())
                     .rateLimit(lastRateLimit);

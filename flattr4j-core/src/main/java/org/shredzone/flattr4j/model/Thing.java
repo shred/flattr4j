@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.shredzone.flattr4j.FlattrService;
 
+import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.MarshalException;
 
