@@ -63,7 +63,8 @@ public interface OpenService {
     Thing getThingByUrl(String url) throws FlattrException;
 
     /**
-     * Gets all {@link Thing} submitted by the given user.
+     * Gets a list of {@link Thing} most recently submitted by the given user. This list
+     * is limited to 10 entries.
      * 
      * @param user
      *            {@link UserId} to find the Things of
@@ -73,18 +74,18 @@ public interface OpenService {
     List<Thing> getThings(UserId user) throws FlattrException;
 
     /**
-     * Gets all {@link Thing} submitted by the given user.
+     * Gets a list of {@link Thing} most recently submitted by the given user.
      * 
      * @param user
      *            {@link UserId} to find the Things of
      * @param count
-     *            Number of entries per page, or {@code null} to turn off paging
+     *            Number of entries per page, {@code null} defaults to 10 entries
      * @param page
-     *            Page number, or {@code null} to turn off paging
+     *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Thing} submitted by the user
      * @since 2.0
      */
-    List<Thing> getThings(UserId user, Long count, Long page) throws FlattrException;
+    List<Thing> getThings(UserId user, Integer count, Integer page) throws FlattrException;
 
     /**
      * Gets the {@link User} profile of the given user ID.
@@ -96,7 +97,8 @@ public interface OpenService {
     User getUser(UserId user) throws FlattrException;
 
     /**
-     * Gets all {@link Flattr} posted by the given user ID.
+     * Gets all {@link Flattr} most recently posted by the given user ID. Limited to 10
+     * results.
      * 
      * @param user
      *            {@link UserId} to get the result for
@@ -106,18 +108,18 @@ public interface OpenService {
     List<Flattr> getFlattrs(UserId user) throws FlattrException;
 
     /**
-     * Gets all {@link Flattr} posted by the given user ID.
+     * Gets all {@link Flattr} most recently posted by the given user ID.
      * 
      * @param user
      *            {@link UserId} to get the result for
      * @param count
-     *            Number of entries per page, or {@code null} to turn off paging
+     *            Number of entries per page, {@code null} defaults to 10 entries
      * @param page
-     *            Page number, or {@code null} to turn off paging
+     *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Flattr} posted by the user
      * @since 2.0
      */
-    List<Flattr> getFlattrs(UserId user, Long count, Long page) throws FlattrException;
+    List<Flattr> getFlattrs(UserId user, Integer count, Integer page) throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Category}.

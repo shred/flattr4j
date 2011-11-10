@@ -102,7 +102,7 @@ public interface FlattrService extends OpenService {
     User getMyself() throws FlattrException;
 
     /**
-     * Returns all {@link Thing} submitted by the associated user.
+     * Returns all {@link Thing} submitted by the associated user. Limited to 10 entries.
      * 
      * @return List of {@link Thing}
      * @since 2.0
@@ -114,17 +114,17 @@ public interface FlattrService extends OpenService {
      * Returns all {@link Thing} submitted by the associated user.
      * 
      * @param count
-     *            Number of entries per page, or {@code null} to turn off paging
+     *            Number of entries per page, {@code null} defaults to 10 entries
      * @param page
-     *            Page number, or {@code null} to turn off paging
+     *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Thing}
      * @since 2.0
      */
     @RequiredScope()
-    List<Thing> getMyThings(Long count, Long page) throws FlattrException;
+    List<Thing> getMyThings(Integer count, Integer page) throws FlattrException;
 
     /**
-     * Returns all {@link Flattr} submitted by the associated user.
+     * Returns all {@link Flattr} submitted by the associated user. Limited to 10 entries.
      * 
      * @return List of {@link Flattr}
      * @since 2.0
@@ -136,13 +136,13 @@ public interface FlattrService extends OpenService {
      * Returns all {@link Flattr} submitted by the associated user.
      * 
      * @param count
-     *            Number of entries per page, or {@code null} to turn off paging
+     *            Number of entries per page, {@code null} defaults to 10 entries
      * @param page
-     *            Page number, or {@code null} to turn off paging
+     *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Flattr}
      * @since 2.0
      */
     @RequiredScope()
-    List<Flattr> getMyFlattrs(Long count, Long page) throws FlattrException;
+    List<Flattr> getMyFlattrs(Integer count, Integer page) throws FlattrException;
     
 }

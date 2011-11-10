@@ -22,8 +22,6 @@ package org.shredzone.flattr4j.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.Connection;
@@ -48,8 +46,6 @@ import org.shredzone.flattr4j.model.UserId;
  * @version $Revision$
  */
 public class FlattrServiceImpl implements FlattrService {
-    private static final Pattern ID_PATTERN = Pattern.compile(".*?(\\d+)$");
-    
     private final Connector connector;
    
     private RateLimit lastRateLimit = new RateLimit();
@@ -169,7 +165,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Thing> getMyThings(Long count, Long page) throws FlattrException {
+    public List<Thing> getMyThings(Integer count, Integer page) throws FlattrException {
         Connection conn = getConnector().create()
                 .call("user/things")
                 .rateLimit(lastRateLimit);
@@ -199,7 +195,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Flattr> getMyFlattrs(Long count, Long page) throws FlattrException {
+    public List<Flattr> getMyFlattrs(Integer count, Integer page) throws FlattrException {
         Connection conn = getConnector().create()
                 .call("user/flattrs")
                 .rateLimit(lastRateLimit);
@@ -252,17 +248,12 @@ public class FlattrServiceImpl implements FlattrService {
         
         try {
             FlattrObject data = conn.singleResult();
-            if ("found".equals(data.get("message"))) {
-                String loc = data.get("location");
-                Matcher m = ID_PATTERN.matcher(loc);
-                if (m.matches()) {
-                    return getThing(Thing.withId(m.group(1)));
-                } else {
-                    throw new FlattrException("unexpected location " + loc);
-                }
-            } else {
+
+            if (data.has("message") && "not_found".equals(data.get("message"))) {
                 return null;
             }
+            
+            return new Thing(data);
         } finally {
             conn.close();
         }
@@ -274,7 +265,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Thing> getThings(UserId user, Long count, Long page) throws FlattrException {
+    public List<Thing> getThings(UserId user, Integer count, Integer page) throws FlattrException {
         if (user == null || user.getUserId().length() == 0)
             throw new IllegalArgumentException("user is required");
 
@@ -325,7 +316,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Flattr> getFlattrs(UserId userId, Long count, Long page) throws FlattrException {
+    public List<Flattr> getFlattrs(UserId userId, Integer count, Integer page) throws FlattrException {
         if (userId == null || userId.getUserId().length() == 0)
             throw new IllegalArgumentException("userId is required");
 

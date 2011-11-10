@@ -46,6 +46,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -83,6 +84,7 @@ public class FlattrConnection implements Connection {
     private String call;
     private RequestType type;
     private ConsumerKey key;
+    private List<NameValuePair> queryParam;
     private List<NameValuePair> formParam;
     private RateLimit limit;
 
@@ -134,8 +136,10 @@ public class FlattrConnection implements Connection {
 
     @Override
     public Connection query(String name, String value) {
-        createRequest();
-        request.getParams().setParameter(name, value);
+        if (queryParam == null) {
+            queryParam = new ArrayList<NameValuePair>();
+        }
+        queryParam.add(new BasicNameValuePair(name, value));
         return this;
     }
 
@@ -184,28 +188,29 @@ public class FlattrConnection implements Connection {
     @Override
     public Collection<FlattrObject> result() throws FlattrException {
         createRequest();
-        client = createHttpClient();
+        
+        try {
+            String queryString = "";
+            if (queryParam != null) {
+                queryString = '?' + URLEncodedUtils.format(queryParam, ENCODING);
+            }
+            
+            if (call != null) {
+                request.setURI(new URI(baseUrl).resolve(call + queryString));
+            } else {
+                request.setURI(new URI(baseUrl + queryString));
+            }
+            
+            request.setHeader("Accept", "application/json");
 
-        if (formParam != null) {
-            try {
+            if (formParam != null) {
                 UrlEncodedFormEntity body = new UrlEncodedFormEntity(formParam, ENCODING);
                 body.setContentType("application/x-www-form-urlencoded");
                 body.setContentEncoding(ENCODING);
                 ((HttpPost) request).setEntity(body);
-            } catch (UnsupportedEncodingException ex) {
-                // should never be thrown, as "utf-8" encoding is available on any VM
-                throw new RuntimeException(ex);
-            }
-        }
-        
-        try {
-            URI uri = new URI(baseUrl);
-            if (call != null) {
-                uri = uri.resolve(call);
             }
             
-            request.setURI(uri);
-            request.setHeader("Accept", "application/json");
+            client = createHttpClient();
 
             if (key != null) {
                 client.getCredentialsProvider().setCredentials(AuthScope.ANY,

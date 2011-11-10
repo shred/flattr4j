@@ -44,7 +44,7 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * @version $Revision:$
  */
 public class FlattrObject implements Serializable, Externalizable {
-    // TODO: serialVersionID
+    private static final long serialVersionUID = -6640392574244365803L;
     
     private JSONObject data;
 
@@ -80,6 +80,17 @@ public class FlattrObject implements Serializable, Externalizable {
         }
     }
 
+    /**
+     * Checks if there is a key.
+     * 
+     * @param key
+     *          Key to check for
+     * @return {@code true} if there is such a key (value may still be {@code null}).
+     */
+    public boolean has(String key) {
+        return data.has(key);
+    }
+    
     /**
      * Gets an Object from the given key.
      * 
