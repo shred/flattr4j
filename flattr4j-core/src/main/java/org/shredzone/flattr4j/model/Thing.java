@@ -240,6 +240,32 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
     
     /**
+     * Merges the contents of a submission to this {@link Thing}. This method is useful if
+     * you want to modify an existing {@link Thing} by a {@link Submission} object.
+     * <p>
+     * <em>NOTE:</em> The URL of a {@link Thing} cannot be changed. The {@link Submission}
+     * object must contain this {@link Thing}'s URL. Otherwise an
+     * {@link IllegalArgumentException} is thrown.
+     * 
+     * @param submission
+     *            {@link Submission} to merge
+     * @since 2.0
+     */
+    public void merge(Submission submission) {
+        if (!this.getUrl().equals(submission.getUrl())) {
+            throw new IllegalArgumentException("Thing URL '" + getUrl()
+                            + "' cannot be changed to '" + submission.getUrl() + "'");
+        }
+        
+        this.setCategory(submission.getCategory());
+        this.setTitle(submission.getTitle());
+        this.setDescription(submission.getDescription());
+        this.setLanguage(submission.getLanguage());
+        this.setTags(submission.getTags());
+        this.setHidden(submission.isHidden());
+    }
+    
+    /**
      * Returns a {@link FlattrObject} for the updates that have been applied to this
      * Thing.
      * 
