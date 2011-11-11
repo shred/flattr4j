@@ -242,8 +242,8 @@ public class FlattrServiceImpl implements FlattrService {
             throw new IllegalArgumentException("url is required");
         
         Connection conn = getConnector().create()
-                .call("things/lookup/?q=:url")
-                .parameter("url", url)
+                .call("things/lookup/")
+                .query("q", url)
                 .rateLimit(lastRateLimit);
         
         try {
