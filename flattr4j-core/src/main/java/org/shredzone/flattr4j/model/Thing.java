@@ -244,7 +244,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * you want to modify an existing {@link Thing} by a {@link Submission} object.
      * <p>
      * <em>NOTE:</em> The URL of a {@link Thing} cannot be changed. The {@link Submission}
-     * object must contain this {@link Thing}'s URL. Otherwise an
+     * object must contain either this {@link Thing}'s URL or {@code null}. Otherwise an
      * {@link IllegalArgumentException} is thrown.
      * 
      * @param submission
@@ -252,7 +252,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * @since 2.0
      */
     public void merge(Submission submission) {
-        if (!this.getUrl().equals(submission.getUrl())) {
+        if (submission.getUrl() != null && !this.getUrl().equals(submission.getUrl())) {
             throw new IllegalArgumentException("Thing URL '" + getUrl()
                             + "' cannot be changed to '" + submission.getUrl() + "'");
         }
