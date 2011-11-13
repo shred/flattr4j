@@ -99,6 +99,49 @@ public class ThingTest {
         Assert.assertEquals("title", "footitle", data2.get("title"));
         Assert.assertEquals("tags", "twitter,java", data2.get("tags"));
     }
+    
+    @Test
+    public void testMerge() throws FlattrException, IOException {
+        Thing thing = ModelGenerator.createThing();
+        
+        Submission sub = new Submission();
+        sub.setTitle("example title");
+        sub.setDescription("example description");
+        sub.setCategory(Category.withId("text"));
+        sub.setLanguage(Language.withId("es_ES"));
+        sub.addTag("foo");
+        sub.addTag("bar");
+        sub.setHidden(true);
+        
+        // Merge with url == null
+        thing.merge(sub);
+        Assert.assertEquals("example title", thing.getTitle());
+        Assert.assertEquals("example description", thing.getDescription());
+        Assert.assertEquals("text", thing.getCategoryId());
+        Assert.assertEquals("es_ES", thing.getLanguageId());
+        Assert.assertNotNull(thing.getTags());
+        Assert.assertEquals(2, thing.getTags().size());
+        Assert.assertEquals("foo", thing.getTags().get(0));
+        Assert.assertEquals("bar", thing.getTags().get(1));
+        Assert.assertTrue(thing.isHidden());
+        Assert.assertEquals("http://twitter.com/#!/simongate", thing.getUrl());
+        
+        // Merge with url == thing.url
+        thing = ModelGenerator.createThing();
+        sub.setUrl(thing.getUrl());
+        thing.merge(sub);
+        Assert.assertEquals("http://twitter.com/#!/simongate", thing.getUrl());
+        
+        // Merge with different url
+        thing = ModelGenerator.createThing();
+        sub.setUrl("http://www.somewhe.re/over/the/rainbow");
+        try {
+            thing.merge(sub);
+            Assert.fail("could use different url");
+        } catch (IllegalArgumentException ex) {
+            // Expected this exception, as the url is different to the thing's url
+        }
+    }
 
     @Test
     public void testEquals() throws FlattrException {
@@ -118,6 +161,5 @@ public class ThingTest {
         thing.addTag("foo,bar");
         thing.toUpdate();
     }
-
 
 }
