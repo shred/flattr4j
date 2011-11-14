@@ -64,7 +64,7 @@ public interface OpenService {
 
     /**
      * Gets a list of {@link Thing} most recently submitted by the given user. This list
-     * is limited to 10 entries.
+     * is limited to 30 entries.
      * 
      * @param user
      *            {@link UserId} to find the Things of
@@ -97,7 +97,7 @@ public interface OpenService {
     User getUser(UserId user) throws FlattrException;
 
     /**
-     * Gets all {@link Flattr} most recently posted by the given user ID. Limited to 10
+     * Gets all {@link Flattr} most recently posted by the given user ID. Limited to 30
      * results.
      * 
      * @param user

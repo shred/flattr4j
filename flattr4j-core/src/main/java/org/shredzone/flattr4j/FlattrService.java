@@ -102,7 +102,7 @@ public interface FlattrService extends OpenService {
     User getMyself() throws FlattrException;
 
     /**
-     * Returns all {@link Thing} submitted by the associated user. Limited to 10 entries.
+     * Returns all {@link Thing} submitted by the associated user. Limited to 30 entries.
      * 
      * @return List of {@link Thing}
      * @since 2.0
@@ -124,7 +124,7 @@ public interface FlattrService extends OpenService {
     List<Thing> getMyThings(Integer count, Integer page) throws FlattrException;
 
     /**
-     * Returns all {@link Flattr} submitted by the associated user. Limited to 10 entries.
+     * Returns all {@link Flattr} submitted by the associated user. Limited to 30 entries.
      * 
      * @return List of {@link Flattr}
      * @since 2.0
