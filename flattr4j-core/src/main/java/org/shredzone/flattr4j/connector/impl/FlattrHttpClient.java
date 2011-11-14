@@ -20,6 +20,7 @@ package org.shredzone.flattr4j.connector.impl;
 
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.conn.ClientConnectionManager;
@@ -28,7 +29,8 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
@@ -39,46 +41,76 @@ import org.apache.http.params.HttpProtocolParams;
  * @version $Revision$
  */
 public class FlattrHttpClient extends DefaultHttpClient  {
+    private static final int TIMEOUT_MS = 10000;
     
-    private static SSLSocketFactory sslSocketFactory;
-    
-    static {
+    private static final AtomicReference<SSLSocketFactory> sslSocketFactory = new AtomicReference<SSLSocketFactory>();
+    private static final AtomicReference<SchemeRegistry> registry = new AtomicReference<SchemeRegistry>();
+
+    /**
+     * Gets a {@link SSLSocketFactory} suited for connecting to Flattr.
+     * 
+     * @return {@link SSLSocketFactory}
+     */
+    public static SSLSocketFactory getSocketFactory() {
+        SSLSocketFactory result = sslSocketFactory.get();
+        if (result != null) {
+            return result;
+        }
+        
         try {
             InputStream in = null;
             try {
                 KeyStore trustStore = KeyStore.getInstance("BKS");
                 in = FlattrHttpClient.class.getResourceAsStream("flattr.bks");
                 trustStore.load(in, "flattr4j".toCharArray());
-                sslSocketFactory = new SSLSocketFactory(trustStore);
+                result = new SSLSocketFactory(trustStore);
             } finally {
                 if (in != null) {
                     in.close();
                 }
             }
         } catch (Exception ex) {
-            sslSocketFactory = SSLSocketFactory.getSocketFactory();
+            // Fallback to the original SSL socket factory
+            result = SSLSocketFactory.getSocketFactory();
+        }
+        
+        if (sslSocketFactory.compareAndSet(null, result)) {
+            return result;
+        } else {
+            return sslSocketFactory.get();
         }
     }
     
     /**
-     * Gets a SSLSocketFactory suited for connecting to Flattr.
+     * Gets a preconfigured {@link SchemeRegistry} suited for connecting to Flattr.
      * 
-     * @return SSLSocketFactory
+     * @return {@link SchemeRegistry}
      */
-    public static SSLSocketFactory getSocketFactory() {
-        return sslSocketFactory;
+    public static SchemeRegistry getSchemeRegistry() {
+        SchemeRegistry result = registry.get();
+        if (result != null) {
+            return result;
+        }
+
+        result = new SchemeRegistry();
+        result.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        result.register(new Scheme("https", getSocketFactory(), 443));
+
+        if (registry.compareAndSet(null, result)) {
+            return result;
+        } else {
+            return registry.get();
+        }
     }
     
     @Override
     protected ClientConnectionManager createClientConnectionManager() {
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        registry.register(new Scheme("https", FlattrHttpClient.getSocketFactory(), 443));
-        
         HttpParams params = getParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
+        HttpConnectionParams.setSoTimeout(params, TIMEOUT_MS);
+        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MS);
         
-        return new SingleClientConnManager(params, registry);
+        return new ThreadSafeClientConnManager(params, getSchemeRegistry());
     }
     
 }

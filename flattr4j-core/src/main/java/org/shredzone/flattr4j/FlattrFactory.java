@@ -18,6 +18,8 @@
  */
 package org.shredzone.flattr4j;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.shredzone.flattr4j.connector.impl.FlattrConnector;
 import org.shredzone.flattr4j.impl.FlattrServiceImpl;
 import org.shredzone.flattr4j.oauth.AccessToken;
@@ -30,7 +32,7 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  * @version $Revision$
  */
 public final class FlattrFactory {
-    private static FlattrFactory instance = null;
+    private static final AtomicReference<FlattrFactory> instance = new AtomicReference<FlattrFactory>();
     
     private FlattrFactory() {
         // Private constructor
@@ -42,10 +44,18 @@ public final class FlattrFactory {
      * @return {@link FlattrFactory}
      */
     public static FlattrFactory getInstance() {
-        if (instance == null) {
-            instance = new FlattrFactory();
+        FlattrFactory result = instance.get();
+        if (result != null) {
+            return result;
         }
-        return instance;
+        
+        result = new FlattrFactory();
+        
+        if (instance.compareAndSet(null, result)) {
+            return result;
+        } else {
+            return instance.get();
+        }
     }
 
     /**
