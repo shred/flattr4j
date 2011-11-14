@@ -236,21 +236,25 @@ public class FlattrConnection implements Connection {
                 }
             }
             
-            assertStatusOk();
-
             List<FlattrObject> result;
-            
-            Object resultData = new JSONTokener(readResponse()).nextValue();
-            if (resultData instanceof JSONArray) {
-                JSONArray array = (JSONArray) resultData;
-                result = new ArrayList<FlattrObject>(array.length());
-                for (int ix = 0; ix < array.length(); ix++) {
-                    result.add(new FlattrObject(array.getJSONObject(ix)));
+
+            if (assertStatusOk()) {
+                // Status is OK and there is content
+                Object resultData = new JSONTokener(readResponse()).nextValue();
+                if (resultData instanceof JSONArray) {
+                    JSONArray array = (JSONArray) resultData;
+                    result = new ArrayList<FlattrObject>(array.length());
+                    for (int ix = 0; ix < array.length(); ix++) {
+                        result.add(new FlattrObject(array.getJSONObject(ix)));
+                    }
+                } else if (resultData instanceof JSONObject) {
+                    result = Collections.singletonList(new FlattrObject((JSONObject) resultData));
+                } else {
+                    throw new MarshalException("unexpected result type " + resultData.getClass().getName());
                 }
-            } else if (resultData instanceof JSONObject) {
-                result = Collections.singletonList(new FlattrObject((JSONObject) resultData));
             } else {
-                throw new MarshalException("unexpected result type " + resultData.getClass().getName());
+                // Status was OK, but there is no content
+                result = Collections.emptyList();
             }
             
             return result;
@@ -355,10 +359,18 @@ public class FlattrConnection implements Connection {
     /**
      * Assert that the HTTP result is OK, otherwise generate and throw an appropriate
      * {@link FlattrException}.
+     * 
+     * @return {@code true} if the status is OK and there is a content, {@code false} if
+     *         the status is OK but there is no content. (If the status is not OK, an
+     *         exception is thrown.)
      */
-    private void assertStatusOk() throws FlattrException {
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            return;
+    private boolean assertStatusOk() throws FlattrException {
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+            return true;
+        }
+        if (statusCode == HttpStatus.SC_NO_CONTENT) {
+            return false;
         }
 
         try {
