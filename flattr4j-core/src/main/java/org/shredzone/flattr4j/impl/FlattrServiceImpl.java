@@ -140,7 +140,7 @@ public class FlattrServiceImpl implements FlattrService {
                 .rateLimit(lastRateLimit);
         
         try {
-             conn.result();
+            conn.result();
         } finally {
             conn.close();
         }

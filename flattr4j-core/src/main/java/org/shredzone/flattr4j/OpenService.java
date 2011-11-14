@@ -79,7 +79,7 @@ public interface OpenService {
      * @param user
      *            {@link UserId} to find the Things of
      * @param count
-     *            Number of entries per page, {@code null} defaults to 10 entries
+     *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
      *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Thing} submitted by the user
@@ -113,7 +113,7 @@ public interface OpenService {
      * @param user
      *            {@link UserId} to get the result for
      * @param count
-     *            Number of entries per page, {@code null} defaults to 10 entries
+     *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
      *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Flattr} posted by the user

@@ -41,8 +41,8 @@ public enum Scope {
     THING,
 
     /**
-     * The application has read access, plus access to private user information
-     * for the authenticated user.
+     * The application has read access, plus access to private user information and hidden
+     * things for the authenticated user.
      */
     EXTENDEDREAD,
 

@@ -114,7 +114,7 @@ public interface FlattrService extends OpenService {
      * Returns all {@link Thing} submitted by the associated user.
      * 
      * @param count
-     *            Number of entries per page, {@code null} defaults to 10 entries
+     *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
      *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Thing}
@@ -136,7 +136,7 @@ public interface FlattrService extends OpenService {
      * Returns all {@link Flattr} submitted by the associated user.
      * 
      * @param count
-     *            Number of entries per page, {@code null} defaults to 10 entries
+     *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
      *            Page number (counted from 1), or {@code null} to turn off paging
      * @return List of {@link Flattr}
