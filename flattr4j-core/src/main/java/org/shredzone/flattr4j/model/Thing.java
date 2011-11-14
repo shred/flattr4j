@@ -139,7 +139,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
     
     public void setCategory(CategoryId category) {
-        data.put("category", category.getCategoryId());
+        data.put("category", (category != null ? category.getCategoryId() : null));
         updatedKeys.add("category");
     }
 
@@ -187,7 +187,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
     
     public void setLanguage(LanguageId language) {
-        data.put("language", language.getLanguageId());
+        data.put("language", (language != null ? language.getLanguageId() : null));
         updatedKeys.add("language");
     }
 
@@ -204,7 +204,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
 
     /**
-     * Number of Flattrs in this period.
+     * Number of Flattrs in this period. Only available to the owner of this Thing.
      * 
      * @since 2.0
      */
@@ -222,7 +222,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
 
     /**
-     * Date of last Flattr.
+     * Date of last Flattr. Only available to the owner of this Thing.
      * 
      * @since 2.0
      */
@@ -231,7 +231,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
 
     /**
-     * Date of last Update.
+     * Date of last Update. Only available to the owner of this Thing.
      * 
      * @since 2.0
      */
@@ -243,9 +243,14 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * Merges the contents of a submission to this {@link Thing}. This method is useful if
      * you want to modify an existing {@link Thing} by a {@link Submission} object.
      * <p>
+     * For all unset properties of {@link Submission}, the {@link Thing} properties are
+     * cleared. After merging, the {@link Thing} is in a state as if it was created with
+     * the given {@link Submission}. If you only want to change single properties of
+     * {@link Thing}, use the setters instead.
+     * <p>
      * <em>NOTE:</em> The URL of a {@link Thing} cannot be changed. The {@link Submission}
-     * object must contain either this {@link Thing}'s URL or {@code null}. Otherwise an
-     * {@link IllegalArgumentException} is thrown.
+     * object must contain either this {@link Thing}'s URL or {@code null} (for
+     * convenience). Otherwise an {@link IllegalArgumentException} is thrown.
      * 
      * @param submission
      *            {@link Submission} to merge
@@ -262,7 +267,10 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         this.setDescription(submission.getDescription());
         this.setLanguage(submission.getLanguage());
         this.setTags(submission.getTags());
-        this.setHidden(submission.isHidden());
+        
+        if (submission.isHidden() != null) {
+            this.setHidden(submission.isHidden());
+        }
     }
     
     /**
@@ -296,7 +304,9 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
                 }
                 result.put(key, sb.toString());
             } else {
-                result.put(key, data.getObject(key));
+                if (data.has(key)) {
+                    result.put(key, data.getObject(key));
+                }
             }
         }
         return result;
