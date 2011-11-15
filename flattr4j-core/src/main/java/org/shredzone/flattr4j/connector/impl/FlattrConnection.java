@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -202,6 +204,7 @@ public class FlattrConnection implements Connection {
             }
             
             request.setHeader("Accept", "application/json");
+            request.setHeader("Accept-Encoding", "gzip");
 
             if (formParam != null) {
                 UrlEncodedFormEntity body = new UrlEncodedFormEntity(formParam, ENCODING);
@@ -332,12 +335,25 @@ public class FlattrConnection implements Connection {
         HttpEntity entity = response.getEntity();
 
         Charset charset = Charset.forName(ENCODING);
+        Header contentType = entity.getContentType();
+        if (contentType != null) {
+            for (HeaderElement elem : contentType.getElements()) {
+                if ("charset".equals(elem.getName())) {
+                    charset = Charset.forName(elem.getValue());
+                    break;
+                }
+            }
+        }
+        
+        InputStream in = entity.getContent();
+
         Header encoding = entity.getContentEncoding();
         if (encoding != null) {
-            charset = Charset.forName(encoding.getValue());
+            if ("gzip".equals(encoding.getValue())) {
+                in = new GZIPInputStream(in);
+            }
         }
 
-        InputStream in = entity.getContent();
         try {
             Reader reader = new InputStreamReader(in, charset);
     
