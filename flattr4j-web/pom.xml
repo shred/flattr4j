@@ -6,10 +6,8 @@
         <artifactId>flattr4j</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <groupId>org.shredzone.flattr4j</groupId>
     <artifactId>flattr4j-web</artifactId>
     <name>flattr4j web</name>
-    <version>2.0-SNAPSHOT</version>
     <description>Web Module of flattr4j</description>
     <reporting>
         <plugins>
