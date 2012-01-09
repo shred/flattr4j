@@ -79,6 +79,16 @@ public class SubmissionTest {
         Assert.assertEquals("language", "en_UK", data.get("language"));
         Assert.assertFalse("hidden", data.getBoolean("hidden"));
         Assert.assertEquals("tags", "foo,bar", data.get("tags"));
+
+        String url = sub.toUrl(User.withId("scott"));
+        Assert.assertEquals("https://flattr.com/submit/auto" +
+                "?user_id=scott" +
+                "&url=http%3A%2F%2Fflattr4j.shredzone.org" +
+                "&category=text" +
+                "&language=en_UK" +
+                "&title=flattr4j" +
+                "&tags=foo,bar" +
+                "&description=A+Flattr+library+for+Java", url);
     }
     
     @Test(expected = MarshalException.class)

@@ -19,9 +19,12 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.MarshalException;
@@ -34,7 +37,9 @@ import org.shredzone.flattr4j.exception.MarshalException;
  */
 public class Submission implements Serializable {
     private static final long serialVersionUID = -6684005944290342599L;
-    
+
+    private static final String ENCODING = "utf-8";
+
     private String url;
     private String title;
     private String description;
@@ -85,6 +90,67 @@ public class Submission implements Serializable {
      */
     public Boolean isHidden()                   { return hidden; }
     public void setHidden(Boolean hidden)       { this.hidden = hidden; }
+
+    /**
+     * Returns a URL that can be used for submitting a Thing (for example in a link).
+     * <p>
+     * Use this URL as a fallback only if you can't use
+     * {@link FlattrService#create(Submission)} or JavaScript. The length of an URL is
+     * limited and depends on the browser and the server. The submission will be truncated
+     * if the maximum length was exceeded.
+     *
+     * @param user
+     *            {@link UserId} of the user to register the submission with. Required,
+     *            must not be {@code null}.
+     * @return Submission URL
+     * @since 2.0
+     */
+    public String toUrl(UserId user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Anonymous submissions are not allowed");
+        }
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("https://flattr.com/submit/auto");
+
+            sb.append("?user_id=").append(URLEncoder.encode(user.getUserId(), ENCODING));
+            sb.append("&url=").append(URLEncoder.encode(url, ENCODING));
+
+            if (category != null) {
+                sb.append("&category=").append(URLEncoder.encode(category.getCategoryId(), ENCODING));
+            }
+
+            if (language != null) {
+                sb.append("&language=").append(URLEncoder.encode(language.getLanguageId(), ENCODING));
+            }
+
+            if (title != null) {
+                sb.append("&title=").append(URLEncoder.encode(title, ENCODING));
+            }
+
+            if (hidden != null && hidden.booleanValue() == true) {
+                sb.append("&hidden=1");
+            }
+
+            String tagPrefix = "&tags=";
+            for (String tag : tags) {
+                if (tag.indexOf(',') >= 0) {
+                    throw new MarshalException("tag '" + tag + "' contains invalid character ','");
+                }
+                sb.append(tagPrefix).append(URLEncoder.encode(tag, ENCODING));
+                tagPrefix = ",";
+            }
+
+            if (description != null) {
+                sb.append("&description=").append(URLEncoder.encode(description, ENCODING));
+            }
+
+            return sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            throw new InternalError(ENCODING);
+        }
+    }
 
     /**
      * Returns the submission as {@link FlattrObject}.
