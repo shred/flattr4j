@@ -29,19 +29,19 @@ import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
  * Generates and validates models.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 596 $
  */
 public final class ModelGenerator {
-    
+
     private ModelGenerator() {
         // utility class without constructor
     }
-    
+
     /**
      * Creates a {@link Flattr} instance.
-     * 
+     *
      * @return {@link Flattr} instance
      */
     public static Flattr createFlattr() throws IOException {
@@ -51,14 +51,14 @@ public final class ModelGenerator {
     /**
      * Asserts that the given {@link Flattr} instance is equal to the one created by
      * {@link #createFlattr()}.
-     * 
+     *
      * @param flattr
      *            {@link Flattr} instance
      */
     public static void assertFlattr(Flattr flattr) {
         Assert.assertEquals("thingId", "313733", flattr.getThingId());
         Assert.assertEquals("userId", "qzio", flattr.getUserId());
-        
+
         Thing thing = flattr.getThing();
         Assert.assertEquals("thing.resource", "https://api.flattr.local/rest/v2/things/313733", thing.getResource());
         Assert.assertEquals("thing.link", "https://flattr.local/things/313733", thing.getLink());
@@ -66,14 +66,14 @@ public final class ModelGenerator {
         Assert.assertEquals("thing.url", "https://flattr.com/profile/gnuproject", thing.getUrl());
         Assert.assertEquals("thing.title", "GNU's not Unix!", thing.getTitle());
         Assert.assertEquals("thing.owner", "gnuproject", thing.getUserId());
-                
+
         Date createdTest = new Date(1316697578000L);
         Assert.assertEquals("created", createdTest, flattr.getCreated());
     }
-    
+
     /**
      * Creates a {@link Thing} instance.
-     * 
+     *
      * @return {@link Thing} instance
      */
     public static Thing createThing() throws IOException {
@@ -83,7 +83,7 @@ public final class ModelGenerator {
     /**
      * Asserts that the given {@link Thing} instance is equal to the one created by
      * {@link #createThing()}.
-     * 
+     *
      * @param thing
      *            {@link Thing} instance
      */
@@ -111,7 +111,7 @@ public final class ModelGenerator {
 
     /**
      * Creates a {@link User} instance.
-     * 
+     *
      * @return {@link User} instance
      */
     public static User createUser() throws IOException {
@@ -121,7 +121,7 @@ public final class ModelGenerator {
     /**
      * Asserts that the given {@link User} instance is equal to the one created by
      * {@link #createUser()}.
-     * 
+     *
      * @param user
      *            {@link User} instance
      */
@@ -143,8 +143,49 @@ public final class ModelGenerator {
     }
 
     /**
+     * Creates an {@link Activity} instance.
+     *
+     * @return {@link Activity} instance
+     */
+    public static Activity createActivity() throws IOException {
+        return new Activity(new FlattrObject(resourceToString("/activity.json")));
+    }
+
+    /**
+     * Asserts that the given {@link Activity} instance is equal to the one created by
+     * {@link #createActivity()}.
+     *
+     * @param activity
+     *            {@link Activity} instance
+     */
+    public static void assertActivity(Activity activity) {
+        Assert.assertEquals("published", 1325668032000L, activity.getPublished().getTime());
+        Assert.assertEquals("title", "pthulin flattred \"Acoustid\"", activity.getTitle());
+        Assert.assertEquals("actor.displayName", "pthulin", activity.getActor("displayName"));
+        Assert.assertEquals("actor.url", "https://flattr.dev/profile/pthulin", activity.getActor("url"));
+        Assert.assertEquals("actor.objectType", "person", activity.getActor("objectType"));
+        Assert.assertEquals("verb", "like", activity.getVerb());
+        Assert.assertEquals("object.displayName", "Acoustid", activity.getObject("displayName"));
+        Assert.assertEquals("object.url", "https://flattr.dev/thing/459394/Acoustid", activity.getObject("url"));
+        Assert.assertEquals("object.objectType", "bookmark", activity.getObject("objectType"));
+        Assert.assertEquals("activityId", "tag:flattr.com,2012-01-04:pthulin/flattr/459394", activity.getActivityId());
+        Assert.assertNotNull("json", activity.getJSON());
+        Assert.assertNotNull("jsonobject", activity.getJSONObject());
+    }
+
+    /**
+     * Creates a {@link SearchResult} instance.
+     *
+     * @return {@link SearchResult} instance
+     */
+    public static SearchResult createSearchResult() throws IOException {
+        return new SearchResult(new FlattrObject(resourceToString("/searchresult.json")));
+    }
+
+
+    /**
      * Reads a resource into a String.
-     * 
+     *
      * @param resource
      *            Resource to read
      * @return Resource content
@@ -160,5 +201,5 @@ public final class ModelGenerator {
         }
         return sb.toString();
     }
-    
+
 }

@@ -19,26 +19,21 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * A {@link Submission} is used for creating new Things.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class Submission implements Serializable {
     private static final long serialVersionUID = -6684005944290342599L;
-
-    private static final String ENCODING = "utf-8";
 
     private String url;
     private String title;
@@ -84,7 +79,7 @@ public class Submission implements Serializable {
      */
     public LanguageId getLanguage()             { return language; }
     public void setLanguage(LanguageId language) { this.language = language; }
-    
+
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
      */
@@ -92,76 +87,35 @@ public class Submission implements Serializable {
     public void setHidden(Boolean hidden)       { this.hidden = hidden; }
 
     /**
-     * Returns a URL that can be used for submitting a Thing (for example in a link).
-     * <p>
-     * Use this URL as a fallback only if you can't use
-     * {@link FlattrService#create(Submission)} or JavaScript. The length of an URL is
-     * limited and depends on the browser and the server. The submission will be truncated
-     * if the maximum length was exceeded.
+     * Returns the set of tags as a comma separated list.
      *
-     * @param user
-     *            {@link UserId} of the user to register the submission with. Required,
-     *            must not be {@code null}.
-     * @return Submission URL
+     * @return tags
      * @since 2.0
      */
-    public String toUrl(UserId user) {
-        if (user == null) {
-            throw new IllegalArgumentException("Anonymous submissions are not allowed");
+    public String getTagsAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (String tag : tags) {
+            if (tag.indexOf(',') >= 0) {
+                throw new MarshalException("tag '" + tag + "' contains invalid character ','");
+            }
+            sb.append(',').append(tag);
         }
-
-        try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("https://flattr.com/submit/auto");
-
-            sb.append("?user_id=").append(URLEncoder.encode(user.getUserId(), ENCODING));
-            sb.append("&url=").append(URLEncoder.encode(url, ENCODING));
-
-            if (category != null) {
-                sb.append("&category=").append(URLEncoder.encode(category.getCategoryId(), ENCODING));
-            }
-
-            if (language != null) {
-                sb.append("&language=").append(URLEncoder.encode(language.getLanguageId(), ENCODING));
-            }
-
-            if (title != null) {
-                sb.append("&title=").append(URLEncoder.encode(title, ENCODING));
-            }
-
-            if (hidden != null && hidden.booleanValue() == true) {
-                sb.append("&hidden=1");
-            }
-
-            String tagPrefix = "&tags=";
-            for (String tag : tags) {
-                if (tag.indexOf(',') >= 0) {
-                    throw new MarshalException("tag '" + tag + "' contains invalid character ','");
-                }
-                sb.append(tagPrefix).append(URLEncoder.encode(tag, ENCODING));
-                tagPrefix = ",";
-            }
-
-            if (description != null) {
-                sb.append("&description=").append(URLEncoder.encode(description, ENCODING));
-            }
-
-            return sb.toString();
-        } catch (UnsupportedEncodingException ex) {
-            throw new InternalError(ENCODING);
+        if (sb.length() > 0) {
+            sb.deleteCharAt(0);
         }
+        return sb.toString();
     }
 
     /**
      * Returns the submission as {@link FlattrObject}.
-     * 
+     *
      * @return {@link FlattrObject} of this submission.
      * @since 2.0
      */
     public FlattrObject toFlattrObject() throws FlattrException {
         FlattrObject result = new FlattrObject();
         result.put("url", url);
-        
+
         if (hidden != null) {
             result.put("hidden", hidden);
         }
@@ -182,19 +136,11 @@ public class Submission implements Serializable {
             result.put("language", language.getLanguageId());
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (String tag : tags) {
-            if (tag.indexOf(',') >= 0) {
-                throw new MarshalException("tag '" + tag + "' contains invalid character ','");
-            }
-            sb.append(',').append(tag);
-        }
-        if (sb.length() > 0) {
-            sb.deleteCharAt(0);
-            result.put("tags", sb.toString());
+        if (tags != null && !tags.isEmpty()) {
+            result.put("tags", getTagsAsString());
         }
 
         return result;
     }
-    
+
 }

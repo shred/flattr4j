@@ -22,9 +22,13 @@ import java.util.List;
 
 import org.shredzone.flattr4j.connector.RateLimit;
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Activity;
+import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.SearchQuery;
+import org.shredzone.flattr4j.model.SearchResult;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
@@ -63,9 +67,21 @@ public interface OpenService {
     Thing getThingByUrl(String url) throws FlattrException;
 
     /**
+     * Gets a {@link Thing} by its autosubmit URL.
+     * <p>
+     * Uses two rates!
+     *
+     * @param submission
+     *            {@link AutoSubmission} to check for
+     * @return {@link Thing} of the submission if found, {@code null} if nothing was found
+     * @since 2.0
+     */
+    Thing getThingBySubmission(AutoSubmission submission) throws FlattrException;
+
+    /**
      * Gets a list of {@link Thing} most recently submitted by the given user. This list
      * is limited to 30 entries.
-     * 
+     *
      * @param user
      *            {@link UserId} to find the Things of
      * @return List of {@link Thing} submitted by the user
@@ -75,7 +91,7 @@ public interface OpenService {
 
     /**
      * Gets a list of {@link Thing} most recently submitted by the given user.
-     * 
+     *
      * @param user
      *            {@link UserId} to find the Things of
      * @param count
@@ -88,8 +104,22 @@ public interface OpenService {
     List<Thing> getThings(UserId user, Integer count, Integer page) throws FlattrException;
 
     /**
+     * Searches for {@link Thing}.
+     *
+     * @param query
+     *            {@link SearchQuery}, or {@code null} to search for everything
+     * @param count
+     *            Number of entries per page, {@code null} defaults to 30 entries
+     * @param page
+     *            Page number (counted from 1), or {@code null} to turn off paging
+     * @return {@link SearchResult}
+     * @since 2.0
+     */
+    SearchResult searchThings(SearchQuery query, Integer count, Integer page) throws FlattrException;
+
+    /**
      * Gets the {@link User} profile of the given user ID.
-     * 
+     *
      * @param user
      *            {@link UserId} to get a profile for
      * @return {@link User} profile of that user
@@ -99,7 +129,7 @@ public interface OpenService {
     /**
      * Gets all {@link Flattr} most recently posted by the given user ID. Limited to 30
      * results.
-     * 
+     *
      * @param user
      *            {@link UserId} to get the result for
      * @return List of {@link Flattr} posted by the user
@@ -109,7 +139,7 @@ public interface OpenService {
 
     /**
      * Gets all {@link Flattr} most recently posted by the given user ID.
-     * 
+     *
      * @param user
      *            {@link UserId} to get the result for
      * @param count
@@ -122,10 +152,20 @@ public interface OpenService {
     List<Flattr> getFlattrs(UserId user, Integer count, Integer page) throws FlattrException;
 
     /**
+     * Returns all {@link Activity} of the given user ID.
+     *
+     * @param user
+     *            {@link UserId} to get the result for
+     * @return List of {@link Activity}
+     * @since 2.0
+     */
+    List<Activity> getActivities(UserId user) throws FlattrException;
+
+    /**
      * Gets a list of all Flattr {@link Category}.
      * <p>
      * <em>Note:</em> The result is not cached.
-     * 
+     *
      * @return List of Flattr {@link Category}.
      */
     List<Category> getCategories() throws FlattrException;
@@ -134,14 +174,14 @@ public interface OpenService {
      * Gets a list of all Flattr {@link Language}.
      * <p>
      * <em>Note:</em> The result is not cached.
-     * 
+     *
      * @return List of Flattr {@link Language}.
      */
     List<Language> getLanguages() throws FlattrException;
 
     /**
      * Gets the rate limit and remaining rate returned by the last API call.
-     * 
+     *
      * @return Rate limit.
      * @since 2.0
      */

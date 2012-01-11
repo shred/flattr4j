@@ -1,0 +1,34 @@
+{
+  "total_items": 5,
+  "items": 1,
+  "page": 2,
+  "things": [
+    {
+        "type": "thing",
+        "resource": "https://api.flattr.local/rest/v2/things/268185",
+        "link": "https://flattr.local/things/268185",
+        "id": 268185,
+        "url": "http://twitter.com/#!/simongate",
+        "language": "en_GB",
+        "category": "people",
+        "owner": {
+            "type": "user",
+            "resource": "https://api.flattr.local/rest/v2/users/simon_g",
+            "link": "https://flattr.local/user/simon_g",
+            "username": "simon_g"
+        },
+        "hidden": false,
+        "flattred": false,
+        "created_at": 1305018975,
+        "tags": [
+            "twitter"
+        ],
+        "flattrs": 1,
+        "description": "Human",
+        "title": "simongate on Twitter",
+        "last_flattr_at": 1305026796,
+        "updated_at": 0,
+        "flattrs_current_period": 0
+    }
+  ]
+}

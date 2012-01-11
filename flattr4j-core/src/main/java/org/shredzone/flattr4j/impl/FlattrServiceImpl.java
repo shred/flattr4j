@@ -30,9 +30,13 @@ import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.connector.RateLimit;
 import org.shredzone.flattr4j.connector.RequestType;
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Activity;
+import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.SearchQuery;
+import org.shredzone.flattr4j.model.SearchResult;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
@@ -47,16 +51,16 @@ import org.shredzone.flattr4j.model.UserId;
  */
 public class FlattrServiceImpl implements FlattrService {
     private final Connector connector;
-   
+
     private RateLimit lastRateLimit = new RateLimit();
 
     public FlattrServiceImpl(Connector connector) {
         this.connector = connector;
     }
-    
+
     /**
      * Returns the {@link Connector} used for calling the API.
-     * 
+     *
      * @return {@link Connector}
      */
     protected Connector getConnector() {
@@ -73,7 +77,10 @@ public class FlattrServiceImpl implements FlattrService {
     public ThingId create(Submission thing) throws FlattrException {
         if (thing == null)
             throw new IllegalArgumentException("thing is required");
-        
+
+        if (thing instanceof AutoSubmission && ((AutoSubmission) thing).getUser() != null)
+            throw new IllegalArgumentException("cannot create a thing on behalf of a user");
+
         Connection conn = getConnector().create(RequestType.POST)
                 .call("things")
                 .data(thing.toFlattrObject())
@@ -93,7 +100,7 @@ public class FlattrServiceImpl implements FlattrService {
             throw new IllegalArgumentException("thing is required");
 
         FlattrObject update = thing.toUpdate();
-        
+
         if (update != null) { // Thing was modified.
 // <workaround> PATCH is broken at the moment...
 //            Connection conn = getConnector().create(RequestType.PATCH)
@@ -103,7 +110,7 @@ public class FlattrServiceImpl implements FlattrService {
                     .call("things/:id")
                     .parameter("id", thing.getThingId())
                     .rateLimit(lastRateLimit);
-    
+
             try {
                 conn.data(update).result();
             } finally {
@@ -111,17 +118,42 @@ public class FlattrServiceImpl implements FlattrService {
             }
         }
     }
-    
+
     @Override
     public void delete(ThingId thingId) throws FlattrException {
         if (thingId == null || thingId.getThingId().length() == 0)
             throw new IllegalArgumentException("thing id is required");
-        
+
         Connection conn = getConnector().create(RequestType.DELETE)
                 .call("things/:id")
                 .parameter("id", thingId.getThingId())
                 .rateLimit(lastRateLimit);
-        
+
+        try {
+            conn.result();
+        } finally {
+            conn.close();
+        }
+    }
+
+    @Override
+    public void click(AutoSubmission submission) throws FlattrException {
+        click(submission.toUrl());
+    }
+
+    @Override
+    public void click(String url) throws FlattrException {
+        if (url == null || url.length() == 0)
+            throw new IllegalArgumentException("url is required");
+
+        FlattrObject data = new FlattrObject();
+        data.put("url", url);
+
+        Connection conn = getConnector().create(RequestType.POST)
+                        .call("flattr")
+                        .data(data)
+                        .rateLimit(lastRateLimit);
+
         try {
             conn.result();
         } finally {
@@ -138,20 +170,20 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("things/:id/flattr")
                 .parameter("id", thingId.getThingId())
                 .rateLimit(lastRateLimit);
-        
+
         try {
             conn.result();
         } finally {
             conn.close();
         }
     }
-    
+
     @Override
     public User getMyself() throws FlattrException {
         Connection conn = getConnector().create()
                 .call("user")
                 .rateLimit(lastRateLimit);
-        
+
         try {
             return new User(conn.singleResult());
         } finally {
@@ -169,15 +201,15 @@ public class FlattrServiceImpl implements FlattrService {
         Connection conn = getConnector().create()
                 .call("user/things")
                 .rateLimit(lastRateLimit);
-        
+
         if (count != null) {
             conn.query("count", count.toString());
         }
-        
+
         if (page != null) {
             conn.query("page", page.toString());
         }
-            
+
         try {
             List<Thing> list = new ArrayList<Thing>();
             for (FlattrObject data : conn.result()) {
@@ -199,15 +231,15 @@ public class FlattrServiceImpl implements FlattrService {
         Connection conn = getConnector().create()
                 .call("user/flattrs")
                 .rateLimit(lastRateLimit);
-        
+
         if (count != null) {
             conn.query("count", count.toString());
         }
-        
+
         if (page != null) {
             conn.query("page", page.toString());
         }
-        
+
         try {
             List<Flattr> list = new ArrayList<Flattr>();
             for (FlattrObject data : conn.result()) {
@@ -228,7 +260,7 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("things/:id")
                 .parameter("id", thingId.getThingId())
                 .rateLimit(lastRateLimit);
-        
+
         try {
             return new Thing(conn.singleResult());
         } finally {
@@ -240,23 +272,28 @@ public class FlattrServiceImpl implements FlattrService {
     public Thing getThingByUrl(String url) throws FlattrException {
         if (url == null || url.length() == 0)
             throw new IllegalArgumentException("url is required");
-        
+
         Connection conn = getConnector().create()
                 .call("things/lookup/")
-                .query("q", url)
+                .query("url", url)
                 .rateLimit(lastRateLimit);
-        
+
         try {
             FlattrObject data = conn.singleResult();
 
             if (data.has("message") && "not_found".equals(data.get("message"))) {
                 return null;
             }
-            
+
             return new Thing(data);
         } finally {
             conn.close();
         }
+    }
+
+    @Override
+    public Thing getThingBySubmission(AutoSubmission submission) throws FlattrException {
+        return getThingByUrl(submission.toUrl());
     }
 
     @Override
@@ -273,15 +310,15 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("users/:username/things")
                 .parameter("username", user.getUserId())
                 .rateLimit(lastRateLimit);
-        
+
         if (count != null) {
             conn.query("count", count.toString());
         }
-        
+
         if (page != null) {
             conn.query("page", page.toString());
         }
-        
+
         try {
             List<Thing> list = new ArrayList<Thing>();
             for (FlattrObject data : conn.result()) {
@@ -294,15 +331,40 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
+    public SearchResult searchThings(SearchQuery query, Integer count, Integer page) throws FlattrException {
+        Connection conn = getConnector().create()
+                        .call("things/search")
+                        .rateLimit(lastRateLimit);
+
+        if (query != null) {
+            query.setupConnection(conn);
+        }
+
+        if (count != null) {
+            conn.query("count", count.toString());
+        }
+
+        if (page != null) {
+            conn.query("page", page.toString());
+        }
+
+        try {
+            return new SearchResult(conn.singleResult());
+        } finally {
+            conn.close();
+        }
+    }
+
+    @Override
     public User getUser(UserId user) throws FlattrException {
         if (user == null || user.getUserId().length() == 0)
             throw new IllegalArgumentException("user is required");
-        
+
         Connection conn = getConnector().create()
                 .call("users/:username")
                 .parameter("username", user.getUserId())
                 .rateLimit(lastRateLimit);
-        
+
         try {
             return new User(conn.singleResult());
         } finally {
@@ -324,15 +386,15 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("users/:username/flattrs")
                 .parameter("username", userId.getUserId())
                 .rateLimit(lastRateLimit);
-        
+
         if (count != null) {
             conn.query("count", count.toString());
         }
-        
+
         if (page != null) {
             conn.query("page", page.toString());
         }
-        
+
         try {
             List<Flattr> list = new ArrayList<Flattr>();
             for (FlattrObject data : conn.result()) {
@@ -343,13 +405,53 @@ public class FlattrServiceImpl implements FlattrService {
             conn.close();
         }
     }
-    
+
+    @Override
+    public List<Activity> getActivities(UserId user) throws FlattrException {
+        if (user == null || user.getUserId().length() == 0)
+            throw new IllegalArgumentException("userId is required");
+
+        Connection conn = getConnector().create()
+                        .call("users/:username/activities.as")
+                        .parameter("username", user.getUserId())
+                        .rateLimit(lastRateLimit);
+
+        try {
+            FlattrObject data = conn.singleResult();
+            List<Activity> list = new ArrayList<Activity>();
+            for (FlattrObject item : data.getObjects("items")) {
+                list.add(new Activity(item));
+            }
+            return Collections.unmodifiableList(list);
+        } finally {
+            conn.close();
+        }
+    }
+
+    @Override
+    public List<Activity> getMyActivities() throws FlattrException {
+        Connection conn = getConnector().create()
+                        .call("user/activities.as")
+                        .rateLimit(lastRateLimit);
+
+        try {
+            FlattrObject data = conn.singleResult();
+            List<Activity> list = new ArrayList<Activity>();
+            for (FlattrObject item : data.getObjects("items")) {
+                list.add(new Activity(item));
+            }
+            return Collections.unmodifiableList(list);
+        } finally {
+            conn.close();
+        }
+    }
+
     @Override
     public List<Category> getCategories() throws FlattrException {
         Connection conn = getConnector().create()
                 .call("categories")
                 .rateLimit(lastRateLimit);
-        
+
         try {
             List<Category> list = new ArrayList<Category>();
             for (FlattrObject data : conn.result()) {

@@ -23,6 +23,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.web.BadgeType;
 import org.shredzone.flattr4j.web.builder.StaticButtonBuilder;
@@ -37,24 +38,26 @@ public class StaticTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -7356980489242218537L;
 
     private StaticButtonBuilder builder;
-    
+
     private String var = null;
     private String scope = null;
-    
+
     public void setThing(Object thing) {
         setupBuilder();
         if (thing instanceof Thing) {
             builder.thing((Thing) thing);
+        } else if (thing instanceof AutoSubmission) {
+            builder.thing((AutoSubmission) thing);
         } else {
             builder.thing(thing.toString());
         }
     }
-    
+
     public void setBadgeUrl(String url) {
         setupBuilder();
         builder.badgeUrl(url);
     }
-    
+
     public void setBadge(Object type) {
         setupBuilder();
         if (type instanceof BadgeType) {
@@ -63,25 +66,25 @@ public class StaticTag extends BodyTagSupport implements Attributed {
             builder.badge(BadgeType.valueOf(type.toString().toUpperCase()));
         }
     }
-    
+
     public void setStyle(String style) {
         setupBuilder();
         builder.style(style);
     }
-    
+
     public void setStyleClass(String styleClass) {
         setupBuilder();
         builder.styleClass(styleClass);
     }
-    
+
     public void setVar(String var) {
         this.var = var;
     }
-    
+
     public void setScope(String scope) {
         this.scope = scope;
     }
-    
+
     @Override
     public void setAttribute(String name, String value) {
         setupBuilder();

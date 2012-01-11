@@ -28,26 +28,23 @@ import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
  * Unit test of the {@link Submission} class.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 596 $
  */
 public class SubmissionTest {
 
-    @Test
-    public void testModel() throws FlattrException, IOException {
-        Submission sub = new Submission();
-        
+    private void setupSubmission(Submission sub) throws FlattrException {
         Assert.assertNull("url", sub.getUrl());
         sub.setUrl("http://flattr4j.shredzone.org");
         Assert.assertEquals("url", "http://flattr4j.shredzone.org", sub.getUrl());
-        
+
         Assert.assertEquals("{\"url\":\"http://flattr4j.shredzone.org\"}", sub.toFlattrObject().toString());
-        
+
         Assert.assertNull("title", sub.getTitle());
         sub.setTitle("flattr4j");
         Assert.assertEquals("title", "flattr4j", sub.getTitle());
-        
+
         Assert.assertNull("description", sub.getDescription());
         sub.setDescription("A Flattr library for Java");
         Assert.assertEquals("description", "A Flattr library for Java", sub.getDescription());
@@ -59,17 +56,23 @@ public class SubmissionTest {
         Assert.assertNull("language", sub.getLanguage());
         sub.setLanguage(Language.withId("en_UK"));
         Assert.assertEquals("language", "en_UK", sub.getLanguage().getLanguageId());
-        
+
         Assert.assertNull(sub.isHidden());
         sub.setHidden(false);
         Assert.assertFalse("hidden", sub.isHidden());
-        
+
         Assert.assertTrue("tags", sub.getTags().isEmpty());
         sub.addTag("foo");
         sub.getTags().add("bar");
         Assert.assertEquals("tags", 2, sub.getTags().size());
         Assert.assertEquals("tags", "foo", sub.getTags().get(0));
         Assert.assertEquals("tags", "bar", sub.getTags().get(1));
+    }
+
+    @Test
+    public void testModel() throws FlattrException, IOException {
+        Submission sub = new Submission();
+        setupSubmission(sub);
 
         FlattrObject data = sub.toFlattrObject();
         Assert.assertEquals("url", "http://flattr4j.shredzone.org", data.get("url"));
@@ -79,18 +82,28 @@ public class SubmissionTest {
         Assert.assertEquals("language", "en_UK", data.get("language"));
         Assert.assertFalse("hidden", data.getBoolean("hidden"));
         Assert.assertEquals("tags", "foo,bar", data.get("tags"));
+    }
 
-        String url = sub.toUrl(User.withId("scott"));
+    @Test
+    public void testAutoSubmission() throws FlattrException {
+        AutoSubmission sub = new AutoSubmission();
+        setupSubmission(sub);
+
+        Assert.assertNull("user", sub.getUser());
+        sub.setUser(User.withId("scott"));
+        Assert.assertEquals("user", "scott", sub.getUser().getUserId());
+
+        String url = sub.toUrl();
         Assert.assertEquals("https://flattr.com/submit/auto" +
                 "?user_id=scott" +
                 "&url=http%3A%2F%2Fflattr4j.shredzone.org" +
                 "&category=text" +
                 "&language=en_UK" +
                 "&title=flattr4j" +
-                "&tags=foo,bar" +
+                "&tags=foo%2Cbar" +
                 "&description=A+Flattr+library+for+Java", url);
     }
-    
+
     @Test(expected = MarshalException.class)
     public void testException() throws FlattrException {
         Submission sub = new Submission();
@@ -98,5 +111,5 @@ public class SubmissionTest {
         sub.addTag("foo,bar");
         sub.toFlattrObject();
     }
-    
+
 }

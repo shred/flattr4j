@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.web.BadgeType;
 
@@ -35,7 +36,7 @@ import org.shredzone.flattr4j.web.BadgeType;
  * <p>
  * Example:
  * <code>String button = new StaticButtonBuilder().url(thingUrl).toString();</code>
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -52,6 +53,15 @@ public class StaticButtonBuilder {
      */
     public StaticButtonBuilder thing(String url) {
         this.url = url;
+        return this;
+    }
+
+    /**
+     * Link to the Thing page at Flattr by {@link AutoSubmission}. If the Thing does not
+     * exist yet, it will be created on the first click.
+     */
+    public StaticButtonBuilder thing(AutoSubmission submission) {
+        this.url = submission.toUrl();
         return this;
     }
 
@@ -73,7 +83,7 @@ public class StaticButtonBuilder {
     /**
      * A URL to a custom badge image. If this url is given, an invocation of the
      * {@link #badge(org.shredzone.flattr4j.web.BadgeType)} method is ignored.
-     * 
+     *
      * @param url
      *            Button image URL
      */
@@ -112,7 +122,7 @@ public class StaticButtonBuilder {
      * <p>
      * Attributes are added without further checks. It is your responsibility to take care
      * for HTML compliance.
-     * 
+     *
      * @param attribute
      *            HTML attribute to be added
      * @param value
@@ -165,7 +175,7 @@ public class StaticButtonBuilder {
                             .append(" title=\"Flattr this\"")
                             .append(" border=\"0\"")
                             .append(" />");
-            
+
         } else {
             BadgeType useType = (type != null ? type : BadgeType.DEFAULT);
             sb.append("<img src=\"").append(useType.getUrl()).append('"')
@@ -184,7 +194,7 @@ public class StaticButtonBuilder {
 
     /**
      * Escapes a string for use in HTML attributes.
-     * 
+     *
      * @param str
      *            Attribute to be escaped
      * @return Escaped attribute

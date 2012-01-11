@@ -45,7 +45,7 @@ import org.shredzone.flattr4j.exception.MarshalException;
  */
 public class FlattrObject implements Serializable, Externalizable {
     private static final long serialVersionUID = -6640392574244365803L;
-    
+
     private JSONObject data;
 
     /**
@@ -54,23 +54,23 @@ public class FlattrObject implements Serializable, Externalizable {
     public FlattrObject() {
         data = new JSONObject();
     }
-    
+
     /**
      * Creates a {@link FlattrObject} from the given {@link JSONObject}.
-     * 
+     *
      * @param data
-     *          {@link JSONObject} to use. It is not cloned. It's contents may be changed
-     *          by this {@link FlattrObject}.
+     *            {@link JSONObject} to use. It is not cloned. It's contents may be
+     *            changed by this {@link FlattrObject}.
      */
     public FlattrObject(JSONObject data) {
         this.data = data;
     }
-    
+
     /**
      * Creates a {@link FlattrObject} from the given JSON string.
-     * 
+     *
      * @param json
-     *          JSON string to initialize the {@link FlattrObject} with
+     *            JSON string to initialize the {@link FlattrObject} with
      */
     public FlattrObject(String json) {
         try {
@@ -82,22 +82,23 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Checks if there is a key.
-     * 
+     *
      * @param key
-     *          Key to check for
+     *            Key to check for
      * @return {@code true} if there is such a key (value may still be {@code null}).
      */
     public boolean has(String key) {
         return data.has(key);
     }
-    
+
     /**
      * Gets an Object from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return Object that was read
-     * @throws MarshalException if there was no such key
+     * @throws MarshalException
+     *             if there was no such key
      */
     public Object getObject(String key) {
         try {
@@ -109,11 +110,12 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Gets a String from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return String that was read
-     * @throws MarshalException if there was no such key
+     * @throws MarshalException
+     *             if there was no such key
      */
     public String get(String key) {
         try {
@@ -122,16 +124,17 @@ public class FlattrObject implements Serializable, Externalizable {
             throw new MarshalException(key, ex);
         }
     }
-    
+
     /**
      * Gets a String from the given subKey which is a property of the given key.
-     * 
+     *
      * @param key
-     *          Key of the parent object
+     *            Key of the parent object
      * @param subKey
-     *          Key to read from
+     *            Key to read from
      * @return String that was read
-     * @throws MarshalException if there was no such key or subKey
+     * @throws MarshalException
+     *             if there was no such key or subKey
      */
     public String getSubString(String key, String subKey) {
         try {
@@ -141,14 +144,15 @@ public class FlattrObject implements Serializable, Externalizable {
             throw new MarshalException(key, ex);
         }
     }
-    
+
     /**
      * Gets a {@link FlattrObject} from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return {@link FlattrObject} that was read
-     * @throws MarshalException if there was no such key
+     * @throws MarshalException
+     *             if there was no such key
      */
     public FlattrObject getFlattrObject(String key) {
         try {
@@ -160,11 +164,12 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Gets an integer from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return integer that was read
-     * @throws MarshalException if there was no such key, or if it did not contain the expected type
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
      */
     public int getInt(String key) {
         try {
@@ -173,14 +178,15 @@ public class FlattrObject implements Serializable, Externalizable {
             throw new MarshalException(key, ex);
         }
     }
-    
+
     /**
      * Gets a boolean from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return boolean that was read
-     * @throws MarshalException if there was no such key, or if it did not contain the expected type
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
      */
     public boolean getBoolean(String key) {
         try {
@@ -192,18 +198,19 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Gets a {@link Date} from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return {@link Date} that was read, or {@code null} if no date was set
-     * @throws MarshalException if there was no such key, or if it did not contain the expected type
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
      */
     public Date getDate(String key) {
         try {
             if (data.isNull(key)) {
                 return null;
             }
-            
+
             long ts = data.getLong(key);
             return (ts != 0 ? new Date(ts * 1000L) : null);
         } catch (JSONException ex) {
@@ -213,11 +220,12 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Gets a collection of String from the given key.
-     * 
+     *
      * @param key
-     *          Key to read from
+     *            Key to read from
      * @return Collection of Strings
-     * @throws MarshalException if there was no such key, or if it did not contain the expected type
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
      */
     public List<String> getStrings(String key) {
         try {
@@ -233,11 +241,36 @@ public class FlattrObject implements Serializable, Externalizable {
     }
 
     /**
+     * Gets a collection of {@link FlattrObject} from the given key.
+     *
+     * @param key
+     *            Key to read from
+     * @return Collection of {@link FlattrObject}
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
+     */
+    public List<FlattrObject> getObjects(String key) {
+        try {
+            JSONArray array = data.getJSONArray(key);
+            List<FlattrObject> result = new ArrayList<FlattrObject>(array.length());
+            for (int ix = 0; ix < array.length(); ix++) {
+                result.add(new FlattrObject(array.getString(ix)));
+            }
+            return result;
+        } catch (JSONException ex) {
+            throw new MarshalException(key, ex);
+        }
+    }
+
+    /**
      * Changes the key and sets it to the given value.
-     * 
-     * @param key Key to write to
-     * @param value Value to be written
-     * @throws MarshalException if the key could not be changed
+     *
+     * @param key
+     *            Key to write to
+     * @param value
+     *            Value to be written
+     * @throws MarshalException
+     *             if the key could not be changed
      */
     public void put(String key, Object value) {
         try {
@@ -246,13 +279,16 @@ public class FlattrObject implements Serializable, Externalizable {
             throw new MarshalException(key, ex);
         }
     }
-    
+
     /**
      * Puts a collection of strings as array object to the given key.
-     * 
-     * @param key Key to write to
-     * @param value Collection of Strings to write
-     * @throws MarshalException if the key could not be changed
+     *
+     * @param key
+     *            Key to write to
+     * @param value
+     *            Collection of Strings to write
+     * @throws MarshalException
+     *             if the key could not be changed
      */
     public void putStrings(String key, Collection<String> value) {
         try {
@@ -270,19 +306,29 @@ public class FlattrObject implements Serializable, Externalizable {
 
     /**
      * Returns the current state of the {@link FlattrObject} as JSON string.
-     * 
+     *
      * @return JSON representation of the current state
      */
     @Override
     public String toString() {
         return data.toString();
     }
-    
+
+    /**
+     * Returns the {@link JSONObject} that represents this {@link FlattrObject}. Note that
+     * changes to this {@link JSONObject} will affect the {@link FlattrObject} as well.
+     *
+     * @return {@link JSONObject}
+     */
+    public JSONObject getJSONObject() {
+        return data;
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(data.toString());
     }
-    
+
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         try {

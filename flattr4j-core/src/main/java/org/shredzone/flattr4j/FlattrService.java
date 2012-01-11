@@ -21,6 +21,8 @@ package org.shredzone.flattr4j;
 import java.util.List;
 
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Activity;
+import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Thing;
@@ -40,8 +42,8 @@ import org.shredzone.flattr4j.oauth.Scope;
 public interface FlattrService extends OpenService {
 
     /**
-     * Creates a new Thing.
-     * 
+     * Creates a new Thing. The authenticated user will be the owner of the Thing.
+     *
      * @param thing
      *            {@link Submission} to be submitted
      * @return {@link ThingId} of the {@link Thing} that was created
@@ -51,10 +53,11 @@ public interface FlattrService extends OpenService {
     ThingId create(Submission thing) throws FlattrException;
 
     /**
-     * Submits a new Thing to Flattr.
+     * Submits a new Thing to Flattr. The authenticated user will be the owner of the
+     * Thing.
      * <p>
      * Uses two rates.
-     * 
+     *
      * @param thing
      *            {@link Submission} to be submitted
      * @return {@link Thing} as result from the submission.
@@ -63,10 +66,10 @@ public interface FlattrService extends OpenService {
     @Deprecated
     @RequiredScope(Scope.THING)
     Thing submit(Submission thing) throws FlattrException;
-    
+
     /**
      * Updates a Thing.
-     * 
+     *
      * @param thing
      *            {@link Thing} to be modified
      * @since 2.0
@@ -76,7 +79,7 @@ public interface FlattrService extends OpenService {
 
     /**
      * Deletes a Thing.
-     * 
+     *
      * @param thingId
      *            {@link ThingId} to delete
      * @since 2.0
@@ -85,8 +88,8 @@ public interface FlattrService extends OpenService {
     void delete(ThingId thingId) throws FlattrException;
 
     /**
-     * Clicks on a Thing. This means that the Thing is flattr-ed by the associated user.
-     * 
+     * Flattrs a Thing. This means that the Thing is flattr-ed by the associated user.
+     *
      * @param thingId
      *            {@link ThingId} to flattr
      */
@@ -94,8 +97,27 @@ public interface FlattrService extends OpenService {
     void click(ThingId thingId) throws FlattrException;
 
     /**
+     * Flattrs an {@link AutoSubmission}. If the submission has not been submitted to
+     * Flattr yet, it will automatically be submitted before.
+     *
+     * @param submission
+     *            {@link AutoSubmission} to flattr
+     */
+    @RequiredScope(Scope.FLATTR)
+    void click(AutoSubmission submission) throws FlattrException;
+
+    /**
+     * Flattrs a URL.
+     *
+     * @param url
+     *            URL to flattr
+     */
+    @RequiredScope(Scope.FLATTR)
+    void click(String url) throws FlattrException;
+
+    /**
      * Gets the {@link User} profile of the associated user.
-     * 
+     *
      * @return {@link User} profile of oneself
      */
     @RequiredScope()
@@ -103,7 +125,7 @@ public interface FlattrService extends OpenService {
 
     /**
      * Returns all {@link Thing} submitted by the associated user. Limited to 30 entries.
-     * 
+     *
      * @return List of {@link Thing}
      * @since 2.0
      */
@@ -112,7 +134,7 @@ public interface FlattrService extends OpenService {
 
     /**
      * Returns all {@link Thing} submitted by the associated user.
-     * 
+     *
      * @param count
      *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
@@ -125,7 +147,7 @@ public interface FlattrService extends OpenService {
 
     /**
      * Returns all {@link Flattr} submitted by the associated user. Limited to 30 entries.
-     * 
+     *
      * @return List of {@link Flattr}
      * @since 2.0
      */
@@ -134,7 +156,7 @@ public interface FlattrService extends OpenService {
 
     /**
      * Returns all {@link Flattr} submitted by the associated user.
-     * 
+     *
      * @param count
      *            Number of entries per page, {@code null} defaults to 30 entries
      * @param page
@@ -144,5 +166,14 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope()
     List<Flattr> getMyFlattrs(Integer count, Integer page) throws FlattrException;
-    
+
+    /**
+     * Returns all {@link Activity} of the associated user.
+     *
+     * @return List of {@link Activity}
+     * @since 2.0
+     */
+    @RequiredScope()
+    List<Activity> getMyActivities() throws FlattrException;
+
 }

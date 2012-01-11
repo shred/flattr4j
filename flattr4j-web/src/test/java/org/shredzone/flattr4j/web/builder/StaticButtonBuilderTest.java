@@ -20,6 +20,8 @@ package org.shredzone.flattr4j.web.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.flattr4j.model.AutoSubmission;
+import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.web.BadgeType;
 
 /**
@@ -95,6 +97,26 @@ public class StaticButtonBuilderTest {
                 + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
                 + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
                 + "</a>",
+                builder.toString()
+        );
+    }
+
+    @Test
+    public void testAutoSubmissionBuilder() {
+        AutoSubmission submission = new AutoSubmission();
+        submission.setUrl("http://www.shredzone.org");
+        submission.setUser(User.withId("shred"));
+        submission.addTag("Site");
+
+        StaticButtonBuilder builder = new StaticButtonBuilder();
+        builder.thing(submission);
+
+        Assert.assertEquals(
+                "<a href=\"https://flattr.com/submit/auto?user_id=shred&amp;" +
+                "url=http%3A%2F%2Fwww.shredzone.org&amp;tags=Site\">" +
+                "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\"" +
+                " width=\"93\" height=\"20\"" +
+                " alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a>",
                 builder.toString()
         );
     }

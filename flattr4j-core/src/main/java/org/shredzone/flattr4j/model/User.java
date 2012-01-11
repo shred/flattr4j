@@ -22,10 +22,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.oauth.RequiredScope;
+import org.shredzone.flattr4j.oauth.Scope;
 
 /**
  * A {@link User}. Two {@link User} are considered equal if they contain the same id.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -36,7 +38,7 @@ public class User implements UserId, Serializable {
 
     /**
      * Returns a {@link UserId} for the given User id.
-     * 
+     *
      * @param id
      *            User id
      * @return A {@link UserId} object for this id
@@ -107,6 +109,7 @@ public class User implements UserId, Serializable {
     /**
      * User's email address.
      */
+    @RequiredScope(Scope.EXTENDEDREAD)
     public String getEmail() {
         return data.get("email");
     }
@@ -117,9 +120,9 @@ public class User implements UserId, Serializable {
     public String getDescription() {
         return data.get("about");
     }
-    
+
     /**
-     * URL of the user's picture at Gravatar. 
+     * URL of the user's picture at Gravatar.
      */
     public String getGravatar() {
         return data.get("avatar");
@@ -127,7 +130,7 @@ public class User implements UserId, Serializable {
 
     /**
      * User's ZIP.
-     * 
+     *
      * @since 2.0
      */
     public String getZip() {
@@ -136,7 +139,7 @@ public class User implements UserId, Serializable {
 
     /**
      * User's province.
-     * 
+     *
      * @since 2.0
      */
     public String getProvince() {
@@ -145,22 +148,23 @@ public class User implements UserId, Serializable {
 
     /**
      * User's cellphone number.
-     * 
+     *
      * @since 2.0
      */
     public String getCellphone() {
         return data.get("cellphone");
     }
-    
+
     /**
      * Registration date.
-     * 
+     *
      * @since 2.0
      */
+    @RequiredScope(Scope.EXTENDEDREAD)
     public Date getRegisteredAt() {
         return data.getDate("registered_at");
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         String pk = getUserId();
