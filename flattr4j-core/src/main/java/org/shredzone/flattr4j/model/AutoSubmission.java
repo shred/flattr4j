@@ -31,18 +31,34 @@ import org.shredzone.flattr4j.FlattrService;
  * @version $Revision$
  * @since 2.0
  */
-public class AutoSubmission extends Submission {
+public class AutoSubmission extends Submission implements UserId, UserIdentifier {
     private static final long serialVersionUID = 469255989509420133L;
 
     private static final String ENCODING = "utf-8";
 
     private UserId user;
+    private UserIdentifier identifier;
 
     /**
      * The user to submit this Submission on behalf of.
      */
     public UserId getUser()                     { return user; }
     public void setUser(UserId user)            { this.user = user; }
+
+    @Override
+    public String getUserId()                   { return user != null ? user.getUserId() : null; }
+
+    /**
+     * The user identifier of the local user
+     * <p>
+     * This is only available for Partner Site Integration. You need to register your
+     * site with Flattr in order to use user identifiers.
+     */
+    public UserIdentifier getIdentifier()       { return identifier; }
+    public void setIdentifier(UserIdentifier identifier) { this.identifier = identifier; }
+
+    @Override
+    public String getUserIdentifier()           { return identifier != null ? identifier.getUserIdentifier() : null; }
 
     /**
      * Returns a URL that can be used for submitting a Thing (for example in a link).
@@ -52,22 +68,25 @@ public class AutoSubmission extends Submission {
      * limited and depends on the browser and the server. The submission will be truncated
      * if the maximum length was exceeded.
      *
-     * @param user
-     *            {@link UserId} of the user to register the submission with. Required,
-     *            must not be {@code null}.
      * @return Submission URL
-     * @since 2.0
      */
     public String toUrl() {
-        if (user == null) {
+        if (user == null && identifier == null) {
             throw new IllegalArgumentException("Anonymous submissions are not allowed");
+        }
+        if (user != null && identifier != null) {
+            throw new IllegalArgumentException("Either user or identifier must be set, but not both");
         }
 
         try {
             StringBuilder sb = new StringBuilder();
             sb.append("https://flattr.com/submit/auto");
 
-            sb.append("?user_id=").append(URLEncoder.encode(user.getUserId(), ENCODING));
+            if (user != null) {
+                sb.append("?user_id=").append(URLEncoder.encode(getUserId(), ENCODING));
+            } else {
+                sb.append("?owner=").append(URLEncoder.encode(getUserIdentifier(), ENCODING));
+            }
             sb.append("&url=").append(URLEncoder.encode(getUrl(), ENCODING));
 
             if (getCategory() != null) {
