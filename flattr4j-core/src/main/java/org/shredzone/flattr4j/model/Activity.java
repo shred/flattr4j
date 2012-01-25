@@ -19,12 +19,10 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.json.JSONObject;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.MarshalException;
 
@@ -32,21 +30,18 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * Represents a single activity.
  * <p>
  * Handling Activity Streams is beyond the scope of this library. However, this class
- * gives basic access to the Activity Stream item, as well as a {@link JSONObject} for
- * further processing with the <a href="http://json.org">json.org</a> library.
+ * gives basic access to the Activity Stream item.
  *
  * @see <a href="http://activitystrea.ms/specs/json/1.0/">Activity Streams Specs</a>
  * @author Richard "Shred" Körber
  * @version $Revision$
  * @since 2.0
  */
-public class Activity implements Serializable {
+public class Activity extends Resource {
     private static final long serialVersionUID = -7610676384296279814L;
 
-    private FlattrObject data;
-
     public Activity(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
 
     /**
@@ -115,20 +110,6 @@ public class Activity implements Serializable {
         } catch (MarshalException ex) {
             return null;
         }
-    }
-
-    /**
-     * Returns the activity item as JSON string.
-     */
-    public String getJSON() {
-        return data.toString();
-    }
-
-    /**
-     * Returns the activity as {@link JSONObject}, for further processing.
-     */
-    public JSONObject getJSONObject() {
-        return data.getJSONObject();
     }
 
 }

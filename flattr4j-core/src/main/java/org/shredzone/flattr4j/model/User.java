@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
@@ -31,10 +30,8 @@ import org.shredzone.flattr4j.oauth.Scope;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class User implements UserId, Serializable {
+public class User extends Resource implements UserId {
     private static final long serialVersionUID = 594781523400164895L;
-
-    private FlattrObject data;
 
     /**
      * Returns a {@link UserId} for the given User id.
@@ -53,7 +50,7 @@ public class User implements UserId, Serializable {
     }
 
     public User(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
 
     /**

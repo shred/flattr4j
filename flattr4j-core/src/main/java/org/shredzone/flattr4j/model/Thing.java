@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,20 +35,19 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * changes.
  * <p>
  * This class is not threadsafe.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializable {
+public class Thing extends Resource implements ThingId, UserId, CategoryId, LanguageId {
     private static final long serialVersionUID = 2822280427303390055L;
-    
-    private FlattrObject data;
+
     private transient List<String> tags = null;
     private Set<String> updatedKeys = new HashSet<String>();
-    
+
     /**
      * Returns a {@link ThingId} for the given Thing id.
-     * 
+     *
      * @param id
      *            Thing id
      * @return A {@link ThingId} object for this id
@@ -64,7 +62,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     }
 
     public Thing(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
 
     /**

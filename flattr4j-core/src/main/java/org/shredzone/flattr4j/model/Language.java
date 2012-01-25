@@ -18,8 +18,6 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
-
 import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
@@ -29,14 +27,12 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Language implements LanguageId, Serializable {
+public class Language extends Resource implements LanguageId {
     private static final long serialVersionUID = -2166187856968632922L;
-    
-    private FlattrObject data;
 
     /**
      * Returns a {@link LanguageId} for the given Language id.
-     * 
+     *
      * @param id
      *            Language id
      * @return A {@link LanguageId} object for this id
@@ -51,9 +47,9 @@ public class Language implements LanguageId, Serializable {
     }
 
     public Language(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
-    
+
     /**
      * Language id to be used with Flattr.
      */
@@ -68,7 +64,7 @@ public class Language implements LanguageId, Serializable {
     public String getName() {
         return data.get("text");
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         String pk = getLanguageId();
@@ -76,7 +72,7 @@ public class Language implements LanguageId, Serializable {
         if (pk == null || obj == null || !(obj instanceof Language)) {
             return false;
         }
-        
+
         return pk.equals(((Language) obj).getLanguageId());
     }
 
@@ -85,5 +81,5 @@ public class Language implements LanguageId, Serializable {
         String pk = getLanguageId();
         return (pk != null ? pk.hashCode() : 0);
     }
-    
+
 }

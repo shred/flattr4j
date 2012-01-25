@@ -1,7 +1,7 @@
 /*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2011 Richard "Shred" Körber
+ * Copyright (C) 2012 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,50 +18,46 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.util.Date;
+import java.io.Serializable;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
- * A Flattr that was made to a thing.
- * <p>
- * This class is not threadsafe.
+ * A generic Flattr resource.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 505 $
  * @since 2.0
  */
-public class Flattr extends Resource implements ThingId, UserId {
-    private static final long serialVersionUID = 8013428651001009374L;
+public class Resource implements Serializable {
+    private static final long serialVersionUID = 2052931614858694519L;
 
-    private transient Thing thing;
+    protected FlattrObject data;
 
-    public Flattr(FlattrObject data) {
-        super(data);
-    }
-
-    public Thing getThing() {
-        if (thing == null) {
-            thing = new Thing(data.getFlattrObject("thing"));
-        }
-        return thing;
-    }
-
-    public Date getCreated() {
-        return data.getDate("created_at");
-    }
-
-    @Override
-    public String getThingId() {
-        return getThing().getThingId();
+    /**
+     * Creates a new resource.
+     *
+     * @param data
+     *            {@link FlattrObject} containing the resource data
+     */
+    public Resource(FlattrObject data) {
+        this.data = data;
     }
 
     /**
-     * UserID of the user who flattred the thing.
+     * Returns the resource contents as JSON string.
      */
-    @Override
-    public String getUserId() {
-        return data.getSubString("owner", "username");
+    public String toJSON() {
+        return data.toString();
+    }
+
+    /**
+     * Returns the resource as {@link FlattrObject}, for further processing.
+     * <p>
+     * Do not use the returned {@link FlattrObject} for modifying the resource contents.
+     * The behaviour might be unpredictable.
+     */
+    public FlattrObject toFlattrObject() {
+        return data;
     }
 
 }

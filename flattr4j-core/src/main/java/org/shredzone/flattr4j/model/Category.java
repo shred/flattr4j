@@ -18,25 +18,21 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
-
 import org.shredzone.flattr4j.connector.FlattrObject;
 
 /**
  * A single Category that is available for Things. Two {@link Category} are considered
  * equal if they contain the same id.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
-public class Category implements CategoryId, Serializable {
+public class Category extends Resource implements CategoryId {
     private static final long serialVersionUID = 6749493295567461888L;
-
-    private FlattrObject data;
 
     /**
      * Returns a {@link CategoryId} for the given Category id.
-     * 
+     *
      * @param id
      *            Category id
      * @return A {@link CategoryId} object for this id
@@ -49,11 +45,11 @@ public class Category implements CategoryId, Serializable {
             }
         };
     }
-    
+
     public Category(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
-    
+
     /**
      * Category id to be used with Flattr.
      */
@@ -68,7 +64,7 @@ public class Category implements CategoryId, Serializable {
     public String getName() {
         return data.get("text");
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         String pk = getCategoryId();
@@ -76,7 +72,7 @@ public class Category implements CategoryId, Serializable {
         if (pk == null || obj == null || !(obj instanceof Category)) {
             return false;
         }
-        
+
         return pk.equals(((Category) obj).getCategoryId());
     }
 
@@ -85,5 +81,5 @@ public class Category implements CategoryId, Serializable {
         String pk = getCategoryId();
         return (pk != null ? pk.hashCode() : 0);
     }
-    
+
 }

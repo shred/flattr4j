@@ -170,8 +170,8 @@ public final class ModelGenerator {
         Assert.assertEquals("object.url", "https://flattr.dev/thing/459394/Acoustid", activity.getObject("url"));
         Assert.assertEquals("object.objectType", "bookmark", activity.getObject("objectType"));
         Assert.assertEquals("activityId", "tag:flattr.com,2012-01-04:pthulin/flattr/459394", activity.getActivityId());
-        Assert.assertNotNull("json", activity.getJSON());
-        Assert.assertNotNull("jsonobject", activity.getJSONObject());
+        Assert.assertNotNull("json", activity.toJSON());
+        Assert.assertNotNull("jsonobject", activity.toFlattrObject());
     }
 
     /**

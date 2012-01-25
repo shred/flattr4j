@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,17 +32,16 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * @version $Revision$
  * @since 2.0
  */
-public class SearchResult implements Serializable {
+public class SearchResult extends Resource {
     private static final long serialVersionUID = -3762044230769599498L;
 
-    private FlattrObject data;
     private transient ArrayList<Thing> result = null;
 
     /**
      * Creates a new {@link SearchResult}.
      */
     public SearchResult(FlattrObject data) {
-        this.data = data;
+        super(data);
     }
 
     /**
