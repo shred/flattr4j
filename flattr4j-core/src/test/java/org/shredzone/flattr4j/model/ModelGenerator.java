@@ -92,6 +92,7 @@ public final class ModelGenerator {
         Assert.assertEquals("link", "https://flattr.local/things/268185", thing.getLink());
         Assert.assertEquals("id", "268185", thing.getThingId());
         Assert.assertEquals("url", "http://twitter.com/#!/simongate", thing.getUrl());
+        Assert.assertEquals("image", "http://flattr.com/thing/image/4/2/3/4/0/5/medium.png", thing.getImage());
         Assert.assertEquals("language", "en_GB", thing.getLanguageId());
         Assert.assertEquals("category", "people", thing.getCategoryId());
         Assert.assertEquals("owner", "simon_g", thing.getUserId());

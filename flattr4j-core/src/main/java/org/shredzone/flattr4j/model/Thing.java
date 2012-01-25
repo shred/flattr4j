@@ -62,11 +62,11 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
             }
         };
     }
-    
+
     public Thing(FlattrObject data) {
         this.data = data;
     }
-    
+
     /**
      * Thing's unique id at Flattr.
      */
@@ -116,17 +116,26 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     public String getTitle() {
         return data.get("title");
     }
-    
+
     public void setTitle(String title) {
         data.put("title", title);
         updatedKeys.add("title");
     }
 
     /**
+     * URL of an image for this Thing. Empty string if there is none.
+     *
+     * @since 2.0
+     */
+    public String getImage() {
+        return (data.has("image") ? data.get("image") : "");
+    }
+
+    /**
      * User this Thing belongs to
      */
     @Override
-    public String getUserId() { 
+    public String getUserId() {
         return data.getSubString("owner", "username");
     }
 
@@ -137,7 +146,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     public String getCategoryId() {
         return data.get("category");
     }
-    
+
     public void setCategory(CategoryId category) {
         data.put("category", (category != null ? category.getCategoryId() : null));
         updatedKeys.add("category");
@@ -149,7 +158,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     public String getDescription() {
         return data.get("description");
     }
-    
+
     public void setDescription(String description) {
         data.put("description", description);
         updatedKeys.add("description");
@@ -164,12 +173,12 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         }
         return tags;
     }
-    
+
     public void setTags(List<String> tags) {
         this.tags = tags;
         updatedKeys.add("tags");
     }
-    
+
     public void addTag(String tag) {
         if (tags == null) {
             tags = data.getStrings("tags");
@@ -177,7 +186,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         tags.add(tag);
         updatedKeys.add("tags");
     }
-    
+
     /**
      * Language id of the Thing.
      */
@@ -185,7 +194,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     public String getLanguageId() {
         return data.get("language");
     }
-    
+
     public void setLanguage(LanguageId language) {
         data.put("language", (language != null ? language.getLanguageId() : null));
         updatedKeys.add("language");
@@ -197,7 +206,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
     public boolean isHidden() {
         return data.getBoolean("hidden");
     }
-    
+
     public void setHidden(boolean hidden) {
         data.put("hidden", hidden);
         updatedKeys.add("hidden");
@@ -205,7 +214,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Number of Flattrs in this period. Only available to the owner of this Thing.
-     * 
+     *
      * @since 2.0
      */
     public int getClicksThisPeriod() {
@@ -214,7 +223,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Is this Thing flattred?
-     * 
+     *
      * @since 2.0
      */
     public boolean isFlattred() {
@@ -223,7 +232,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Date of last Flattr. Only available to the owner of this Thing.
-     * 
+     *
      * @since 2.0
      */
     public Date getLastFlattr() {
@@ -232,13 +241,13 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Date of last Update. Only available to the owner of this Thing.
-     * 
+     *
      * @since 2.0
      */
     public Date getUpdated() {
         return data.getDate("updated_at");
     }
-    
+
     /**
      * Merges the contents of a submission to this {@link Thing}. This method is useful if
      * you want to modify an existing {@link Thing} by a {@link Submission} object.
@@ -251,7 +260,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
      * <em>NOTE:</em> The URL of a {@link Thing} cannot be changed. The {@link Submission}
      * object must contain either this {@link Thing}'s URL or {@code null} (for
      * convenience). Otherwise an {@link IllegalArgumentException} is thrown.
-     * 
+     *
      * @param submission
      *            {@link Submission} to merge
      * @since 2.0
@@ -261,22 +270,22 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
             throw new IllegalArgumentException("Thing URL '" + getUrl()
                             + "' cannot be changed to '" + submission.getUrl() + "'");
         }
-        
+
         this.setCategory(submission.getCategory());
         this.setTitle(submission.getTitle());
         this.setDescription(submission.getDescription());
         this.setLanguage(submission.getLanguage());
         this.setTags(submission.getTags());
-        
+
         if (submission.isHidden() != null) {
             this.setHidden(submission.isHidden());
         }
     }
-    
+
     /**
      * Returns a {@link FlattrObject} for the updates that have been applied to this
      * Thing.
-     * 
+     *
      * @return {@link FlattrObject} for the updates, or {@code null} if this Thing was not
      *         modified.
      * @since 2.0
@@ -285,7 +294,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         if (updatedKeys.isEmpty()) {
             return null;
         }
-        
+
         data.putStrings("tags", tags);
 
         FlattrObject result = new FlattrObject();
@@ -311,7 +320,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
         }
         return result;
     }
-    
+
     /**
      * Returns the URL of a PDF document containing a QR code of the Thing. The PDF
      * can be printed, sticked on the wall, and then flattered using a mobile phone.
@@ -322,7 +331,7 @@ public class Thing implements ThingId, UserId, CategoryId, LanguageId, Serializa
 
     /**
      * Returns the URL to the thing's page at Flattr.
-     * 
+     *
      * @deprecated Replaced by a method "getLink()"
      */
     @Deprecated
