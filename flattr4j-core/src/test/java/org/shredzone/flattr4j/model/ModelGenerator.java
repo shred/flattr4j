@@ -104,7 +104,6 @@ public final class ModelGenerator {
         Assert.assertEquals("title", "simongate on Twitter", thing.getTitle());
         Assert.assertEquals("last_flattr_at", new Date(1305026796000L), thing.getLastFlattr());
         Assert.assertNull("updated_at", thing.getUpdated());
-        Assert.assertEquals("flattrs_current_period", 0, thing.getClicksThisPeriod());
         Assert.assertEquals("qrPdfUrl", "https://flattr.com/thing/qr/268185", thing.getQrPdfUrl());
         Assert.assertEquals("tags.size", 1, thing.getTags().size());
         Assert.assertEquals("tags", "twitter", thing.getTags().get(0));

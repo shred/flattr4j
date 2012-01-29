@@ -211,15 +211,6 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
     }
 
     /**
-     * Number of Flattrs in this period. Only available to the owner of this Thing.
-     *
-     * @since 2.0
-     */
-    public int getClicksThisPeriod() {
-        return data.getInt("flattrs_current_period");
-    }
-
-    /**
      * Is this Thing flattred?
      *
      * @since 2.0
