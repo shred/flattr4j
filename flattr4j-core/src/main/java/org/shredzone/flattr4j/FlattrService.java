@@ -170,10 +170,12 @@ public interface FlattrService extends OpenService {
     /**
      * Returns all {@link Activity} of the associated user.
      *
+     * @param type
+     *            activity type. {@code null} defaults to {@link Activity.Type#OUTGOING}.
      * @return List of {@link Activity}
      * @since 2.0
      */
     @RequiredScope()
-    List<Activity> getMyActivities() throws FlattrException;
+    List<Activity> getMyActivities(Activity.Type type) throws FlattrException;
 
 }

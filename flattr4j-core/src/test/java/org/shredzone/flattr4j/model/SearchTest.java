@@ -30,6 +30,7 @@ import org.shredzone.flattr4j.connector.Connection;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.connector.RateLimit;
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.SearchQuery.Order;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.ConsumerKey;
 
@@ -48,16 +49,17 @@ public class SearchTest {
         sq.setCategory(Category.withId("text"));
         sq.setLanguage(Language.withId("en_UK"));
         sq.setUser(User.withId("shred"));
-        sq.addTag("foobar");
-        sq.addTag("blafoo");
+        sq.setTags("foobar & blafoo");
+        sq.setUrl("http://flattr4j.shredzone.org");
+        sq.setSort(Order.TREND);
 
         Assert.assertEquals("foo", sq.getQuery());
         Assert.assertEquals("text", sq.getCategory().getCategoryId());
         Assert.assertEquals("en_UK", sq.getLanguage().getLanguageId());
         Assert.assertEquals("shred", sq.getUser().getUserId());
-        Assert.assertEquals(2, sq.getTags().size());
-        Assert.assertTrue(sq.getTags().contains("foobar"));
-        Assert.assertTrue(sq.getTags().contains("blafoo"));
+        Assert.assertEquals("foobar & blafoo", sq.getTags());
+        Assert.assertEquals("http://flattr4j.shredzone.org", sq.getUrl());
+        Assert.assertEquals(Order.TREND, sq.getSort());
 
         TestConnection conn = new TestConnection();
         sq.setupConnection(conn);
@@ -65,10 +67,9 @@ public class SearchTest {
         Assert.assertEquals("text", conn.getQuery("category"));
         Assert.assertEquals("en_UK", conn.getQuery("language"));
         Assert.assertEquals("shred", conn.getQuery("user"));
-
-        // Stored in a Set, so the output order is undefined...
-        String tags = conn.getQuery("tags");
-        Assert.assertTrue("foobar,blafoo".equals(tags) || "blafoo,foobar".equals(tags));
+        Assert.assertEquals("foobar & blafoo", conn.getQuery("tags"));
+        Assert.assertEquals("http://flattr4j.shredzone.org", conn.getQuery("url"));
+        Assert.assertEquals("trend", conn.getQuery("sort"));
     }
 
     @Test

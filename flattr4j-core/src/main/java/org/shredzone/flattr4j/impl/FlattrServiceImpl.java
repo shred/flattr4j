@@ -20,6 +20,7 @@
 package org.shredzone.flattr4j.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -331,6 +332,33 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
+    public List<Thing> getThings(Collection<ThingId> thingIds) throws FlattrException {
+        StringBuilder sb = new StringBuilder();
+        for (ThingId thingId : thingIds) {
+            sb.append(',').append(thingId.getThingId());
+        }
+        if (sb.length() == 0) {
+            // No IDs, so the result will be empty anyways
+            return Collections.emptyList();
+        }
+
+        Connection conn = getConnector().create()
+                        .call("things")
+                        .query("id", sb.substring(1))
+                        .rateLimit(lastRateLimit);
+
+        try {
+            List<Thing> list = new ArrayList<Thing>();
+            for (FlattrObject data : conn.result()) {
+                list.add(new Thing(data));
+            }
+            return Collections.unmodifiableList(list);
+        } finally {
+            conn.close();
+        }
+    }
+
+    @Override
     public SearchResult searchThings(SearchQuery query, Integer count, Integer page) throws FlattrException {
         Connection conn = getConnector().create()
                         .call("things/search")
@@ -407,7 +435,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Activity> getActivities(UserId user) throws FlattrException {
+    public List<Activity> getActivities(UserId user, Activity.Type type) throws FlattrException {
         if (user == null || user.getUserId().length() == 0)
             throw new IllegalArgumentException("userId is required");
 
@@ -415,6 +443,10 @@ public class FlattrServiceImpl implements FlattrService {
                         .call("users/:username/activities.as")
                         .parameter("username", user.getUserId())
                         .rateLimit(lastRateLimit);
+
+        if (type != null) {
+            conn.query("type", type.name().toLowerCase());
+        }
 
         try {
             FlattrObject data = conn.singleResult();
@@ -429,10 +461,14 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Activity> getMyActivities() throws FlattrException {
+    public List<Activity> getMyActivities(Activity.Type type) throws FlattrException {
         Connection conn = getConnector().create()
                         .call("user/activities.as")
                         .rateLimit(lastRateLimit);
+
+        if (type != null) {
+            conn.query("type", type.name().toLowerCase());
+        }
 
         try {
             FlattrObject data = conn.singleResult();

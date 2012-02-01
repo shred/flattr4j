@@ -18,6 +18,7 @@
  */
 package org.shredzone.flattr4j;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.shredzone.flattr4j.connector.RateLimit;
@@ -104,6 +105,17 @@ public interface OpenService {
     List<Thing> getThings(UserId user, Integer count, Integer page) throws FlattrException;
 
     /**
+     * Gets a list of {@link Thing} by a collection of thing IDs.
+     *
+     * @param thingIds
+     *            Collection of {@link ThingId}. The order of {@link Thing} returned may
+     *            not match the order of the provided IDs.
+     * @return List of {@link Thing} fetched
+     * @since 2.0
+     */
+    List<Thing> getThings(Collection<ThingId> thingIds) throws FlattrException;
+
+    /**
      * Searches for {@link Thing}.
      *
      * @param query
@@ -156,10 +168,12 @@ public interface OpenService {
      *
      * @param user
      *            {@link UserId} to get the result for
+     * @param type
+     *            activity type. {@code null} defaults to {@link Activity.Type#OUTGOING}.
      * @return List of {@link Activity}
      * @since 2.0
      */
-    List<Activity> getActivities(UserId user) throws FlattrException;
+    List<Activity> getActivities(UserId user, Activity.Type type) throws FlattrException;
 
     /**
      * Gets a list of all Flattr {@link Category}.

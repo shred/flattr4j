@@ -19,8 +19,6 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.shredzone.flattr4j.connector.Connection;
 
@@ -34,11 +32,20 @@ import org.shredzone.flattr4j.connector.Connection;
 public class SearchQuery implements Serializable {
     private static final long serialVersionUID = 8144711465654878363L;
 
+    /**
+     * Enumeration of available sort orders.
+     */
+    public static enum Order {
+        RELEVANCE, TREND, FLATTRS, FLATTRS_MONTH, FLATTRS_WEEK;
+    }
+
     private String query;
-    private Set<String> tags = new HashSet<String>();
+    private String tags;
+    private String url;
     private LanguageId language;
     private CategoryId category;
     private UserId user;
+    private Order sort;
 
     /**
      * Text to search for.
@@ -47,11 +54,18 @@ public class SearchQuery implements Serializable {
     public void setQuery(String query)          { this.query = query; }
 
     /**
-     * Tags to search for.
+     * Tags to search for. Allows logical operators: '|' (or), '&' (and), '!' (not). For
+     * example, "game | games ! software" means: search for "game" or "games", but not
+     * "software".
      */
-    public Set<String> getTags()                { return tags; }
-    public void setTags(Set<String> tags)       { this.tags = tags; }
-    public void addTag(String tag)              { tags.add(tag); }
+    public String getTags()                     { return tags; }
+    public void setTags(String tags)            { this.tags = tags; }
+
+    /**
+     * URL to search for.
+     */
+    public String getUrl()                      { return url; }
+    public void setUrl(String url)              { this.url = url; }
 
     /**
      * Language to search for.
@@ -72,6 +86,12 @@ public class SearchQuery implements Serializable {
     public void setUser(UserId user)            { this.user = user; }
 
     /**
+     * Sort order. Defaults to {@link Order#RELEVANCE}.
+     */
+    public Order getSort()                      { return sort; }
+    public void setSort(Order sort)             { this.sort = sort; }
+
+    /**
      * Text to search for.
      */
     public SearchQuery query(String query) {
@@ -80,10 +100,10 @@ public class SearchQuery implements Serializable {
     }
 
     /**
-     * Adds a tag to search for.
+     * Sets a tag expression to search for.
      */
-    public SearchQuery tag(String tag) {
-        addTag(tag);
+    public SearchQuery tags(String tags) {
+        setTags(tags);
         return this;
     }
 
@@ -112,6 +132,14 @@ public class SearchQuery implements Serializable {
     }
 
     /**
+     * Order to sort the result by.
+     */
+    public SearchQuery sort(Order order) {
+        setSort(order);
+        return this;
+    }
+
+    /**
      * Sets up a {@link Connection} with the current search parameters.
      *
      * @param conn
@@ -122,12 +150,12 @@ public class SearchQuery implements Serializable {
             conn.query("query", query);
         }
 
-        if (tags != null && !tags.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (String tag : tags) {
-                sb.append(',').append(tag);
-            }
-            conn.query("tags", sb.substring(1));
+        if (tags != null) {
+            conn.query("tags", tags);
+        }
+
+        if (url != null) {
+            conn.query("url", url);
         }
 
         if (language != null) {
@@ -140,6 +168,10 @@ public class SearchQuery implements Serializable {
 
         if (user != null) {
             conn.query("user", user.getUserId());
+        }
+
+        if (sort != null) {
+            conn.query("sort", sort.name().toLowerCase());
         }
     }
 

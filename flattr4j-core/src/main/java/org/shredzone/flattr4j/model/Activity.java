@@ -40,6 +40,13 @@ import org.shredzone.flattr4j.exception.MarshalException;
 public class Activity extends Resource {
     private static final long serialVersionUID = -7610676384296279814L;
 
+    /**
+     * Available activity types.
+     */
+    public static enum Type {
+        OUTGOING, INCOMING;
+    }
+
     public Activity(FlattrObject data) {
         super(data);
     }

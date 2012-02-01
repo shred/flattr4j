@@ -28,14 +28,14 @@ public enum Scope {
 
     /**
      * The consumer wants to flattr things.
-     * 
+     *
      * @since 2.0
      */
     FLATTR,
-    
+
     /**
-     * The consumer wants to create things.
-     * 
+     * The consumer wants to create, update and delete things.
+     *
      * @since 2.0
      */
     THING,
@@ -48,26 +48,26 @@ public enum Scope {
 
     /**
      * The consumer wants to click things for the authenticated user.
-     * 
+     *
      * @deprecated Use {@link #FLATTR} instead
      */
     @Deprecated
     CLICK,
-    
+
     /**
      * The consumer wants to publish things for the authenticated user.
-     * 
+     *
      * @deprecated Use {@link #THING} instead
      */
     @Deprecated
     PUBLISH,
-    
+
     /**
      * The consumer needs public user information and thing information.
-     * 
+     *
      * @deprecated This scope is granted by default and does not need to be set explicitly
      */
     @Deprecated
     READ;
-    
+
 }
