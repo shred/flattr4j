@@ -132,9 +132,6 @@ public final class ModelGenerator {
         Assert.assertEquals("firstname", "Simon", user.getFirstname());
         Assert.assertEquals("lastname", "Gate", user.getLastname());
         Assert.assertEquals("city", "Simcity", user.getCity());
-        Assert.assertEquals("zip", "12345", user.getZip());
-        Assert.assertEquals("province", "Provence", user.getProvince());
-        Assert.assertEquals("cellphone", "12345645678", user.getCellphone());
         Assert.assertEquals("email", "simon@flattr.com", user.getEmail());
         Assert.assertEquals("about", "yes", user.getDescription());
         Assert.assertEquals("country", "Sweden", user.getCountry());

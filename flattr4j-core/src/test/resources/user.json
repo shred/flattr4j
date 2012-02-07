@@ -5,12 +5,9 @@
     "username": "simon_g",
     "firstname": "Simon",
     "lastname": "Gate",
-    "city": "Simcity",
-    "zip": "12345",
-    "province": "Provence",
-    "cellphone": "12345645678",
     "email": "simon@flattr.com",
     "about": "yes",
+    "city": "Simcity",
     "country": "Sweden",
     "avatar": ""
 }

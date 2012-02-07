@@ -126,33 +126,6 @@ public class User extends Resource implements UserId {
     }
 
     /**
-     * User's ZIP.
-     *
-     * @since 2.0
-     */
-    public String getZip() {
-        return data.get("zip");
-    }
-
-    /**
-     * User's province.
-     *
-     * @since 2.0
-     */
-    public String getProvince() {
-        return data.get("province");
-    }
-
-    /**
-     * User's cellphone number.
-     *
-     * @since 2.0
-     */
-    public String getCellphone() {
-        return data.get("cellphone");
-    }
-
-    /**
      * Registration date.
      *
      * @since 2.0
