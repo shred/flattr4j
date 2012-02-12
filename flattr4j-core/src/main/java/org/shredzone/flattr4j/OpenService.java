@@ -40,26 +40,26 @@ import org.shredzone.flattr4j.model.UserId;
  * calls may return more details for authorized users.
  * <p>
  * All calls will decrement the remaining rate by one, unless noted otherwise.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public interface OpenService {
-    
+
     /**
      * Gets a {@link Thing} for the given {@link ThingId}.
-     * 
+     *
      * @param thingId
      *            {@link ThingId} of the Thing to be fetched
      * @return {@link Thing}
      */
     Thing getThing(ThingId thingId) throws FlattrException;
-    
+
     /**
      * Gets a {@link Thing} by its registered URL.
      * <p>
      * Uses two rates!
-     * 
+     *
      * @param url
      *            Thing's URL
      * @return {@link Thing} of the URL that was found, {@code null} if nothing was found
@@ -162,6 +162,30 @@ public interface OpenService {
      * @since 2.0
      */
     List<Flattr> getFlattrs(UserId user, Integer count, Integer page) throws FlattrException;
+
+    /**
+     * Gets all {@link Flattr} most recently posted for the given thing ID.
+     *
+     * @param thing
+     *            {@link ThingId} to get the result for
+     * @return List of {@link Flattr} posted by the user
+     * @since 2.0
+     */
+    List<Flattr> getFlattrs(ThingId thing) throws FlattrException;
+
+    /**
+     * Gets all {@link Flattr} most recently posted for the given thing ID.
+     *
+     * @param thing
+     *            {@link ThingId} to get the result for
+     * @param count
+     *            Number of entries per page, {@code null} defaults to 30 entries
+     * @param page
+     *            Page number (counted from 1), or {@code null} to turn off paging
+     * @return List of {@link Flattr} posted by the user
+     * @since 2.0
+     */
+    List<Flattr> getFlattrs(ThingId thing, Integer count, Integer page) throws FlattrException;
 
     /**
      * Returns all {@link Activity} of the given user ID.

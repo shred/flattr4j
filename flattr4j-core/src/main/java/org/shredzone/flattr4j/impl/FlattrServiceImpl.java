@@ -435,6 +435,40 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
+    public List<Flattr> getFlattrs(ThingId thingId) throws FlattrException {
+        return getFlattrs(thingId, null, null);
+    }
+
+    @Override
+    public List<Flattr> getFlattrs(ThingId thingId, Integer count, Integer page) throws FlattrException {
+        if (thingId == null || thingId.getThingId().length() == 0)
+            throw new IllegalArgumentException("thingId is required");
+
+        Connection conn = getConnector().create()
+                .call("things/:id/flattrs")
+                .parameter("id", thingId.getThingId())
+                .rateLimit(lastRateLimit);
+
+        if (count != null) {
+            conn.query("count", count.toString());
+        }
+
+        if (page != null) {
+            conn.query("page", page.toString());
+        }
+
+        try {
+            List<Flattr> list = new ArrayList<Flattr>();
+            for (FlattrObject data : conn.result()) {
+                list.add(new Flattr(data));
+            }
+            return Collections.unmodifiableList(list);
+        } finally {
+            conn.close();
+        }
+    }
+
+    @Override
     public List<Activity> getActivities(UserId user, Activity.Type type) throws FlattrException {
         if (user == null || user.getUserId().length() == 0)
             throw new IllegalArgumentException("userId is required");
