@@ -23,7 +23,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * An optional HTML attribute for the parent tag.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */

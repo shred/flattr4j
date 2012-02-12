@@ -25,7 +25,7 @@ package org.shredzone.flattr4j.model;
  * <p>
  * {@link UserIdentifier} is only useful for Partner Site Integration. You need to
  * register your site with Flattr before.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision:$
  * @since 2.0

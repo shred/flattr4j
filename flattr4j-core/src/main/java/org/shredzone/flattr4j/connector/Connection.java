@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
 
 /**
  * Builds and executes a single call against the Flattr API.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 448 $
  * @since 2.0
@@ -36,7 +36,7 @@ public interface Connection {
 
     /**
      * Base URL to connect to. This must be an absolute URL.
-     * 
+     *
      * @param url
      *            URL to connect to.
      * @return this
@@ -46,7 +46,7 @@ public interface Connection {
     /**
      * Access token to be used for calls that require authentication. If no
      * {@link AccessToken} is set, the call will be placed anonymously.
-     * 
+     *
      * @param token
      *            {@link AccessToken} to be used
      * @return this
@@ -56,7 +56,7 @@ public interface Connection {
     /**
      * Consumer key to be used. Usually, this is only necessary in the OAuth2
      * authentication process.
-     * 
+     *
      * @param key
      *            {@link ConsumerKey} to be used
      * @return this
@@ -68,7 +68,7 @@ public interface Connection {
      * are prepended by a colon (e.g. "users/:username/things").
      * <p>
      * If no call is set, the {@link #url(String)} is invoked unchanged.
-     * 
+     *
      * @param call
      *            Signature of the call to be invoked
      * @return this
@@ -78,7 +78,7 @@ public interface Connection {
     /**
      * A parameter to be used for a placeholder in the call string. If the call string
      * does not contain a matching placeholder, it will be silently ignored.
-     * 
+     *
      * @param name
      *            Parameter name, without colon prepended
      * @param value
@@ -89,7 +89,7 @@ public interface Connection {
 
     /**
      * Query parameter to be used in the URL.
-     * 
+     *
      * @param name
      *            Parameter name
      * @param value
@@ -101,7 +101,7 @@ public interface Connection {
     /**
      * Data to be transported to the call. Requires {@link RequestType#POST} or
      * {@link RequestType#PATCH}, otherwise an exception will be thrown.
-     * 
+     *
      * @param data
      *            Data to be sent
      * @return this
@@ -111,7 +111,7 @@ public interface Connection {
     /**
      * Form parameter to be sent. Requires {@link RequestType#POST}, otherwise an
      * exception will be thrown. Do not mix with {@link #data(FlattrObject)}.
-     * 
+     *
      * @param name
      *            Parameter name
      * @param value
@@ -122,7 +122,7 @@ public interface Connection {
 
     /**
      * {@link RateLimit} object to keep updated.
-     * 
+     *
      * @param limit
      *            {@link RateLimit} object
      * @return this
@@ -131,7 +131,7 @@ public interface Connection {
 
     /**
      * Invokes the call and returns a single {@link FlattrObject} as response.
-     * 
+     *
      * @return result {@link FlattrObject}, never {@code null}
      * @throws FlattrException
      *             if the call could not be invoked or the web service returned an error
@@ -142,7 +142,7 @@ public interface Connection {
 
     /**
      * Invokes the call and returns a Collection of {@link FlattrObject} as response.
-     * 
+     *
      * @return result collection of {@link FlattrObject}, may be empty but never
      *         {@code null}
      * @throws FlattrException

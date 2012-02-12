@@ -22,7 +22,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Interface for connectors that create connections to the Flattr API.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -31,7 +31,7 @@ public interface Connector {
     /**
      * Creates a new {@link Connection} for a call with request type
      * {@link RequestType#GET}.
-     * 
+     *
      * @return {@link Connection} that was created
      * @since 2.0
      */
@@ -39,7 +39,7 @@ public interface Connector {
 
     /**
      * Creates a new {@link Connection} for a call with the given request type.
-     * 
+     *
      * @param type
      *            {@link RequestType} to be used
      * @return {@link Connection} that was created

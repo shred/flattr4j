@@ -43,5 +43,5 @@ public class FlattrException extends Exception {
     public FlattrException(String msg, Throwable cause) {
         super(msg, cause);
     }
-    
+
 }

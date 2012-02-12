@@ -25,10 +25,10 @@ package org.shredzone.flattr4j.model;
  * @version $Revision$
  */
 public interface CategoryId {
-    
+
     /**
      * Returns the Category ID.
-     * 
+     *
      * @return Category id
      */
     String getCategoryId();

@@ -28,22 +28,22 @@ import java.io.Serializable;
  */
 public class ConsumerKey implements Serializable {
     private static final long serialVersionUID = -2439158677542078353L;
-    
+
     private String key;
     private String secret;
-    
+
     public ConsumerKey() {
         // Default constructor
     }
-    
+
     public ConsumerKey(String key, String secret) {
         this.key = key;
         this.secret = secret;
     }
-    
+
     public String getKey()              { return key; }
     public void setKey(String key)      { this.key = key; }
-    
+
     public String getSecret()           { return secret; }
     public void setSecret(String secret) { this.secret = secret; }
 

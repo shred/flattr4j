@@ -24,7 +24,7 @@ package org.shredzone.flattr4j.exception;
  * <p>
  * <em>Note:</em> The call limitation is posed by the Flattr API. This is not a limitation
  * of flattr4j.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: -1 $
  */

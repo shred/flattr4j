@@ -25,10 +25,10 @@ package org.shredzone.flattr4j.model;
  * @version $Revision$
  */
 public interface LanguageId {
-    
+
     /**
      * Returns the Language ID.
-     * 
+     *
      * @return Language id
      */
     String getLanguageId();

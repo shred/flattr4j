@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
 
 /**
  * Default implementation of {@link FlattrServiceFactory}.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -39,7 +39,7 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
     /**
      * Creates a new {@link DefaultFlattrServiceFactory} with the given
      * {@link ConsumerKey}.
-     * 
+     *
      * @param consumerKey
      *            {@link ConsumerKey} to be used by this factory
      */
@@ -50,7 +50,7 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
     /**
      * Creates a new {@link DefaultFlattrServiceFactory} with the given
      * {@link ConsumerKey} and {@link AccessToken}.
-     * 
+     *
      * @param consumerKey
      *            {@link ConsumerKey} to be used by this factory
      * @param accessToken

@@ -36,7 +36,7 @@ public final class TagUtils {
 
     /**
      * Set an attribute with the given scope.
-     * 
+     *
      * @param pageContext
      *            {@link PageContext} of the invoking tag
      * @param attribute
@@ -70,7 +70,7 @@ public final class TagUtils {
     /**
      * Finds an ancestor tag of the given type. Starting from the given Tag, it traverses
      * up the parent tags until a tag of the given type is found.
-     * 
+     *
      * @param <T>
      *            Type to find and return
      * @param from

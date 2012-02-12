@@ -31,18 +31,18 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  */
 public class TagTag extends BodyTagSupport {
     private static final long serialVersionUID = -2512754082305270317L;
-    
+
     private Collection<String> list;
     private String value;
-    
+
     public void setList(Collection<String> list) {
         this.list = list;
     }
-    
+
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public int doStartTag() throws JspException {
         if (value != null) {

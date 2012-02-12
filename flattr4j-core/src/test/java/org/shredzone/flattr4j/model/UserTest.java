@@ -27,7 +27,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Unit test of the {@link User} class.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 596 $
  */
@@ -44,13 +44,13 @@ public class UserTest {
         User user = ModelGenerator.createUser();
         ModelGenerator.assertUser(user);
     }
-    
+
     @Test
     public void testEquals() throws FlattrException {
         User user1 = new User(new FlattrObject("{\"username\":\"simon_g\"}"));
         User user2 = new User(new FlattrObject("{\"username\":\"simon_g\"}"));
         User user3 = new User(new FlattrObject("{\"username\":\"sherlock_h\"}"));
-        
+
         Assert.assertTrue(user1.equals(user2));
         Assert.assertTrue(user2.equals(user1));
         Assert.assertFalse(user1.equals(user3));

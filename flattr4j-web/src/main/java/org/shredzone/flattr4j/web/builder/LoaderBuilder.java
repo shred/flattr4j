@@ -34,7 +34,7 @@ import org.shredzone.flattr4j.web.ButtonType;
  * daisy-chained.
  * <p>
  * Example: <code>String loader = new LoaderBuilder().uid("123456").toString();</code>
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -53,7 +53,7 @@ public class LoaderBuilder {
     /**
      * Sets the base URL of the Flattr API. Defaults to "http://api.flattr.com". Do not
      * change unless you know what you are doing.
-     * 
+     *
      * @param baseUrl
      *            New Flattr API url to be used
      */
@@ -65,7 +65,7 @@ public class LoaderBuilder {
     /**
      * Sets the API version to be used. Usually there is no need to change the default
      * value, so do not change unless you know what you are doing.
-     * 
+     *
      * @param version
      *            API version to be used (e.g. "0.6")
      */
@@ -103,7 +103,7 @@ public class LoaderBuilder {
 
     /**
      * Sets the default {@link User}.
-     * 
+     *
      * @param user
      *            {@link UserId}
      */
@@ -114,7 +114,7 @@ public class LoaderBuilder {
 
     /**
      * Sets the default button type to be used.
-     * 
+     *
      * @param type
      *            {@link ButtonType} to be used
      */
@@ -125,7 +125,7 @@ public class LoaderBuilder {
 
     /**
      * Sets the default {@link Language}.
-     * 
+     *
      * @param language
      *            Default {@link LanguageId}
      */
@@ -136,7 +136,7 @@ public class LoaderBuilder {
 
     /**
      * Sets the default {@link Category}.
-     * 
+     *
      * @param category
      *            Default {@link CategoryId}
      */
@@ -147,7 +147,7 @@ public class LoaderBuilder {
 
     /**
      * Sets a HTML5 key prefix. By default "data-flattr" is used.
-     * 
+     *
      * @param prefix
      *            HTML5 key prefix. The string must start with "data-"
      */

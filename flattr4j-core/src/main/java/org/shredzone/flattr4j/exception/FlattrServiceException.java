@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.exception;
 
 /**
  * This exception is used when the Flattr web service returned an error.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -33,17 +33,17 @@ public class FlattrServiceException extends FlattrException {
         super(msg);
         this.code = code;
     }
-    
+
     /**
      * Returns a system error code passed from Flattr, to further identify this error.
      */
     public String getCode() {
         return code;
     }
-    
+
     @Override
     public String toString() {
         return code + ": " + super.toString();
     }
-    
+
 }

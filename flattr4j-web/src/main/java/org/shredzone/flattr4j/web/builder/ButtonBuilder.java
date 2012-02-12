@@ -42,7 +42,7 @@ import org.shredzone.flattr4j.web.ButtonType;
  * daisy-chained.
  * <p>
  * Example: <code>String button = new ButtonBuilder().url(myUrl).toString();</code>
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -247,7 +247,7 @@ public class ButtonBuilder {
      * <p>
      * Attributes are added without further checks. It is your responsibility to take care
      * for HTML compliance.
-     * 
+     *
      * @param attribute
      *            HTML attribute to be added
      * @param value
@@ -277,7 +277,7 @@ public class ButtonBuilder {
     /**
      * Sets a HTML5 key prefix. By default "data-flattr" is used. The setting is only used
      * in HTML5 mode.
-     * 
+     *
      * @param prefix
      *            HTML5 key prefix. The string must start with "data-"
      */
@@ -348,7 +348,7 @@ public class ButtonBuilder {
 
     /**
      * Appends thing attributes to the {@link StringBuilder}.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to append the attributes to
      */
@@ -394,7 +394,7 @@ public class ButtonBuilder {
 
     /**
      * Appends the header for non-http5 attributes.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to append the attributes to
      */
@@ -404,7 +404,7 @@ public class ButtonBuilder {
 
     /**
      * Appends thing attributes as HTML 5 attributes {@link StringBuilder}.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to append the attributes to
      */
@@ -434,7 +434,7 @@ public class ButtonBuilder {
 
     /**
      * Appends a single HTML5 attribute.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to append the attribute to
      * @param key
@@ -449,7 +449,7 @@ public class ButtonBuilder {
 
     /**
      * Appends a list of all tags, separated by comma.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to append the tags to
      */
@@ -464,7 +464,7 @@ public class ButtonBuilder {
 
     /**
      * Escapes a string for use in HTML attributes.
-     * 
+     *
      * @param str
      *            Attribute to be escaped
      * @return Escaped attribute

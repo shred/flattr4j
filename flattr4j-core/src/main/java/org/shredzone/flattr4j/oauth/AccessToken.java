@@ -28,9 +28,9 @@ import java.io.Serializable;
  */
 public class AccessToken implements Serializable {
     private static final long serialVersionUID = 7715751842047101911L;
-    
+
     private String token;
-    
+
     public AccessToken() {
         // Default constructor
     }

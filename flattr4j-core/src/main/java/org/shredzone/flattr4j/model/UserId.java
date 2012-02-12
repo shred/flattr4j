@@ -25,10 +25,10 @@ package org.shredzone.flattr4j.model;
  * @version $Revision$
  */
 public interface UserId {
-    
+
     /**
      * Returns the User's ID.
-     * 
+     *
      * @return User id
      */
     String getUserId();

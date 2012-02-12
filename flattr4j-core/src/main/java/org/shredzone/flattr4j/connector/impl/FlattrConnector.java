@@ -55,11 +55,11 @@ public class FlattrConnector implements Connector {
      */
     public String getBaseUrl()                  { return baseUrl; }
     public void setBaseUrl(String baseUrl)      { this.baseUrl = baseUrl; }
-    
+
     /**
      * {@link AccessToken} to be used for authorized calls.
      */
     public AccessToken getAccessToken()         { return accessToken; }
     public void setAccessToken(AccessToken accessToken) { this.accessToken = accessToken; }
-    
+
 }

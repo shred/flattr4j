@@ -36,19 +36,19 @@ import org.apache.http.params.HttpProtocolParams;
 
 /**
  * A Flattr HTTP Client that also supports https connections on Android.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
 public class FlattrHttpClient extends DefaultHttpClient  {
     private static final int TIMEOUT_MS = 10000;
-    
+
     private static final AtomicReference<SSLSocketFactory> sslSocketFactory = new AtomicReference<SSLSocketFactory>();
     private static final AtomicReference<SchemeRegistry> registry = new AtomicReference<SchemeRegistry>();
 
     /**
      * Gets a {@link SSLSocketFactory} suited for connecting to Flattr.
-     * 
+     *
      * @return {@link SSLSocketFactory}
      */
     public static SSLSocketFactory getSocketFactory() {
@@ -56,7 +56,7 @@ public class FlattrHttpClient extends DefaultHttpClient  {
         if (result != null) {
             return result;
         }
-        
+
         try {
             InputStream in = null;
             try {
@@ -73,17 +73,17 @@ public class FlattrHttpClient extends DefaultHttpClient  {
             // Fallback to the original SSL socket factory
             result = SSLSocketFactory.getSocketFactory();
         }
-        
+
         if (sslSocketFactory.compareAndSet(null, result)) {
             return result;
         } else {
             return sslSocketFactory.get();
         }
     }
-    
+
     /**
      * Gets a preconfigured {@link SchemeRegistry} suited for connecting to Flattr.
-     * 
+     *
      * @return {@link SchemeRegistry}
      */
     public static SchemeRegistry getSchemeRegistry() {
@@ -102,15 +102,15 @@ public class FlattrHttpClient extends DefaultHttpClient  {
             return registry.get();
         }
     }
-    
+
     @Override
     protected ClientConnectionManager createClientConnectionManager() {
         HttpParams params = getParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
         HttpConnectionParams.setSoTimeout(params, TIMEOUT_MS);
         HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MS);
-        
+
         return new ThreadSafeClientConnManager(params, getSchemeRegistry());
     }
-    
+
 }

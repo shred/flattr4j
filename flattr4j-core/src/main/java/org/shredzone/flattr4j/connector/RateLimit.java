@@ -23,14 +23,14 @@ package org.shredzone.flattr4j.connector;
  * <p>
  * <em>Note:</em> The call limitation is posed by the Flattr API. This is not a limitation
  * of flattr4j.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: -1 $
  */
 public class RateLimit {
     private Long limit;
     private Long remaining;
-    
+
     /**
      * The maximum rate of allowed calls per time span. {@code null} if there is no such
      * information available.

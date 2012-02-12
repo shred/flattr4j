@@ -35,11 +35,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RequiredScope {
-    
+
     /**
      * Set of scopes that are required to invoke the annotated call. An empty result
      * means that only authentication is required.
      */
     Scope[] value() default {};
-    
+
 }

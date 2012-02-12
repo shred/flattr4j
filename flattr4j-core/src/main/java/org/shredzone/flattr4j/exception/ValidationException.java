@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.exception;
 
 /**
  * This exception is used when an argument provided to a service call was invalid.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -30,5 +30,5 @@ public class ValidationException extends FlattrServiceException {
     public ValidationException(String code, String msg) {
         super(code, msg);
     }
-    
+
 }

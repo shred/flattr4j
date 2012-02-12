@@ -44,16 +44,16 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -2011193251581466746L;
 
     private ButtonBuilder builder;
-    
+
     private boolean descripted = false;
     private String var = null;
     private String scope = null;
-    
+
     public void setUrl(String url) {
         setupBuilder();
         builder.url(url);
     }
-    
+
     public void setUser(Object user) {
         setupBuilder();
         if (user instanceof UserId) {
@@ -62,18 +62,18 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
             builder.user(User.withId(user.toString()));
         }
     }
-    
+
     public void setTitle(String title) {
         setupBuilder();
         builder.title(title);
     }
-    
+
     public void setDescription(String description) {
         setupBuilder();
         builder.description(description);
         descripted = true;
     }
-    
+
     public void setCategory(Object category) {
         setupBuilder();
         if (category instanceof CategoryId) {
@@ -82,7 +82,7 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
             builder.category(Category.withId(category.toString()));
         }
     }
-    
+
     public void setLanguage(Object language) {
         setupBuilder();
         if (language instanceof LanguageId) {
@@ -91,7 +91,7 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
             builder.language(Language.withId(language.toString()));
         }
     }
-    
+
     public void setButton(Object type) {
         setupBuilder();
         if (type instanceof ButtonType) {
@@ -100,36 +100,36 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
             builder.button(ButtonType.valueOf(type.toString().toUpperCase()));
         }
     }
-    
+
     public void setHidden(boolean hidden) {
         setupBuilder();
         if (hidden) builder.hidden();
     }
-    
+
     public void setHtml5(boolean html5) {
         setupBuilder();
         if (html5) builder.html5();
     }
-    
+
     public void setPrefix(String prefix) {
         setupBuilder();
         builder.prefix(prefix);
     }
-    
+
     public void setStyle(String style) {
         setupBuilder();
         builder.style(style);
     }
-    
+
     public void setStyleClass(String styleClass) {
         setupBuilder();
         builder.styleClass(styleClass);
     }
-    
+
     public void setVar(String var) {
         this.var = var;
     }
-    
+
     public void setScope(String scope) {
         this.scope = scope;
     }
@@ -138,12 +138,12 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
         setupBuilder();
         builder.tag(tag);
     }
-    
+
     public void addTags(Collection<String> tags) {
         setupBuilder();
         builder.tags(tags);
     }
-    
+
     @Override
     public void setAttribute(String name, String value) {
         setupBuilder();
@@ -172,9 +172,9 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
                 }
             }
         }
-        
+
         String tag = builder.toString();
-        
+
         if (var != null) {
             TagUtils.setScopedAttribute(pageContext, var, tag, scope);
 

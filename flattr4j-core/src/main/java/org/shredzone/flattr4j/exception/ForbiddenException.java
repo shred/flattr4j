@@ -28,7 +28,7 @@ import org.shredzone.flattr4j.oauth.Scope;
  * <li>the operation is not allowed (e.g. flattering an own thing)</li>
  * </ul>
  * The message contains the reason for the exception.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */

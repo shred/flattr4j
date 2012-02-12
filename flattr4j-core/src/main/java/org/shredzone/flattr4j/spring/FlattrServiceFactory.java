@@ -30,7 +30,7 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
  * on constuction time, optionally also with a default access token. When the
  * {@link FlattrServiceFactory} bean is injected, it is already properly configured and
  * ready to use.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -38,7 +38,7 @@ public interface FlattrServiceFactory {
 
     /**
      * Creates a new {@link OpenService} instance.
-     * 
+     *
      * @return {@link OpenService} instance. Each invocation creates a new instance.
      */
     OpenService getOpenService();
@@ -46,14 +46,14 @@ public interface FlattrServiceFactory {
     /**
      * Creates a new {@link FlattrService} instance, using a default access token. If no
      * default access token is set, an exception will be thrown.
-     * 
+     *
      * @return {@link FlattrService} instance. Each invocation creates a new instance.
      */
     FlattrService getFlattrService();
 
     /**
      * Creates a new {@link FlattrService} instance.
-     * 
+     *
      * @param accessToken
      *            {@link AccessToken} to be used by the {@link FlattrService}
      * @return {@link FlattrService} instance. Each invocation creates a new instance.
@@ -62,7 +62,7 @@ public interface FlattrServiceFactory {
 
     /**
      * Creates a new {@link FlattrAuthenticator}.
-     * 
+     *
      * @return {@link FlattrAuthenticator} instance. Each invocation creates a new
      *         instance.
      */

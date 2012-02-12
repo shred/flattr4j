@@ -40,7 +40,7 @@ import org.shredzone.flattr4j.web.builder.LoaderBuilder;
  */
 public class LoaderTag extends BodyTagSupport {
     private static final long serialVersionUID = -5892160942069969373L;
-    
+
     private LoaderBuilder builder;
     private String var;
     private String scope;

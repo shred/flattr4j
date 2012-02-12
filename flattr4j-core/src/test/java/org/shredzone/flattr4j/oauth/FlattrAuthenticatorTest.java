@@ -26,7 +26,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Unit test of the {@link FlattrAuthenticator} class.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -38,7 +38,7 @@ public class FlattrAuthenticatorTest {
         FlattrAuthenticator auth = new FlattrAuthenticator(ck);
         auth.getScope().add(Scope.FLATTR);
         auth.getScope().add(Scope.THING);
-        
+
         String url = auth.authenticate("myState");
         Assert.assertEquals("https://flattr.com/oauth/authorize?response_type=code&client_id=ck-abc&scope=flattr+thing&state=myState", url);
     }

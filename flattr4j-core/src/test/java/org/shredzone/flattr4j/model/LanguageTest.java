@@ -25,7 +25,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Unit test of the {@link Language} and {@link LanguageId} classes.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 596 $
  */
@@ -49,11 +49,11 @@ public class LanguageTest {
         Language lang1 = new Language(new FlattrObject("{\"id\":\"en_GB\",\"text\":\"English\"}"));
         Language lang2 = new Language(new FlattrObject("{\"id\":\"en_GB\",\"text\":\"English\"}"));
         Language lang3 = new Language(new FlattrObject("{\"id\":\"sq_AL\",\"text\":\"Albanian\"}"));
-        
+
         Assert.assertTrue(lang1.equals(lang2));
         Assert.assertTrue(lang2.equals(lang1));
         Assert.assertFalse(lang1.equals(lang3));
         Assert.assertFalse(lang3.equals(lang1));
     }
-    
+
 }

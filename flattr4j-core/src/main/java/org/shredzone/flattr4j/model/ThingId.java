@@ -25,10 +25,10 @@ package org.shredzone.flattr4j.model;
  * @version $Revision$
  */
 public interface ThingId {
-    
+
     /**
      * Returns the Thing's ID.
-     * 
+     *
      * @return Thing id
      */
     String getThingId();

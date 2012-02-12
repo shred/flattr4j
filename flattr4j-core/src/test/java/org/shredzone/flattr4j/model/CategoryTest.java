@@ -25,7 +25,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 
 /**
  * Unit test of the {@link Category} and {@link CategoryId} classes.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision: 596 $
  */
@@ -49,11 +49,11 @@ public class CategoryTest {
         Category cat1 = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
         Category cat2 = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
         Category cat3 = new Category(new FlattrObject("{\"id\":\"audio\",\"text\":\"Audio\"}"));
-        
+
         Assert.assertTrue(cat1.equals(cat2));
         Assert.assertTrue(cat2.equals(cat1));
         Assert.assertFalse(cat1.equals(cat3));
         Assert.assertFalse(cat3.equals(cat1));
     }
-    
+
 }

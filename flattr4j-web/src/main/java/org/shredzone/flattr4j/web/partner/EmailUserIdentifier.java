@@ -28,7 +28,7 @@ import org.shredzone.flattr4j.model.UserIdentifier;
 /**
  * A {@link UserIdentifier} for identifying a user by email address. The email address is
  * stored as md5 hash.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision:$
  * @since 2.0

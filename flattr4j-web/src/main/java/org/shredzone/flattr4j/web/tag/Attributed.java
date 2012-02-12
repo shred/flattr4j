@@ -20,7 +20,7 @@ package org.shredzone.flattr4j.web.tag;
 
 /**
  * Interface for tags that accept nested {@link AttributeTag} for HTML attributes.
- * 
+ *
  * @author Richard "Shred" Körber
  * @version $Revision$
  */
@@ -28,7 +28,7 @@ public interface Attributed {
 
     /**
      * Sets the HTML attribute from a sub {@link AttributeTag}.
-     * 
+     *
      * @param name
      *            Attribute name
      * @param value
