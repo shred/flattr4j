@@ -64,6 +64,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.exception.ForbiddenException;
 import org.shredzone.flattr4j.exception.MarshalException;
+import org.shredzone.flattr4j.exception.NoMeansException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.RateLimitExceededException;
 import org.shredzone.flattr4j.exception.ValidationException;
@@ -78,7 +79,7 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  */
 public class FlattrConnection implements Connection {
     private static final String ENCODING = "utf-8";
-    
+
     private AbstractHttpClient client;
     private HttpRequestBase request;
     private HttpResponse response;
@@ -92,7 +93,7 @@ public class FlattrConnection implements Connection {
 
     /**
      * Creates a new {@link FlattrConnection} for the given {@link RequestType}.
-     * 
+     *
      * @param type
      *            {@link RequestType} to be used
      */
@@ -111,14 +112,14 @@ public class FlattrConnection implements Connection {
         this.call = call;
         return this;
     }
-    
+
     @Override
     public Connection token(AccessToken token) {
         createRequest();
         request.setHeader("Authorization", "Bearer " + token.getToken());
         return this;
     }
-    
+
     @Override
     public Connection key(ConsumerKey key) {
         this.key = key;
@@ -164,7 +165,7 @@ public class FlattrConnection implements Connection {
         }
         return this;
     }
-    
+
     @Override
     public Connection form(String name, String value) {
         createRequest();
@@ -172,7 +173,7 @@ public class FlattrConnection implements Connection {
         if (!(request instanceof HttpPost)) {
             throw new IllegalArgumentException("No form allowed for RequestType " + type);
         }
-        
+
         if (formParam == null) {
             formParam = new ArrayList<NameValuePair>();
         }
@@ -180,29 +181,29 @@ public class FlattrConnection implements Connection {
 
         return this;
     }
-    
+
     @Override
     public Connection rateLimit(RateLimit limit) {
         this.limit = limit;
         return this;
     }
-    
+
     @Override
     public Collection<FlattrObject> result() throws FlattrException {
         createRequest();
-        
+
         try {
             String queryString = "";
             if (queryParam != null) {
                 queryString = '?' + URLEncodedUtils.format(queryParam, ENCODING);
             }
-            
+
             if (call != null) {
                 request.setURI(new URI(baseUrl).resolve(call + queryString));
             } else {
                 request.setURI(new URI(baseUrl + queryString));
             }
-            
+
             request.setHeader("Accept", "application/json");
             request.setHeader("Accept-Encoding", "gzip");
 
@@ -212,7 +213,7 @@ public class FlattrConnection implements Connection {
                 body.setContentEncoding(ENCODING);
                 ((HttpPost) request).setEntity(body);
             }
-            
+
             client = createHttpClient();
 
             if (key != null) {
@@ -222,7 +223,7 @@ public class FlattrConnection implements Connection {
             }
 
             response = client.execute(request);
-            
+
             if (limit != null) {
                 Header remainingHeader = response.getFirstHeader("X-RateLimit-Remaining");
                 if (remainingHeader != null) {
@@ -230,7 +231,7 @@ public class FlattrConnection implements Connection {
                 } else {
                     limit.setRemaining(null);
                 }
-                
+
                 Header limitHeader = response.getFirstHeader("X-RateLimit-Limit");
                 if (limitHeader != null) {
                     limit.setLimit(Long.parseLong(limitHeader.getValue()));
@@ -238,7 +239,7 @@ public class FlattrConnection implements Connection {
                     limit.setLimit(null);
                 }
             }
-            
+
             List<FlattrObject> result;
 
             if (assertStatusOk()) {
@@ -259,7 +260,7 @@ public class FlattrConnection implements Connection {
                 // Status was OK, but there is no content
                 result = Collections.emptyList();
             }
-            
+
             return result;
         } catch (URISyntaxException ex) {
             throw new IllegalStateException("bad baseUrl");
@@ -271,7 +272,7 @@ public class FlattrConnection implements Connection {
             throw new FlattrException("Unexpected result type", ex);
         }
     }
-    
+
     @Override
     public FlattrObject singleResult() throws FlattrException {
         Collection<FlattrObject> result = result();
@@ -281,7 +282,7 @@ public class FlattrConnection implements Connection {
             throw new MarshalException("Expected 1, but got " + result.size() + " result rows");
         }
     }
-    
+
     @Override
     public void close() throws FlattrException {
         if (client != null) {
@@ -325,10 +326,10 @@ public class FlattrConnection implements Connection {
             }
         }
     }
-    
+
     /**
      * Reads the returned HTTP response as string.
-     * 
+     *
      * @return Response read
      */
     protected String readResponse() throws IOException {
@@ -344,7 +345,7 @@ public class FlattrConnection implements Connection {
                 }
             }
         }
-        
+
         InputStream in = entity.getContent();
 
         Header encoding = entity.getContentEncoding();
@@ -356,26 +357,26 @@ public class FlattrConnection implements Connection {
 
         try {
             Reader reader = new InputStreamReader(in, charset);
-    
+
             // Sadly, the Android API does not offer a JSONTokener for a Reader.
             char[] buffer = new char[1024];
             StringBuilder sb = new StringBuilder();
-    
+
             int len;
             while ((len = reader.read(buffer)) >= 0) {
                 sb.append(buffer, 0, len);
             }
-            
+
             return sb.toString();
         } finally {
             in.close();
         }
     }
-    
+
     /**
      * Assert that the HTTP result is OK, otherwise generate and throw an appropriate
      * {@link FlattrException}.
-     * 
+     *
      * @return {@code true} if the status is OK and there is a content, {@code false} if
      *         the status is OK but there is no content. (If the status is not OK, an
      *         exception is thrown.)
@@ -393,7 +394,7 @@ public class FlattrConnection implements Connection {
             JSONObject errorData = (JSONObject) new JSONTokener(readResponse()).nextValue();
             String error = errorData.optString("error");
             String desc = errorData.optString("error_description");
-            
+
             if (error != null && desc != null) {
                 if ("not_found".equals(error)) {
                     throw new NotFoundException(error, desc);
@@ -403,8 +404,16 @@ public class FlattrConnection implements Connection {
                     throw new ValidationException(error, desc);
                 } else if ("rate_limit_exceeded".equals(error)) {
                     throw new RateLimitExceededException(error, desc);
+                } else if ("flattr_once".equals(error)) {
+                    throw new ForbiddenException(error, desc);
+                } else if ("flattr_owner".equals(error)) {
+                    throw new ForbiddenException(error, desc);
+                } else if ("no_means".equals(error)) {
+                    throw new NoMeansException(error, desc);
+                } else if ("invalid_request".equals(error)) {
+                    throw new FlattrServiceException(error, desc);
                 }
-                
+
                 throw new FlattrServiceException(error, desc);
             }
         } catch (IOException ex) {
@@ -413,24 +422,24 @@ public class FlattrConnection implements Connection {
             // An unexpected JSON type was returned, just throw a generic error
         } catch (JSONException ex) {
             // No valid error message was returned, just throw a generic error
-        } 
-        
+        }
+
         StatusLine line = response.getStatusLine();
         throw new FlattrException("HTTP " + line.getStatusCode() + ": " + line.getReasonPhrase());
     }
-    
+
     /**
      * Creates a {@link AbstractHttpClient} for sending the request.
-     * 
+     *
      * @return {@link AbstractHttpClient}
      */
     protected AbstractHttpClient createHttpClient() {
         return new FlattrHttpClient();
     }
-    
+
     /**
      * Disposes a {@link AbstractHttpClient}, releasing all resources.
-     * 
+     *
      * @param cl
      *            {@link AbstractHttpClient} to release
      */
