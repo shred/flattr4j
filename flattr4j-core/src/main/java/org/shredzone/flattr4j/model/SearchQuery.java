@@ -36,7 +36,7 @@ public class SearchQuery implements Serializable {
      * Enumeration of available sort orders.
      */
     public static enum Order {
-        RELEVANCE, TREND, FLATTRS, FLATTRS_MONTH, FLATTRS_WEEK;
+        RELEVANCE, TREND, FLATTRS, FLATTRS_MONTH, FLATTRS_WEEK, FLATTRS_DAY;
     }
 
     private String query;
