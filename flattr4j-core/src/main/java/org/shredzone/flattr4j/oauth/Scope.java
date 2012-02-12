@@ -44,30 +44,6 @@ public enum Scope {
      * The application has read access, plus access to private user information and hidden
      * things for the authenticated user.
      */
-    EXTENDEDREAD,
-
-    /**
-     * The consumer wants to click things for the authenticated user.
-     *
-     * @deprecated Use {@link #FLATTR} instead
-     */
-    @Deprecated
-    CLICK,
-
-    /**
-     * The consumer wants to publish things for the authenticated user.
-     *
-     * @deprecated Use {@link #THING} instead
-     */
-    @Deprecated
-    PUBLISH,
-
-    /**
-     * The consumer needs public user information and thing information.
-     *
-     * @deprecated This scope is granted by default and does not need to be set explicitly
-     */
-    @Deprecated
-    READ;
+    EXTENDEDREAD
 
 }

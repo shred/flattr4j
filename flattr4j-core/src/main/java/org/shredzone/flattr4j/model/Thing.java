@@ -318,16 +318,6 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
         return "https://flattr.com/thing/qr/" + getThingId();
     }
 
-    /**
-     * Returns the URL to the thing's page at Flattr.
-     *
-     * @deprecated Replaced by a method "getLink()"
-     */
-    @Deprecated
-    public String getThingUrl() {
-        return getLink();
-    }
-
     @Override
     public boolean equals(Object obj) {
         String pk = getThingId();

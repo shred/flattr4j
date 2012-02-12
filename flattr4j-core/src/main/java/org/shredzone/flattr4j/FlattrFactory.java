@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.shredzone.flattr4j.connector.impl.FlattrConnector;
 import org.shredzone.flattr4j.impl.FlattrServiceImpl;
 import org.shredzone.flattr4j.oauth.AccessToken;
-import org.shredzone.flattr4j.oauth.ConsumerKey;
 
 /**
  * A factory class that makes creation of the Flattr services as easy as possible.
@@ -33,14 +32,14 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  */
 public final class FlattrFactory {
     private static final AtomicReference<FlattrFactory> instance = new AtomicReference<FlattrFactory>();
-    
+
     private FlattrFactory() {
         // Private constructor
     }
 
     /**
      * Retrieves an instance of the {@link FlattrFactory}. The factory is a singleton.
-     * 
+     *
      * @return {@link FlattrFactory}
      */
     public static FlattrFactory getInstance() {
@@ -48,9 +47,9 @@ public final class FlattrFactory {
         if (result != null) {
             return result;
         }
-        
+
         result = new FlattrFactory();
-        
+
         if (instance.compareAndSet(null, result)) {
             return result;
         } else {
@@ -61,7 +60,7 @@ public final class FlattrFactory {
     /**
      * Creates a {@link FlattrService} for the given access token. The returned service is
      * associated to the user of the access token.
-     * 
+     *
      * @param accessToken
      *            Access token
      * @return Created {@link FlattrService}
@@ -74,7 +73,7 @@ public final class FlattrFactory {
     /**
      * Creates a {@link FlattrService} for the given access token. The returned service is
      * associated to the user of the access token.
-     * 
+     *
      * @param accessToken
      *            {@link AccessToken} instance
      * @return Created {@link FlattrService}
@@ -85,48 +84,10 @@ public final class FlattrFactory {
         connector.setAccessToken(accessToken);
         return new FlattrServiceImpl(connector);
     }
-    
-    /**
-     * Creates a {@link FlattrService} for the given consumer and access token.
-     * 
-     * @param consumerKey
-     *            Consumer key
-     * @param consumerSecret
-     *            Consumer secret
-     * @param accessToken
-     *            Access token
-     * @param accessTokenSecret
-     *            Access token secret
-     * @return Created {@link FlattrService}
-     * @deprecated Consumer key is not required any more. Use
-     *             {@link #createFlattrService(org.shredzone.flattr4j.oauth.AccessToken)}
-     *             instead.
-     */
-    @Deprecated
-    public FlattrService createFlattrService(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
-        return createFlattrService(new AccessToken(accessToken));
-    }
- 
-    /**
-     * Creates a {@link FlattrService} for the given consumer and access token.
-     * 
-     * @param consumerKey
-     *            {@link ConsumerKey} instance
-     * @param accessToken
-     *            {@link AccessToken} instance
-     * @return Created {@link FlattrService}
-     * @deprecated Consumer key is not required any more. Use
-     *             {@link #createFlattrService(org.shredzone.flattr4j.oauth.AccessToken)}
-     *             instead.
-     */
-    @Deprecated
-    public FlattrService createFlattrService(ConsumerKey consumerKey, AccessToken accessToken) {
-        return createFlattrService(accessToken);
-    }
 
     /**
      * Creates an {@link OpenService}.
-     * 
+     *
      * @return Created {@link OpenService}
      */
     public OpenService createOpenService() {

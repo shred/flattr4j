@@ -53,21 +53,6 @@ public interface FlattrService extends OpenService {
     ThingId create(Submission thing) throws FlattrException;
 
     /**
-     * Submits a new Thing to Flattr. The authenticated user will be the owner of the
-     * Thing.
-     * <p>
-     * Uses two rates.
-     *
-     * @param thing
-     *            {@link Submission} to be submitted
-     * @return {@link Thing} as result from the submission.
-     * @deprecated Use {@link #create(org.shredzone.flattr4j.model.Submission)} instead
-     */
-    @Deprecated
-    @RequiredScope(Scope.THING)
-    Thing submit(Submission thing) throws FlattrException;
-
-    /**
      * Updates a Thing.
      *
      * @param thing

@@ -69,12 +69,6 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    @Deprecated
-    public Thing submit(Submission thing) throws FlattrException {
-        return getThing(create(thing));
-    }
-
-    @Override
     public ThingId create(Submission thing) throws FlattrException {
         if (thing == null)
             throw new IllegalArgumentException("thing is required");
