@@ -28,6 +28,11 @@
             <url>LICENSE-APL.txt</url>
         </license>
     </licenses>
+    <scm>
+        <connection>scm:git:git@github.com:shred/flattr4j.git</connection>
+        <developerConnection>scm:git:git@github.com:shred/flattr4j.git</developerConnection>
+        <url>scm:git:git@github.com:shred/flattr4j.git</url>
+    </scm>
     <properties>
         <commonshttp.version>4.0.1</commonshttp.version>
         <json.version>20090211</json.version>
