@@ -390,38 +390,45 @@ public class FlattrConnection implements Connection {
             return false;
         }
 
+        String error = null, desc = null;
+
         try {
             JSONObject errorData = (JSONObject) new JSONTokener(readResponse()).nextValue();
-            String error = errorData.optString("error");
-            String desc = errorData.optString("error_description");
-
-            if (error != null && desc != null) {
-                if ("not_found".equals(error)) {
-                    throw new NotFoundException(error, desc);
-                } else if ("unauthorized".equals(error)) {
-                    throw new ForbiddenException(error, desc);
-                } else if ("validation".equals(error)) {
-                    throw new ValidationException(error, desc);
-                } else if ("rate_limit_exceeded".equals(error)) {
-                    throw new RateLimitExceededException(error, desc);
-                } else if ("flattr_once".equals(error)) {
-                    throw new ForbiddenException(error, desc);
-                } else if ("flattr_owner".equals(error)) {
-                    throw new ForbiddenException(error, desc);
-                } else if ("no_means".equals(error)) {
-                    throw new NoMeansException(error, desc);
-                } else if ("invalid_request".equals(error)) {
-                    throw new FlattrServiceException(error, desc);
-                }
-
-                throw new FlattrServiceException(error, desc);
-            }
+            error = errorData.optString("error");
+            desc = errorData.optString("error_description");
         } catch (IOException ex) {
             throw new FlattrException("Could not read response", ex);
         } catch (ClassCastException ex) {
             // An unexpected JSON type was returned, just throw a generic error
         } catch (JSONException ex) {
             // No valid error message was returned, just throw a generic error
+        }
+
+        if (error != null && desc != null) {
+            if (   "flattr_once".equals(error)
+                || "flattr_owner".equals(error)
+                || "forbidden".equals(error)
+                || "insufficient_scope".equals(error)
+                || "unauthorized".equals(error)) {
+                throw new ForbiddenException(error, desc);
+
+            } else if ("no_means".equals(error)) {
+                throw new NoMeansException(error, desc);
+
+            } else  if ("not_found".equals(error)) {
+                throw new NotFoundException(error, desc);
+
+            } else if ("rate_limit_exceeded".equals(error)) {
+                throw new RateLimitExceededException(error, desc);
+
+            } else if ("invalid_parameters".equals(error)
+                || "invalid_scope".equals(error)
+                || "validation".equals(error)) {
+                throw new ValidationException(error, desc);
+            }
+
+            // "not_acceptable", "server_error", "invalid_request", everything else...
+            throw new FlattrServiceException(error, desc);
         }
 
         StatusLine line = response.getStatusLine();
