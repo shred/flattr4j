@@ -337,8 +337,8 @@ public class FlattrServiceImpl implements FlattrService {
         }
 
         Connection conn = getConnector().create()
-                        .call("things")
-                        .query("id", sb.substring(1))
+                        .call("things/:ids")
+                        .parameter("ids", sb.substring(1))
                         .rateLimit(lastRateLimit);
 
         try {
