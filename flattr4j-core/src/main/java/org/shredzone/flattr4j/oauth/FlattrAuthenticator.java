@@ -190,19 +190,15 @@ public class FlattrAuthenticator {
             conn.form("redirect_uri", callbackUrl);
         }
 
-        try {
-            FlattrObject response = conn.singleResult();
-            String accessToken = response.get("access_token");
-            String tokenType = response.get("token_type");
+        FlattrObject response = conn.singleResult();
+        String accessToken = response.get("access_token");
+        String tokenType = response.get("token_type");
 
-            if (!"bearer".equals(tokenType)) {
-                throw new FlattrException("Unknown token type " + tokenType);
-            }
-
-            return new AccessToken(accessToken);
-        } finally {
-            conn.close();
+        if (!"bearer".equals(tokenType)) {
+            throw new FlattrException("Unknown token type " + tokenType);
         }
+
+        return new AccessToken(accessToken);
     }
 
     /**

@@ -150,9 +150,4 @@ public interface Connection {
      */
     Collection<FlattrObject> result() throws FlattrException;
 
-    /**
-     * Closes the connection and releases all resources.
-     */
-    void close() throws FlattrException;
-
 }

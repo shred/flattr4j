@@ -147,11 +147,6 @@ public class SearchTest {
             throw new UnsupportedOperationException();
         }
 
-        @Override
-        public void close() throws FlattrException {
-            throw new UnsupportedOperationException();
-        }
-
         public String getQuery(String name) {
             return query.get(name);
         }

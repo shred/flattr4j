@@ -80,9 +80,7 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
 public class FlattrConnection implements Connection {
     private static final String ENCODING = "utf-8";
 
-    private AbstractHttpClient client;
     private HttpRequestBase request;
-    private HttpResponse response;
     private String baseUrl;
     private String call;
     private RequestType type;
@@ -190,9 +188,11 @@ public class FlattrConnection implements Connection {
 
     @Override
     public Collection<FlattrObject> result() throws FlattrException {
-        createRequest();
+        AbstractHttpClient client = null;
 
         try {
+            createRequest();
+
             String queryString = "";
             if (queryParam != null) {
                 queryString = '?' + URLEncodedUtils.format(queryParam, ENCODING);
@@ -222,7 +222,7 @@ public class FlattrConnection implements Connection {
                 );
             }
 
-            response = client.execute(request);
+            HttpResponse response = client.execute(request);
 
             if (limit != null) {
                 Header remainingHeader = response.getFirstHeader("X-RateLimit-Remaining");
@@ -242,9 +242,9 @@ public class FlattrConnection implements Connection {
 
             List<FlattrObject> result;
 
-            if (assertStatusOk()) {
+            if (assertStatusOk(response)) {
                 // Status is OK and there is content
-                Object resultData = new JSONTokener(readResponse()).nextValue();
+                Object resultData = new JSONTokener(readResponse(response)).nextValue();
                 if (resultData instanceof JSONArray) {
                     JSONArray array = (JSONArray) resultData;
                     result = new ArrayList<FlattrObject>(array.length());
@@ -270,6 +270,11 @@ public class FlattrConnection implements Connection {
             throw new MarshalException(ex);
         } catch (ClassCastException ex) {
             throw new FlattrException("Unexpected result type", ex);
+        } finally {
+            if (client != null) {
+                disposeHttpClient(client);
+            }
+            request = null;
         }
     }
 
@@ -283,21 +288,11 @@ public class FlattrConnection implements Connection {
         }
     }
 
-    @Override
-    public void close() throws FlattrException {
-        if (client != null) {
-            disposeHttpClient(client);
-        }
-        client = null;
-        request = null;
-        response = null;
-    }
-
     /**
      * Creates a new http request for the given {@link RequestType}. Does nothing if a
      * request has already been created.
      */
-    protected void createRequest() {
+    private void createRequest() {
         if (request == null) {
             switch (type) {
                 case GET:
@@ -330,9 +325,11 @@ public class FlattrConnection implements Connection {
     /**
      * Reads the returned HTTP response as string.
      *
+     * @param response
+     *            {@link HttpResponse} to read from
      * @return Response read
      */
-    protected String readResponse() throws IOException {
+    private String readResponse(HttpResponse response) throws IOException {
         HttpEntity entity = response.getEntity();
 
         Charset charset = Charset.forName(ENCODING);
@@ -377,11 +374,13 @@ public class FlattrConnection implements Connection {
      * Assert that the HTTP result is OK, otherwise generate and throw an appropriate
      * {@link FlattrException}.
      *
+     * @param response
+     *            {@link HttpResponse} to assert
      * @return {@code true} if the status is OK and there is a content, {@code false} if
      *         the status is OK but there is no content. (If the status is not OK, an
      *         exception is thrown.)
      */
-    private boolean assertStatusOk() throws FlattrException {
+    private boolean assertStatusOk(HttpResponse response) throws FlattrException {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
             return true;
@@ -393,7 +392,7 @@ public class FlattrConnection implements Connection {
         String error = null, desc = null;
 
         try {
-            JSONObject errorData = (JSONObject) new JSONTokener(readResponse()).nextValue();
+            JSONObject errorData = (JSONObject) new JSONTokener(readResponse(response)).nextValue();
             error = errorData.optString("error");
             desc = errorData.optString("error_description");
         } catch (IOException ex) {
