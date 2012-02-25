@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- 
+ *
+ * flattr4j - A Java library for Flattr
+ *
+ * Copyright (C) 2012 Richard "Shred" Körber
+ *   http://flattr4j.shredzone.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License / GNU Lesser
+ * General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.shredzone</groupId>
@@ -8,12 +30,12 @@
     </parent>
     <groupId>org.shredzone.flattr4j</groupId>
     <artifactId>flattr4j</artifactId>
-    <name>flattr4j</name>
     <version>2.1-SNAPSHOT</version>
-    <description>Java support for Flattr</description>
-    <inceptionYear>2010</inceptionYear>
     <packaging>pom</packaging>
+    <name>flattr4j</name>
+    <description>Java support for Flattr</description>
     <url>http://flattr4j.shredzone.org</url>
+    <inceptionYear>2010</inceptionYear>
     <licenses>
         <license>
             <name>GNU General Public License Version 3</name>
@@ -29,9 +51,9 @@
         </license>
     </licenses>
     <scm>
+        <url>scm:git:git@github.com:shred/flattr4j.git</url>
         <connection>scm:git:git@github.com:shred/flattr4j.git</connection>
         <developerConnection>scm:git:git@github.com:shred/flattr4j.git</developerConnection>
-        <url>scm:git:git@github.com:shred/flattr4j.git</url>
     </scm>
     <properties>
         <commonshttp.version>4.0.1</commonshttp.version>
@@ -42,4 +64,3 @@
         <module>flattr4j-web</module>
     </modules>
 </project>
-
