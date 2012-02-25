@@ -86,6 +86,7 @@ public class FlattrHttpClient extends DefaultHttpClient  {
      *
      * @return {@link SchemeRegistry}
      */
+    @SuppressWarnings("deprecation")
     public static SchemeRegistry getSchemeRegistry() {
         SchemeRegistry result = registry.get();
         if (result != null) {
@@ -93,6 +94,7 @@ public class FlattrHttpClient extends DefaultHttpClient  {
         }
 
         result = new SchemeRegistry();
+        // The deprecated Scheme constructor must be used for Android compliancy!
         result.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         result.register(new Scheme("https", getSocketFactory(), 443));
 
@@ -104,12 +106,14 @@ public class FlattrHttpClient extends DefaultHttpClient  {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected ClientConnectionManager createClientConnectionManager() {
         HttpParams params = getParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
         HttpConnectionParams.setSoTimeout(params, TIMEOUT_MS);
         HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MS);
 
+        // The deprecated constructor must be used for Android compliancy!
         return new ThreadSafeClientConnManager(params, getSchemeRegistry());
     }
 
