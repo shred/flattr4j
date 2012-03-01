@@ -18,8 +18,7 @@
  */
 package org.shredzone.flattr4j.connector.impl;
 
-import java.io.InputStream;
-import java.security.KeyStore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.http.HttpVersion;
@@ -27,59 +26,21 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 /**
- * A Flattr HTTP Client that also supports https connections on Android.
+ * A Flattr HTTP Client for Apache HTTP Client 4.1 or higher.
  *
  * @author Richard "Shred" Körber
+ * @since 2.2
  */
-@SuppressWarnings("deprecation") // Deprecated code is required for Android API
-public class FlattrHttpClient extends DefaultHttpClient {
+public class NewFlattrHttpClient extends DefaultHttpClient {
     private static final int TIMEOUT_MS = 10000;
 
-    private static final AtomicReference<SSLSocketFactory> sslSocketFactory = new AtomicReference<SSLSocketFactory>();
     private static final AtomicReference<SchemeRegistry> registry = new AtomicReference<SchemeRegistry>();
-
-    /**
-     * Gets a {@link SSLSocketFactory} suited for connecting to Flattr.
-     *
-     * @return {@link SSLSocketFactory}
-     */
-    public static SSLSocketFactory getSocketFactory() {
-        SSLSocketFactory result = sslSocketFactory.get();
-        if (result != null) {
-            return result;
-        }
-
-        try {
-            InputStream in = null;
-            try {
-                KeyStore trustStore = KeyStore.getInstance("BKS");
-                in = FlattrHttpClient.class.getResourceAsStream("flattr.bks");
-                trustStore.load(in, "flattr4j".toCharArray());
-                result = new SSLSocketFactory(trustStore);
-            } finally {
-                if (in != null) {
-                    in.close();
-                }
-            }
-        } catch (Exception ex) {
-            // Fallback to the original SSL socket factory
-            result = SSLSocketFactory.getSocketFactory();
-        }
-
-        if (sslSocketFactory.compareAndSet(null, result)) {
-            return result;
-        } else {
-            return sslSocketFactory.get();
-        }
-    }
 
     /**
      * Gets a preconfigured {@link SchemeRegistry} suited for connecting to Flattr.
@@ -93,8 +54,8 @@ public class FlattrHttpClient extends DefaultHttpClient {
         }
 
         result = new SchemeRegistry();
-        result.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        result.register(new Scheme("https", getSocketFactory(), 443));
+        result.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
+        result.register(new Scheme("https", 443, FlattrHttpClient.getSocketFactory()));
 
         if (registry.compareAndSet(null, result)) {
             return result;
@@ -105,12 +66,14 @@ public class FlattrHttpClient extends DefaultHttpClient {
 
     @Override
     protected ClientConnectionManager createClientConnectionManager() {
-        HttpParams params = getParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
-        HttpConnectionParams.setSoTimeout(params, TIMEOUT_MS);
-        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MS);
+        return new ThreadSafeClientConnManager(getSchemeRegistry(), TIMEOUT_MS, TimeUnit.MILLISECONDS);
+    }
 
-        return new ThreadSafeClientConnManager(params, getSchemeRegistry());
+    @Override
+    protected HttpParams createHttpParams() {
+        HttpParams params = super.createHttpParams();
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_0);
+        return params;
     }
 
 }

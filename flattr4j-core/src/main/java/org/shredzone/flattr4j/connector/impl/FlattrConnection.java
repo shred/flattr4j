@@ -52,6 +52,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.VersionInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,6 +79,16 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  */
 public class FlattrConnection implements Connection {
     private static final String ENCODING = "utf-8";
+
+    private static final boolean NEW_API;
+    static {
+        VersionInfo vi = VersionInfo.loadVersionInfo("org.apache.http", null);
+        if (vi != null && vi.getRelease() != null) {
+            NEW_API = !vi.getRelease().startsWith("4.0");
+        } else {
+            NEW_API = false;
+        }
+    }
 
     private HttpRequestBase request;
     private String baseUrl;
@@ -439,7 +450,11 @@ public class FlattrConnection implements Connection {
      * @return {@link AbstractHttpClient}
      */
     protected AbstractHttpClient createHttpClient() {
-        return new FlattrHttpClient();
+        if (NEW_API) {
+            return new NewFlattrHttpClient();
+        } else {
+            return new FlattrHttpClient();
+        }
     }
 
     /**
