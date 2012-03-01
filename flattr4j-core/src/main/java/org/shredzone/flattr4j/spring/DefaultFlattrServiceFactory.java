@@ -29,7 +29,6 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
  * Default implementation of {@link FlattrServiceFactory}.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
 

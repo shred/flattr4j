@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.web;
  * Type of Flattr button to be used.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public enum ButtonType {
 

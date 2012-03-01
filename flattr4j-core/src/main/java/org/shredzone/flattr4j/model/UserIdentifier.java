@@ -27,7 +27,6 @@ package org.shredzone.flattr4j.model;
  * register your site with Flattr before.
  *
  * @author Richard "Shred" Körber
- * @version $Revision:$
  * @since 2.0
  */
 public interface UserIdentifier {

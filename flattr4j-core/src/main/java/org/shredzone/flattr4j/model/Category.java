@@ -25,7 +25,6 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * equal if they contain the same id.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class Category extends Resource implements CategoryId {
     private static final long serialVersionUID = 6749493295567461888L;

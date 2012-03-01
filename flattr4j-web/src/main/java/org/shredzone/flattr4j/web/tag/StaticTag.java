@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.web.builder.StaticButtonBuilder;
  * A static button to a Flattr thing.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class StaticTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -7356980489242218537L;

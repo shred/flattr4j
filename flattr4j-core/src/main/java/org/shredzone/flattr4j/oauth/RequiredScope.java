@@ -29,7 +29,6 @@ import java.lang.annotation.Target;
  * scopes that are required.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 577 $
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

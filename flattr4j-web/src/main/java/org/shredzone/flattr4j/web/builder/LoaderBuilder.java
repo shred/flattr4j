@@ -36,7 +36,6 @@ import org.shredzone.flattr4j.web.ButtonType;
  * Example: <code>String loader = new LoaderBuilder().uid("123456").toString();</code>
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class LoaderBuilder {
     private String baseUrl = "http://api.flattr.com";

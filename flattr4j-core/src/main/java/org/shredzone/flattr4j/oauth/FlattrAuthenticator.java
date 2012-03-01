@@ -33,7 +33,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Helps through the OAuth2 authentication process at Flattr.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  * @see <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-21">IETF OAuth V2</a>
  */
 public class FlattrAuthenticator {

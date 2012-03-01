@@ -25,7 +25,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * An optional HTML attribute for the parent tag.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class AttributeTag extends BodyTagSupport {
     private static final long serialVersionUID = -3139247850992098426L;

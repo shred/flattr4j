@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.model;
  * All classes implementing this interface, are able to provide a User's ID.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public interface UserId {
 

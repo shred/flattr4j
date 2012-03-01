@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.exception;
  * This exception is used when the Flattr web service returned an error.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class FlattrServiceException extends FlattrException {
     private static final long serialVersionUID = -7058726202855943210L;

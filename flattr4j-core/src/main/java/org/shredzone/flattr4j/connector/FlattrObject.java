@@ -41,7 +41,6 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * {@link JSONException} and also for serialization of JSON structures.
  *
  * @author Richard "Shred" Körber
- * @version $Revision:$
  */
 public class FlattrObject implements Serializable, Externalizable {
     private static final long serialVersionUID = -6640392574244365803L;

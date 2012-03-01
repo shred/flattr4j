@@ -75,7 +75,6 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  * Default implementation of {@link Connection}.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 448 $
  */
 public class FlattrConnection implements Connection {
     private static final String ENCODING = "utf-8";

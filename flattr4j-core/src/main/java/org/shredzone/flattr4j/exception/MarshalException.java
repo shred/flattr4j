@@ -23,7 +23,6 @@ package org.shredzone.flattr4j.exception;
  * unmarshalled.
  *
  * @author Richard "Shred" Körber
- * @version $Revision:$
  */
 public class MarshalException extends RuntimeException {
     private static final long serialVersionUID = 961055160464831870L;

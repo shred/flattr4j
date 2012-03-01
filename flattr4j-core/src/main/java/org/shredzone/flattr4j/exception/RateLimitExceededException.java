@@ -26,7 +26,6 @@ package org.shredzone.flattr4j.exception;
  * of flattr4j.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: -1 $
  */
 public class RateLimitExceededException extends FlattrServiceException {
     private static final long serialVersionUID = 2052032965034468567L;

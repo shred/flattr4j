@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.web.BadgeType;
  * Unit test of the {@link StaticButtonBuilder} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class StaticButtonBuilderTest {
 

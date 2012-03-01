@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.exception;
  * This exception is thrown when the target of the service call was not found.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class NotFoundException extends FlattrServiceException {
     private static final long serialVersionUID = -1178705084339857902L;

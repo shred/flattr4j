@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.oauth;
  * Scope of rights the consumer requests from the user.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public enum Scope {
 

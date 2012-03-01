@@ -38,7 +38,6 @@ import org.apache.http.params.HttpProtocolParams;
  * A Flattr HTTP Client that also supports https connections on Android.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class FlattrHttpClient extends DefaultHttpClient  {
     private static final int TIMEOUT_MS = 10000;

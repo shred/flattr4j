@@ -27,7 +27,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Unit test of the {@link Language} and {@link LanguageId} classes.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 596 $
  */
 public class LanguageTest {
 

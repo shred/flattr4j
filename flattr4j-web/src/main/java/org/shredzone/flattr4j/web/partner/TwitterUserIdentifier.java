@@ -26,7 +26,6 @@ import org.shredzone.flattr4j.model.UserIdentifier;
  * A {@link UserIdentifier} for Twitter accounts.
  *
  * @author Richard "Shred" Körber
- * @version $Revision:$
  * @since 2.0
  */
 public class TwitterUserIdentifier implements UserIdentifier, Serializable {

@@ -38,7 +38,6 @@ import org.shredzone.flattr4j.web.BadgeType;
  * <code>String button = new StaticButtonBuilder().url(thingUrl).toString();</code>
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class StaticButtonBuilder {
     private String url;

@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.oauth.AccessToken;
  * A factory class that makes creation of the Flattr services as easy as possible.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public final class FlattrFactory {
     private static final AtomicReference<FlattrFactory> instance = new AtomicReference<FlattrFactory>();

@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * This class is not threadsafe.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 505 $
  * @since 2.0
  */
 public class Flattr extends Resource implements ThingId, UserId {

@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.model.UserIdentifier;
  * stored as md5 hash.
  *
  * @author Richard "Shred" Körber
- * @version $Revision:$
  * @since 2.0
  */
 public class EmailUserIdentifier implements UserIdentifier, Serializable {

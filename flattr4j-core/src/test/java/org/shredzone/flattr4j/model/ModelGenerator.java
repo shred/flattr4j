@@ -31,7 +31,6 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * Generates and validates models.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 596 $
  */
 public final class ModelGenerator {
 

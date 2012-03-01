@@ -29,7 +29,6 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * This class is not threadsafe.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  * @since 2.0
  */
 public class SearchResult extends Resource {

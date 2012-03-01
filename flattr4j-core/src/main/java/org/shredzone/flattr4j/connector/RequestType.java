@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.connector;
  * Enumeration of request types.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 448 $
  */
 public enum RequestType {
     GET, POST, PATCH, DELETE;

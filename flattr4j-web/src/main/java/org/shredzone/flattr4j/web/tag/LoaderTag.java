@@ -36,7 +36,6 @@ import org.shredzone.flattr4j.web.builder.LoaderBuilder;
  * A tag that creates the JavaScript loader tag.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class LoaderTag extends BodyTagSupport {
     private static final long serialVersionUID = -5892160942069969373L;

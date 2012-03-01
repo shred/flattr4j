@@ -34,7 +34,6 @@ import org.shredzone.flattr4j.exception.MarshalException;
  *
  * @see <a href="http://activitystrea.ms/specs/json/1.0/">Activity Streams Specs</a>
  * @author Richard "Shred" Körber
- * @version $Revision$
  * @since 2.0
  */
 public class Activity extends Resource {

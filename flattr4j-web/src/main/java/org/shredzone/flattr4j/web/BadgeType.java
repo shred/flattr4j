@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.web;
  * Enumeration of static Flattr badges that can be used.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public enum BadgeType {
 

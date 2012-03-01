@@ -23,7 +23,6 @@ package org.shredzone.flattr4j.exception;
  * Flattr web service. More detailed exceptions are derived from this.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class FlattrException extends Exception {
     private static final long serialVersionUID = 3095863989605383892L;

@@ -37,7 +37,6 @@ import org.shredzone.flattr4j.oauth.Scope;
  * All calls will decrement the remaining rate by one, unless noted otherwise.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public interface FlattrService extends OpenService {
 

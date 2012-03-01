@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.oauth.Scope;
  * The message contains the reason for the exception.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class ForbiddenException extends FlattrServiceException {
     private static final long serialVersionUID = 1279509373771421366L;

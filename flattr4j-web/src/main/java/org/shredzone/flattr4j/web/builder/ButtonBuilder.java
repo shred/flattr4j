@@ -44,7 +44,6 @@ import org.shredzone.flattr4j.web.ButtonType;
  * Example: <code>String button = new ButtonBuilder().url(myUrl).toString();</code>
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class ButtonBuilder {
     private static final int MIN_TITLE_LENGTH = 5;

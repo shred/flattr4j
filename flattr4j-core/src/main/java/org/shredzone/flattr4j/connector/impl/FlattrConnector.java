@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.oauth.AccessToken;
  * A {@link Connector} that connects to the Flattr web service.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 463 $
  */
 public class FlattrConnector implements Connector {
     private String baseUrl = "https://api.flattr.com/rest/v2/";

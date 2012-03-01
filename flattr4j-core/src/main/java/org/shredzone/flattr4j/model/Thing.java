@@ -37,7 +37,6 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * This class is not threadsafe.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class Thing extends Resource implements ThingId, UserId, CategoryId, LanguageId {
     private static final long serialVersionUID = 2822280427303390055L;

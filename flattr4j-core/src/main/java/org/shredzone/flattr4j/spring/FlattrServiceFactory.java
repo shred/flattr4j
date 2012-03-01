@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
  * ready to use.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public interface FlattrServiceFactory {
 

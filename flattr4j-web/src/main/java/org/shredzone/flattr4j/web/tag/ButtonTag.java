@@ -38,7 +38,6 @@ import org.shredzone.flattr4j.web.builder.ButtonBuilder;
  * A button to a Flattr thing.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class ButtonTag extends BodyTagSupport implements Attributed {
     private static final long serialVersionUID = -2011193251581466746L;

@@ -27,7 +27,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Unit test of the {@link Category} and {@link CategoryId} classes.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 596 $
  */
 public class CategoryTest {
 

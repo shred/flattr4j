@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * Unit test of the {@link Thing} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 596 $
  */
 public class ThingTest {
 

@@ -29,7 +29,6 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  * Builds and executes a single call against the Flattr API.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 448 $
  * @since 2.0
  */
 public interface Connection {

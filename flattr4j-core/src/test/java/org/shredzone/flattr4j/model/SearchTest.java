@@ -38,7 +38,6 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  * Unit test of the {@link SearchQuery} and {@link SearchResult} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class SearchTest {
 

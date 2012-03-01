@@ -24,7 +24,6 @@ import java.io.Serializable;
  * An access token that gives access to the Flattr account.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class AccessToken implements Serializable {
     private static final long serialVersionUID = 7715751842047101911L;

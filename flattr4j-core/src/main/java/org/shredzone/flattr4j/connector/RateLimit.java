@@ -25,7 +25,6 @@ package org.shredzone.flattr4j.connector;
  * of flattr4j.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: -1 $
  */
 public class RateLimit {
     private Long limit;

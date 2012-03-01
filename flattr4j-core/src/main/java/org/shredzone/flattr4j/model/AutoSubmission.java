@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.FlattrService;
  * be set, which will be the owner of the Thing.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  * @since 2.0
  */
 public class AutoSubmission extends Submission implements UserId, UserIdentifier {

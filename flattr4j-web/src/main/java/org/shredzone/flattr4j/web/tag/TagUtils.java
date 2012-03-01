@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.Tag;
  * Utility methods for tag libraries.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public final class TagUtils {
 

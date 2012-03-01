@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.web.ButtonType;
  * Unit test of the {@link ButtonBuilder} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class ButtonBuilderTest {
 

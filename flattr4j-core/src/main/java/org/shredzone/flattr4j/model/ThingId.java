@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.model;
  * All classes implementing this interface, are able to provide a Thing's ID.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public interface ThingId {
 

@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Unit test of the {@link FlattrAuthenticator} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class FlattrAuthenticatorTest {
 

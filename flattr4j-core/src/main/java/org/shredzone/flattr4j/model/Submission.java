@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * A {@link Submission} is used for creating new Things.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class Submission implements Serializable {
     private static final long serialVersionUID = -6684005944290342599L;

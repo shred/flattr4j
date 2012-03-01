@@ -26,7 +26,6 @@ import org.shredzone.flattr4j.connector.Connection;
  * Collects search parameters. Every parameter is optional.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  * @since 2.0
  */
 public class SearchQuery implements Serializable {

@@ -48,7 +48,6 @@ import org.shredzone.flattr4j.model.UserId;
  * Default implementation of {@link FlattrService}.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class FlattrServiceImpl implements FlattrService {
     private final Connector connector;

@@ -22,7 +22,6 @@ package org.shredzone.flattr4j.exception;
  * This exception is thrown when the user's means are insufficient for the operation.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: -1 $
  */
 public class NoMeansException extends FlattrServiceException {
     private static final long serialVersionUID = 1515647556838767847L;

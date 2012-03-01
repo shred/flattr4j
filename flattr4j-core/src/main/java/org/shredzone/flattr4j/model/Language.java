@@ -25,7 +25,6 @@ import org.shredzone.flattr4j.connector.FlattrObject;
  * equal if they contain the same id.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class Language extends Resource implements LanguageId {
     private static final long serialVersionUID = -2166187856968632922L;

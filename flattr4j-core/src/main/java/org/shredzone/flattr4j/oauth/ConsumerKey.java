@@ -24,7 +24,6 @@ import java.io.Serializable;
  * The key and secret of the OAuth2 client. This is your application's key.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class ConsumerKey implements Serializable {
     private static final long serialVersionUID = -2439158677542078353L;

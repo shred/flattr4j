@@ -29,7 +29,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Unit test of the {@link User} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 596 $
  */
 public class UserTest {
 

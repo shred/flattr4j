@@ -24,7 +24,6 @@ import org.shredzone.flattr4j.exception.FlattrException;
  * Interface for connectors that create connections to the Flattr API.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public interface Connector {
 

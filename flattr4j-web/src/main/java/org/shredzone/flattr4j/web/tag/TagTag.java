@@ -27,7 +27,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * An optional tag for the parent button tag.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class TagTag extends BodyTagSupport {
     private static final long serialVersionUID = -2512754082305270317L;

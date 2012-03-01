@@ -28,7 +28,6 @@ import org.shredzone.flattr4j.oauth.Scope;
  * A {@link User}. Two {@link User} are considered equal if they contain the same id.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class User extends Resource implements UserId {
     private static final long serialVersionUID = 594781523400164895L;

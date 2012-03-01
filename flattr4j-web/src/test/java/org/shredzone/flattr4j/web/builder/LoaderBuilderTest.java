@@ -29,7 +29,6 @@ import org.shredzone.flattr4j.web.ButtonType;
  * Unit test of the {@link LoaderBuilder} class.
  *
  * @author Richard "Shred" Körber
- * @version $Revision$
  */
 public class LoaderBuilderTest {
 
