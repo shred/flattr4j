@@ -46,6 +46,23 @@ import org.shredzone.flattr4j.model.UserId;
 public interface OpenService {
 
     /**
+     * Sets the full mode. Defaults to {@code false}.
+     *
+     * @param full
+     *            {@code true}: use full requests, {@code false}: use standard requests
+     * @since 2.2
+     */
+    void setFullMode(boolean full);
+
+    /**
+     * Is the full mode currently enabled?
+     *
+     * @return {@code true}: full requests, {@code false}: standard requests
+     * @since 2.2
+     */
+    boolean isFullMode();
+
+    /**
      * Gets a {@link Thing} for the given {@link ThingId}.
      *
      * @param thingId

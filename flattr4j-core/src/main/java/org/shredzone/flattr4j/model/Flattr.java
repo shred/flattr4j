@@ -33,12 +33,18 @@ import org.shredzone.flattr4j.connector.FlattrObject;
 public class Flattr extends Resource implements ThingId, UserId {
     private static final long serialVersionUID = 8013428651001009374L;
 
-    private transient Thing thing;
+    private transient Thing thing = null;
+    private transient User user = null;
 
     public Flattr(FlattrObject data) {
         super(data);
     }
 
+    /**
+     * The thing that was flattred.
+     * <p>
+     * All properties are only available when the service was set to full mode!
+     */
     public Thing getThing() {
         if (thing == null) {
             thing = new Thing(data.getFlattrObject("thing"));
@@ -61,6 +67,20 @@ public class Flattr extends Resource implements ThingId, UserId {
     @Override
     public String getUserId() {
         return data.getSubString("owner", "username");
+    }
+
+    /**
+     * User who flattred the thing.
+     * <p>
+     * All properties are only available when the service was set to full mode!
+     *
+     * @since 2.2
+     */
+    public User getUser() {
+        if (user == null) {
+            user = new User(data.getFlattrObject("owner"));
+        }
+        return user;
     }
 
 }

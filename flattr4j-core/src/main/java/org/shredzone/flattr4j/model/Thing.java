@@ -42,6 +42,7 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
     private static final long serialVersionUID = 2822280427303390055L;
 
     private transient List<String> tags = null;
+    private transient User user = null;
     private Set<String> updatedKeys = new HashSet<String>();
 
     /**
@@ -129,11 +130,25 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
     }
 
     /**
-     * User this Thing belongs to
+     * User this Thing belongs to.
      */
     @Override
     public String getUserId() {
         return data.getSubString("owner", "username");
+    }
+
+    /**
+     * User this Thing belongs to.
+     * <p>
+     * All properties are only available when the service was set to full mode!
+     *
+     * @since 2.2
+     */
+    public User getUser() {
+        if (user == null) {
+            user = new User(data.getFlattrObject("owner"));
+        }
+        return user;
     }
 
     /**

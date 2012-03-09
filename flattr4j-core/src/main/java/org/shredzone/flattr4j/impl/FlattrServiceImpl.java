@@ -53,6 +53,7 @@ public class FlattrServiceImpl implements FlattrService {
     private final Connector connector;
 
     private RateLimit lastRateLimit = new RateLimit();
+    private boolean fullMode = false;
 
     public FlattrServiceImpl(Connector connector) {
         this.connector = connector;
@@ -65,6 +66,16 @@ public class FlattrServiceImpl implements FlattrService {
      */
     protected Connector getConnector() {
         return connector;
+    }
+
+    @Override
+    public void setFullMode(boolean full) {
+        this.fullMode = full;
+    }
+
+    @Override
+    public boolean isFullMode() {
+        return fullMode;
     }
 
     @Override
@@ -168,6 +179,8 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("user/things")
                 .rateLimit(lastRateLimit);
 
+        setupFullMode(conn);
+
         if (count != null) {
             conn.query("count", count.toString());
         }
@@ -194,6 +207,8 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("user/flattrs")
                 .rateLimit(lastRateLimit);
 
+        setupFullMode(conn);
+
         if (count != null) {
             conn.query("count", count.toString());
         }
@@ -214,11 +229,14 @@ public class FlattrServiceImpl implements FlattrService {
         if (thingId == null || thingId.getThingId().length() == 0)
             throw new IllegalArgumentException("thingId is required");
 
-        return new Thing(getConnector().create()
+        Connection conn = getConnector().create()
                 .call("things/:id")
                 .parameter("id", thingId.getThingId())
-                .rateLimit(lastRateLimit)
-                .singleResult());
+                .rateLimit(lastRateLimit);
+
+        setupFullMode(conn);
+
+        return new Thing(conn.singleResult());
     }
 
     @Override
@@ -259,6 +277,8 @@ public class FlattrServiceImpl implements FlattrService {
                 .parameter("username", user.getUserId())
                 .rateLimit(lastRateLimit);
 
+        setupFullMode(conn);
+
         if (count != null) {
             conn.query("count", count.toString());
         }
@@ -290,6 +310,8 @@ public class FlattrServiceImpl implements FlattrService {
                         .parameter("ids", sb.substring(1))
                         .rateLimit(lastRateLimit);
 
+        setupFullMode(conn);
+
         List<Thing> list = new ArrayList<Thing>();
         for (FlattrObject data : conn.result()) {
             list.add(new Thing(data));
@@ -306,6 +328,8 @@ public class FlattrServiceImpl implements FlattrService {
         if (query != null) {
             query.setupConnection(conn);
         }
+
+        setupFullMode(conn);
 
         if (count != null) {
             conn.query("count", count.toString());
@@ -345,6 +369,8 @@ public class FlattrServiceImpl implements FlattrService {
                 .parameter("username", userId.getUserId())
                 .rateLimit(lastRateLimit);
 
+        setupFullMode(conn);
+
         if (count != null) {
             conn.query("count", count.toString());
         }
@@ -374,6 +400,8 @@ public class FlattrServiceImpl implements FlattrService {
                 .call("things/:id/flattrs")
                 .parameter("id", thingId.getThingId())
                 .rateLimit(lastRateLimit);
+
+        setupFullMode(conn);
 
         if (count != null) {
             conn.query("count", count.toString());
@@ -459,6 +487,18 @@ public class FlattrServiceImpl implements FlattrService {
     @Override
     public RateLimit getLastRateLimit() {
         return lastRateLimit;
+    }
+
+    /**
+     * Sets the {@link Connection} according to the current full mode.
+     *
+     * @param conn
+     *            {@link Connection} to set
+     */
+    protected void setupFullMode(Connection conn) {
+        if (fullMode) {
+            conn.query("full", "1");
+        }
     }
 
 }
