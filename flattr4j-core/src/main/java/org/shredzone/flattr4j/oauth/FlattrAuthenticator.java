@@ -219,6 +219,7 @@ public class FlattrAuthenticator {
 
         if (scope.contains(Scope.FLATTR)) sb.append(" flattr");
         if (scope.contains(Scope.THING)) sb.append(" thing");
+        if (scope.contains(Scope.EMAIL)) sb.append(" email");
         if (scope.contains(Scope.EXTENDEDREAD)) sb.append(" extendedread");
 
         return sb.toString().trim();

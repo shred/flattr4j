@@ -40,6 +40,13 @@ public enum Scope {
     THING,
 
     /**
+     * The consumer wants to read the user's email address.
+     *
+     * @since 2.2
+     */
+    EMAIL,
+
+    /**
      * The application has read access, plus access to private user information and hidden
      * things for the authenticated user.
      */
