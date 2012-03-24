@@ -57,7 +57,7 @@ public class FlattrAuthenticatorTest {
         Assert.assertEquals("", auth.buildScopeString());
 
         auth.setScope(EnumSet.allOf(Scope.class));
-        Assert.assertEquals("flattr thing extendedread", auth.buildScopeString());
+        Assert.assertEquals("flattr thing email extendedread", auth.buildScopeString());
 
         auth.setScope(EnumSet.noneOf(Scope.class));
         Assert.assertEquals("", auth.buildScopeString());
