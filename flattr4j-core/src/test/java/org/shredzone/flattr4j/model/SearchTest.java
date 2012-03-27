@@ -21,6 +21,7 @@ package org.shredzone.flattr4j.model;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -46,6 +47,7 @@ public class SearchTest {
         SearchQuery sq = new SearchQuery();
         sq.setQuery("foo");
         sq.setCategory(Category.withId("text"));
+        sq.addCategory(Category.withId("image"));
         sq.setLanguage(Language.withId("en_UK"));
         sq.setUser(User.withId("shred"));
         sq.setTags("foobar & blafoo");
@@ -60,10 +62,14 @@ public class SearchTest {
         Assert.assertEquals("http://flattr4j.shredzone.org", sq.getUrl());
         Assert.assertEquals(Order.TREND, sq.getSort());
 
+        Iterator<CategoryId> it = sq.getCategories().iterator();
+        Assert.assertEquals("text", it.next().getCategoryId());
+        Assert.assertEquals("image", it.next().getCategoryId());
+
         TestConnection conn = new TestConnection();
         sq.setupConnection(conn);
         Assert.assertEquals("foo", conn.getQuery("query"));
-        Assert.assertEquals("text", conn.getQuery("category"));
+        Assert.assertEquals("text,image", conn.getQuery("category"));
         Assert.assertEquals("en_UK", conn.getQuery("language"));
         Assert.assertEquals("shred", conn.getQuery("user"));
         Assert.assertEquals("foobar & blafoo", conn.getQuery("tags"));

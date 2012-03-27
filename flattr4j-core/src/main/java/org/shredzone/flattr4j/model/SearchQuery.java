@@ -19,6 +19,10 @@
 package org.shredzone.flattr4j.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.shredzone.flattr4j.connector.Connection;
 
@@ -42,7 +46,7 @@ public class SearchQuery implements Serializable {
     private String tags;
     private String url;
     private LanguageId language;
-    private CategoryId category;
+    private List<CategoryId> categoryList = new ArrayList<CategoryId>();
     private UserId user;
     private Order sort;
 
@@ -73,12 +77,6 @@ public class SearchQuery implements Serializable {
     public void setLanguage(LanguageId language) { this.language = language; }
 
     /**
-     * Category to search for.
-     */
-    public CategoryId getCategory()             { return category; }
-    public void setCategory(CategoryId category) { this.category = category; }
-
-    /**
      * User to search for.
      */
     public UserId getUser()                     { return user; }
@@ -89,6 +87,44 @@ public class SearchQuery implements Serializable {
      */
     public Order getSort()                      { return sort; }
     public void setSort(Order sort)             { this.sort = sort; }
+
+    /**
+     * Returns the Category to search for. If multiple categories are set, only the first
+     * one is returned.
+     */
+    public CategoryId getCategory()             {
+        return (!categoryList.isEmpty() ? categoryList.get(0) : null);
+    }
+
+    /**
+     * Sets a single category to search for. If other categories were set, they will be
+     * replaced.
+     */
+    public void setCategory(CategoryId category) {
+        categoryList.clear();
+        addCategory(category);
+    }
+
+    /**
+     * Adds a category to search for.
+     *
+     * @since 2.2
+     */
+    public void addCategory(CategoryId category) {
+        if (category != null) {
+            categoryList.add(category);
+        }
+    }
+
+    /**
+     * Returns the collection of categories to search for. This collection is
+     * unmodifiable.
+     *
+     * @since 2.2
+     */
+    public Collection<CategoryId> getCategories() {
+        return Collections.unmodifiableCollection(categoryList);
+    }
 
     /**
      * Text to search for.
@@ -116,9 +152,12 @@ public class SearchQuery implements Serializable {
 
     /**
      * Category to search for.
+     * <p>
+     * Since version 2.2, multiple categories can be set by invoking this call multiple
+     * times.
      */
     public SearchQuery category(CategoryId category) {
-        setCategory(category);
+        addCategory(category);
         return this;
     }
 
@@ -161,8 +200,14 @@ public class SearchQuery implements Serializable {
             conn.query("language", language.getLanguageId());
         }
 
-        if (category != null) {
-            conn.query("category", category.getCategoryId());
+        if (!categoryList.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (CategoryId cid : categoryList) {
+                sb.append(',').append(cid.getCategoryId());
+            }
+            if (sb.length() > 0) {
+                conn.query("category", sb.substring(1));
+            }
         }
 
         if (user != null) {
