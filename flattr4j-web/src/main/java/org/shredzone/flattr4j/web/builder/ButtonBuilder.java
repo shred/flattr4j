@@ -61,6 +61,7 @@ public class ButtonBuilder {
     private List<String> tags = new ArrayList<String>();
     private ButtonType type;
     private boolean hidden = false;
+    private Boolean popout = null;
     private String style;
     private String styleClass;
     private boolean html5 = false;
@@ -181,6 +182,19 @@ public class ButtonBuilder {
      */
     public ButtonBuilder button(ButtonType type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Sets whether to override the popout default and show a popout when hovering with
+     * the mouse over the button.
+     *
+     * @param popout
+     *            {@code true}: always show a popout, {@code false}: never show a popout
+     * @since 2.2
+     */
+    public ButtonBuilder popout(boolean popout) {
+        this.popout = popout;
         return this;
     }
 
@@ -380,6 +394,12 @@ public class ButtonBuilder {
             sb.append("button:compact;");
         }
 
+        if (popout != null) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
+            sb.append("popout:").append(popout.booleanValue() ? 1 : 0).append(';');
+        }
+
         if (hidden) {
             if (!header) appendAttributesHeader(sb);
             header = true;
@@ -424,6 +444,10 @@ public class ButtonBuilder {
 
         if (type != null && type == ButtonType.COMPACT) {
             appendHtml5Attribute(sb, "button", "compact");
+        }
+
+        if (popout != null) {
+            appendHtml5Attribute(sb, "popout", popout.booleanValue() ? "1" : "0");
         }
 
         if (hidden) {

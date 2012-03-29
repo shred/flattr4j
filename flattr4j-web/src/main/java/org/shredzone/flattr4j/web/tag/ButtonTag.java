@@ -100,6 +100,11 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
         }
     }
 
+    public void setPopout(boolean popout) {
+        setupBuilder();
+        builder.popout(popout);
+    }
+
     public void setHidden(boolean hidden) {
         setupBuilder();
         if (hidden) builder.hidden();

@@ -70,6 +70,7 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
+        builder.popout(true);
         builder.category(Category.withId("text")).language(Language.withId("en_UK"));
         builder.user(User.withId("123456"));
         builder.title("A Title");
@@ -81,7 +82,7 @@ public class ButtonBuilderTest {
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
-                + " rel=\"flattr;uid:123456;category:text;tags:def,123,abc;button:compact;hidden:1;\">"
+                + " rel=\"flattr;uid:123456;category:text;tags:def,123,abc;button:compact;popout:1;hidden:1;\">"
                 + "A Description</a>",
                 builder.toString()
         );
@@ -93,6 +94,7 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
         builder.button(ButtonType.COMPACT);
+        builder.popout(false);
         builder.category(Category.withId("text")).language(Language.withId("en_UK"));
         builder.user(User.withId("123456"));
         builder.title("A Title");
@@ -107,7 +109,7 @@ public class ButtonBuilderTest {
                 + " lang=\"en_UK\""
                 + " data-flattr-uid=\"123456\" data-flattr-category=\"text\""
                 + " data-flattr-tags=\"def,123,abc\" data-flattr-button=\"compact\""
-                + " data-flattr-hidden=\"1\">"
+                + " data-flattr-popout=\"0\" data-flattr-hidden=\"1\">"
                 + "A Description</a>",
                 builder.toString()
         );

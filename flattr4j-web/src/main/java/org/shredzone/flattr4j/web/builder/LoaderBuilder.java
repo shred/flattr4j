@@ -43,6 +43,7 @@ public class LoaderBuilder {
     private boolean bare = false;
     private boolean automatic = true;
     private boolean https = false;
+    private Boolean popout = null;
     private String uid = null;
     private ButtonType type = null;
     private String language = null;
@@ -88,6 +89,19 @@ public class LoaderBuilder {
      */
     public LoaderBuilder manual() {
         automatic = false;
+        return this;
+    }
+
+    /**
+     * Sets whether to override the popout default and show a popout when hovering with
+     * the mouse over the button.
+     *
+     * @param popout
+     *            {@code true}: always show a popout, {@code false}: never show a popout
+     * @since 2.2
+     */
+    public LoaderBuilder popout(boolean popout) {
+        this.popout = popout;
         return this;
     }
 
@@ -184,6 +198,11 @@ public class LoaderBuilder {
 
         if (automatic) {
             sb.append(separator).append("mode=auto");
+            separator = '&';
+        }
+
+        if (popout != null) {
+            sb.append(separator).append("popout=").append(popout.booleanValue() ? 1 : 0);
             separator = '&';
         }
 

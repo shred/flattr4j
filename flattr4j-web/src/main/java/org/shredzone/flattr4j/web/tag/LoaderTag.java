@@ -59,6 +59,11 @@ public class LoaderTag extends BodyTagSupport {
         if (https) builder.https();
     }
 
+    public void setPopout(boolean popout) {
+        setupBuilder();
+        builder.popout(popout);
+    }
+
     public void setUser(Object user) {
         setupBuilder();
         if (user instanceof UserId) {

@@ -105,6 +105,7 @@ public class LoaderBuilderTest {
     public void testFullBuilder() {
         LoaderBuilder builder = new LoaderBuilder();
         builder.button(ButtonType.COMPACT);
+        builder.popout(false);
         builder.category(Category.withId("image")).language(Language.withId("fr_FR"));
         builder.user(User.withId("123456"));
         builder.prefix("data-my");
@@ -115,7 +116,7 @@ public class LoaderBuilderTest {
                 + "t = document.getElementsByTagName('script')[0];"
                 + "s.type = 'text/javascript';"
                 + "s.async = true;"
-                + "s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto&uid=123456&button=compact&language=fr_FR&category=image&html5-key-prefix=data-my';"
+                + "s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto&popout=0&uid=123456&button=compact&language=fr_FR&category=image&html5-key-prefix=data-my';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
                 + "/* ]]> */</script>",
                 builder.toString()

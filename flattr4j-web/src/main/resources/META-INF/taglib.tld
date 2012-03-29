@@ -81,6 +81,13 @@
       <description>Button type (or ButtonType object)</description>
     </attribute>
     <attribute>
+      <name>popout</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Always show or hide a popout when hovering mouse over button</description>
+    </attribute>
+    <attribute>
       <name>hidden</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
@@ -169,6 +176,13 @@
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.Object</type>
       <description>Button type (or ButtonType object)</description>
+    </attribute>
+    <attribute>
+      <name>popout</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>boolean</type>
+      <description>Always show or hide a popout when hovering mouse over button</description>
     </attribute>
     <attribute>
       <name>language</name>
