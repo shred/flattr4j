@@ -42,6 +42,7 @@ public class FlattrAuthenticator {
 
     private String requestTokenUrl = "https://flattr.com/oauth/authorize";
     private String accessTokenUrl = "http://flattr.com/oauth/token";
+    private String responseType = "code";
 
     private String callbackUrl = null;
 
@@ -69,6 +70,15 @@ public class FlattrAuthenticator {
      */
     public EnumSet<Scope> getScope()        { return scope; }
     public void setScope(EnumSet<Scope> scope) { this.scope = scope; }
+
+    /**
+     * The OAuth response type. This is {@code code} or {@code token}, with the former
+     * being the default.
+     *
+     * @since 2.3
+     */
+    public void setResponseType(String responseType) { this.responseType = responseType; }
+    public String getResponseType()         { return responseType; }
 
     /**
      * Constructs a new instance with the given {@link ConsumerKey}.
@@ -140,7 +150,7 @@ public class FlattrAuthenticator {
         try {
             StringBuilder url = new StringBuilder();
             url.append(requestTokenUrl);
-            url.append("?response_type=code");
+            url.append("?response_type=").append(URLEncoder.encode(responseType, ENCODING));
             url.append("&client_id=").append(URLEncoder.encode(consumerKey.getKey(), ENCODING));
 
             if (callbackUrl != null) {
