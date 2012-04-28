@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
@@ -80,7 +78,7 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  * @author Richard "Shred" Körber
  */
 public class FlattrConnection implements Connection {
-    private static final Logger LOG = Logger.getLogger(FlattrConnection.class.getName());
+    private static final Logger LOG = new Logger("flattr4j", FlattrConnection.class.getName());
     private static final String ENCODING = "utf-8";
 
     private static final boolean NEW_API;
@@ -115,14 +113,14 @@ public class FlattrConnection implements Connection {
     @Override
     public Connection url(String url) {
         this.baseUrl = url;
-        LOG.log(Level.FINE, "-> baseUrl {0}", url);
+        LOG.verbose("-> baseUrl {0}", url);
         return this;
     }
 
     @Override
     public Connection call(String call) {
         this.call = call;
-        LOG.log(Level.FINE, "-> call {0}", call);
+        LOG.verbose("-> call {0}", call);
         return this;
     }
 
@@ -143,7 +141,7 @@ public class FlattrConnection implements Connection {
     public Connection parameter(String name, String value) {
         try {
             call = call.replace(":" + name, URLEncoder.encode(value, ENCODING));
-            LOG.log(Level.FINE, "-> param {0} = {1}", new Object[] {name, value});
+            LOG.verbose("-> param {0} = {1}", name, value);
             return this;
         } catch (UnsupportedEncodingException ex) {
             // should never be thrown, as "utf-8" encoding is available on any VM
@@ -157,7 +155,7 @@ public class FlattrConnection implements Connection {
             queryParam = new ArrayList<NameValuePair>();
         }
         queryParam.add(new BasicNameValuePair(name, value));
-        LOG.log(Level.FINE, "-> query {0} = {1}", new Object[] {name, value});
+        LOG.verbose("-> query {0} = {1}", name, value);
         return this;
     }
 
@@ -179,7 +177,7 @@ public class FlattrConnection implements Connection {
             throw new RuntimeException(ex);
         }
 
-        LOG.log(Level.FINE, "-> JSON body: {0}", data);
+        LOG.verbose("-> JSON body: {0}", data);
         return this;
     }
 
@@ -196,7 +194,7 @@ public class FlattrConnection implements Connection {
         }
         formParam.add(new BasicNameValuePair(name, value));
 
-        LOG.log(Level.FINE, "-> form {0} = {1}", new Object[] {name, value});
+        LOG.verbose("-> form {0} = {1}", name, value);
         return this;
     }
 
@@ -242,7 +240,7 @@ public class FlattrConnection implements Connection {
                 );
             }
 
-            LOG.log(Level.INFO, "Sending Flattr request: {0}", call);
+            LOG.info("Sending Flattr request: {0}", call);
 
             HttpResponse response = client.execute(request);
 
@@ -273,13 +271,13 @@ public class FlattrConnection implements Connection {
                     for (int ix = 0; ix < array.length(); ix++) {
                         FlattrObject fo = new FlattrObject(array.getJSONObject(ix));
                         result.add(fo);
-                        LOG.log(Level.FINE, "<- JSON result: {0}", fo);
+                        LOG.verbose("<- JSON result: {0}", fo);
                     }
-                    LOG.log(Level.FINE, "<-   {0} rows", array.length());
+                    LOG.verbose("<-   {0} rows", array.length());
                 } else if (resultData instanceof JSONObject) {
                     FlattrObject fo = new FlattrObject((JSONObject) resultData);
                     result = Collections.singletonList(fo);
-                    LOG.log(Level.FINE, "<- JSON result: {0}", fo);
+                    LOG.verbose("<- JSON result: {0}", fo);
                 } else {
                     throw new MarshalException("unexpected result type " + resultData.getClass().getName());
                 }
@@ -420,11 +418,11 @@ public class FlattrConnection implements Connection {
 
         try {
             JSONObject errorData = (JSONObject) new JSONTokener(readResponse(response)).nextValue();
-            LOG.log(Level.FINE, "<- ERROR {0}: {1}", new Object[] {statusCode, errorData});
+            LOG.verbose("<- ERROR {0}: {1}", statusCode, errorData);
 
             error = errorData.optString("error");
             desc = errorData.optString("error_description");
-            LOG.log(Level.WARNING, "Flattr ERROR {0}: {1}", new Object[] {error, desc});
+            LOG.error("Flattr ERROR {0}: {1}", error, desc);
         } catch (IOException ex) {
             throw new FlattrException("Could not read response", ex);
         } catch (ClassCastException ex) {
@@ -462,7 +460,7 @@ public class FlattrConnection implements Connection {
 
         StatusLine line = response.getStatusLine();
         String msg = "HTTP " + line.getStatusCode() + ": " + line.getReasonPhrase();
-        LOG.log(Level.WARNING, "Flattr {0}", msg);
+        LOG.error("Flattr {0}", msg);
         throw new FlattrException(msg);
     }
 
