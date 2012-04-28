@@ -26,23 +26,9 @@ import android.net.Uri;
 /**
  * An extension of {@link FlattrAuthenticator} that helps through the authentication
  * process on Android devices.
- * <p>
- * To the {@code AndroidManifest.xml}, add:
- * <pre>
- * <manifest>
- *   <application>
- *     <activity>
- *       <intent-filter>
- *         <action android:name="android.intent.action.VIEW"/>
- *         <category android:name="android.intent.category.DEFAULT"/>
- *         <category android:name="android.intent.category.BROWSABLE"/>
- *         <data android:scheme="flattr4j" android:host="$your-host"/>
- *       </intent-filter>
- *     </activity>
- *   </application>
- * </manifest>
- * </pre>
  *
+ * @see <a href="http://www.shredzone.org/projects/flattr4j/wiki/OAuth_Android">How to
+ *      authenticate with flattr4j on Android</a>
  * @author Richard "Shred" Körber
  * @since 2.3
  */
