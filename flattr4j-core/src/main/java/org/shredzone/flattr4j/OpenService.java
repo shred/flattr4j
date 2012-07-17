@@ -73,8 +73,6 @@ public interface OpenService {
 
     /**
      * Gets a {@link Thing} by its registered URL.
-     * <p>
-     * Uses two rates!
      *
      * @param url
      *            Thing's URL
@@ -238,6 +236,8 @@ public interface OpenService {
      * <p>
      * Unlike {@link #getLastRateLimit()}, this call actively queries the current rate
      * limits from the server.
+     * <p>
+     * {@link #getLastRateLimit()} is untouched by this call.
      *
      * @return Rate limit.
      * @since 2.5

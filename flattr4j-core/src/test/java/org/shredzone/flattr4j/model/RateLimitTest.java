@@ -1,7 +1,7 @@
 /*
  * flattr4j - A Java library for Flattr
  *
- * Copyright (C) 2011 Richard "Shred" Körber
+ * Copyright (C) 2012 Richard "Shred" Körber
  *   http://flattr4j.shredzone.org
  *
  * This program is free software: you can redistribute it and/or modify
