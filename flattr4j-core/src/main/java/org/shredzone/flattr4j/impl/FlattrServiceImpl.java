@@ -487,8 +487,7 @@ public class FlattrServiceImpl implements FlattrService {
     @Override
     public RateLimit getCurrentRateLimit() throws FlattrException {
         Connection conn = getConnector().create()
-                        .call("rate_limit")
-                        .rateLimit(lastRateLimit);
+                        .call("rate_limit");
 
         return new RateLimit(conn.singleResult());
     }
