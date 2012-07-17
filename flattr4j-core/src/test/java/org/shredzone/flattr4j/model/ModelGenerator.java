@@ -26,6 +26,7 @@ import java.util.Date;
 import junit.framework.Assert;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.connector.RateLimit;
 
 /**
  * Generates and validates models.
@@ -176,6 +177,31 @@ public final class ModelGenerator {
      */
     public static SearchResult createSearchResult() throws IOException {
         return new SearchResult(new FlattrObject(resourceToString("/searchresult.json")));
+    }
+
+    /**
+     * Creates a {@link RateLimit} instance.
+     *
+     * @return {@link RateLimit} instance
+     */
+    public static RateLimit createRateLimit() throws IOException {
+        return new RateLimit(new FlattrObject(resourceToString("/ratelimit.json")));
+    }
+
+    /**
+     * Asserts that the given {@link RateLimit} instance is equal to the one created by
+     * {@link #createRateLimit()}.
+     *
+     * @param ratelimit
+     *            {@link RateLimit} instance
+     */
+    public static void assertRateLimit(RateLimit ratelimit) {
+        Assert.assertEquals("hourly_limit", Long.valueOf(1000), ratelimit.getLimit());
+        Assert.assertEquals("remaining_hits", Long.valueOf(986), ratelimit.getRemaining());
+        Assert.assertEquals("current_hits", Long.valueOf(14), ratelimit.getCurrent());
+
+        Date resetTest = new Date(1342521939000L);
+        Assert.assertEquals("reset_time_in_seconds", resetTest, ratelimit.getReset());
     }
 
 

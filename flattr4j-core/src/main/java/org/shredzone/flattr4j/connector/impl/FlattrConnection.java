@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -257,6 +258,20 @@ public class FlattrConnection implements Connection {
                     limit.setLimit(Long.parseLong(limitHeader.getValue()));
                 } else {
                     limit.setLimit(null);
+                }
+
+                Header currentHeader = response.getFirstHeader("X-RateLimit-Current");
+                if (currentHeader != null) {
+                    limit.setCurrent(Long.parseLong(currentHeader.getValue()));
+                } else {
+                    limit.setCurrent(null);
+                }
+
+                Header resetHeader = response.getFirstHeader("X-RateLimit-Reset");
+                if (resetHeader != null) {
+                    limit.setReset(new Date(Long.parseLong(resetHeader.getValue()) * 1000L));
+                } else {
+                    limit.setReset(null);
                 }
             }
 

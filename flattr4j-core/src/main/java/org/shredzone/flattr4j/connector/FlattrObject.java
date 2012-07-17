@@ -179,6 +179,24 @@ public class FlattrObject implements Serializable, Externalizable {
     }
 
     /**
+     * Gets a long from the given key.
+     *
+     * @param key
+     *            Key to read from
+     * @return long that was read
+     * @throws MarshalException
+     *             if there was no such key, or if it did not contain the expected type
+     * @since 2.5
+     */
+    public long getLong(String key) {
+        try {
+            return data.getLong(key);
+        } catch (JSONException ex) {
+            throw new MarshalException(key, ex);
+        }
+    }
+
+    /**
      * Gets a boolean from the given key.
      *
      * @param key

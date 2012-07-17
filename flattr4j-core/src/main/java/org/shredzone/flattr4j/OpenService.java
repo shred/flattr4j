@@ -234,6 +234,17 @@ public interface OpenService {
     List<Language> getLanguages() throws FlattrException;
 
     /**
+     * Gets the current rate limit from the server.
+     * <p>
+     * Unlike {@link #getLastRateLimit()}, this call actively queries the current rate
+     * limits from the server.
+     *
+     * @return Rate limit.
+     * @since 2.5
+     */
+    RateLimit getCurrentRateLimit() throws FlattrException;
+
+    /**
      * Gets the rate limit and remaining rate returned by the last API call.
      *
      * @return Rate limit.

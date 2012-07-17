@@ -18,6 +18,8 @@
  */
 package org.shredzone.flattr4j.connector;
 
+import java.util.Date;
+
 /**
  * Keeps the maximum rate of allowed calls and the remaining number of calls.
  * <p>
@@ -29,6 +31,22 @@ package org.shredzone.flattr4j.connector;
 public class RateLimit {
     private Long limit;
     private Long remaining;
+    private Long current;
+    private Date reset;
+
+    public RateLimit() {
+        // default constructor
+    }
+
+    /**
+     * @since 2.5
+     */
+    public RateLimit(FlattrObject data) {
+        setLimit(data.getLong("hourly_limit"));
+        setRemaining(data.getLong("remaining_hits"));
+        setCurrent(data.getLong("current_hits"));
+        setReset(data.getDate("reset_time_in_seconds"));
+    }
 
     /**
      * The maximum rate of allowed calls per time span. {@code null} if there is no such
@@ -43,5 +61,23 @@ public class RateLimit {
      */
     public Long getRemaining()                  { return remaining; }
     public void setRemaining(Long remaining)    { this.remaining = remaining; }
+
+    /**
+     * The number of calls made in the current time span. {@code null} if there is no such
+     * information available.
+     *
+     * @since 2.5
+     */
+    public Long getCurrent()                    { return current; }
+    public void setCurrent(Long current)        { this.current = current; }
+
+    /**
+     * The moment of the beginning of a new time span. {@code null} if there is no such
+     * information available.
+     *
+     * @since 2.5
+     */
+    public Date getReset()                      { return reset; }
+    public void setReset(Date reset)            { this.reset = reset; }
 
 }
