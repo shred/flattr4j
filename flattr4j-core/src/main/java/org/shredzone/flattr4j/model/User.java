@@ -103,6 +103,15 @@ public class User extends Resource implements UserId {
     }
 
     /**
+     * URL of the user's home page.
+     *
+     * @since 2.5
+     */
+    public String getUrl() {
+        return data.get("url");
+    }
+
+    /**
      * User's email address.
      */
     @RequiredScope(Scope.EXTENDEDREAD)

@@ -5,9 +5,10 @@
     "username": "simon_g",
     "firstname": "Simon",
     "lastname": "Gate",
-    "email": "simon@flattr.com",
+    "avatar": "",
     "about": "yes",
     "city": "Simcity",
     "country": "Sweden",
-    "avatar": ""
+    "url": "http://flattr.com",
+    "email": "simon@flattr.com"
 }

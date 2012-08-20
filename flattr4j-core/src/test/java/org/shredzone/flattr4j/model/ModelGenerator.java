@@ -136,6 +136,7 @@ public final class ModelGenerator {
         Assert.assertEquals("about", "yes", user.getDescription());
         Assert.assertEquals("country", "Sweden", user.getCountry());
         Assert.assertEquals("avatar", "", user.getGravatar());
+        Assert.assertEquals("url", "http://flattr.com", user.getUrl());
         Assert.assertNull("registered_at", user.getRegisteredAt());
     }
 
