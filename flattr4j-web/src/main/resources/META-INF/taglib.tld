@@ -74,6 +74,13 @@
       <description>Thing language (either language ID or Language object)</description>
     </attribute>
     <attribute>
+      <name>revsharekey</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+      <description>Revenue share key</description>
+    </attribute>
+    <attribute>
       <name>button</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>

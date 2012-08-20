@@ -76,13 +76,14 @@ public class ButtonBuilderTest {
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
+        builder.revsharekey("f00b1337");
         builder.hidden();
 
         Assert.assertEquals(
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
-                + " rel=\"flattr;uid:123456;category:text;tags:def,123,abc;button:compact;popout:1;hidden:1;\">"
+                + " rel=\"flattr;uid:123456;category:text;tags:def,123,abc;revsharekey:f00b1337;button:compact;popout:1;hidden:1;\">"
                 + "A Description</a>",
                 builder.toString()
         );
@@ -100,6 +101,7 @@ public class ButtonBuilderTest {
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
+        builder.revsharekey("f00b1337");
         builder.hidden();
         builder.html5();
 
@@ -108,8 +110,9 @@ public class ButtonBuilderTest {
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
                 + " data-flattr-uid=\"123456\" data-flattr-category=\"text\""
-                + " data-flattr-tags=\"def,123,abc\" data-flattr-button=\"compact\""
-                + " data-flattr-popout=\"0\" data-flattr-hidden=\"1\">"
+                + " data-flattr-tags=\"def,123,abc\" data-flattr-revsharekey=\"f00b1337\""
+                + " data-flattr-button=\"compact\" data-flattr-popout=\"0\""
+                + " data-flattr-hidden=\"1\">"
                 + "A Description</a>",
                 builder.toString()
         );
@@ -126,6 +129,7 @@ public class ButtonBuilderTest {
         builder.title("A Title");
         builder.description("A Description");
         builder.tag("def").tag("123").tag("abc");
+        builder.revsharekey("f00b1337");
         builder.hidden();
         builder.html5().prefix("data-my");
 
@@ -134,8 +138,8 @@ public class ButtonBuilderTest {
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
                 + " data-my-uid=\"123456\" data-my-category=\"text\""
-                + " data-my-tags=\"def,123,abc\" data-my-button=\"compact\""
-                + " data-my-hidden=\"1\">"
+                + " data-my-tags=\"def,123,abc\" data-my-revsharekey=\"f00b1337\""
+                + " data-my-button=\"compact\" data-my-hidden=\"1\">"
                 + "A Description</a>",
                 builder.toString()
         );

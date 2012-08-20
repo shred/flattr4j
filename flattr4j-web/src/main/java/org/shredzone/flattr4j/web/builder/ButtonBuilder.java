@@ -59,6 +59,7 @@ public class ButtonBuilder {
     private String category;
     private String language;
     private List<String> tags = new ArrayList<String>();
+    private String revsharekey;
     private ButtonType type;
     private boolean hidden = false;
     private Boolean popout = null;
@@ -174,6 +175,16 @@ public class ButtonBuilder {
         for (String tag : tags) {
             tag(tag);
         }
+        return this;
+    }
+
+    /**
+     * Sets the revenue share key to be used.
+     *
+     * @since 2.5
+     */
+    public ButtonBuilder revsharekey(String key) {
+        this.revsharekey = key;
         return this;
     }
 
@@ -388,6 +399,12 @@ public class ButtonBuilder {
             sb.append(';');
         }
 
+        if (revsharekey != null) {
+            if (!header) appendAttributesHeader(sb);
+            header = true;
+            sb.append("revsharekey:").append(escape(revsharekey)).append(';');
+        }
+
         if (type != null && type == ButtonType.COMPACT) {
             if (!header) appendAttributesHeader(sb);
             header = true;
@@ -440,6 +457,10 @@ public class ButtonBuilder {
             sb.append(' ').append(prefix).append("-tags=\"");
             appendTagList(sb);
             sb.append('"');
+        }
+
+        if (revsharekey != null) {
+            appendHtml5Attribute(sb, "revsharekey", revsharekey);
         }
 
         if (type != null && type == ButtonType.COMPACT) {

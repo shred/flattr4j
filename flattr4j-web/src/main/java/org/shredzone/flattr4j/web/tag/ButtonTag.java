@@ -91,6 +91,11 @@ public class ButtonTag extends BodyTagSupport implements Attributed {
         }
     }
 
+    public void setRevsharekey(String key) {
+        setupBuilder();
+        builder.revsharekey(key);
+    }
+
     public void setButton(Object type) {
         setupBuilder();
         if (type instanceof ButtonType) {
