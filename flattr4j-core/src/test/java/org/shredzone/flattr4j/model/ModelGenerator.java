@@ -23,8 +23,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.connector.RateLimit;
 

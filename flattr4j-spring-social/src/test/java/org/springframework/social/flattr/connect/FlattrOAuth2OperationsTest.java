@@ -18,8 +18,7 @@
  */
 package org.springframework.social.flattr.connect;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.oauth.AccessToken;
