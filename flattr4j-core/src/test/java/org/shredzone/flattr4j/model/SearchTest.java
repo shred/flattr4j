@@ -41,35 +41,43 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  */
 public class SearchTest {
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testQueryModel() {
         SearchQuery sq = new SearchQuery();
         sq.setQuery("foo");
-        sq.setCategory(Category.withId("text"));
+        sq.getCategories().add(Category.withId("text"));
         sq.addCategory(Category.withId("image"));
-        sq.setLanguage(Language.withId("en_UK"));
+        sq.getLanguages().add(Language.withId("en_UK"));
+        sq.addLanguage(Language.withId("no_NO"));
         sq.setUser(User.withId("shred"));
         sq.setTags("foobar & blafoo");
         sq.setUrl("http://flattr4j.shredzone.org");
         sq.setSort(Order.TREND);
 
         Assert.assertEquals("foo", sq.getQuery());
-        Assert.assertEquals("text", sq.getCategory().getCategoryId());
-        Assert.assertEquals("en_UK", sq.getLanguage().getLanguageId());
         Assert.assertEquals("shred", sq.getUser().getUserId());
         Assert.assertEquals("foobar & blafoo", sq.getTags());
         Assert.assertEquals("http://flattr4j.shredzone.org", sq.getUrl());
         Assert.assertEquals(Order.TREND, sq.getSort());
 
-        Iterator<CategoryId> it = sq.getCategories().iterator();
-        Assert.assertEquals("text", it.next().getCategoryId());
-        Assert.assertEquals("image", it.next().getCategoryId());
+        // Also assert deprecated methods...
+        Assert.assertEquals("text", sq.getCategory().getCategoryId());
+        Assert.assertEquals("en_UK", sq.getLanguage().getLanguageId());
+
+        Iterator<CategoryId> itC = sq.getCategories().iterator();
+        Assert.assertEquals("text", itC.next().getCategoryId());
+        Assert.assertEquals("image", itC.next().getCategoryId());
+
+        Iterator<LanguageId> itL = sq.getLanguages().iterator();
+        Assert.assertEquals("en_UK", itL.next().getLanguageId());
+        Assert.assertEquals("no_NO", itL.next().getLanguageId());
 
         TestConnection conn = new TestConnection();
         sq.setupConnection(conn);
         Assert.assertEquals("foo", conn.getQuery("query"));
         Assert.assertEquals("text,image", conn.getQuery("category"));
-        Assert.assertEquals("en_UK", conn.getQuery("language"));
+        Assert.assertEquals("en_UK,no_NO", conn.getQuery("language"));
         Assert.assertEquals("shred", conn.getQuery("user"));
         Assert.assertEquals("foobar & blafoo", conn.getQuery("tags"));
         Assert.assertEquals("http://flattr4j.shredzone.org", conn.getQuery("url"));

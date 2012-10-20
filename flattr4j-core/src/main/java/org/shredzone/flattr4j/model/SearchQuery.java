@@ -21,8 +21,6 @@ package org.shredzone.flattr4j.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.shredzone.flattr4j.connector.Connection;
 
@@ -45,8 +43,8 @@ public class SearchQuery implements Serializable {
     private String query;
     private String tags;
     private String url;
-    private LanguageId language;
-    private List<CategoryId> categoryList = new ArrayList<CategoryId>();
+    private Collection<LanguageId> languageList = new ArrayList<LanguageId>();
+    private Collection<CategoryId> categoryList = new ArrayList<CategoryId>();
     private UserId user;
     private Order sort;
 
@@ -71,10 +69,66 @@ public class SearchQuery implements Serializable {
     public void setUrl(String url)              { this.url = url; }
 
     /**
-     * Language to search for.
+     * Language to search for. If multiple categories are set, only the first
+     * one is returned.
+     *
+     * @deprecated since 2.5. Use {@link #getLanguages()} instead.
      */
-    public LanguageId getLanguage()             { return language; }
-    public void setLanguage(LanguageId language) { this.language = language; }
+    @Deprecated
+    public LanguageId getLanguage()             {
+        return (!languageList.isEmpty() ? languageList.iterator().next() : null);
+    }
+
+    /**
+     * Sets a single language to search for. If other languages were set, they will be
+     * replaced.
+     *
+     * @deprecated since 2.5. Use {@link #getLanguages()}{@code .add()} instead.
+     */
+    @Deprecated
+    public void setLanguage(LanguageId language) {
+        languageList.clear();
+        addLanguage(language);
+    }
+
+    /**
+     * Adds a language to search for.
+     * <p>
+     * If the collection has been changed via {@link #setLanguage(LanguageId)}, it
+     * must be modifiable.
+     *
+     * @since 2.5
+     */
+    public void addLanguage(LanguageId language) {
+        if (language != null) {
+            languageList.add(language);
+        }
+    }
+
+    /**
+     * Returns the collection of languages to search for. The default collection is
+     * modifiable.
+     *
+     * @since 2.5
+     */
+    public Collection<LanguageId> getLanguages() {
+        return languageList;
+    }
+
+    /**
+     * Sets a collection of languages to search for.
+     *
+     * @param languages
+     *            Collection of {@link LanguageId} to be used for searching. Must not be
+     *            {@code null}.
+     * @since 2.5
+     */
+    public void setLanguages(Collection<LanguageId> languages) {
+        if (languages == null) {
+            throw new IllegalArgumentException("languages list must not be null");
+        }
+        languageList = languages;
+    }
 
     /**
      * User to search for.
@@ -91,15 +145,21 @@ public class SearchQuery implements Serializable {
     /**
      * Returns the Category to search for. If multiple categories are set, only the first
      * one is returned.
+     *
+     * @deprecated since 2.5. Use {@link #getCategories()} instead.
      */
+    @Deprecated
     public CategoryId getCategory()             {
-        return (!categoryList.isEmpty() ? categoryList.get(0) : null);
+        return (!categoryList.isEmpty() ? categoryList.iterator().next(): null);
     }
 
     /**
      * Sets a single category to search for. If other categories were set, they will be
      * replaced.
+     *
+     * @deprecated since 2.5. Use {@link #getCategories()}{@code .add()} instead.
      */
+    @Deprecated
     public void setCategory(CategoryId category) {
         categoryList.clear();
         addCategory(category);
@@ -107,6 +167,9 @@ public class SearchQuery implements Serializable {
 
     /**
      * Adds a category to search for.
+     * <p>
+     * If the collection has been changed via {@link #setCategories(Collection)}, it
+     * must be modifiable.
      *
      * @since 2.2
      */
@@ -117,14 +180,31 @@ public class SearchQuery implements Serializable {
     }
 
     /**
-     * Returns the collection of categories to search for. This collection is
-     * unmodifiable.
+     * Returns the collection of categories to search for.
+     * <p>
+     * Since 2.5, the default collection is modifiable.
      *
      * @since 2.2
      */
     public Collection<CategoryId> getCategories() {
-        return Collections.unmodifiableCollection(categoryList);
+        return categoryList;
     }
+
+    /**
+     * Sets a collection of categories to search for.
+     *
+     * @param categories
+     *            Collection of {@link CategoryId} to be used for searching. Must not be
+     *            {@code null}.
+     * @since 2.5
+     */
+    public void setCategories(Collection<CategoryId> categories) {
+        if (categories == null) {
+            throw new IllegalArgumentException("categories list must not be null");
+        }
+        categoryList = categories;
+    }
+
 
     /**
      * Text to search for.
@@ -144,9 +224,12 @@ public class SearchQuery implements Serializable {
 
     /**
      * Language to search for.
+     * <p>
+     * Since version 2.5, multiple languages can be set by invoking this call multiple
+     * times.
      */
     public SearchQuery language(LanguageId language) {
-        setLanguage(language);
+        addLanguage(language);
         return this;
     }
 
@@ -196,8 +279,14 @@ public class SearchQuery implements Serializable {
             conn.query("url", url);
         }
 
-        if (language != null) {
-            conn.query("language", language.getLanguageId());
+        if (!languageList.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (LanguageId lid : languageList) {
+                sb.append(',').append(lid.getLanguageId());
+            }
+            if (sb.length() > 0) {
+                conn.query("language", sb.substring(1));
+            }
         }
 
         if (!categoryList.isEmpty()) {
