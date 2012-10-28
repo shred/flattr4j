@@ -234,6 +234,15 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
     }
 
     /**
+     * Is this Thing subscribed?
+     *
+     * @since 2.6
+     */
+    public boolean isSubscribed() {
+        return data.getBoolean("subscribed");
+    }
+
+    /**
      * Date of last Flattr. Only available to the owner of this Thing.
      *
      * @since 2.0

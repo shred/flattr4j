@@ -39,6 +39,7 @@ import org.shredzone.flattr4j.model.Language;
 import org.shredzone.flattr4j.model.SearchQuery;
 import org.shredzone.flattr4j.model.SearchResult;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
@@ -452,6 +453,80 @@ public class FlattrServiceImpl implements FlattrService {
             list.add(new Activity(item));
         }
         return Collections.unmodifiableList(list);
+    }
+
+    @Override
+    public List<Subscription> getMySubscriptions() throws FlattrException {
+        Connection conn = getConnector().create()
+                        .call("user/subscriptions")
+                        .rateLimit(lastRateLimit);
+
+        List<Subscription> list = new ArrayList<Subscription>();
+        for (FlattrObject item : conn.result()) {
+            list.add(new Subscription(item));
+        }
+        return Collections.unmodifiableList(list);
+    }
+
+    @Override
+    public Subscription getSubscription(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().length() == 0) {
+            throw new IllegalArgumentException("thingId is required");
+        }
+
+        for (Subscription sub : getMySubscriptions()) {
+            if (sub.getThingId().equals(thingId.getThingId())) {
+                return sub;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void subscribe(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().length() == 0)
+            throw new IllegalArgumentException("thingId is required");
+
+        getConnector().create(RequestType.POST)
+                        .call("things/:id/subscriptions")
+                        .parameter("id", thingId.getThingId())
+                        .rateLimit(lastRateLimit)
+                        .result();
+    }
+
+    @Override
+    public void unsubscribe(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().length() == 0)
+            throw new IllegalArgumentException("thingId is required");
+
+        getConnector().create(RequestType.DELETE)
+                        .call("things/:id/subscriptions")
+                        .parameter("id", thingId.getThingId())
+                        .rateLimit(lastRateLimit)
+                        .result();
+    }
+
+    @Override
+    public boolean toggleSubscription(ThingId thingId) throws FlattrException {
+        if (thingId == null || thingId.getThingId().length() == 0)
+            throw new IllegalArgumentException("thingId is required");
+
+        FlattrObject data = getConnector().create(RequestType.PUT)
+                        .call("things/:id/subscriptions")
+                        .parameter("id", thingId.getThingId())
+                        .rateLimit(lastRateLimit)
+                        .singleResult();
+
+        return "paused".equals(data.get("message"));
+    }
+
+    @Override
+    public void pauseSubscription(ThingId thingId, boolean paused) throws FlattrException {
+        boolean current = toggleSubscription(thingId);
+
+        if (current != paused) {
+            toggleSubscription(thingId);
+        }
     }
 
     @Override

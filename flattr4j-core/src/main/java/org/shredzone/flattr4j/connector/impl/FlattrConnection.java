@@ -454,9 +454,11 @@ public class FlattrConnection implements Connection {
         if (error != null && desc != null) {
             if (   "flattr_once".equals(error)
                 || "flattr_owner".equals(error)
+                || "thing_owner".equals(error)
                 || "forbidden".equals(error)
                 || "insufficient_scope".equals(error)
-                || "unauthorized".equals(error)) {
+                || "unauthorized".equals(error)
+                || "subscribed".equals(error)) {
                 throw new ForbiddenException(error, desc);
 
             } else if ("no_means".equals(error)) {

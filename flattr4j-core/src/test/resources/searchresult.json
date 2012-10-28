@@ -20,6 +20,7 @@
         "hidden": false,
         "image": "http://flattr.com/thing/image/4/2/3/4/0/5/medium.png",
         "flattred": false,
+        "subscribed": true,
         "created_at": 1305018975,
         "tags": [
             "twitter"

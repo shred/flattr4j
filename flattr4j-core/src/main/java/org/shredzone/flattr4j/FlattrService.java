@@ -25,6 +25,7 @@ import org.shredzone.flattr4j.model.Activity;
 import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Submission;
+import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
@@ -100,6 +101,26 @@ public interface FlattrService extends OpenService {
     void click(String url) throws FlattrException;
 
     /**
+     * Subscribes a {@link Thing}.
+     *
+     * @param thingId
+     *            {@link ThingId} to subscribe
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    void subscribe(ThingId thingId) throws FlattrException;
+
+    /**
+     * Cancels subscription of a {@link Thing}.
+     *
+     * @param thingId
+     *            {@link ThingId} to unsubscribed
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    void unsubscribe(ThingId thingId) throws FlattrException;
+
+    /**
      * Gets the {@link User} profile of the associated user.
      *
      * @return {@link User} profile of oneself
@@ -161,5 +182,63 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope()
     List<Activity> getMyActivities(Activity.Type type) throws FlattrException;
+
+    /**
+     * Returns all {@link Subscription} of the associated user.
+     *
+     * @return List of {@link Subscription}
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    List<Subscription> getMySubscriptions() throws FlattrException;
+
+    /**
+     * Returns the {@link Subscription} of the given {@link Thing}. Only the subscriptions
+     * of the associated user are accessible.
+     * <p>
+     * Note: This call is emulated by flattr4j. Depending on the number of subscriptions
+     * of the associated user, this call may take some time and cause increased network
+     * traffic. It may also increment the rate counter by more than 1.
+     *
+     * @param thingId
+     *            {@link ThingId} to get the subscription of
+     * @return {@link Subscription} of this thing, or {@code null} if there is no such
+     *         subscription
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    Subscription getSubscription(ThingId thingId) throws FlattrException;
+
+    /**
+     * Toggles the pause state of the subscription of the given {@link Thing}.
+     *
+     * @param thingId
+     *            {@link ThingId} of the thing to toggle the pause state of
+     * @return {@code true} if the subscription is now paused, {@code false} if the
+     *         subscription was resumed.
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    boolean toggleSubscription(ThingId thingId) throws FlattrException;
+
+    /**
+     * Pauses or resumes a {@link Subscription}. If the subscription is already in the
+     * desired state, nothing will happen.
+     * <p>
+     * Note: There is currently no way to explicitely set the pause state of a
+     * subscription via Flattr API. flattr4j emulates this call by toggling the pause
+     * state to get the current state, and if necessary, toggling it again to set the
+     * subscription to the desired state (which means that the rate counter is incremented
+     * by 2). This call is not atomic. If the second toggle call should fail, it will
+     * leave the subscription in the opposite state.
+     *
+     * @param thingId
+     *            {@link ThingId} of the thing to set the pause state
+     * @param paused
+     *            {@code true}: pause subscription, {@code false}: resume subscription
+     * @since 2.6
+     */
+    @RequiredScope(Scope.FLATTR)
+    void pauseSubscription(ThingId thingId, boolean paused) throws FlattrException;
 
 }

@@ -97,6 +97,7 @@ public final class ModelGenerator {
         Assert.assertEquals("owner", "simon_g", thing.getUserId());
         Assert.assertEquals("hidden", false, thing.isHidden());
         Assert.assertEquals("flattred", false, thing.isFlattred());
+        Assert.assertEquals("subscribed", true, thing.isSubscribed());
         Assert.assertEquals("created", new Date(1305018975000L), thing.getCreated());
         Assert.assertEquals("flattrs", 1, thing.getClicks());
         Assert.assertEquals("description", "Human", thing.getDescription());
@@ -168,6 +169,31 @@ public final class ModelGenerator {
         Assert.assertEquals("activityId", "tag:flattr.com,2012-01-04:pthulin/flattr/459394", activity.getActivityId());
         Assert.assertNotNull("json", activity.toJSON());
         Assert.assertNotNull("jsonobject", activity.toFlattrObject());
+    }
+
+    /**
+     * Creates a {@link Subscription} instance.
+     *
+     * @return {@link Subscription} instance
+     */
+    public static Subscription createSubscription() throws IOException {
+        return new Subscription(new FlattrObject(resourceToString("/subscription.json")));
+    }
+
+    /**
+     * Asserts that the given {@link Subscription} instance is equal to the one created by
+     * {@link #createSubscription()}.
+     *
+     * @param subscription
+     *            {@link Subscription} instance
+     */
+    public static void assertSubscription(Subscription subscription) {
+        Assert.assertTrue("active", subscription.isActive());
+        Assert.assertEquals("created", 1350654024000L, subscription.getCreated().getTime());
+        Assert.assertEquals("started", 1351164964000L, subscription.getStarted().getTime());
+        assertThing(subscription.getThing());
+        Assert.assertNotNull("json", subscription.toJSON());
+        Assert.assertNotNull("jsonobject", subscription.toFlattrObject());
     }
 
     /**

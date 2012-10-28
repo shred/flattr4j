@@ -1,4 +1,9 @@
 {
+  "type": "subscription",
+  "active": true,
+  "created_at": 1350654024,
+  "started_at": 1351164964,
+  "thing": {
     "type": "thing",
     "resource": "https://api.flattr.local/rest/v2/things/268185",
     "link": "https://flattr.local/things/268185",
@@ -25,4 +30,5 @@
     "title": "simongate on Twitter",
     "last_flattr_at": 1305026796,
     "updated_at": 0
+  }
 }
