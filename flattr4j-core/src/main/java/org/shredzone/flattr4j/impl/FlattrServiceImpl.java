@@ -474,11 +474,16 @@ public class FlattrServiceImpl implements FlattrService {
             throw new IllegalArgumentException("thingId is required");
         }
 
-        for (Subscription sub : getMySubscriptions()) {
-            if (sub.getThingId().equals(thingId.getThingId())) {
-                return sub;
+        Connection conn = getConnector().create()
+                        .call("user/subscriptions")
+                        .rateLimit(lastRateLimit);
+
+        for (FlattrObject item : conn.result()) {
+            if (thingId.getThingId().equals(item.getFlattrObject("thing").get("id"))) {
+                return new Subscription(item);
             }
         }
+
         return null;
     }
 
