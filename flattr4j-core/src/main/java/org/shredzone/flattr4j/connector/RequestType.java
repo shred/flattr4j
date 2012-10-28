@@ -24,5 +24,5 @@ package org.shredzone.flattr4j.connector;
  * @author Richard "Shred" Körber
  */
 public enum RequestType {
-    GET, POST, PATCH, DELETE;
+    GET, POST, PUT, PATCH, DELETE;
 }
