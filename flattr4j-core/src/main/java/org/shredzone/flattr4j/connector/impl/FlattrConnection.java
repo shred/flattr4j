@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -51,10 +52,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.VersionInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,12 +86,20 @@ public class FlattrConnection implements Connection {
 
     private static final boolean NEW_API;
     static {
-        VersionInfo vi = VersionInfo.loadVersionInfo("org.apache.http", null);
-        if (vi != null && vi.getRelease() != null) {
-            NEW_API = !vi.getRelease().startsWith("4.0");
-        } else {
-            NEW_API = false;
+        boolean newApi = false;
+
+        // Android safe way to find out if Apache HTTP Client 4.1 or higher is available
+        for (Constructor<?> c : Scheme.class.getConstructors()) {
+            Class<?>[] types = c.getParameterTypes();
+            if (types.length == 3
+                    && types[0].isAssignableFrom(String.class)
+                    && types[1].isAssignableFrom(int.class)) {
+                newApi = true;
+                break;
+            }
         }
+
+        NEW_API = newApi;
     }
 
     private HttpRequestBase request;
