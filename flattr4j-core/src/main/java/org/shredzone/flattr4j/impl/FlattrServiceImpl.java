@@ -293,18 +293,20 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public List<Thing> getThings(Collection<ThingId> thingIds) throws FlattrException {
-        StringBuilder sb = new StringBuilder();
-        for (ThingId thingId : thingIds) {
-            sb.append(',').append(thingId.getThingId());
-        }
-        if (sb.length() == 0) {
+        if (thingIds.size() == 0) {
             // No IDs, so the result will be empty anyways
             return Collections.emptyList();
         }
 
+        String[] params = new String[thingIds.size()];
+        int ix = 0;
+        for (ThingId thingId : thingIds) {
+            params[ix++] = thingId.getThingId();
+        }
+
         Connection conn = getConnector().create()
                         .call("things/:ids")
-                        .parameter("ids", sb.substring(1))
+                        .parameterArray("ids", params)
                         .rateLimit(lastRateLimit);
 
         setupFullMode(conn);

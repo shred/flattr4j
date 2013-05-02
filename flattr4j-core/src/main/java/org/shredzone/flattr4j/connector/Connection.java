@@ -81,10 +81,23 @@ public interface Connection {
      * @param name
      *            Parameter name, without colon prepended
      * @param value
-     *            Value to be used.
+     *            Value to be used. Will be URL encoded.
      * @return this
      */
     Connection parameter(String name, String value);
+
+    /**
+     * An array of parameters to be used for a placeholder in the call string. If the call
+     * string does not contain a matching placeholder, it will be silently ignored.
+     *
+     * @param name
+     *            Parameter name, without colon prepended
+     * @param value
+     *            Values to be used.
+     * @return this
+     * @since 2.7
+     */
+    Connection parameterArray(String name, String[] value);
 
     /**
      * Query parameter to be used in the URL.

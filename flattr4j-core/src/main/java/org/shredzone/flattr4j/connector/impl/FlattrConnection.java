@@ -161,6 +161,27 @@ public class FlattrConnection implements Connection {
     }
 
     @Override
+    public Connection parameterArray(String name, String[] value) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (int ix = 0; ix < value.length; ix++) {
+                if (ix > 0) {
+                    // Is it genius or madness, but the Flattr server does not accept
+                    // URL encoded ','!
+                    sb.append(',');
+                }
+                sb.append(URLEncoder.encode(value[ix], ENCODING));
+            }
+            call = call.replace(":" + name, sb.toString());
+            LOG.verbose("-> param {0} = [{1}]", name, sb.toString());
+            return this;
+        } catch (UnsupportedEncodingException ex) {
+            // should never be thrown, as "utf-8" encoding is available on any VM
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
     public Connection query(String name, String value) {
         if (queryParam == null) {
             queryParam = new ArrayList<NameValuePair>();

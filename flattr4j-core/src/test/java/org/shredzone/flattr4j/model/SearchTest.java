@@ -129,6 +129,11 @@ public class SearchTest {
         }
 
         @Override
+        public Connection parameterArray(String name, String[] value) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public Connection query(String name, String value) {
             query.put(name, value);
             return this;
