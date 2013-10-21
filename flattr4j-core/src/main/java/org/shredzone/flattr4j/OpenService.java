@@ -127,7 +127,7 @@ public interface OpenService {
      * @return List of {@link Thing} fetched
      * @since 2.0
      */
-    List<Thing> getThings(Collection<ThingId> thingIds) throws FlattrException;
+    List<Thing> getThings(Collection<? extends ThingId> thingIds) throws FlattrException;
 
     /**
      * Searches for {@link Thing}.

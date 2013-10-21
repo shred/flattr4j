@@ -292,7 +292,7 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public List<Thing> getThings(Collection<ThingId> thingIds) throws FlattrException {
+    public List<Thing> getThings(Collection<? extends ThingId> thingIds) throws FlattrException {
         if (thingIds.size() == 0) {
             // No IDs, so the result will be empty anyways
             return Collections.emptyList();
