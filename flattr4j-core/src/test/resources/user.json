@@ -2,6 +2,7 @@
     "type": "user",
     "resource": "https://api.flattr.local/rest/v2/users/simon_g",
     "link": "https://flattr.local/user/simon_g",
+    "id": "3bpQBK",
     "username": "simon_g",
     "firstname": "Simon",
     "lastname": "Gate",
@@ -9,6 +10,7 @@
     "about": "yes",
     "city": "Simcity",
     "country": "Sweden",
+    "active_supporter": 1,
     "url": "http://flattr.com",
     "email": "simon@flattr.com"
 }

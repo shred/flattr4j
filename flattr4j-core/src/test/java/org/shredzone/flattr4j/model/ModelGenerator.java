@@ -128,13 +128,16 @@ public final class ModelGenerator {
     public static void assertUser(User user) {
         Assert.assertEquals("resource", "https://api.flattr.local/rest/v2/users/simon_g", user.getResource());
         Assert.assertEquals("link", "https://flattr.local/user/simon_g", user.getLink());
+        Assert.assertEquals("id", "3bpQBK", user.getIdentifier());
         Assert.assertEquals("username", "simon_g", user.getUserId());
+        Assert.assertEquals("username", "simon_g", user.getUsername());
         Assert.assertEquals("firstname", "Simon", user.getFirstname());
         Assert.assertEquals("lastname", "Gate", user.getLastname());
         Assert.assertEquals("city", "Simcity", user.getCity());
         Assert.assertEquals("email", "simon@flattr.com", user.getEmail());
         Assert.assertEquals("about", "yes", user.getDescription());
         Assert.assertEquals("country", "Sweden", user.getCountry());
+        Assert.assertTrue("active_supporter", user.isActiveSupporter());
         Assert.assertEquals("avatar", "", user.getGravatar());
         Assert.assertEquals("url", "http://flattr.com", user.getUrl());
         Assert.assertNull("registered_at", user.getRegisteredAt());

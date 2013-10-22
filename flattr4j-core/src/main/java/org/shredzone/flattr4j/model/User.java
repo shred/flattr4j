@@ -53,10 +53,35 @@ public class User extends Resource implements UserId {
     }
 
     /**
-     * User id.
+     * User id. Use this for referencing an user at the Flattr API.
+     * <p>
+     * Note: At the moment, the user's login name is returned. In a future version, this
+     * may change to the user identifier.
      */
     @Override
     public String getUserId() {
+        return data.get("username");
+    }
+
+    /**
+     * Unique user identifier. Unlike the user id, this identifier cannot be changed.
+     * It cannot be used for API calls yet, but you should use it whenever your
+     * application needs a unique identifier.
+     *
+     * @since 2.8
+     */
+    public String getIdentifier() {
+        return data.get("id");
+    }
+
+    /**
+     * User login name. It is recommended that you use this method when you want to
+     * retrieve the user login name (e.g. for displaying it to the user). If you want to
+     * have a user reference for the Flattr API, use {@link #getUserId()} instead.
+     *
+     * @since 2.8
+     */
+    public String getUsername() {
         return data.get("username");
     }
 
@@ -131,6 +156,15 @@ public class User extends Resource implements UserId {
      */
     public String getGravatar() {
         return data.get("avatar");
+    }
+
+    /**
+     * {@code true} if the user can flattr other users, {@code false} if not.
+     *
+     * @since 2.8
+     */
+    public boolean isActiveSupporter() {
+        return data.getInt("active_supporter") == 1;
     }
 
     /**
