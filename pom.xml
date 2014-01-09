@@ -69,6 +69,7 @@
         <module>flattr4j-core</module>
         <module>flattr4j-web</module>
         <module>flattr4j-spring-social</module>
+        <module>flattr4j-android</module>
     </modules>
     <build>
         <plugins>
