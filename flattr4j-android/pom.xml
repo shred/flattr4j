@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- * * flattr4j - A Java library for Flattr * * Copyright (C) 2012 Richard 
-  "Shred" Körber * http://flattr4j.shredzone.org * * This program is free software: 
-  you can redistribute it and/or modify * it under the terms of the GNU General 
-  Public License / GNU Lesser * General Public License as published by the 
-  Free Software Foundation, * either version 3 of the License, or (at your 
-  option) any later version. * * Licensed under the Apache License, Version 
-  2.0 (the "License"); * you may not use this file except in compliance with 
-  the License. * * This program is distributed in the hope that it will be 
-  useful, * but WITHOUT ANY WARRANTY; without even the implied warranty of 
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * -->
+<!-- * 
+     * flattr4j - A Java library for Flattr 
+     * 
+     * Copyright (C) 2012 Richard "Shred" Körber 
+     * http://flattr4j.shredzone.org 
+     * 
+     * This program is free software: you can redistribute it and/or modify 
+     * it under the terms of the GNU General Public License / GNU Lesser 
+     * General Public License as published by the Free Software Foundation, 
+     * either version 3 of the License, or (at your option) any later version. 
+     * 
+     * Licensed under the Apache License, Version 2.0 (the "License"); 
+     * you may not use this file except in compliance with the License. 
+     * 
+     * This program is distributed in the hope that it will be useful, 
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+     * -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -17,6 +25,9 @@
     <artifactId>flattr4j</artifactId>
     <version>2.9-SNAPSHOT</version>
   </parent>
+  <properties>
+    <robospice.version>1.4.9</robospice.version>
+  </properties>
   <artifactId>flattr4j-android</artifactId>
   <name>flattr4j android</name>
   <description>Android Module of flattr4j</description>
@@ -35,6 +46,11 @@
       <artifactId>flattr4j-core</artifactId>
       <version>${parent.version}</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.octo.android.robospice</groupId>
+      <artifactId>robospice</artifactId>
+      <version>${robospice.version}</version>
     </dependency>
   </dependencies>
 </project>
