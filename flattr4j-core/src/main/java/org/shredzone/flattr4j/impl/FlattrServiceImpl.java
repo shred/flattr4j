@@ -44,6 +44,11 @@ import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserId;
+import org.shredzone.flattr4j.model.result.FlattrResult;
+import org.shredzone.flattr4j.model.result.ThingResult;
+import org.shredzone.flattr4j.model.result.ThingUpdateResult;
+import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl;
+import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl.Message;
 
 /**
  * Default implementation of {@link FlattrService}.
@@ -98,19 +103,28 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public void update(Thing thing) throws FlattrException {
-        if (thing == null)
-            throw new IllegalArgumentException("thing is required");
+        updateForResult(thing);
+    }
+    
 
-        FlattrObject update = thing.toUpdate();
+    @Override
+    public ThingUpdateResult updateForResult(Thing thing) throws FlattrException {
+      if (thing == null) {
+        throw new IllegalArgumentException("thing is required");
+      }
 
-        if (update != null) { // Thing was modified.
-            getConnector().create(RequestType.PATCH)
-                    .call("things/:id")
-                    .parameter("id", thing.getThingId())
-                    .rateLimit(lastRateLimit)
-                    .data(update)
-                    .result();
-        }
+      FlattrObject update = thing.toUpdate();
+      ThingUpdateResult result = null;
+      if (update != null) { // Thing was modified.
+          result =  new FlattrResultImpl(getConnector().create(RequestType.PATCH)
+                                          .call("things/:id")
+                                          .parameter("id", thing.getThingId())
+                                          .rateLimit(lastRateLimit)
+                                          .data(update)
+                                          .singleResult()
+                                        );
+      };
+      return result;
     }
 
     @Override
@@ -129,32 +143,50 @@ public class FlattrServiceImpl implements FlattrService {
     public void click(AutoSubmission submission) throws FlattrException {
         click(submission.toUrl());
     }
+    
+    @Override
+    public FlattrResult clickForResult(AutoSubmission submission) throws FlattrException {
+      return clickForResult(submission.toUrl());
+    }
 
     @Override
     public void click(String url) throws FlattrException {
-        if (url == null || url.length() == 0)
-            throw new IllegalArgumentException("url is required");
+        clickForResult(url);
+    }
+    
 
-        FlattrObject data = new FlattrObject();
-        data.put("url", url);
+    @Override
+    public FlattrResult clickForResult(String url) throws FlattrException {
+      if (url == null || url.length() == 0) {
+        throw new IllegalArgumentException("url is required");
+      }
 
-        getConnector().create(RequestType.POST)
-                        .call("flattr")
-                        .data(data)
-                        .rateLimit(lastRateLimit)
-                        .result();
+      FlattrObject data = new FlattrObject();
+      data.put("url", url);
+  
+      return new FlattrResultImpl(getConnector().create(RequestType.POST)
+                                    .call("flattr")
+                                    .data(data)
+                                    .rateLimit(lastRateLimit)
+                                    .singleResult()
+                                  );
     }
 
     @Override
     public void click(ThingId thingId) throws FlattrException {
-        if (thingId == null || thingId.getThingId().length() == 0)
-            throw new IllegalArgumentException("thingId is required");
+      clickForResult(thingId);
+    }
 
-        getConnector().create(RequestType.POST)
-                .call("things/:id/flattr")
-                .parameter("id", thingId.getThingId())
-                .rateLimit(lastRateLimit)
-                .result();
+    @Override
+    public FlattrResult clickForResult(ThingId thingId) throws FlattrException {
+      if (thingId == null || thingId.getThingId().length() == 0)
+        throw new IllegalArgumentException("thingId is required");
+      return new FlattrResultImpl(getConnector().create(RequestType.POST)
+                                    .call("things/:id/flattr")
+                                    .parameter("id", thingId.getThingId())
+                                    .rateLimit(lastRateLimit)
+                                    .singleResult()
+                                  );
     }
 
     @Override
@@ -490,15 +522,15 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public void subscribe(ThingId thingId) throws FlattrException {
+    public FlattrResult subscribe(ThingId thingId) throws FlattrException {
         if (thingId == null || thingId.getThingId().length() == 0)
             throw new IllegalArgumentException("thingId is required");
 
-        getConnector().create(RequestType.POST)
-                        .call("things/:id/subscriptions")
-                        .parameter("id", thingId.getThingId())
-                        .rateLimit(lastRateLimit)
-                        .result();
+        return new FlattrResultImpl(getConnector().create(RequestType.POST)
+                                                    .call("things/:id/subscriptions")
+                                                    .parameter("id", thingId.getThingId())
+                                                    .rateLimit(lastRateLimit)
+                                                    .singleResult());
     }
 
     @Override
@@ -515,25 +547,34 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public boolean toggleSubscription(ThingId thingId) throws FlattrException {
-        if (thingId == null || thingId.getThingId().length() == 0)
-            throw new IllegalArgumentException("thingId is required");
-
-        FlattrObject data = getConnector().create(RequestType.PUT)
-                        .call("things/:id/subscriptions")
-                        .parameter("id", thingId.getThingId())
-                        .rateLimit(lastRateLimit)
-                        .singleResult();
-
-        return "paused".equals(data.get("message"));
+      return toggleSubscriptionForResult(thingId).getMessage() == Message.PAUSED;
+    }
+    
+    @Override
+    public FlattrResult toggleSubscriptionForResult(ThingId thingId) throws FlattrException {
+      if (thingId == null || thingId.getThingId().length() == 0)
+        throw new IllegalArgumentException("thingId is required");
+      
+      return new FlattrResultImpl(getConnector().create(RequestType.PUT)
+                                            .call("things/:id/subscriptions")
+                                            .parameter("id", thingId.getThingId())
+                                            .rateLimit(lastRateLimit)
+                                            .singleResult());
+      
     }
 
     @Override
     public void pauseSubscription(ThingId thingId, boolean paused) throws FlattrException {
-        boolean current = toggleSubscription(thingId);
-
-        if (current != paused) {
-            toggleSubscription(thingId);
-        }
+      pauseSubscription(thingId, paused ? Message.PAUSED : Message.STARTED);
+    }
+    
+    @Override
+    public FlattrResult pauseSubscription(ThingId thingId, Message paused) throws FlattrException {
+      FlattrResult current = toggleSubscriptionForResult(thingId);
+      if( current.getMessage() != paused ) {
+        current = toggleSubscriptionForResult(thingId);
+      }
+      return current;
     }
 
     @Override
@@ -585,6 +626,29 @@ public class FlattrServiceImpl implements FlattrService {
         if (fullMode) {
             conn.query("full", "1");
         }
+    }
+
+    @Override
+    public ThingResult checkThingExistsByUrl(String url) throws FlattrException {
+      if (url == null || url.length() == 0)
+        throw new IllegalArgumentException("url is required");
+
+      FlattrObject data = getConnector().create()
+              .call("things/lookup/")
+              .query("url", url)
+              .rateLimit(lastRateLimit)
+              .singleResult();
+  
+      if (data.has("message") && "not_found".equals(data.get("message"))) {
+          return null;
+      }
+  
+      return new FlattrResultImpl(data);
+    }
+
+    @Override
+    public ThingResult checkThingExistsBySubmission(AutoSubmission url) throws FlattrException {
+      return checkThingExistsByUrl(url.getUrl());
     }
 
 }
