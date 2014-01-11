@@ -3,7 +3,7 @@ package org.shredzone.flattr4j.model.result;
 import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl.Message;
 
 /**
- * @author iulius
+ * @author tuxbox
  *
  */
 public interface ThingUpdateResult {

@@ -66,6 +66,7 @@ public class FlattrResultImpl extends Resource implements FlattrResult, ThingRes
   private transient String description;
   private transient String location;
   private transient Thing thing;
+  private transient String id;
   
   public FlattrResultImpl(FlattrObject data) {
     super(data);
@@ -100,7 +101,7 @@ public class FlattrResultImpl extends Resource implements FlattrResult, ThingRes
   @Override
   public String getLocation() {
     if( location == null ) {
-      location = data.get("location");
+      location = data.get("link");
     }
     return location;
   }
@@ -123,6 +124,14 @@ public class FlattrResultImpl extends Resource implements FlattrResult, ThingRes
   @Override
   public String getThingId() {
     return getThing().getThingId();
+  }
+
+  @Override
+  public String getId() {
+    if( id == null ) {
+      id = data.get("id");
+    }
+    return id;
   }
 
 }

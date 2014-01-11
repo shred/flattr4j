@@ -2,10 +2,22 @@ package org.shredzone.flattr4j.model.result;
 
 import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl.Message;
 
+/**
+ * 
+ * @author tuxbox
+ *
+ */
 public interface ThingResult {
 
-  /* (non-Javadoc)
-   * @see org.shredzone.flattr4j.model.result.FlattrResult#getMessage()
+  /**
+   * 
+   * @return
+   */
+  public abstract String getId();
+  
+  /**
+   * 
+   * @return
    */
   public abstract Message getMessage();
 
@@ -15,4 +27,10 @@ public interface ThingResult {
    */
   public abstract String getLocation();
 
+  /**
+   * 
+   * @return
+   */
+  public abstract String getDescription();
+  
 }
