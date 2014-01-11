@@ -1,4 +1,4 @@
-package src.main.java.org.shredzone.flattr4j.model.collection;
+package org.shredzone.flattr4j.model.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
