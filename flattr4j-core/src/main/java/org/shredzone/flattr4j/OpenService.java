@@ -34,6 +34,7 @@ import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
 import org.shredzone.flattr4j.model.UserId;
+import org.shredzone.flattr4j.model.result.ThingResult;
 
 /**
  * Service calls to the Flattr REST API which do not require authorization. However, some
@@ -79,7 +80,10 @@ public interface OpenService {
      * @return {@link Thing} of the URL that was found, {@code null} if nothing was found
      * @since 2.0
      */
+    @Deprecated
     Thing getThingByUrl(String url) throws FlattrException;
+    
+    ThingResult checkThingExistsByUrl(String url) throws FlattrException;
 
     /**
      * Gets a {@link Thing} by its autosubmit URL.
@@ -91,7 +95,10 @@ public interface OpenService {
      * @return {@link Thing} of the submission if found, {@code null} if nothing was found
      * @since 2.0
      */
+    @Deprecated
     Thing getThingBySubmission(AutoSubmission submission) throws FlattrException;
+    
+    ThingResult checkThingExistsBySubmission(AutoSubmission url) throws FlattrException;
 
     /**
      * Gets a list of {@link Thing} most recently submitted by the given user. This list

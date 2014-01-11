@@ -29,6 +29,9 @@ import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.model.ThingId;
 import org.shredzone.flattr4j.model.User;
+import org.shredzone.flattr4j.model.result.FlattrResult;
+import org.shredzone.flattr4j.model.result.ThingUpdateResult;
+import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl.Message;
 import org.shredzone.flattr4j.oauth.RequiredScope;
 import org.shredzone.flattr4j.oauth.Scope;
 
@@ -61,6 +64,9 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope(Scope.THING)
     void update(Thing thing) throws FlattrException;
+    
+    @RequiredScope(Scope.THING)
+    ThingUpdateResult updateForResult(Thing thing) throws FlattrException;
 
     /**
      * Deletes a Thing.
@@ -80,6 +86,9 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope(Scope.FLATTR)
     void click(ThingId thingId) throws FlattrException;
+    
+    @RequiredScope(Scope.FLATTR)
+    FlattrResult clickForResult(ThingId thingId) throws FlattrException;
 
     /**
      * Flattrs an {@link AutoSubmission}. If the submission has not been submitted to
@@ -90,6 +99,9 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope(Scope.FLATTR)
     void click(AutoSubmission submission) throws FlattrException;
+    
+    @RequiredScope(Scope.FLATTR)
+    FlattrResult clickForResult(AutoSubmission submission) throws FlattrException;
 
     /**
      * Flattrs a URL.
@@ -100,6 +112,9 @@ public interface FlattrService extends OpenService {
     @RequiredScope(Scope.FLATTR)
     void click(String url) throws FlattrException;
 
+    @RequiredScope(Scope.FLATTR)
+    FlattrResult clickForResult(String url) throws FlattrException;
+    
     /**
      * Subscribes a {@link Thing}.
      *
@@ -108,7 +123,7 @@ public interface FlattrService extends OpenService {
      * @since 2.6
      */
     @RequiredScope(Scope.FLATTR)
-    void subscribe(ThingId thingId) throws FlattrException;
+    FlattrResult subscribe(ThingId thingId) throws FlattrException;
 
     /**
      * Cancels subscription of a {@link Thing}.
@@ -220,12 +235,15 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope(Scope.FLATTR)
     boolean toggleSubscription(ThingId thingId) throws FlattrException;
+    
+    @RequiredScope(Scope.FLATTR)
+    FlattrResult toggleSubscriptionForResult(ThingId thingId) throws FlattrException;
 
     /**
      * Pauses or resumes a {@link Subscription}. If the subscription is already in the
      * desired state, nothing will happen.
      * <p>
-     * Note: There is currently no way to explicitely set the pause state of a
+     * Note: There is currently no way to explicitly set the pause state of a
      * subscription via Flattr API. flattr4j emulates this call by toggling the pause
      * state to get the current state, and if necessary, toggling it again to set the
      * subscription to the desired state (which means that the rate counter is incremented
@@ -240,5 +258,8 @@ public interface FlattrService extends OpenService {
      */
     @RequiredScope(Scope.FLATTR)
     void pauseSubscription(ThingId thingId, boolean paused) throws FlattrException;
+    
+    @RequiredScope(Scope.FLATTR)
+    FlattrResult pauseSubscription(ThingId thingId, Message paused) throws FlattrException;
 
 }
