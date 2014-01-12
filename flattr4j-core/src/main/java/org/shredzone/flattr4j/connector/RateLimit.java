@@ -42,6 +42,21 @@ public class RateLimit implements Serializable {
     }
 
     /**
+     * Copy constructor, creates a new {@link RateLimit} and copies the values of the
+     * given {@link RateLimit}.
+     *
+     * @param limit
+     *            {@link RateLimit} to be copied
+     * @since 2.9
+     */
+    public RateLimit(RateLimit limit) {
+        this.limit = limit.limit;
+        this.remaining = limit.remaining;
+        this.current = limit.current;
+        this.reset = limit.reset;
+    }
+
+    /**
      * @since 2.5
      */
     public RateLimit(FlattrObject data) {
