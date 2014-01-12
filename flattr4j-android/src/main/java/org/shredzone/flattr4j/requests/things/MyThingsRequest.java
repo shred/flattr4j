@@ -45,7 +45,7 @@ public class MyThingsRequest extends BaseAuthenticatedFlattrPagingRequest<ThingL
 
   @Override
   protected ThingList handleRequest(FlattrService service) throws FlattrException {
-    return new ThingList(service.getMyThings());
+    return new ThingList(service.getMyThings(getPageSize(), getPageCount()));
   }
   
 }

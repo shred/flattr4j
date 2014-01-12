@@ -71,7 +71,7 @@ public class MyFlattrsRequest extends BaseAuthenticatedFlattrPagingRequest<Flatt
 
   @Override
   protected FlattrList handleRequest(FlattrService service) throws FlattrException {
-    return new FlattrList(service.getMyFlattrs(getPageCount(), getPageSize()));
+    return new FlattrList(service.getMyFlattrs(getPageSize(), getPageCount()));
   }
 
 }

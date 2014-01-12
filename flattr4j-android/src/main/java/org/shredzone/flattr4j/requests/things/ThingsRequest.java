@@ -93,7 +93,7 @@ public class ThingsRequest extends BaseOpenFlattrPagingRequest<ThingList> {
     }
     List<Thing> things;
     if( userId == null ) {
-      things = service.getThings(userId, getPageCount(), getPageSize());
+      things = service.getThings(userId, getPageSize(), getPageCount());
     } else {
       things = service.getThings(thingIds);
     }

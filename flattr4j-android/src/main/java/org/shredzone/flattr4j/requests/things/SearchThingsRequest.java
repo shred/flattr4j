@@ -46,7 +46,7 @@ public class SearchThingsRequest extends BaseOpenSearchRequest<SearchResult> {
 
   @Override
   protected SearchResult handleRequest(OpenService service) throws FlattrException {
-    return service.searchThings(getSearchQuery(), getPageCount(), getPageSize());
+    return service.searchThings(getSearchQuery(), getPageSize(), getPageCount());
   }
 
 }

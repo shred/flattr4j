@@ -144,9 +144,9 @@ public class FlattrsRequest extends BaseOpenFlattrPagingRequest<FlattrList> {
       throw new FlattrException("Either a user or a thing needs to be provided to query a flattr list!");
     }
     if( user != null ) {
-      flattrs = service.getFlattrs((UserId)user);
+      flattrs = service.getFlattrs((UserId)user, getPageSize(), getPageCount());
     } else {
-      flattrs = service.getFlattrs((ThingId)thing);
+      flattrs = service.getFlattrs((ThingId)thing, getPageSize(), getPageCount());
     }
     return new FlattrList(flattrs);
   }
