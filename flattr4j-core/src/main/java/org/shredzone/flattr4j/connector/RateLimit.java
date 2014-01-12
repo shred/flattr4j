@@ -18,6 +18,7 @@
  */
 package org.shredzone.flattr4j.connector;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -28,7 +29,9 @@ import java.util.Date;
  *
  * @author Richard "Shred" Körber
  */
-public class RateLimit {
+public class RateLimit implements Serializable {
+    private static final long serialVersionUID = -4217480425094824497L;
+
     private Long limit;
     private Long remaining;
     private Long current;
