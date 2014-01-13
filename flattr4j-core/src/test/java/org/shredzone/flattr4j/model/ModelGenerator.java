@@ -26,6 +26,11 @@ import java.util.Date;
 import org.junit.Assert;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.connector.RateLimit;
+import org.shredzone.flattr4j.model.result.FlattrResult;
+import org.shredzone.flattr4j.model.result.ThingResult;
+import org.shredzone.flattr4j.model.result.ThingUpdateResult;
+import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl;
+import org.shredzone.flattr4j.model.result.impl.FlattrResultImpl.Message;
 
 /**
  * Generates and validates models.
@@ -69,6 +74,58 @@ public final class ModelGenerator {
         Date createdTest = new Date(1316697578000L);
         Assert.assertEquals("created", createdTest, flattr.getCreated());
     }
+    
+
+    /**
+     * Creates a {@link FlattrResult} instance.
+     *
+     * @param thingId
+     *   the id of the thing flattred, also identifying the test data
+     * @return {@link FlattrResult} instance
+     * @throws IOException
+     */
+    public static FlattrResult createFlattrResult(String thingId) throws IOException {
+      return new FlattrResultImpl(new FlattrObject(resourceToString("/flattr-result-" + thingId + ".json")));
+    }
+
+    /**
+     * Asserts that the given {@link FlattrResult} instance is equal to the one created by
+     * {@link #createFlattrResult(String)}.
+     *
+     * @param message
+     *   the expected message
+     * @param description
+     *   the expected description
+     * @param thingResource
+     *   the expected resource of the attached thing
+     * @param thingLink
+     *   the expected link of the attached thing
+     * @param thingId
+     *   the expected id of the attached thing
+     * @param thingFlattrs
+     *   the expected number of flattrs of the attached thing
+     * @param thingUrl
+     *   the expected URL of the attached thing
+     * @param thingTitle
+     *   the expected title of the attached thing
+     * @param thingImage
+     *   the expected image of the attached thing
+     * @param actual {@link FlattrResult} instance
+     */
+    public static void assertFlattrResult(Message message, String description, String thingResource, String thingLink, String thingId,
+        String thingFlattrs, String thingUrl, String thingTitle, String thingImage, FlattrResult actual) {
+      Assert.assertEquals(message, actual.getMessage());
+      Assert.assertEquals(description, actual.getDescription());
+      Thing actualThing = actual.getThing();
+      Assert.assertEquals(thingResource, actualThing.getResource());
+      Assert.assertEquals(thingLink, actualThing.getLink());
+      Assert.assertEquals(thingId, actualThing.getThingId());
+      Assert.assertEquals(thingId, actual.getThingId());
+      Assert.assertEquals(Integer.valueOf(thingFlattrs), (Integer)actualThing.getClicks());
+      Assert.assertEquals(thingUrl, actualThing.getUrl());
+      Assert.assertEquals(thingTitle, actualThing.getTitle());
+      Assert.assertEquals(thingImage, actualThing.getImage());
+    }
 
     /**
      * Creates a {@link Thing} instance.
@@ -109,6 +166,67 @@ public final class ModelGenerator {
         Assert.assertEquals("tags", "twitter", thing.getTags().get(0));
     }
 
+    /**
+     * Creates a {@link ThingResult} instance.
+     *
+     * @param id
+     *   the id of the thing, also identifying the test data
+     * @return {@link ThingResult} instance
+     * @throws IOException
+     */
+    public static ThingResult createThingResult(String id) throws IOException {
+      return new FlattrResultImpl(new FlattrObject(resourceToString("/thing-result-"+id+".json")));
+    }
+    
+    /**
+     * Asserts that the given {@link ThingResult} instance is equal to the one created by
+     * {@link #createThingResult(String)}.
+     * 
+     * @param expectedId
+     *   the expected id of the thing
+     * @param expectedMessage
+     *   the expected message of the thing
+     * @param expectedLocation
+     *   the expected location of the thing
+     * @param expectedDescription
+     *   the expected description of the thing
+     * @param actual
+     *   a {@link ThingResult} instance
+     */
+    public static void assertThingResult(String expectedId, Message expectedMessage, String expectedLocation, String expectedDescription, ThingResult actual) {
+      Assert.assertEquals(expectedId, actual.getId());
+      Assert.assertEquals(expectedMessage, actual.getMessage());
+      Assert.assertEquals(expectedLocation, actual.getLocation());
+      Assert.assertEquals(expectedDescription, actual.getDescription());
+    }
+
+    /**
+     * Creates a {@link ThingUpdateResult} instance.
+     * 
+     * @param testId
+     *   the id of the test case also used to identify the test data 
+     * @return a {@link ThingUpdateResult} instance
+     * @throws IOException
+     */
+    public static ThingUpdateResult createThingUpdateResult(String testId) throws IOException {
+      return new FlattrResultImpl(new FlattrObject(resourceToString("/thing-update-result-" + testId + ".json")));
+    }
+
+    /**
+     * Asserts that the given {@link ThingUpdateResult} instance is equal to the one created by
+     * {@link #createThingUpdateResult(String)}.
+     * 
+     * @param expectedMessage
+     *   the expected message of the result
+     * @param expectedDescription
+     *   the expected description of the result 
+     * @param actual the actual {@link ThingUpdateResult} instance
+     */
+    public static void assertThingUpdateResult(Message expectedMessage, String expectedDescription, ThingUpdateResult actual) {
+      Assert.assertEquals(expectedMessage, actual.getMessage());
+      Assert.assertEquals(expectedDescription, actual.getDescription());
+    }
+    
     /**
      * Creates a {@link User} instance.
      *
