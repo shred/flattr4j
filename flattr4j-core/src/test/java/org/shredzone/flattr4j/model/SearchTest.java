@@ -41,7 +41,6 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
  */
 public class SearchTest {
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testQueryModel() {
         SearchQuery sq = new SearchQuery();
@@ -60,10 +59,6 @@ public class SearchTest {
         Assert.assertEquals("foobar & blafoo", sq.getTags());
         Assert.assertEquals("http://flattr4j.shredzone.org", sq.getUrl());
         Assert.assertEquals(Order.TREND, sq.getSort());
-
-        // Also assert deprecated methods...
-        Assert.assertEquals("text", sq.getCategory().getCategoryId());
-        Assert.assertEquals("en_UK", sq.getLanguage().getLanguageId());
 
         Iterator<CategoryId> itC = sq.getCategories().iterator();
         Assert.assertEquals("text", itC.next().getCategoryId());

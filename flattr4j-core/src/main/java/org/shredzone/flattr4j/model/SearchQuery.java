@@ -69,29 +69,6 @@ public class SearchQuery implements Serializable {
     public void setUrl(String url)              { this.url = url; }
 
     /**
-     * Language to search for. If multiple categories are set, only the first
-     * one is returned.
-     *
-     * @deprecated since 2.5. Use {@link #getLanguages()} instead.
-     */
-    @Deprecated
-    public LanguageId getLanguage()             {
-        return (!languageList.isEmpty() ? languageList.iterator().next() : null);
-    }
-
-    /**
-     * Sets a single language to search for. If other languages were set, they will be
-     * replaced.
-     *
-     * @deprecated since 2.5. Use {@link #getLanguages()}{@code .add()} instead.
-     */
-    @Deprecated
-    public void setLanguage(LanguageId language) {
-        languageList.clear();
-        addLanguage(language);
-    }
-
-    /**
      * Adds a language to search for.
      * <p>
      * If the collection has been changed via {@link #setLanguage(LanguageId)}, it
@@ -141,29 +118,6 @@ public class SearchQuery implements Serializable {
      */
     public Order getSort()                      { return sort; }
     public void setSort(Order sort)             { this.sort = sort; }
-
-    /**
-     * Returns the Category to search for. If multiple categories are set, only the first
-     * one is returned.
-     *
-     * @deprecated since 2.5. Use {@link #getCategories()} instead.
-     */
-    @Deprecated
-    public CategoryId getCategory()             {
-        return (!categoryList.isEmpty() ? categoryList.iterator().next(): null);
-    }
-
-    /**
-     * Sets a single category to search for. If other categories were set, they will be
-     * replaced.
-     *
-     * @deprecated since 2.5. Use {@link #getCategories()}{@code .add()} instead.
-     */
-    @Deprecated
-    public void setCategory(CategoryId category) {
-        categoryList.clear();
-        addCategory(category);
-    }
 
     /**
      * Adds a category to search for.
