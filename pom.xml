@@ -67,6 +67,7 @@
     </properties>
     <modules>
         <module>flattr4j-core</module>
+        <module>flattr4j-async</module>
         <module>flattr4j-web</module>
         <module>flattr4j-spring-social</module>
     </modules>

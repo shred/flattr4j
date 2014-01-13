@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    flattr4j - A Java library for Flattr
+
+    Copyright (C) 2014 Richard "Shred" Körber
+      http://flattr4j.shredzone.org
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License / GNU Lesser
+    General Public License as published by the Free Software Foundation,
+    either version 3 of the License, or (at your option) any later version.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+-->
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  <publishDate position="right"/>
+  <version position="right"/>
+  <body>
+    <links>
+      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+    </links>
+    <breadcrumbs>
+      <item name="shredzone.org" href="http://www.shredzone.org"/>
+      <item name="flattr4j" href="../index.html"/>
+      <item name="flattr4j-async" href="index.html"/>
+    </breadcrumbs>
+    <menu name="Project">
+      <item name="Introduction" href="index.html"/>
+      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+    </menu>
+    <menu ref="reports"/>
+  </body>
+</project>
+
