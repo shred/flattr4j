@@ -85,12 +85,30 @@ public final class FlattrFactory {
     }
 
     /**
+     * Creates a {@link FlattrService} that is only able to execute commands without
+     * scope.
+     * <p>
+     * This is used to merge {@link FlattrService} and {@link OpenService} in the future.
+     *
+     * @return Created {@link FlattrService}
+     * @since 2.9
+     */
+    public FlattrService createFlattrService() {
+        return new FlattrServiceImpl(new FlattrConnector());
+    }
+
+    /**
      * Creates an {@link OpenService}.
      *
      * @return Created {@link OpenService}
+     * @deprecated Use {@link #createFlattrService()} instead, and replace all your
+     *             references to {@link OpenService} with {@link FlattrService}.
+     *             {@link OpenService} will be merged with {@link FlattrService} in
+     *             a future version.
      */
+    @Deprecated
     public OpenService createOpenService() {
-        return new FlattrServiceImpl(new FlattrConnector());
+        return createFlattrService();
     }
 
 }

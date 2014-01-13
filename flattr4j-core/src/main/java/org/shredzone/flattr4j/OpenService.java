@@ -40,6 +40,13 @@ import org.shredzone.flattr4j.model.UserId;
  * calls may return more details for authorized users.
  * <p>
  * All calls will decrement the remaining rate by one, unless noted otherwise.
+ * <p>
+ * <strong>Note:</strong> Distinguishing between {@link FlattrService} and
+ * {@link OpenService} has historical reasons. In a future release, all
+ * {@link OpenService} methods will move to {@link FlattrService}, and {@link OpenService}
+ * will then be removed. To be prepared for this change, use {@link FlattrService} instead
+ * of {@link OpenService}, and invoke {@link FlattrFactory#createFlattrService()} for
+ * creating a {@link FlattrService} without access token.
  *
  * @author Richard "Shred" Körber
  */
@@ -245,7 +252,10 @@ public interface OpenService {
     RateLimit getCurrentRateLimit() throws FlattrException;
 
     /**
-     * Gets the rate limit and remaining rate returned by the last API call.
+     * Gets a {@link RateLimit} instance that reflects the rate limit and remaining rate
+     * returned by the last API call.
+     * <p>
+     * This method does not block and does not connect to the network.
      *
      * @return Rate limit.
      * @since 2.0
