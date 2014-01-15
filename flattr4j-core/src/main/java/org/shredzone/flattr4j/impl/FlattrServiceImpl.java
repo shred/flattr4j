@@ -36,6 +36,7 @@ import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Language;
+import org.shredzone.flattr4j.model.MiniThing;
 import org.shredzone.flattr4j.model.SearchQuery;
 import org.shredzone.flattr4j.model.SearchResult;
 import org.shredzone.flattr4j.model.Submission;
@@ -127,34 +128,53 @@ public class FlattrServiceImpl implements FlattrService {
 
     @Override
     public void click(AutoSubmission submission) throws FlattrException {
-        click(submission.toUrl());
+        flattr(submission);
     }
 
     @Override
     public void click(String url) throws FlattrException {
+        flattr(url);
+    }
+
+    @Override
+    public void click(ThingId thingId) throws FlattrException {
+        flattr(thingId);
+    }
+
+    @Override
+    public MiniThing flattr(AutoSubmission submission) throws FlattrException {
+        return flattr(submission.toUrl());
+    }
+
+    @Override
+    public MiniThing flattr(String url) throws FlattrException {
         if (url == null || url.length() == 0)
             throw new IllegalArgumentException("url is required");
 
         FlattrObject data = new FlattrObject();
         data.put("url", url);
 
-        getConnector().create(RequestType.POST)
-                        .call("flattr")
-                        .data(data)
-                        .rateLimit(lastRateLimit)
-                        .result();
+        FlattrObject result = getConnector().create(RequestType.POST)
+                .call("flattr")
+                .data(data)
+                .rateLimit(lastRateLimit)
+                .singleResult();
+
+        return new MiniThing(result.getFlattrObject("thing"));
     }
 
     @Override
-    public void click(ThingId thingId) throws FlattrException {
+    public MiniThing flattr(ThingId thingId) throws FlattrException {
         if (thingId == null || thingId.getThingId().length() == 0)
             throw new IllegalArgumentException("thingId is required");
 
-        getConnector().create(RequestType.POST)
+        FlattrObject result = getConnector().create(RequestType.POST)
                 .call("things/:id/flattr")
                 .parameter("id", thingId.getThingId())
                 .rateLimit(lastRateLimit)
-                .result();
+                .singleResult();
+
+        return new MiniThing(result.getFlattrObject("thing"));
     }
 
     @Override
