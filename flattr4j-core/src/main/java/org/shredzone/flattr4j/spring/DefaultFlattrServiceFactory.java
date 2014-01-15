@@ -64,8 +64,9 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
     }
 
     @Override
+    @Deprecated
     public OpenService getOpenService() {
-        return FlattrFactory.getInstance().createOpenService();
+        return FlattrFactory.getInstance().createFlattrService();
     }
 
     @Override
