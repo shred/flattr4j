@@ -19,39 +19,39 @@
 package org.shredzone.flattr4j.async.thing;
 
 import org.shredzone.flattr4j.FlattrService;
+import org.shredzone.flattr4j.async.AbstractFlattrCallable;
 import org.shredzone.flattr4j.async.FlattrCallable;
-import org.shredzone.flattr4j.async.VoidFlattrCallable;
-import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.AutoSubmission;
+import org.shredzone.flattr4j.model.MiniThing;
 import org.shredzone.flattr4j.model.ThingId;
 
 /**
- * {@link FlattrCallable} for invoking {@link FlattrService#click(ThingId)},
- * {@link FlattrService#click(String)} or {@link FlattrService#click(AutoSubmission)}
+ * {@link FlattrCallable} for invoking {@link FlattrService#flattr(ThingId)},
+ * {@link FlattrService#flattr(String)} or {@link FlattrService#flattr(AutoSubmission)}
  *
  * @author Iulius Gutberlet
  * @author Richard "Shred" Körber
  */
-public class ClickMethod extends VoidFlattrCallable {
+public class FlattrMethod extends AbstractFlattrCallable<MiniThing> {
     private static final long serialVersionUID = 8054668403264619223L;
 
     private final ThingId thingId;
     private final String url;
     private final AutoSubmission submission;
 
-    public ClickMethod(ThingId thingId) {
+    public FlattrMethod(ThingId thingId) {
         this(thingId, null, null);
     }
 
-    public ClickMethod(String url) {
+    public FlattrMethod(String url) {
         this(null, url, null);
     }
 
-    public ClickMethod(AutoSubmission submission) {
+    public FlattrMethod(AutoSubmission submission) {
         this(null, null, submission);
     }
 
-    private ClickMethod(ThingId thingId, String url, AutoSubmission submission) {
+    private FlattrMethod(ThingId thingId, String url, AutoSubmission submission) {
         if (thingId == null && url == null && submission == null) {
             throw new IllegalArgumentException("parameter must not be null");
         }
@@ -61,13 +61,13 @@ public class ClickMethod extends VoidFlattrCallable {
     }
 
     @Override
-    public void execute(FlattrService service) throws FlattrException {
+    public MiniThing call(FlattrService service) throws Exception {
         if (thingId != null) {
-            service.click(thingId);
+            return service.flattr(thingId);
         } else if (url != null) {
-            service.click(url);
+            return service.flattr(url);
         } else {
-            service.click(submission);
+            return service.flattr(submission);
         }
     }
 
