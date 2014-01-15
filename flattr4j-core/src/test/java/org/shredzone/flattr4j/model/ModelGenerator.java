@@ -110,6 +110,32 @@ public final class ModelGenerator {
     }
 
     /**
+     * Creates a {@link MiniThing} instance.
+     *
+     * @return {@link MiniThing} instance
+     */
+    public static MiniThing createMiniThing() throws IOException {
+        return new MiniThing(new FlattrObject(resourceToString("/minithing.json")));
+    }
+
+    /**
+     * Asserts that the given {@link MiniThing} instance is equal to the one created by
+     * {@link #createMiniThing()}.
+     *
+     * @param thing
+     *            {@link MiniThing} instance
+     */
+    public static void assertMiniThing(MiniThing thing) {
+        Assert.assertEquals("resource", "https://api.flattr.com/rest/v2/things/423405", thing.getResource());
+        Assert.assertEquals("link", "https://flattr.com/thing/423405", thing.getLink());
+        Assert.assertEquals("id", "423405", thing.getThingId());
+        Assert.assertEquals("url", "http://blog.flattr.net/2011/10/api-v2-beta-out-whats-changed/", thing.getUrl());
+        Assert.assertEquals("flattrs", 3, thing.getClicks());
+        Assert.assertEquals("title", "API v2 beta out - what's changed?", thing.getTitle());
+        Assert.assertEquals("image", "https://flattr.com/thing/image/4/2/3/4/0/5/medium.png", thing.getImage());
+    }
+
+    /**
      * Creates a {@link User} instance.
      *
      * @return {@link User} instance

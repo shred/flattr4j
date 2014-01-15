@@ -39,7 +39,9 @@ public interface FlattrServiceFactory {
      * Creates a new {@link OpenService} instance.
      *
      * @return {@link OpenService} instance. Each invocation creates a new instance.
+     * @deprecated Use {@link #getFlattrService()} instead
      */
+    @Deprecated
     OpenService getOpenService();
 
     /**

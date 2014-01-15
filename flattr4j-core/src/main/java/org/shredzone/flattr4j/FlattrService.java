@@ -24,6 +24,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Activity;
 import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.Flattr;
+import org.shredzone.flattr4j.model.MiniThing;
 import org.shredzone.flattr4j.model.Submission;
 import org.shredzone.flattr4j.model.Subscription;
 import org.shredzone.flattr4j.model.Thing;
@@ -77,7 +78,9 @@ public interface FlattrService extends OpenService {
      *
      * @param thingId
      *            {@link ThingId} to flattr
+     * @deprecated use {@link #flattr(ThingId)} instead
      */
+    @Deprecated
     @RequiredScope(Scope.FLATTR)
     void click(ThingId thingId) throws FlattrException;
 
@@ -87,7 +90,9 @@ public interface FlattrService extends OpenService {
      *
      * @param submission
      *            {@link AutoSubmission} to flattr
+     * @deprecated use {@link #flattr(AutoSubmission)} instead
      */
+    @Deprecated
     @RequiredScope(Scope.FLATTR)
     void click(AutoSubmission submission) throws FlattrException;
 
@@ -96,9 +101,48 @@ public interface FlattrService extends OpenService {
      *
      * @param url
      *            URL to flattr
+     * @deprecated use {@link #flattr(String)} instead
      */
+    @Deprecated
     @RequiredScope(Scope.FLATTR)
     void click(String url) throws FlattrException;
+
+    /**
+     * Flattrs a Thing. This means that the Thing is flattr-ed by the associated user.
+     *
+     * @param thingId
+     *            {@link ThingId} to flattr
+     * @return {@link MiniThing} of the flattr-ed thing (containing an updated click
+     *         count)
+     * @since 2.9
+     */
+    @RequiredScope(Scope.FLATTR)
+    MiniThing flattr(ThingId thingId) throws FlattrException;
+
+    /**
+     * Flattrs an {@link AutoSubmission}. If the submission has not been submitted to
+     * Flattr yet, it will automatically be submitted before.
+     *
+     * @param submission
+     *            {@link AutoSubmission} to flattr
+     * @return {@link MiniThing} of the flattr-ed thing (containing an updated click
+     *         count)
+     * @since 2.9
+     */
+    @RequiredScope(Scope.FLATTR)
+    MiniThing flattr(AutoSubmission submission) throws FlattrException;
+
+    /**
+     * Flattrs a URL.
+     *
+     * @param url
+     *            URL to flattr
+     * @return {@link MiniThing} of the flattr-ed thing (containing an updated click
+     *         count)
+     * @since 2.9
+     */
+    @RequiredScope(Scope.FLATTR)
+    MiniThing flattr(String url) throws FlattrException;
 
     /**
      * Subscribes a {@link Thing}.
