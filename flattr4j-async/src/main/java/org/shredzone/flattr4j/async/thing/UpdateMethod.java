@@ -32,11 +32,18 @@ import org.shredzone.flattr4j.model.Thing;
 public class UpdateMethod extends VoidFlattrCallable {
     private static final long serialVersionUID = 5092656849988342360L;
 
-    private final Thing thing;
+    private Thing thing;
+
+    public UpdateMethod() {
+        // default constructor
+    }
 
     public UpdateMethod(Thing thing) {
         this.thing = thing;
     }
+
+    public Thing getThing()                     { return thing; }
+    public void setThing(Thing thing)           { this.thing = thing; }
 
     @Override
     public void execute(FlattrService service) throws Exception {

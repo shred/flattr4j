@@ -37,23 +37,31 @@ import org.shredzone.flattr4j.model.UserId;
 public class GetFlattrsMethod extends PaginatedFlattrCallable<List<Flattr>> {
     private static final long serialVersionUID = 9025446600337597880L;
 
-    private final ThingId thingId;
-    private final UserId userId;
+    private ThingId thingId;
+    private UserId userId;
+
+    public GetFlattrsMethod() {
+        // default constructor
+    }
 
     public GetFlattrsMethod(ThingId thingId) {
-        this(thingId, null);
+        setThingId(thingId);
     }
 
     public GetFlattrsMethod(UserId userId) {
-        this(null, userId);
+        setUserId(userId);
     }
 
-    private GetFlattrsMethod(ThingId thingId, UserId userId) {
-        if (thingId == null && userId == null) {
-            throw new IllegalArgumentException("parameter must not be null");
-        }
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId) {
         this.thingId = thingId;
+        this.userId = null;
+    }
+
+    public UserId getUserId()                   { return userId; }
+    public void setUserId(UserId userId) {
         this.userId = userId;
+        this.thingId = null;
     }
 
     @Override

@@ -33,11 +33,18 @@ import org.shredzone.flattr4j.model.UserId;
 public class GetUserMethod extends AbstractFlattrCallable<User> {
     private static final long serialVersionUID = 3579249907948438906L;
 
-    private final UserId userId;
+    private UserId userId;
+
+    public GetUserMethod() {
+        // default constructor
+    }
 
     public GetUserMethod(UserId userId) {
         this.userId = userId;
     }
+
+    public UserId getUserId()                   { return userId; }
+    public void setUserId(UserId userId)        { this.userId = userId; }
 
     @Override
     public User call(FlattrService service) throws Exception {

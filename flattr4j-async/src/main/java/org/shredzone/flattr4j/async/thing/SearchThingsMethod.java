@@ -34,11 +34,18 @@ import org.shredzone.flattr4j.model.SearchResult;
 public class SearchThingsMethod extends PaginatedFlattrCallable<SearchResult> {
     private static final long serialVersionUID = 732638938134088927L;
 
-    private final SearchQuery query;
+    private SearchQuery query;
+
+    public SearchThingsMethod() {
+        // default constructor
+    }
 
     public SearchThingsMethod(SearchQuery query) {
         this.query = query;
     }
+
+    public SearchQuery getSearchQuery()         { return query; }
+    public void setSearchQuery(SearchQuery query) { this.query = query; }
 
     @Override
     public SearchResult call(FlattrService service, Integer count, Integer page)

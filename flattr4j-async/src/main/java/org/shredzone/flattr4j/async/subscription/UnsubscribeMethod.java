@@ -32,11 +32,18 @@ import org.shredzone.flattr4j.model.ThingId;
 public class UnsubscribeMethod extends VoidFlattrCallable {
     private static final long serialVersionUID = -2121945008423213182L;
 
-    private final ThingId thingId;
+    private ThingId thingId;
+
+    public UnsubscribeMethod() {
+        // default constructor
+    }
 
     public UnsubscribeMethod(ThingId thingId) {
         this.thingId = thingId;
     }
+
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId)     { this.thingId = thingId; }
 
     @Override
     public void execute(FlattrService service) throws Exception {

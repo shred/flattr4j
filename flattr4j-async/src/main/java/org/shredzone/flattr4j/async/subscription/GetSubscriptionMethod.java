@@ -33,11 +33,18 @@ import org.shredzone.flattr4j.model.ThingId;
 public class GetSubscriptionMethod extends AbstractFlattrCallable<Subscription> {
     private static final long serialVersionUID = 5818269567756230088L;
 
-    private final ThingId thingId;
+    private ThingId thingId;
+
+    public GetSubscriptionMethod() {
+        // default constructor
+    }
 
     public GetSubscriptionMethod(ThingId thingId) {
         this.thingId = thingId;
     }
+
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId)     { this.thingId = thingId; }
 
     @Override
     public Subscription call(FlattrService service) throws Exception {

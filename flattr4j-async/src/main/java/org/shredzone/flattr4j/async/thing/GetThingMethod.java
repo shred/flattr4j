@@ -37,29 +37,45 @@ import org.shredzone.flattr4j.model.ThingId;
 public class GetThingMethod extends AbstractFlattrCallable<Thing> {
     private static final long serialVersionUID = 3009657689598484152L;
 
-    private final ThingId thingId;
-    private final String url;
-    private final AutoSubmission submission;
+    private ThingId thingId;
+    private String url;
+    private AutoSubmission submission;
+
+    public GetThingMethod() {
+        // default constructor
+    }
 
     public GetThingMethod(ThingId thingId) {
-        this(thingId, null, null);
+        setThingId(thingId);
     }
 
     public GetThingMethod(String url) {
-        this(null, url, null);
+        setUrl(url);
     }
 
     public GetThingMethod(AutoSubmission submission) {
-        this(null, null, submission);
+        setAutoSubmission(submission);
     }
 
-    private GetThingMethod(ThingId thingId, String url, AutoSubmission submission) {
-        if (thingId == null && url == null && submission == null) {
-            throw new IllegalArgumentException("parameter must not be null");
-        }
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId) {
         this.thingId = thingId;
+        this.url = null;
+        this.submission = null;
+    }
+
+    public String getUrl()                      { return url; }
+    public void setUrl(String url) {
         this.url = url;
+        this.submission = null;
+        this.thingId = null;
+    }
+
+    public AutoSubmission getAutoSubmission()   { return submission; }
+    public void setAutoSubmission(AutoSubmission submission) {
         this.submission = submission;
+        this.thingId = null;
+        this.url = null;
     }
 
     @Override

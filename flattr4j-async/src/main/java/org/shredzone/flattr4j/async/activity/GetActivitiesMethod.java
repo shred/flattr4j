@@ -36,13 +36,23 @@ import org.shredzone.flattr4j.model.UserId;
 public class GetActivitiesMethod extends AbstractFlattrCallable<List<Activity>> {
     private static final long serialVersionUID = -7513017427659726009L;
 
-    private final UserId userId;
-    private final Activity.Type type;
+    private UserId userId;
+    private Activity.Type type;
+
+    public GetActivitiesMethod() {
+        // default constructor
+    }
 
     public GetActivitiesMethod(UserId userId, Activity.Type type) {
         this.userId = userId;
         this.type = type;
     }
+
+    public UserId getUserId()                   { return userId; }
+    public void setUserId(UserId userId)        { this.userId = userId; }
+
+    public Activity.Type getType()              { return type; }
+    public void setType(Activity.Type type)     { this.type = type; }
 
     @Override
     public List<Activity> call(FlattrService service) throws Exception {

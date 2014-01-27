@@ -33,13 +33,23 @@ import org.shredzone.flattr4j.model.ThingId;
 public class PauseSubscriptionMethod extends VoidFlattrCallable {
     private static final long serialVersionUID = -2431958229246009328L;
 
-    private final ThingId thingId;
-    private final boolean paused;
+    private ThingId thingId;
+    private boolean paused;
+
+    public PauseSubscriptionMethod() {
+        // default constructor
+    }
 
     public PauseSubscriptionMethod(ThingId thingId, boolean paused) {
         this.thingId = thingId;
         this.paused = paused;
     }
+
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId)     { this.thingId = thingId; }
+
+    public boolean isPaused()                   { return paused; }
+    public void setPaused(boolean paused)       { this.paused = paused; }
 
     @Override
     public void execute(FlattrService service) throws Exception {

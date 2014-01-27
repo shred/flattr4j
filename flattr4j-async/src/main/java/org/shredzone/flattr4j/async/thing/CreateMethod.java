@@ -33,11 +33,18 @@ import org.shredzone.flattr4j.model.ThingId;
 public class CreateMethod extends AbstractFlattrCallable<ThingId> {
     private static final long serialVersionUID = 5156451564572525762L;
 
-    private final Submission submission;
+    private Submission submission;
+
+    public CreateMethod() {
+        // default constructor
+    }
 
     public CreateMethod(Submission submission) {
         this.submission = submission;
     }
+
+    public Submission getSubmission()           { return submission; }
+    public void setSubmission(Submission submission) { this.submission = submission; }
 
     @Override
     public ThingId call(FlattrService service) throws Exception {

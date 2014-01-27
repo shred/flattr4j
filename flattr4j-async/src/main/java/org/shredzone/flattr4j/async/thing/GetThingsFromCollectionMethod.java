@@ -36,18 +36,18 @@ import org.shredzone.flattr4j.model.ThingId;
 public class GetThingsFromCollectionMethod extends AbstractFlattrCallable<List<Thing>> {
     private static final long serialVersionUID = -5884311517495488349L;
 
-    private final Collection<ThingId> thingIds;
+    private Collection<ThingId> thingIds;
 
-    /**
-     * <p>
-     * <strong>Note</strong> that the collection is not copied! Do not modify the
-     * collection until the Flattr method has actually been executed.
-     *
-     * @param thingIds
-     */
+    public GetThingsFromCollectionMethod() {
+        // default constructor
+    }
+
     public GetThingsFromCollectionMethod(Collection<ThingId> thingIds) {
         this.thingIds = thingIds;
     }
+
+    public Collection<ThingId> getThingIds()    { return thingIds; }
+    public void setThingIds(Collection<ThingId> thingIds) { this.thingIds = thingIds; }
 
     @Override
     public List<Thing> call(FlattrService service) throws Exception {

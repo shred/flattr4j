@@ -32,11 +32,18 @@ import org.shredzone.flattr4j.model.ThingId;
 public class DeleteMethod extends VoidFlattrCallable {
     private static final long serialVersionUID = -2945785795008272345L;
 
-    private final ThingId thingId;
+    private ThingId thingId;
+
+    public DeleteMethod() {
+        // default constructor
+    }
 
     public DeleteMethod(ThingId thingId) {
         this.thingId = thingId;
     }
+
+    public ThingId getThingId()                 { return thingId; }
+    public void setThingId(ThingId thingId)     { this.thingId = thingId; }
 
     @Override
     public void execute(FlattrService service) throws Exception {
