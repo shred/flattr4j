@@ -35,6 +35,7 @@ public abstract class AbstractFlattrCallable<R> implements FlattrCallable<R> {
     private AccessToken token;
     private boolean full;
     private RateLimit rateLimit;
+    private R result;
 
     @Override
     public void setAccessToken(AccessToken token) {
@@ -90,9 +91,14 @@ public abstract class AbstractFlattrCallable<R> implements FlattrCallable<R> {
         rateLimit = null;
         FlattrService service = createFlattrService(token);
         service.setFullMode(full);
-        R result = call(service);
+        result = call(service);
         rateLimit = new RateLimit(service.getLastRateLimit());
         return result;
     }
+
+    @Override
+    public R getResult() {
+        return result;
+    };
 
 }

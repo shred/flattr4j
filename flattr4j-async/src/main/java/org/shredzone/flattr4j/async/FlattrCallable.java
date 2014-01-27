@@ -47,4 +47,9 @@ public interface FlattrCallable<R> extends Callable<R>, Serializable {
      */
     void setAccessToken(String token);
 
+    /**
+     * Gets the result of the last call.
+     */
+    R getResult();
+
 }
