@@ -18,7 +18,9 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.hasToString;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.model.AutoSubmission;
 import org.shredzone.flattr4j.model.User;
@@ -43,13 +45,11 @@ public class StaticButtonBuilderTest {
         StaticButtonBuilder builder = new StaticButtonBuilder();
         builder.thing("https://flattr.com/thing/123546/a-demo-thing");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\">"
                 + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
                 + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
-                + "</a>",
-                builder.toString()
-        );
+                + "</a>"));
     }
 
     @Test
@@ -58,13 +58,11 @@ public class StaticButtonBuilderTest {
         builder.thing("https://flattr.com/thing/123546/a-demo-thing");
         builder.badge(BadgeType.SMALL);
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\">"
                 + "<img src=\"http://api.flattr.com/button/flattr-badge-small.png\""
                 + " width=\"16\" height=\"16\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
-                + "</a>",
-                builder.toString()
-        );
+                + "</a>"));
     }
 
     @Test
@@ -73,14 +71,12 @@ public class StaticButtonBuilderTest {
         builder.thing("https://flattr.com/thing/123546/a-demo-thing");
         builder.style("display:none;").styleClass("mybutton");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"mybutton\" style=\"display:none;\""
                 + " href=\"https://flattr.com/thing/123546/a-demo-thing\">"
                 + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
                 + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
-                + "</a>",
-                builder.toString()
-        );
+                + "</a>"));
     }
 
     @Test
@@ -90,14 +86,12 @@ public class StaticButtonBuilderTest {
         builder.attribute("target", "_blank");
         builder.attribute("onclick", "window.alert(\"Hello World\")");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a href=\"https://flattr.com/thing/123546/a-demo-thing\""
                 + " onclick=\"window.alert(&quot;Hello World&quot;)\" target=\"_blank\">"
                 + "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\""
                 + " width=\"93\" height=\"20\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" />"
-                + "</a>",
-                builder.toString()
-        );
+                + "</a>"));
     }
 
     @Test
@@ -110,14 +104,12 @@ public class StaticButtonBuilderTest {
         StaticButtonBuilder builder = new StaticButtonBuilder();
         builder.thing(submission);
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a href=\"https://flattr.com/submit/auto?user_id=shred&amp;" +
                 "url=http%3A%2F%2Fwww.shredzone.org&amp;tags=Site\">" +
                 "<img src=\"http://api.flattr.com/button/flattr-badge-large.png\"" +
                 " width=\"93\" height=\"20\"" +
-                " alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a>",
-                builder.toString()
-        );
+                " alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a>"));
     }
 
 }

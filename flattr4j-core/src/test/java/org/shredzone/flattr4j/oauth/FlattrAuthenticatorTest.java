@@ -18,9 +18,11 @@
  */
 package org.shredzone.flattr4j.oauth;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import java.util.EnumSet;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 
@@ -39,7 +41,7 @@ public class FlattrAuthenticatorTest {
         auth.getScope().add(Scope.THING);
 
         String url = auth.authenticate("myState");
-        Assert.assertEquals("https://flattr.com/oauth/authorize?response_type=code&client_id=ck-abc&scope=flattr+thing&state=myState", url);
+        assertThat(url, is("https://flattr.com/oauth/authorize?response_type=code&client_id=ck-abc&scope=flattr+thing&state=myState"));
     }
 
     @Test
@@ -48,19 +50,19 @@ public class FlattrAuthenticatorTest {
         FlattrAuthenticator auth = new FlattrAuthenticator(ck);
 
         auth.getScope().add(Scope.FLATTR);
-        Assert.assertEquals("flattr", auth.buildScopeString());
+        assertThat(auth.buildScopeString(), is("flattr"));
 
         auth.getScope().add(Scope.THING);
-        Assert.assertEquals("flattr thing", auth.buildScopeString());
+        assertThat(auth.buildScopeString(), is("flattr thing"));
 
         auth.getScope().clear();
-        Assert.assertEquals("", auth.buildScopeString());
+        assertThat(auth.buildScopeString(), isEmptyString());
 
         auth.setScope(EnumSet.allOf(Scope.class));
-        Assert.assertEquals("flattr thing email extendedread", auth.buildScopeString());
+        assertThat(auth.buildScopeString(), is("flattr thing email extendedread"));
 
         auth.setScope(EnumSet.noneOf(Scope.class));
-        Assert.assertEquals("", auth.buildScopeString());
+        assertThat(auth.buildScopeString(), isEmptyString());
     }
 
 }

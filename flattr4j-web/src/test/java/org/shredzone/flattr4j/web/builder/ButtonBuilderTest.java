@@ -18,7 +18,9 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.hasToString;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
@@ -45,10 +47,8 @@ public class ButtonBuilderTest {
         ButtonBuilder builder = new ButtonBuilder();
         builder.url("http://example.com/page/123");
 
-        Assert.assertEquals(
-                "<a class=\"FlattrButton\" href=\"http://example.com/page/123\"></a>",
-                builder.toString()
-        );
+        assertThat(builder, hasToString(
+            "<a class=\"FlattrButton\" href=\"http://example.com/page/123\"></a>"));
     }
 
     @Test
@@ -57,11 +57,9 @@ public class ButtonBuilderTest {
         builder.url("http://example.com/page/123");
         builder.style("display:none;").styleClass("mybutton");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
-                + " href=\"http://example.com/page/123\"></a>",
-                builder.toString()
-        );
+                + " href=\"http://example.com/page/123\"></a>"));
     }
 
     @Test
@@ -79,14 +77,12 @@ public class ButtonBuilderTest {
         builder.revsharekey("f00b1337");
         builder.hidden();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
                 + " rel=\"flattr;uid:123456;category:text;tags:def,123,abc;revsharekey:f00b1337;button:compact;popout:1;hidden:1;\">"
-                + "A Description</a>",
-                builder.toString()
-        );
+                + "A Description</a>"));
     }
 
     @Test
@@ -105,7 +101,7 @@ public class ButtonBuilderTest {
         builder.hidden();
         builder.html5();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
@@ -113,9 +109,7 @@ public class ButtonBuilderTest {
                 + " data-flattr-tags=\"def,123,abc\" data-flattr-revsharekey=\"f00b1337\""
                 + " data-flattr-button=\"compact\" data-flattr-popout=\"0\""
                 + " data-flattr-hidden=\"1\">"
-                + "A Description</a>",
-                builder.toString()
-        );
+                + "A Description</a>"));
     }
 
     @Test
@@ -133,16 +127,14 @@ public class ButtonBuilderTest {
         builder.hidden();
         builder.html5().prefix("data-my");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton mybutton\" style=\"display:none;\""
                 + " href=\"http://example.com/page/123\" title=\"A Title\""
                 + " lang=\"en_UK\""
                 + " data-my-uid=\"123456\" data-my-category=\"text\""
                 + " data-my-tags=\"def,123,abc\" data-my-revsharekey=\"f00b1337\""
                 + " data-my-button=\"compact\" data-my-hidden=\"1\">"
-                + "A Description</a>",
-                builder.toString()
-        );
+                + "A Description</a>"));
     }
 
     @Test
@@ -150,13 +142,11 @@ public class ButtonBuilderTest {
         ButtonBuilder builder = new ButtonBuilder();
         builder.user(User.withId("123456")).thing(createSubmission());
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton\" href=\"http://flattr4j.shredzone.org/thingy.html\""
                 + " title=\"A thingy title\" lang=\"en_UK\""
                 + " rel=\"flattr;uid:123456;category:text;tags:foo,bar,bla;\">"
-                + "This is <em>a new Thing</em></a>",
-                builder.toString()
-        );
+                + "This is <em>a new Thing</em></a>"));
     }
 
     @Test
@@ -166,11 +156,9 @@ public class ButtonBuilderTest {
         builder.attribute("target", "_blank");
         builder.attribute("onclick", "window.alert(\"Hello World\")");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<a class=\"FlattrButton\" href=\"http://example.com/page/123\""
-                + " onclick=\"window.alert(&quot;Hello World&quot;)\" target=\"_blank\"></a>",
-                builder.toString()
-        );
+                + " onclick=\"window.alert(&quot;Hello World&quot;)\" target=\"_blank\"></a>"));
     }
 
     /**

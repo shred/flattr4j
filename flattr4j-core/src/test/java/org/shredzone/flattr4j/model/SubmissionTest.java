@@ -18,9 +18,12 @@
  */
 package org.shredzone.flattr4j.model;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.shredzone.flattr4j.model.FlattrObjectMatcher.jsonValue;
+
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -34,38 +37,35 @@ import org.shredzone.flattr4j.exception.MarshalException;
 public class SubmissionTest {
 
     private void setupSubmission(Submission sub) throws FlattrException {
-        Assert.assertNull("url", sub.getUrl());
+        assertThat(sub.getUrl(), nullValue());
         sub.setUrl("http://flattr4j.shredzone.org");
-        Assert.assertEquals("url", "http://flattr4j.shredzone.org", sub.getUrl());
+        assertThat(sub.getUrl(), is("http://flattr4j.shredzone.org"));
+        assertThat(sub.toFlattrObject(), hasToString("{\"url\":\"http://flattr4j.shredzone.org\"}"));
 
-        Assert.assertEquals("{\"url\":\"http://flattr4j.shredzone.org\"}", sub.toFlattrObject().toString());
-
-        Assert.assertNull("title", sub.getTitle());
+        assertThat(sub.getTitle(), nullValue());
         sub.setTitle("flattr4j");
-        Assert.assertEquals("title", "flattr4j", sub.getTitle());
+        assertThat(sub.getTitle(), is("flattr4j"));
 
-        Assert.assertNull("description", sub.getDescription());
+        assertThat(sub.getDescription(), nullValue());
         sub.setDescription("A Flattr library for Java");
-        Assert.assertEquals("description", "A Flattr library for Java", sub.getDescription());
+        assertThat(sub.getDescription(), is("A Flattr library for Java"));
 
-        Assert.assertNull("category", sub.getCategory());
+        assertThat(sub.getCategory(), nullValue());
         sub.setCategory(Category.withId("text"));
-        Assert.assertEquals("category", "text", sub.getCategory().getCategoryId());
+        assertThat(sub.getCategory().getCategoryId(), is("text"));
 
-        Assert.assertNull("language", sub.getLanguage());
+        assertThat(sub.getLanguage(), nullValue());
         sub.setLanguage(Language.withId("en_UK"));
-        Assert.assertEquals("language", "en_UK", sub.getLanguage().getLanguageId());
+        assertThat(sub.getLanguage().getLanguageId(), is("en_UK"));
 
-        Assert.assertNull(sub.isHidden());
+        assertThat(sub.isHidden(), nullValue());
         sub.setHidden(false);
-        Assert.assertFalse("hidden", sub.isHidden());
+        assertThat(sub.isHidden(), is(false));
 
-        Assert.assertTrue("tags", sub.getTags().isEmpty());
+        assertThat(sub.getTags(), is(empty()));
         sub.addTag("foo");
         sub.getTags().add("bar");
-        Assert.assertEquals("tags", 2, sub.getTags().size());
-        Assert.assertEquals("tags", "foo", sub.getTags().get(0));
-        Assert.assertEquals("tags", "bar", sub.getTags().get(1));
+        assertThat(sub.getTags(), contains("foo", "bar"));
     }
 
     @Test
@@ -74,13 +74,13 @@ public class SubmissionTest {
         setupSubmission(sub);
 
         FlattrObject data = sub.toFlattrObject();
-        Assert.assertEquals("url", "http://flattr4j.shredzone.org", data.get("url"));
-        Assert.assertEquals("title", "flattr4j", data.get("title"));
-        Assert.assertEquals("description", "A Flattr library for Java", data.get("description"));
-        Assert.assertEquals("category", "text", data.get("category"));
-        Assert.assertEquals("language", "en_UK", data.get("language"));
-        Assert.assertFalse("hidden", data.getBoolean("hidden"));
-        Assert.assertEquals("tags", "foo,bar", data.get("tags"));
+        assertThat(data, jsonValue("url", is("http://flattr4j.shredzone.org")));
+        assertThat(data, jsonValue("title", is("flattr4j")));
+        assertThat(data, jsonValue("description", is("A Flattr library for Java")));
+        assertThat(data, jsonValue("category", is("text")));
+        assertThat(data, jsonValue("language", is("en_UK")));
+        assertThat(data, jsonValue("hidden", is("false")));
+        assertThat(data, jsonValue("tags", is("foo,bar")));
     }
 
     @Test
@@ -88,19 +88,18 @@ public class SubmissionTest {
         AutoSubmission sub = new AutoSubmission();
         setupSubmission(sub);
 
-        Assert.assertNull("user", sub.getUser());
+        assertThat(sub.getUser(), nullValue());
         sub.setUser(User.withId("scott"));
-        Assert.assertEquals("user", "scott", sub.getUser().getUserId());
+        assertThat(sub.getUser().getUserId(), is("scott"));
 
-        String url = sub.toUrl();
-        Assert.assertEquals("https://flattr.com/submit/auto" +
+        assertThat(sub.toUrl(), is("https://flattr.com/submit/auto" +
                 "?user_id=scott" +
                 "&url=http%3A%2F%2Fflattr4j.shredzone.org" +
                 "&category=text" +
                 "&language=en_UK" +
                 "&title=flattr4j" +
                 "&tags=foo%2Cbar" +
-                "&description=A+Flattr+library+for+Java", url);
+                "&description=A+Flattr+library+for+Java"));
     }
 
     @Test(expected = MarshalException.class)

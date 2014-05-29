@@ -18,7 +18,9 @@
  */
 package org.shredzone.flattr4j.model;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -33,14 +35,14 @@ public class CategoryTest {
     @Test
     public void testId() throws FlattrException {
         CategoryId id = Category.withId("abc123");
-        Assert.assertEquals("abc123", id.getCategoryId());
+        assertThat(id.getCategoryId(), is("abc123"));
     }
 
     @Test
     public void testModel() throws FlattrException {
         Category cat = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
-        Assert.assertEquals("images", cat.getCategoryId());
-        Assert.assertEquals("Images", cat.getName());
+        assertThat(cat.getCategoryId(), is("images"));
+        assertThat(cat.getName(), is("Images"));
     }
 
     @Test
@@ -49,10 +51,10 @@ public class CategoryTest {
         Category cat2 = new Category(new FlattrObject("{\"id\":\"images\",\"text\":\"Images\"}"));
         Category cat3 = new Category(new FlattrObject("{\"id\":\"audio\",\"text\":\"Audio\"}"));
 
-        Assert.assertTrue(cat1.equals(cat2));
-        Assert.assertTrue(cat2.equals(cat1));
-        Assert.assertFalse(cat1.equals(cat3));
-        Assert.assertFalse(cat3.equals(cat1));
+        assertThat(cat1, is(equalTo(cat2)));
+        assertThat(cat2, is(equalTo(cat1)));
+        assertThat(cat1, not(equalTo(cat3)));
+        assertThat(cat3, not(equalTo(cat1)));
     }
 
 }

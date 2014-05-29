@@ -18,7 +18,9 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.hasToString;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.Language;
@@ -36,7 +38,7 @@ public class LoaderBuilderTest {
     public void testMinimalBuilder() {
         LoaderBuilder builder = new LoaderBuilder();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<script type=\"text/javascript\">/* <![CDATA[ */\n"
                 + "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
@@ -44,9 +46,7 @@ public class LoaderBuilderTest {
                 + "s.async = true;"
                 + "s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
-                + "/* ]]> */</script>",
-                builder.toString()
-        );
+                + "/* ]]> */</script>"));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class LoaderBuilderTest {
         LoaderBuilder builder = new LoaderBuilder();
         builder.manual();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<script type=\"text/javascript\">/* <![CDATA[ */\n"
                 + "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
@@ -62,9 +62,7 @@ public class LoaderBuilderTest {
                 + "s.async = true;"
                 + "s.src = 'http://api.flattr.com/js/0.6/load.js';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
-                + "/* ]]> */</script>",
-                builder.toString()
-        );
+                + "/* ]]> */</script>"));
     }
 
     @Test
@@ -72,15 +70,13 @@ public class LoaderBuilderTest {
         LoaderBuilder builder = new LoaderBuilder();
         builder.bare();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
                 + "s.type = 'text/javascript';"
                 + "s.async = true;"
                 + "s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';"
-                + "t.parentNode.insertBefore(s, t);})();",
-                builder.toString()
-        );
+                + "t.parentNode.insertBefore(s, t);})();"));
     }
 
     @Test
@@ -88,7 +84,7 @@ public class LoaderBuilderTest {
         LoaderBuilder builder = new LoaderBuilder();
         builder.https();
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<script type=\"text/javascript\">/* <![CDATA[ */\n"
                 + "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
@@ -96,9 +92,7 @@ public class LoaderBuilderTest {
                 + "s.async = true;"
                 + "s.src = 'https://api.flattr.com/js/0.6/load.js?mode=auto';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
-                + "/* ]]> */</script>",
-                builder.toString()
-        );
+                + "/* ]]> */</script>"));
     }
 
     @Test
@@ -110,7 +104,7 @@ public class LoaderBuilderTest {
         builder.user(User.withId("123456"));
         builder.prefix("data-my");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<script type=\"text/javascript\">/* <![CDATA[ */\n"
                 + "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
@@ -118,9 +112,7 @@ public class LoaderBuilderTest {
                 + "s.async = true;"
                 + "s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto&popout=0&uid=123456&button=compact&language=fr_FR&category=image&html5-key-prefix=data-my';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
-                + "/* ]]> */</script>",
-                builder.toString()
-        );
+                + "/* ]]> */</script>"));
     }
 
     @Test
@@ -128,7 +120,7 @@ public class LoaderBuilderTest {
         LoaderBuilder builder = new LoaderBuilder();
         builder.baseUrl("http://localhost").version("0.3");
 
-        Assert.assertEquals(
+        assertThat(builder, hasToString(
                 "<script type=\"text/javascript\">/* <![CDATA[ */\n"
                 + "(function() {var s = document.createElement('script'),"
                 + "t = document.getElementsByTagName('script')[0];"
@@ -136,9 +128,7 @@ public class LoaderBuilderTest {
                 + "s.async = true;"
                 + "s.src = 'http://localhost/js/0.3/load.js?mode=auto';"
                 + "t.parentNode.insertBefore(s, t);})();\n"
-                + "/* ]]> */</script>",
-                builder.toString()
-        );
+                + "/* ]]> */</script>"));
     }
 
 }

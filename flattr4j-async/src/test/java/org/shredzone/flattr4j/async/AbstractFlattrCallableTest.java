@@ -18,9 +18,13 @@
  */
 package org.shredzone.flattr4j.async;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.FlattrService;
+import org.shredzone.flattr4j.connector.RateLimit;
 import org.shredzone.flattr4j.oauth.AccessToken;
 
 /**
@@ -35,117 +39,150 @@ public class AbstractFlattrCallableTest {
     @Test
     public void testNoAccessToken() throws Exception {
         final String expectedResult = "result321";
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
-        executed = false;
+
+        final FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
         @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
-                Assert.assertSame(dummyService, service);
+                assertThat(service, sameInstance(mockService));
                 executed = true;
                 return expectedResult;
             }
 
             @Override
             protected FlattrService createFlattrService(AccessToken token) {
-                Assert.assertNull(token);
-                return dummyService;
+                assertThat(token, nullValue());
+                return mockService;
             }
         };
 
+        executed = false;
         String result = callable.call();
-        Assert.assertTrue(executed);
-        Assert.assertEquals(expectedResult, result);
-        Assert.assertSame(result, callable.getResult());
-        Assert.assertNotNull(callable.getRateLimit());
-        Assert.assertNotSame(dummyService.getLastRateLimit(), callable.getRateLimit());
+        assertThat(executed, is(true));
+        assertThat(result, allOf(
+            is(expectedResult),
+            sameInstance(callable.getResult())
+        ));
+        verify(mockService).getLastRateLimit();
+        assertThat(callable.getRateLimit(), allOf(
+            notNullValue(),
+            not(sameInstance(mockService.getLastRateLimit()))
+        ));
     }
 
     @Test
     public void testAccessToken() throws Exception {
         final AccessToken accessToken = new AccessToken("token123");
         final String expectedResult = "result321";
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
-        executed = false;
+
+        final FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
         @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
-                Assert.assertSame(dummyService, service);
+                assertThat(service, sameInstance(mockService));
                 executed = true;
                 return expectedResult;
             }
 
             @Override
             protected FlattrService createFlattrService(AccessToken token) {
-                Assert.assertNotNull(token);
-                Assert.assertSame(accessToken, token);
-                return dummyService;
+                assertThat(token, sameInstance(accessToken));
+                return mockService;
             }
         };
 
         callable.setAccessToken(accessToken);
+        executed = false;
         String result = callable.call();
-        Assert.assertTrue(executed);
-        Assert.assertEquals(expectedResult, result);
-        Assert.assertSame(result, callable.getResult());
-        Assert.assertNotNull(callable.getRateLimit());
-        Assert.assertNotSame(dummyService.getLastRateLimit(), callable.getRateLimit());
+        assertThat(executed, is(true));
+        assertThat(result, allOf(
+            is(expectedResult),
+            sameInstance(callable.getResult())
+        ));
+        verify(mockService).getLastRateLimit();
+        assertThat(callable.getRateLimit(), allOf(
+            notNullValue(),
+            not(sameInstance(mockService.getLastRateLimit()))
+        ));
     }
 
     @Test
     public void testAccessTokenString() throws Exception {
         final String accessToken = "token123";
         final String expectedResult = "result321";
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
-        executed = false;
+
+        final FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
         @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
-                Assert.assertSame(dummyService, service);
+                assertThat(service, sameInstance(mockService));
                 executed = true;
                 return expectedResult;
             }
 
             @Override
             protected FlattrService createFlattrService(AccessToken token) {
-                Assert.assertNotNull(token);
-                Assert.assertEquals(accessToken, token.getToken());
-                return dummyService;
+                assertThat(token.getToken(), is(accessToken));
+                return mockService;
             }
         };
 
         callable.setAccessToken(accessToken);
+        executed = false;
         String result = callable.call();
-        Assert.assertTrue(executed);
-        Assert.assertEquals(expectedResult, result);
-        Assert.assertSame(result, callable.getResult());
-        Assert.assertNotNull(callable.getRateLimit());
-        Assert.assertNotSame(dummyService.getLastRateLimit(), callable.getRateLimit());
+        assertThat(executed, is(true));
+        assertThat(result, allOf(
+            is(expectedResult),
+            sameInstance(callable.getResult())
+        ));
+        verify(mockService).getLastRateLimit();
+        assertThat(callable.getRateLimit(), allOf(
+            notNullValue(),
+            not(sameInstance(mockService.getLastRateLimit()))
+        ));
     }
 
     @Test
-    public void testSetFullMode() {
+    public void testSetFullMode() throws Exception {
+        final FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
+
         @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
+            protected FlattrService createFlattrService(AccessToken token) {
+                return mockService;
+            }
+
+            @Override
             public String call(FlattrService service) throws Exception {
-                throw new UnsupportedOperationException();
+                return null; // do nothing
             }
         };
 
         // default is false
-        Assert.assertFalse(callable.isFullMode());
+        assertThat(callable.isFullMode(), is(false));
+        callable.call();
+        verify(mockService, times(1)).setFullMode(false);
 
         callable.setFullMode(true);
-        Assert.assertTrue(callable.isFullMode());
+        assertThat(callable.isFullMode(), is(true));
+        callable.call();
+        verify(mockService, times(1)).setFullMode(true);
 
         callable.setFullMode(false);
-        Assert.assertFalse(callable.isFullMode());
+        assertThat(callable.isFullMode(), is(false));
+        callable.call();
+        verify(mockService, times(2)).setFullMode(false);
     }
 
 }

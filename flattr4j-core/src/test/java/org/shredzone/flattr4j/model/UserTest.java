@@ -18,9 +18,11 @@
  */
 package org.shredzone.flattr4j.model;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -35,7 +37,7 @@ public class UserTest {
     @Test
     public void testId() throws FlattrException {
         UserId id = User.withId("abc123");
-        Assert.assertEquals("abc123", id.getUserId());
+        assertThat(id.getUserId(), is("abc123"));
     }
 
     @Test
@@ -50,10 +52,10 @@ public class UserTest {
         User user2 = new User(new FlattrObject("{\"username\":\"simon_g\"}"));
         User user3 = new User(new FlattrObject("{\"username\":\"sherlock_h\"}"));
 
-        Assert.assertTrue(user1.equals(user2));
-        Assert.assertTrue(user2.equals(user1));
-        Assert.assertFalse(user1.equals(user3));
-        Assert.assertFalse(user3.equals(user1));
+        assertThat(user1, is(equalTo(user2)));
+        assertThat(user2, is(equalTo(user1)));
+        assertThat(user1, not(equalTo(user3)));
+        assertThat(user3, not(equalTo(user1)));
     }
 
 }

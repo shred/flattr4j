@@ -18,7 +18,9 @@
  */
 package org.shredzone.flattr4j.model;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.connector.FlattrObject;
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -33,14 +35,14 @@ public class LanguageTest {
     @Test
     public void testId() throws FlattrException {
         LanguageId id = Language.withId("abc123");
-        Assert.assertEquals("abc123", id.getLanguageId());
+        assertThat(id.getLanguageId(), is("abc123"));
     }
 
     @Test
     public void testModel() throws FlattrException {
         Language lang = new Language(new FlattrObject("{\"id\":\"en_GB\",\"text\":\"English\"}"));
-        Assert.assertEquals("en_GB", lang.getLanguageId());
-        Assert.assertEquals("English", lang.getName());
+        assertThat(lang.getLanguageId(), is("en_GB"));
+        assertThat(lang.getName(), is("English"));
     }
 
     @Test
@@ -49,10 +51,10 @@ public class LanguageTest {
         Language lang2 = new Language(new FlattrObject("{\"id\":\"en_GB\",\"text\":\"English\"}"));
         Language lang3 = new Language(new FlattrObject("{\"id\":\"sq_AL\",\"text\":\"Albanian\"}"));
 
-        Assert.assertTrue(lang1.equals(lang2));
-        Assert.assertTrue(lang2.equals(lang1));
-        Assert.assertFalse(lang1.equals(lang3));
-        Assert.assertFalse(lang3.equals(lang1));
+        assertThat(lang1, is(equalTo(lang2)));
+        assertThat(lang2, is(equalTo(lang1)));
+        assertThat(lang1, not(equalTo(lang3)));
+        assertThat(lang3, not(equalTo(lang1)));
     }
 
 }

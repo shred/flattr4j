@@ -18,7 +18,10 @@
  */
 package org.shredzone.flattr4j.async;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.FlattrService;
 
@@ -33,21 +36,21 @@ public class VoidFlattrCallableTest {
 
     @Test
     public void testExecute() throws Exception {
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
-        executed = false;
+        final FlattrService mockService = mock(FlattrService.class);
 
         @SuppressWarnings("serial")
         VoidFlattrCallable callable = new VoidFlattrCallable() {
             @Override
             public void execute(FlattrService service) throws Exception {
-                Assert.assertSame(dummyService, service);
+                assertThat(service, sameInstance(mockService));
                 executed = true;
             }
         };
 
-        Void result = callable.call(dummyService);
-        Assert.assertTrue(executed);
-        Assert.assertNull(result);
+        executed = false;
+        Void result = callable.call(mockService);
+        assertThat(executed, is(true));
+        assertThat(result, nullValue());
     }
 
 }

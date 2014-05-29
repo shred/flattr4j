@@ -18,13 +18,15 @@
  */
 package org.shredzone.flattr4j.model;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.flattr4j.connector.Connection;
 import org.shredzone.flattr4j.connector.FlattrObject;
@@ -54,40 +56,43 @@ public class SearchTest {
         sq.setUrl("http://flattr4j.shredzone.org");
         sq.setSort(Order.TREND);
 
-        Assert.assertEquals("foo", sq.getQuery());
-        Assert.assertEquals("shred", sq.getUser().getUserId());
-        Assert.assertEquals("foobar & blafoo", sq.getTags());
-        Assert.assertEquals("http://flattr4j.shredzone.org", sq.getUrl());
-        Assert.assertEquals(Order.TREND, sq.getSort());
+        assertThat(sq.getQuery(), is("foo"));
+        assertThat(sq.getUser().getUserId(), is("shred"));
+        assertThat(sq.getTags(), is("foobar & blafoo"));
+        assertThat(sq.getUrl(), is("http://flattr4j.shredzone.org"));
+        assertThat(sq.getSort(), is(Order.TREND));
 
         Iterator<CategoryId> itC = sq.getCategories().iterator();
-        Assert.assertEquals("text", itC.next().getCategoryId());
-        Assert.assertEquals("image", itC.next().getCategoryId());
+        assertThat(itC.next().getCategoryId(), is("text"));
+        assertThat(itC.next().getCategoryId(), is("image"));
+        assertThat(itC.hasNext(), is(false));
 
         Iterator<LanguageId> itL = sq.getLanguages().iterator();
-        Assert.assertEquals("en_UK", itL.next().getLanguageId());
-        Assert.assertEquals("no_NO", itL.next().getLanguageId());
+        assertThat(itL.next().getLanguageId(), is("en_UK"));
+        assertThat(itL.next().getLanguageId(), is("no_NO"));
+        assertThat(itL.hasNext(), is(false));
 
         TestConnection conn = new TestConnection();
         sq.setupConnection(conn);
-        Assert.assertEquals("foo", conn.getQuery("query"));
-        Assert.assertEquals("text,image", conn.getQuery("category"));
-        Assert.assertEquals("en_UK,no_NO", conn.getQuery("language"));
-        Assert.assertEquals("shred", conn.getQuery("user"));
-        Assert.assertEquals("foobar & blafoo", conn.getQuery("tags"));
-        Assert.assertEquals("http://flattr4j.shredzone.org", conn.getQuery("url"));
-        Assert.assertEquals("trend", conn.getQuery("sort"));
+        assertThat(conn.getQuery("query"), is("foo"));
+        assertThat(conn.getQuery("category"), is("text,image"));
+        assertThat(conn.getQuery("language"), is("en_UK,no_NO"));
+        assertThat(conn.getQuery("user"), is("shred"));
+        assertThat(conn.getQuery("tags"), is("foobar & blafoo"));
+        assertThat(conn.getQuery("url"), is("http://flattr4j.shredzone.org"));
+        assertThat(conn.getQuery("sort"), is("trend"));
     }
 
     @Test
     public void testResultModel() throws FlattrException, IOException {
         SearchResult result = ModelGenerator.createSearchResult();
 
-        Assert.assertEquals("totalCount", 5, result.getTotalCount());
-        Assert.assertEquals("itemCount", 1, result.getItemCount());
-        Assert.assertEquals("page", 2, result.getPage());
-        Assert.assertNotNull("things", result.getThings());
-        Assert.assertEquals("things.size", 1, result.getThings().size());
+        assertThat(result, allOf(
+            hasProperty("totalCount", is(5)),
+            hasProperty("itemCount", is(1)),
+            hasProperty("page", is(2)),
+            hasProperty("things", iterableWithSize(1))
+        ));
 
         ModelGenerator.assertThing(result.getThings().get(0));
     }

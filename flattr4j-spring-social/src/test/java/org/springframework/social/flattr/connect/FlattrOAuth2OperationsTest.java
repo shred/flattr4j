@@ -18,7 +18,9 @@
  */
 package org.springframework.social.flattr.connect;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.oauth.AccessToken;
@@ -51,11 +53,11 @@ public class FlattrOAuth2OperationsTest {
         param.setState(STATE);
         String url = op.buildAuthenticateUrl(GrantType.AUTHORIZATION_CODE, param);
 
-        Assert.assertEquals("https://flattr.com/oauth/authorize?response_type=code" +
+        assertThat(url, is("https://flattr.com/oauth/authorize?response_type=code" +
                         "&client_id=" + CONSUMER_KEY +
                         "&redirect_uri=http%3A%2F%2Fexample.com%2Fredirect" +
                         "&scope=flattr+thing" +
-                        "&state=" + STATE, url);
+                        "&state=" + STATE));
     }
 
     @Test
@@ -68,11 +70,11 @@ public class FlattrOAuth2OperationsTest {
         param.setState(STATE);
         String url = op.buildAuthenticateUrl(GrantType.IMPLICIT_GRANT, param);
 
-        Assert.assertEquals("https://flattr.com/oauth/authorize?response_type=token" +
+        assertThat(url, is("https://flattr.com/oauth/authorize?response_type=token" +
                         "&client_id=" + CONSUMER_KEY +
                         "&redirect_uri=http%3A%2F%2Fexample.com%2Fredirect" +
                         "&scope=thing+email" +
-                        "&state=" + STATE, url);
+                        "&state=" + STATE));
     }
 
     @Test
@@ -80,9 +82,11 @@ public class FlattrOAuth2OperationsTest {
         FlattrOAuth2Operations op = createInstance();
 
         AccessGrant grant = op.exchangeForAccess(ACCESSCODE, null, null);
-        Assert.assertEquals(TOKEN, grant.getAccessToken());
-        Assert.assertNull(grant.getRefreshToken());
-        Assert.assertNull(grant.getExpireTime());
+        assertThat(grant, allOf(
+            hasProperty("accessToken", is(TOKEN)),
+            hasProperty("refreshToken", nullValue()),
+            hasProperty("expireTime", nullValue())
+        ));
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -111,13 +115,13 @@ public class FlattrOAuth2OperationsTest {
     public static class TestFlattrAuthenticator extends FlattrAuthenticator {
         public TestFlattrAuthenticator(ConsumerKey consumerKey) {
             super(consumerKey);
-            Assert.assertEquals(CONSUMER_KEY, consumerKey.getKey());
-            Assert.assertEquals(CONSUMER_SECRET, consumerKey.getSecret());
+            assertThat(consumerKey.getKey(), is(CONSUMER_KEY));
+            assertThat(consumerKey.getSecret(), is(CONSUMER_SECRET));
         }
 
         @Override
         public AccessToken fetchAccessToken(String code) throws FlattrException {
-            Assert.assertEquals(ACCESSCODE, code);
+            assertThat(code, is(ACCESSCODE));
             return new AccessToken(TOKEN);
         }
     }

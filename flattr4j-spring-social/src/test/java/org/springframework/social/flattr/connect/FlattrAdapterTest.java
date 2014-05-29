@@ -18,8 +18,17 @@
  */
 package org.springframework.social.flattr.connect;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.shredzone.flattr4j.FlattrService;
+import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.User;
+import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
 /**
@@ -29,57 +38,75 @@ import org.springframework.social.connect.UserProfile;
  */
 public class FlattrAdapterTest {
 
-    @Test
-    public void testTestPositive() {
-        DummyFlattrServiceFactory factory = new DummyFlattrServiceFactory();
-        factory.enableGetMyself();
+    private User testUser;
 
-        FlattrAdapter adapter = new FlattrAdapter();
-        Assert.assertTrue(adapter.test(factory.createFlattrService()));
+    @Before
+    public void init() {
+        testUser = new User(new FlattrObject("{\"type\":\"user\"," +
+                        "\"link\":\"https://flattr.local/user/simon_g\"," +
+                        "\"username\":\"simon_g\","+
+                        "\"firstname\":\"Simon\"," +
+                        "\"lastname\":\"Gate\"," +
+                        "\"avatar\":\"\"}"));
     }
 
     @Test
-    public void testTestNegative() {
-        DummyFlattrServiceFactory factory = new DummyFlattrServiceFactory();
+    public void testTestPositive() throws FlattrException {
+        FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getMyself()).thenReturn(testUser);
 
         FlattrAdapter adapter = new FlattrAdapter();
-        Assert.assertFalse(adapter.test(factory.createFlattrService()));
+        assertThat(adapter.test(mockService), is(true));
     }
 
     @Test
-    public void testSetConnectionValues() {
-        DummyFlattrServiceFactory factory = new DummyFlattrServiceFactory();
-        factory.enableGetMyself();
+    public void testTestNegative() throws FlattrException {
+        FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getMyself()).thenThrow(new FlattrException("no connection"));
 
-        SimpleConnectionValues cv = new SimpleConnectionValues();
         FlattrAdapter adapter = new FlattrAdapter();
-        adapter.setConnectionValues(factory.createFlattrService(), cv);
-        Assert.assertEquals("simon_g", cv.getProviderUserId());
-        Assert.assertEquals("Simon Gate", cv.getDisplayName());
-        Assert.assertEquals("https://flattr.local/user/simon_g", cv.getProfileUrl());
-        Assert.assertNull(cv.getImageUrl());
+        assertThat(adapter.test(mockService), is(false));
     }
 
     @Test
-    public void testFetchUserProfile() {
-        DummyFlattrServiceFactory factory = new DummyFlattrServiceFactory();
-        factory.enableGetMyself();
+    public void testSetConnectionValues() throws FlattrException {
+        FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getMyself()).thenReturn(testUser);
+
+        ConnectionValues mockCv = mock(ConnectionValues.class);
 
         FlattrAdapter adapter = new FlattrAdapter();
-        UserProfile up = adapter.fetchUserProfile(factory.createFlattrService());
-        Assert.assertEquals("simon_g", up.getUsername());
-        Assert.assertEquals("Simon", up.getFirstName());
-        Assert.assertEquals("Gate", up.getLastName());
-        Assert.assertEquals("Simon Gate", up.getName());
-        Assert.assertNull(up.getEmail());
+        adapter.setConnectionValues(mockService, mockCv);
+
+        verify(mockCv).setProviderUserId("simon_g");
+        verify(mockCv).setDisplayName("Simon Gate");
+        verify(mockCv).setProfileUrl("https://flattr.local/user/simon_g");
+        verify(mockCv, never()).setImageUrl(null);
+    }
+
+    @Test
+    public void testFetchUserProfile() throws FlattrException {
+        FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getMyself()).thenReturn(testUser);
+
+        FlattrAdapter adapter = new FlattrAdapter();
+        UserProfile up = adapter.fetchUserProfile(mockService);
+        assertThat(up, allOf(
+            hasProperty("username", is("simon_g")),
+            hasProperty("firstName", is("Simon")),
+            hasProperty("lastName", is("Gate")),
+            hasProperty("name", is("Simon Gate")),
+            hasProperty("email", nullValue())
+        ));
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testUpdateStatus() {
-        DummyFlattrServiceFactory factory = new DummyFlattrServiceFactory();
+    public void testUpdateStatus() throws FlattrException {
+        FlattrService mockService = mock(FlattrService.class);
+        when(mockService.getMyself()).thenThrow(new FlattrException("no connection"));
 
         FlattrAdapter adapter = new FlattrAdapter();
-        adapter.updateStatus(factory.createFlattrService(), "foo");
+        adapter.updateStatus(mockService, "foo");
     }
 
 }

@@ -18,7 +18,10 @@
  */
 package org.shredzone.flattr4j.async;
 
-import org.junit.Assert;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Test;
 import org.shredzone.flattr4j.FlattrService;
 
@@ -33,49 +36,54 @@ public class PaginatedFlattrCallableTest {
 
     @Test
     public void testNullValues() throws Exception {
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
         final String expectedResult = "result321";
-        executed = false;
+
+        final FlattrService mockService = mock(FlattrService.class);
 
         @SuppressWarnings("serial")
         PaginatedFlattrCallable<String> callable = new PaginatedFlattrCallable<String>() {
             @Override
             public String call(FlattrService service, Integer count, Integer page)
                 throws Exception {
-                Assert.assertSame(dummyService, service);
-                Assert.assertNull(count);
-                Assert.assertNull(page);
+                assertThat(service, sameInstance(mockService));
+                assertThat(count, nullValue());
+                assertThat(page, nullValue());
                 executed = true;
                 return expectedResult;
             }
         };
 
-        Assert.assertNull(callable.getPage());
-        Assert.assertNull(callable.getCount());
+        assertThat(callable, allOf(
+            hasProperty("page", nullValue()),
+            hasProperty("count", nullValue())
+        ));
 
-        String result = callable.call(dummyService);
-        Assert.assertTrue(executed);
-        Assert.assertSame(expectedResult, result);
-        Assert.assertNull(callable.getPage());
-        Assert.assertNull(callable.getCount());
+        executed = false;
+        String result = callable.call(mockService);
+        assertThat(executed, is(true));
+        assertThat(result, sameInstance(expectedResult));
+        assertThat(callable, allOf(
+            hasProperty("page", nullValue()),
+            hasProperty("count", nullValue())
+        ));
     }
 
     @Test
     public void testSetValues() throws Exception {
-        final FlattrService dummyService = DummyFlattrServiceFactory.create();
         final String expectedResult = "result321";
         final int expectedCount = 10;
         final int expectedPage = 5;
-        executed = false;
+
+        final FlattrService mockService = mock(FlattrService.class);
 
         @SuppressWarnings("serial")
         PaginatedFlattrCallable<String> callable = new PaginatedFlattrCallable<String>() {
             @Override
             public String call(FlattrService service, Integer count, Integer page)
                 throws Exception {
-                Assert.assertSame(dummyService, service);
-                Assert.assertEquals(expectedCount, count.intValue());
-                Assert.assertEquals(expectedPage, page.intValue());
+                assertThat(service, sameInstance(mockService));
+                assertThat(count, is(expectedCount));
+                assertThat(page, is(expectedPage));
                 executed = true;
                 return expectedResult;
             }
@@ -83,14 +91,15 @@ public class PaginatedFlattrCallableTest {
 
         callable.setPage(expectedPage);
         callable.setCount(expectedCount);
-        Assert.assertEquals(expectedPage, callable.getPage().intValue());
-        Assert.assertEquals(expectedCount, callable.getCount().intValue());
+        assertThat(callable.getCount(), is(expectedCount));
+        assertThat(callable.getPage(), is(expectedPage));
 
-        String result = callable.call(dummyService);
-        Assert.assertTrue(executed);
-        Assert.assertSame(expectedResult, result);
-        Assert.assertEquals(expectedPage, callable.getPage().intValue());
-        Assert.assertEquals(expectedCount, callable.getCount().intValue());
+        executed = false;
+        String result = callable.call(mockService);
+        assertThat(executed, is(true));
+        assertThat(result, sameInstance(expectedResult));
+        assertThat(callable.getCount(), is(expectedCount));
+        assertThat(callable.getPage(), is(expectedPage));
     }
 
 }
