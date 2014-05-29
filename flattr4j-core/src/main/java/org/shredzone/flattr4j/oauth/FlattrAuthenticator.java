@@ -48,22 +48,26 @@ public class FlattrAuthenticator {
 
     private EnumSet<Scope> scope = EnumSet.noneOf(Scope.class);
 
-   /**
-     * The request token url
+    /**
+     * The request token url.
      * <p>
-     * <em>NOTE:</em> This request token url must match the url defined at http://developers.flattr.net/api/#authorization
+     * <em>NOTE:</em> This request token url must match the url defined at
+     * http://developers.flattr.net/api/#authorization
+     *
      * @return the defined request token url
      */
-    public String getRequestTokenUrl() { return requestTokenUrl; }
+    public String getRequestTokenUrl()      { return requestTokenUrl; }
     public void setRequestTokenUrl(String requestTokenUrl) { this.requestTokenUrl = requestTokenUrl; }
 
     /**
-     * The access token url required to retrieve the access token for flattr.com
+     * The access token url required to retrieve the access token for flattr.com.
      * <p>
-     * <em>NOTE:</em> This access token url must match the url defined at http://developers.flattr.net/api/#authorization
+     * <em>NOTE:</em> This access token url must match the url defined at
+     * http://developers.flattr.net/api/#authorization
+     *
      * @return the defined access token url
      */
-    public String getAccessTokenUrl() { return accessTokenUrl; }
+    public String getAccessTokenUrl()       { return accessTokenUrl; }
     public void setAccessTokenUrl(String accessTokenUrl) { this.accessTokenUrl = accessTokenUrl; }
 
     /**
