@@ -41,12 +41,30 @@ public class FlattrAuthenticator {
     private final ConsumerKey consumerKey;
 
     private String requestTokenUrl = "https://flattr.com/oauth/authorize";
-    private String accessTokenUrl = "http://flattr.com/oauth/token";
+    private String accessTokenUrl = "https://flattr.com/oauth/token";
     private String responseType = "code";
 
     private String callbackUrl = null;
 
     private EnumSet<Scope> scope = EnumSet.noneOf(Scope.class);
+
+   /**
+     * The request token url
+     * <p>
+     * <em>NOTE:</em> This request token url must match the url defined at http://developers.flattr.net/api/#authorization
+     * @return the defined request token url
+     */
+    public String getRequestTokenUrl() { return requestTokenUrl; }
+    public void setRequestTokenUrl(String requestTokenUrl) { this.requestTokenUrl = requestTokenUrl; }
+
+    /**
+     * The access token url required to retrieve the access token for flattr.com
+     * <p>
+     * <em>NOTE:</em> This access token url must match the url defined at http://developers.flattr.net/api/#authorization
+     * @return the defined access token url
+     */
+    public String getAccessTokenUrl() { return accessTokenUrl; }
+    public void setAccessTokenUrl(String accessTokenUrl) { this.accessTokenUrl = accessTokenUrl; }
 
     /**
      * A callback URL. If set, the user is forwarded to this URL in order to pass the
