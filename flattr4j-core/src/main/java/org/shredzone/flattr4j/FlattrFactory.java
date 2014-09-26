@@ -97,18 +97,4 @@ public final class FlattrFactory {
         return new FlattrServiceImpl(new FlattrConnector());
     }
 
-    /**
-     * Creates an {@link OpenService}.
-     *
-     * @return Created {@link OpenService}
-     * @deprecated Use {@link #createFlattrService()} instead, and replace all your
-     *             references to {@link OpenService} with {@link FlattrService}.
-     *             {@link OpenService} will be merged with {@link FlattrService} in
-     *             a future version.
-     */
-    @Deprecated
-    public OpenService createOpenService() {
-        return createFlattrService();
-    }
-
 }

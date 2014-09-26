@@ -20,7 +20,6 @@ package org.shredzone.flattr4j.spring;
 
 import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
-import org.shredzone.flattr4j.OpenService;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.ConsumerKey;
 import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
@@ -61,12 +60,6 @@ public class DefaultFlattrServiceFactory implements FlattrServiceFactory {
         }
         this.consumerKey = consumerKey;
         this.accessToken = accessToken;
-    }
-
-    @Override
-    @Deprecated
-    public OpenService getOpenService() {
-        return FlattrFactory.getInstance().createFlattrService();
     }
 
     @Override

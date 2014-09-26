@@ -127,21 +127,6 @@ public class FlattrServiceImpl implements FlattrService {
     }
 
     @Override
-    public void click(AutoSubmission submission) throws FlattrException {
-        flattr(submission);
-    }
-
-    @Override
-    public void click(String url) throws FlattrException {
-        flattr(url);
-    }
-
-    @Override
-    public void click(ThingId thingId) throws FlattrException {
-        flattr(thingId);
-    }
-
-    @Override
     public MiniThing flattr(AutoSubmission submission) throws FlattrException {
         return flattr(submission.toUrl());
     }

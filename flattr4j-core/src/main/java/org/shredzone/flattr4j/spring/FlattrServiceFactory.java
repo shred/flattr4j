@@ -19,7 +19,6 @@
 package org.shredzone.flattr4j.spring;
 
 import org.shredzone.flattr4j.FlattrService;
-import org.shredzone.flattr4j.OpenService;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
 
@@ -34,15 +33,6 @@ import org.shredzone.flattr4j.oauth.FlattrAuthenticator;
  * @author Richard "Shred" Körber
  */
 public interface FlattrServiceFactory {
-
-    /**
-     * Creates a new {@link OpenService} instance.
-     *
-     * @return {@link OpenService} instance. Each invocation creates a new instance.
-     * @deprecated Use {@link #getFlattrService()} instead
-     */
-    @Deprecated
-    OpenService getOpenService();
 
     /**
      * Creates a new {@link FlattrService} instance, using a default access token. If no
