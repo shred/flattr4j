@@ -68,7 +68,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.exception.ForbiddenException;
 import org.shredzone.flattr4j.exception.MarshalException;
-import org.shredzone.flattr4j.exception.NoMeansException;
+import org.shredzone.flattr4j.exception.NoMoneyException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.RateLimitExceededException;
 import org.shredzone.flattr4j.exception.ValidationException;
@@ -491,8 +491,9 @@ public class FlattrConnection implements Connection {
                 || "subscribed".equals(error)) {
                 throw new ForbiddenException(error, desc);
 
-            } else if ("no_means".equals(error)) {
-                throw new NoMeansException(error, desc);
+            } else if ("no_means".equals(error)
+                || "no_money".equals(error)) {
+                throw new NoMoneyException(error, desc);
 
             } else  if ("not_found".equals(error)) {
                 throw new NotFoundException(error, desc);

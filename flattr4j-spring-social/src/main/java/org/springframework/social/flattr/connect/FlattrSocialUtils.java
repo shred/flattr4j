@@ -21,7 +21,7 @@ package org.springframework.social.flattr.connect;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.exception.FlattrServiceException;
 import org.shredzone.flattr4j.exception.ForbiddenException;
-import org.shredzone.flattr4j.exception.NoMeansException;
+import org.shredzone.flattr4j.exception.NoMoneyException;
 import org.shredzone.flattr4j.exception.NotFoundException;
 import org.shredzone.flattr4j.exception.RateLimitExceededException;
 import org.springframework.social.ApiException;
@@ -57,7 +57,7 @@ public final class FlattrSocialUtils {
         } else if (ex instanceof ForbiddenException) {
             return new OperationNotPermittedException(ex.getMessage());
 
-        } else if (ex instanceof NoMeansException) {
+        } else if (ex instanceof NoMoneyException) {
             // a more specific Spring Social exception does not exist
             return new OperationNotPermittedException(ex.getMessage());
 
