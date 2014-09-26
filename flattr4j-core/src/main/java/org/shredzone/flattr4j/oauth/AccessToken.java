@@ -30,6 +30,11 @@ public class AccessToken implements Serializable {
 
     private String token;
 
+    /**
+     * @deprecated {@link AccessToken} will be immutable in a future release. Do not use
+     * the default constructor.
+     */
+    @Deprecated
     public AccessToken() {
         // Default constructor
     }
@@ -38,7 +43,17 @@ public class AccessToken implements Serializable {
         this.token = token;
     }
 
-    public String getToken()            { return token; }
-    public void setToken(String token)  { this.token = token; }
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * @deprecated {@link AccessToken} will be immutable in a future release. Do not use
+     * this setter, but create a new instance.
+     */
+    @Deprecated
+    public void setToken(String token) {
+        this.token = token;
+    }
 
 }

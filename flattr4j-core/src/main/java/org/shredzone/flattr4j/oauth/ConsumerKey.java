@@ -31,6 +31,11 @@ public class ConsumerKey implements Serializable {
     private String key;
     private String secret;
 
+    /**
+     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
+     * the default constructor.
+     */
+    @Deprecated
     public ConsumerKey() {
         // Default constructor
     }
@@ -40,10 +45,30 @@ public class ConsumerKey implements Serializable {
         this.secret = secret;
     }
 
-    public String getKey()              { return key; }
-    public void setKey(String key)      { this.key = key; }
+    public String getKey() {
+        return key;
+    }
 
-    public String getSecret()           { return secret; }
-    public void setSecret(String secret) { this.secret = secret; }
+    /**
+     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
+     * this setter, but create a new instance.
+     */
+    @Deprecated
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
+     * this setter, but create a new instance.
+     */
+    @Deprecated
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 
 }
