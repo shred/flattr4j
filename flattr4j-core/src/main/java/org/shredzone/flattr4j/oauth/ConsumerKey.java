@@ -25,20 +25,11 @@ import java.io.Serializable;
  *
  * @author Richard "Shred" Körber
  */
-public class ConsumerKey implements Serializable {
+public final class ConsumerKey implements Serializable {
     private static final long serialVersionUID = -2439158677542078353L;
 
-    private String key;
-    private String secret;
-
-    /**
-     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
-     * the default constructor.
-     */
-    @Deprecated
-    public ConsumerKey() {
-        // Default constructor
-    }
+    private final String key;
+    private final String secret;
 
     public ConsumerKey(String key, String secret) {
         this.key = key;
@@ -49,26 +40,8 @@ public class ConsumerKey implements Serializable {
         return key;
     }
 
-    /**
-     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
-     * this setter, but create a new instance.
-     */
-    @Deprecated
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getSecret() {
         return secret;
-    }
-
-    /**
-     * @deprecated {@link ConsumerKey} will be immutable in a future release. Do not use
-     * this setter, but create a new instance.
-     */
-    @Deprecated
-    public void setSecret(String secret) {
-        this.secret = secret;
     }
 
 }

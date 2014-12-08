@@ -25,19 +25,10 @@ import java.io.Serializable;
  *
  * @author Richard "Shred" Körber
  */
-public class AccessToken implements Serializable {
+public final class AccessToken implements Serializable {
     private static final long serialVersionUID = 7715751842047101911L;
 
-    private String token;
-
-    /**
-     * @deprecated {@link AccessToken} will be immutable in a future release. Do not use
-     * the default constructor.
-     */
-    @Deprecated
-    public AccessToken() {
-        // Default constructor
-    }
+    private final String token;
 
     public AccessToken(String token) {
         this.token = token;
@@ -45,15 +36,6 @@ public class AccessToken implements Serializable {
 
     public String getToken() {
         return token;
-    }
-
-    /**
-     * @deprecated {@link AccessToken} will be immutable in a future release. Do not use
-     * this setter, but create a new instance.
-     */
-    @Deprecated
-    public void setToken(String token) {
-        this.token = token;
     }
 
 }
