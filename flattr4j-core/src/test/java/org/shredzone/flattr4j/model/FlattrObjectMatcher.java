@@ -63,7 +63,7 @@ public class FlattrObjectMatcher<T> extends TypeSafeMatcher<FlattrObject> {
     @Override
     protected boolean matchesSafely(FlattrObject fo) {
         if (matcher != null) {
-            return matcher.matches(fo.get(key));
+            return matcher.matches(fo.getObject(key));
         } else {
             return !fo.has(key);
         }

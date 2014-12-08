@@ -70,7 +70,7 @@ public class ThingTest {
         FlattrObject data1 = thing.toUpdate();
         assertThat(data1, jsonValue("category", is("image")));
         assertThat(data1, jsonValue("description", is("foobar")));
-        assertThat(data1, jsonValue("hidden", is("true")));
+        assertThat(data1, jsonValue("hidden", is(true)));
         assertThat(data1, jsonValue("language", is("de_DE")));
         assertThat(data1, jsonHasNoValue("title"));
         assertThat(data1, jsonHasNoValue("tags"));
@@ -85,7 +85,7 @@ public class ThingTest {
         FlattrObject data2 = thing.toUpdate();
         assertThat(data2, jsonValue("category", is("image")));
         assertThat(data2, jsonValue("description", is("foobar")));
-        assertThat(data2, jsonValue("hidden", is("true")));
+        assertThat(data2, jsonValue("hidden", is(true)));
         assertThat(data2, jsonValue("language", is("de_DE")));
         assertThat(data2, jsonValue("title", is("footitle")));
         assertThat(data2, jsonValue("tags", is("twitter,java")));

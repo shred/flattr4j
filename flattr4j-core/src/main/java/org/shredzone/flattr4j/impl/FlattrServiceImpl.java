@@ -94,7 +94,7 @@ public class FlattrServiceImpl implements FlattrService {
                 .rateLimit(lastRateLimit)
                 .singleResult();
 
-        return Thing.withId(data.get("id"));
+        return Thing.withId(String.valueOf(data.getInt("id")));
     }
 
     @Override
@@ -487,7 +487,7 @@ public class FlattrServiceImpl implements FlattrService {
                         .rateLimit(lastRateLimit);
 
         for (FlattrObject item : conn.result()) {
-            if (thingId.getThingId().equals(item.getFlattrObject("thing").get("id"))) {
+            if (thingId.getThingId().equals(String.valueOf(item.getFlattrObject("thing").getInt("id")))) {
                 return new Subscription(item);
             }
         }

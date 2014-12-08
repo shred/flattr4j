@@ -70,7 +70,7 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
      */
     @Override
     public String getThingId() {
-        return data.get("id");
+        return String.valueOf(data.getInt("id"));
     }
 
     /**

@@ -271,7 +271,7 @@ public class FlattrObject implements Serializable, Externalizable {
             JSONArray array = data.getJSONArray(key);
             List<FlattrObject> result = new ArrayList<FlattrObject>(array.length());
             for (int ix = 0; ix < array.length(); ix++) {
-                result.add(new FlattrObject(array.getString(ix)));
+                result.add(new FlattrObject(array.getJSONObject(ix)));
             }
             return result;
         } catch (JSONException ex) {

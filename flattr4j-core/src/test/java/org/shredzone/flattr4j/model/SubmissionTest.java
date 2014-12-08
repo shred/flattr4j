@@ -79,7 +79,7 @@ public class SubmissionTest {
         assertThat(data, jsonValue("description", is("A Flattr library for Java")));
         assertThat(data, jsonValue("category", is("text")));
         assertThat(data, jsonValue("language", is("en_UK")));
-        assertThat(data, jsonValue("hidden", is("false")));
+        assertThat(data, jsonValue("hidden", is(false)));
         assertThat(data, jsonValue("tags", is("foo,bar")));
     }
 

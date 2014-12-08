@@ -40,7 +40,7 @@ public class MiniThing extends Resource implements ThingId {
      */
     @Override
     public String getThingId() {
-        return data.get("id");
+        return String.valueOf(data.getInt("id"));
     }
 
     /**
