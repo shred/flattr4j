@@ -60,7 +60,6 @@
         </developer>
     </developers>
     <properties>
-        <commonshttp.version>4.1.3</commonshttp.version>
         <json.version>20090211</json.version>
         <spring-social.version>1.0.1.RELEASE</spring-social.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>

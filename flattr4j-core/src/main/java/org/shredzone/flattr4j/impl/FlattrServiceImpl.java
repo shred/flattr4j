@@ -105,7 +105,8 @@ public class FlattrServiceImpl implements FlattrService {
         FlattrObject update = thing.toUpdate();
 
         if (update != null) { // Thing was modified.
-            getConnector().create(RequestType.PATCH)
+            update.getJSONObject().put("_method", "patch");
+            getConnector().create(RequestType.POST)
                     .call("things/:id")
                     .parameter("id", thing.getThingId())
                     .rateLimit(lastRateLimit)

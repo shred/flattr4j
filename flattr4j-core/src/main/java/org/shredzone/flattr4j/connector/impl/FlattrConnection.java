@@ -21,41 +21,26 @@ package org.shredzone.flattr4j.connector.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
+import java.net.HttpRetryException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,32 +68,18 @@ import org.shredzone.flattr4j.oauth.ConsumerKey;
 public class FlattrConnection implements Connection {
     private static final Logger LOG = new Logger("flattr4j", FlattrConnection.class.getName());
     private static final String ENCODING = "utf-8";
+    private static final int TIMEOUT = 10000;
+    private static final Pattern CHARSET = Pattern.compile(".*?charset=\"?(.*?)\"?\\s*(;.*)?", Pattern.CASE_INSENSITIVE);
+    private static final String BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    private static final boolean NEW_API;
-    static {
-        boolean newApi = false;
-
-        // Android safe way to find out if Apache HTTP Client 4.1 or higher is available
-        for (Constructor<?> c : Scheme.class.getConstructors()) {
-            Class<?>[] types = c.getParameterTypes();
-            if (types.length == 3
-                    && types[0].isAssignableFrom(String.class)
-                    && types[1].isAssignableFrom(int.class)) {
-                newApi = true;
-                break;
-            }
-        }
-
-        NEW_API = newApi;
-    }
-
-    private HttpRequestBase request;
     private String baseUrl;
     private String call;
     private RequestType type;
     private ConsumerKey key;
-    private List<NameValuePair> queryParam;
-    private List<NameValuePair> formParam;
+    private AccessToken token;
+    private FlattrObject data;
+    private StringBuilder queryParams;
+    private StringBuilder formParams;
     private RateLimit limit;
 
     /**
@@ -137,8 +108,7 @@ public class FlattrConnection implements Connection {
 
     @Override
     public Connection token(AccessToken token) {
-        createRequest();
-        request.setHeader("Authorization", "Bearer " + token.getToken());
+        this.token = token;
         return this;
     }
 
@@ -183,49 +153,33 @@ public class FlattrConnection implements Connection {
 
     @Override
     public Connection query(String name, String value) {
-        if (queryParam == null) {
-            queryParam = new ArrayList<NameValuePair>();
+        if (queryParams == null) {
+            queryParams = new StringBuilder();
         }
-        queryParam.add(new BasicNameValuePair(name, value));
+        appendParam(queryParams, name, value);
         LOG.verbose("-> query {0} = {1}", name, value);
         return this;
     }
 
     @Override
     public Connection data(FlattrObject data) {
-        createRequest();
-
-        if (!(request instanceof HttpEntityEnclosingRequestBase)) {
-            throw new IllegalArgumentException("No data allowed for RequestType " + type);
+        if (formParams != null) {
+            throw new IllegalArgumentException("no data permitted when form is used");
         }
-
-        try {
-            StringEntity body = new StringEntity(data.toString(), ENCODING);
-            body.setContentType("application/json");
-            body.setContentEncoding(ENCODING);
-            ((HttpEntityEnclosingRequestBase) request).setEntity(body);
-        } catch (UnsupportedEncodingException ex) {
-            // should never be thrown, as "utf-8" encoding is available on any VM
-            throw new RuntimeException(ex);
-        }
-
+        this.data = data;
         LOG.verbose("-> JSON body: {0}", data);
         return this;
     }
 
     @Override
     public Connection form(String name, String value) {
-        createRequest();
-
-        if (!(request instanceof HttpPost)) {
-            throw new IllegalArgumentException("No form allowed for RequestType " + type);
+        if (data != null) {
+            throw new IllegalArgumentException("no form permitted when data is used");
         }
-
-        if (formParam == null) {
-            formParam = new ArrayList<NameValuePair>();
+        if (formParams == null) {
+            formParams = new StringBuilder();
         }
-        formParam.add(new BasicNameValuePair(name, value));
-
+        appendParam(formParams, name, value);
         LOG.verbose("-> form {0} = {1}", name, value);
         return this;
     }
@@ -238,69 +192,79 @@ public class FlattrConnection implements Connection {
 
     @Override
     public Collection<FlattrObject> result() throws FlattrException {
-        AbstractHttpClient client = null;
-
         try {
-            createRequest();
+            String queryString = (queryParams != null ? "?" + queryParams : "");
 
-            String queryString = "";
-            if (queryParam != null) {
-                queryString = '?' + URLEncodedUtils.format(queryParam, ENCODING);
-            }
-
+            URL url;
             if (call != null) {
-                request.setURI(new URI(baseUrl).resolve(call + queryString));
+                url = new URI(baseUrl).resolve(call + queryString).toURL();
             } else {
-                request.setURI(new URI(baseUrl + queryString));
+                url = new URI(baseUrl + queryString).toURL();
             }
 
-            request.setHeader("Accept", "application/json");
-            request.setHeader("Accept-Encoding", "gzip");
+            HttpURLConnection conn = createConnection(url);
+            conn.setRequestMethod(type.name());
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Accept-Charset", ENCODING);
+            conn.setRequestProperty("Accept-Encoding", "gzip");
 
-            if (formParam != null) {
-                UrlEncodedFormEntity body = new UrlEncodedFormEntity(formParam, ENCODING);
-                body.setContentType("application/x-www-form-urlencoded");
-                body.setContentEncoding(ENCODING);
-                ((HttpPost) request).setEntity(body);
+            if (token != null) {
+                conn.setRequestProperty("Authorization", "Bearer " + token.getToken());
+            } else if (key != null) {
+                conn.setRequestProperty("Authorization", "Basic " +
+                                base64(key.getKey() + ':' +  key.getSecret()));
             }
 
-            client = createHttpClient();
-
-            if (key != null) {
-                client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(key.getKey(), key.getSecret())
-                );
+            byte[] outputData = null;
+            if (data != null) {
+                outputData = data.toString().getBytes(ENCODING);
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setFixedLengthStreamingMode(outputData.length);
+            } else if (formParams != null) {
+                outputData = formParams.toString().getBytes(ENCODING);
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setFixedLengthStreamingMode(outputData.length);
             }
 
             LOG.info("Sending Flattr request: {0}", call);
+            conn.connect();
 
-            HttpResponse response = client.execute(request);
+            if (outputData != null) {
+                OutputStream out = conn.getOutputStream();
+                try {
+                    out.write(outputData);
+                } finally {
+                    out.close();
+                }
+            }
 
             if (limit != null) {
-                Header remainingHeader = response.getFirstHeader("X-RateLimit-Remaining");
+                String remainingHeader = conn.getHeaderField("X-RateLimit-Remaining");
                 if (remainingHeader != null) {
-                    limit.setRemaining(Long.parseLong(remainingHeader.getValue()));
+                    limit.setRemaining(Long.parseLong(remainingHeader));
                 } else {
                     limit.setRemaining(null);
                 }
 
-                Header limitHeader = response.getFirstHeader("X-RateLimit-Limit");
+                String limitHeader = conn.getHeaderField("X-RateLimit-Limit");
                 if (limitHeader != null) {
-                    limit.setLimit(Long.parseLong(limitHeader.getValue()));
+                    limit.setLimit(Long.parseLong(limitHeader));
                 } else {
                     limit.setLimit(null);
                 }
 
-                Header currentHeader = response.getFirstHeader("X-RateLimit-Current");
+                String currentHeader = conn.getHeaderField("X-RateLimit-Current");
                 if (currentHeader != null) {
-                    limit.setCurrent(Long.parseLong(currentHeader.getValue()));
+                    limit.setCurrent(Long.parseLong(currentHeader));
                 } else {
                     limit.setCurrent(null);
                 }
 
-                Header resetHeader = response.getFirstHeader("X-RateLimit-Reset");
+                String resetHeader = conn.getHeaderField("X-RateLimit-Reset");
                 if (resetHeader != null) {
-                    limit.setReset(new Date(Long.parseLong(resetHeader.getValue()) * 1000L));
+                    limit.setReset(new Date(Long.parseLong(resetHeader) * 1000L));
                 } else {
                     limit.setReset(null);
                 }
@@ -308,9 +272,9 @@ public class FlattrConnection implements Connection {
 
             List<FlattrObject> result;
 
-            if (assertStatusOk(response)) {
+            if (assertStatusOk(conn)) {
                 // Status is OK and there is content
-                Object resultData = new JSONTokener(readResponse(response)).nextValue();
+                Object resultData = new JSONTokener(readResponse(conn)).nextValue();
                 if (resultData instanceof JSONArray) {
                     JSONArray array = (JSONArray) resultData;
                     result = new ArrayList<FlattrObject>(array.length());
@@ -341,11 +305,6 @@ public class FlattrConnection implements Connection {
             throw new MarshalException(ex);
         } catch (ClassCastException ex) {
             throw new FlattrException("Unexpected result type", ex);
-        } finally {
-            if (client != null) {
-                disposeHttpClient(client);
-            }
-            request = null;
         }
     }
 
@@ -360,74 +319,26 @@ public class FlattrConnection implements Connection {
     }
 
     /**
-     * Creates a new http request for the given {@link RequestType}. Does nothing if a
-     * request has already been created.
-     */
-    private void createRequest() {
-        if (request == null) {
-            switch (type) {
-                case GET:
-                    request = new HttpGet();
-                    break;
-
-                case POST:
-                    request = new HttpPost();
-                    break;
-
-                case PUT:
-                    request = new HttpPut();
-                    break;
-
-                case DELETE:
-                    request = new HttpDelete();
-                    break;
-
-                case PATCH:
-                    request = new HttpPost() {
-                        @Override
-                        public String getMethod() {
-                            return "PATCH";
-                        }
-                    };
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Unknown type " + type);
-            }
-        }
-    }
-
-    /**
      * Reads the returned HTTP response as string.
      *
-     * @param response
-     *            {@link HttpResponse} to read from
+     * @param conn
+     *            {@link HttpURLConnection} to read from
      * @return Response read
      */
-    private String readResponse(HttpResponse response) throws IOException {
-        HttpEntity entity = response.getEntity();
-
-        Charset charset = Charset.forName(ENCODING);
-        Header contentType = entity.getContentType();
-        if (contentType != null) {
-            for (HeaderElement elem : contentType.getElements()) {
-                if ("charset".equals(elem.getName())) {
-                    charset = Charset.forName(elem.getValue());
-                    break;
-                }
-            }
-        }
-
-        InputStream in = entity.getContent();
-
-        Header encoding = entity.getContentEncoding();
-        if (encoding != null) {
-            if ("gzip".equals(encoding.getValue())) {
-                in = new GZIPInputStream(in);
-            }
-        }
+    private String readResponse(HttpURLConnection conn) throws IOException {
+        InputStream in = null;
 
         try {
+            in = conn.getErrorStream();
+            if (in == null) {
+                in = conn.getInputStream();
+            }
+
+            if ("gzip".equals(conn.getContentEncoding())) {
+                in = new GZIPInputStream(in);
+            }
+
+            Charset charset = getCharset(conn.getContentType());
             Reader reader = new InputStreamReader(in, charset);
 
             // Sadly, the Android API does not offer a JSONTokener for a Reader.
@@ -441,7 +352,9 @@ public class FlattrConnection implements Connection {
 
             return sb.toString();
         } finally {
-            in.close();
+            if (in != null) {
+                in.close();
+            }
         }
     }
 
@@ -449,30 +362,35 @@ public class FlattrConnection implements Connection {
      * Assert that the HTTP result is OK, otherwise generate and throw an appropriate
      * {@link FlattrException}.
      *
-     * @param response
-     *            {@link HttpResponse} to assert
+     * @param conn
+     *            {@link HttpURLConnection} to assert
      * @return {@code true} if the status is OK and there is a content, {@code false} if
      *         the status is OK but there is no content. (If the status is not OK, an
      *         exception is thrown.)
      */
-    private boolean assertStatusOk(HttpResponse response) throws FlattrException {
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
-            return true;
-        }
-        if (statusCode == HttpStatus.SC_NO_CONTENT) {
-            return false;
-        }
-
-        String error = null, desc = null;
+    private boolean assertStatusOk(HttpURLConnection conn) throws FlattrException {
+        String error = null, desc = null, httpStatus = null;
 
         try {
-            JSONObject errorData = (JSONObject) new JSONTokener(readResponse(response)).nextValue();
+            int statusCode = conn.getResponseCode();
+
+            if (statusCode == HttpURLConnection.HTTP_OK || statusCode == HttpURLConnection.HTTP_CREATED) {
+                return true;
+            }
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                return false;
+            }
+
+            httpStatus = "HTTP " + statusCode + ": " + conn.getResponseMessage();
+
+            JSONObject errorData = (JSONObject) new JSONTokener(readResponse(conn)).nextValue();
             LOG.verbose("<- ERROR {0}: {1}", statusCode, errorData);
 
             error = errorData.optString("error");
             desc = errorData.optString("error_description");
             LOG.error("Flattr ERROR {0}: {1}", error, desc);
+        } catch (HttpRetryException ex) {
+            // Could not read error response because HttpURLConnection sucketh
         } catch (IOException ex) {
             throw new FlattrException("Could not read response", ex);
         } catch (ClassCastException ex) {
@@ -511,33 +429,111 @@ public class FlattrConnection implements Connection {
             throw new FlattrServiceException(error, desc);
         }
 
-        StatusLine line = response.getStatusLine();
-        String msg = "HTTP " + line.getStatusCode() + ": " + line.getReasonPhrase();
-        LOG.error("Flattr {0}", msg);
-        throw new FlattrException(msg);
+        LOG.error("Flattr {0}", httpStatus);
+        throw new FlattrException(httpStatus);
     }
 
     /**
-     * Creates a {@link AbstractHttpClient} for sending the request.
+     * Creates a {@link HttpURLConnection} to the given url. Override to configure the
+     * connection.
      *
-     * @return {@link AbstractHttpClient}
+     * @param url
+     *            {@link URL} to connect to
+     * @return {@link HttpURLConnection} that is connected to the url and is
+     *         preconfigured.
      */
-    protected AbstractHttpClient createHttpClient() {
-        if (NEW_API) {
-            return new NewFlattrHttpClient();
-        } else {
-            return new FlattrHttpClient();
+    protected HttpURLConnection createConnection(URL url) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(TIMEOUT);
+        conn.setReadTimeout(TIMEOUT);
+        conn.setUseCaches(false);
+        conn.setRequestProperty("User-Agent", "flattr4j");
+        return conn;
+    }
+
+    /**
+     * Appends a HTTP parameter to a string builder.
+     *
+     * @param builder
+     *            {@link StringBuffer} to append to
+     * @param key
+     *            parameter key
+     * @param value
+     *            parameter value
+     */
+    private void appendParam(StringBuilder builder, String key, String value) {
+        try {
+            if (builder.length() > 0) {
+                builder.append('&');
+            }
+            builder.append(URLEncoder.encode(key, ENCODING));
+            builder.append('=');
+            builder.append(URLEncoder.encode(value, ENCODING));
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalArgumentException("Unknown encoding " + ENCODING);
         }
     }
 
     /**
-     * Disposes a {@link AbstractHttpClient}, releasing all resources.
+     * Gets the {@link Charset} from the content-type header. If there is no charset, the
+     * default charset is returned instead.
      *
-     * @param cl
-     *            {@link AbstractHttpClient} to release
+     * @param contentType
+     *            content-type header, may be {@code null}
+     * @return {@link Charset}
      */
-    protected void disposeHttpClient(AbstractHttpClient cl) {
-        cl.getConnectionManager().shutdown();
+    protected Charset getCharset(String contentType) {
+        Charset charset = Charset.forName(ENCODING);
+        if (contentType != null) {
+            Matcher m = CHARSET.matcher(contentType);
+            if (m.matches()) {
+                try {
+                    charset = Charset.forName(m.group(1));
+                } catch (UnsupportedCharsetException ex) {
+                    // ignore and return default charset
+                }
+            }
+        }
+        return charset;
+    }
+
+    /**
+     * Base64 encodes a string.
+     *
+     * @param str
+     *            String to encode
+     * @return Encoded string
+     */
+    protected String base64(String str) {
+        // There is no common Base64 encoder in Java and Android. Sometimes I hate Java.
+        try {
+            byte[] data = str.getBytes(ENCODING);
+
+            StringBuilder sb = new StringBuilder();
+            for (int ix = 0; ix < data.length; ix += 3) {
+                int triplet = (data[ix] & 0xFF) << 16;
+                if (ix + 1 < data.length) {
+                    triplet |= (data[ix+1] & 0xFF) << 8;
+                }
+                if (ix + 2 < data.length) {
+                    triplet |= (data[ix+2] & 0xFF);
+                }
+
+                for (int iy = 0; iy < 4; iy++) {
+                    if (ix + iy <= data.length) {
+                        int ch = (triplet & 0xFC0000) >> 18;
+                        sb.append(BASE64.charAt(ch));
+                        triplet <<= 6;
+                    } else {
+                        sb.append('=');
+                    }
+                }
+            }
+
+            return sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalArgumentException(ENCODING, ex);
+        }
     }
 
 }
