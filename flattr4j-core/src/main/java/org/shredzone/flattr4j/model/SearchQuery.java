@@ -55,8 +55,8 @@ public class SearchQuery implements Serializable {
     public void setQuery(String query)          { this.query = query; }
 
     /**
-     * Tags to search for. Allows logical operators: '|' (or), '&' (and), '!' (not). For
-     * example, "game | games ! software" means: search for "game" or "games", but not
+     * Tags to search for. Allows logical operators: '|' (or), '&amp;' (and), '!' (not).
+     * For example, "game | games ! software" means: search for "game" or "games", but not
      * "software".
      */
     public String getTags()                     { return tags; }
