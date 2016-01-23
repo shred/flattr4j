@@ -1,0 +1,32 @@
+flattr4j
+========
+
+_flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API and adding Flattr buttons to JSP web sites.
+
+It primarily targets for business grade Flattr integration, e.g. on servers, web sites and full-featured desktop applications, but it can also be used on Android devices.
+
+_flattr4j_ is not endorsed by or affiliated with Flattr AB.
+
+The source code can be found at [GitHub](https://github.com/shred/flattr4j) and is distributed under the terms of [GNU General Public License Version 3](http://www.gnu.org/licenses/gpl-3.0.html), [GNU Lesser General Public License Version 3](http://www.gnu.org/licenses/lgpl-3.0.html), [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+Quick Start
+-----------
+
+_flattr4j_ is available at Maven Central. Just add this snippet to your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}-core</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+Requirements
+------------
+
+_flattr4j_ needs at least Java 1.6 or Android API level 11 (earlier levels do not work because they do not support SNI).
+
+_flattr4j_ version 2 requires [json.org](http://www.json.org/java/index.html). If you use Maven, the dependency is loaded automatically. Android API provides it, so `flattr4j-core` does not need additional libraries on Android devices.
+
+Up to version 2.11, _flattr4j_ also required [Apache HttpComponents 4](http://hc.apache.org/).

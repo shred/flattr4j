@@ -1,0 +1,17 @@
+flattr4j core
+=============
+
+This is the core Java library for _flattr4j_.
+
+How to Use
+----------
+
+_flattr4j_ is available at Maven Central. Just add this snippet to your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```

@@ -25,18 +25,24 @@
   <version position="right"/>
   <body>
     <links>
-      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+      <item name="API javadoc" href="./apidocs/index.html"/>
+      <item name="GitHub" href="https://github.com/shred/flattr4j"/>
     </links>
     <breadcrumbs>
       <item name="shredzone.org" href="http://www.shredzone.org"/>
       <item name="flattr4j" href="../index.html"/>
       <item name="flattr4j-spring-social" href="index.html"/>
     </breadcrumbs>
-    <menu name="Project">
-      <item name="Introduction" href="index.html"/>
-      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+    <menu name="Main">
+      <item name="Description" href="index.html"/>
     </menu>
+    <menu ref="modules"/>
     <menu ref="reports"/>
   </body>
-</project>
 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.4</version>
+  </skin>
+</project>

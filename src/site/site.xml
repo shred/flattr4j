@@ -25,18 +25,42 @@
   <version position="right"/>
   <body>
     <links>
-      <item name="Home" href="index.html"/>
-      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+      <item name="API javadoc" href="./apidocs/index.html"/>
+      <item name="GitHub" href="https://github.com/shred/flattr4j"/>
     </links>
     <breadcrumbs>
       <item name="shredzone.org" href="http://www.shredzone.org"/>
       <item name="flattr4j" href="index.html"/>
     </breadcrumbs>
-    <menu name="Main">
-      <item name="Introduction" href="index.html"/>
-      <item name="Project Management" href="http://www.shredzone.org/projects/show/flattr4j"/>
+    <menu name="API Documentation">
+      <item name="Core JavaDoc API" href="./flattr4j-core/apidocs/index.html"/>
+      <item name="Web JavaDoc API" href="./flattr4j-web/apidocs/index.html"/>
+      <item name="TagLib JavaDoc API" href="./flattr4j-web/tlddoc/index.html"/>
+      <item name="Async JavaDoc API" href="./flattr4j-async/apidocs/index.html"/>
+      <item name="Spring Social JavaDoc API" href="./flattr4j-spring-social/apidocs/index.html"/>
+      <item name="Changelog" href="changelog.html"/>
+    </menu>
+    <menu name="Examples and How-Tos">
+      <item name="First Steps" href="firststeps.html"/>
+      <item name="Open Data API" href="opendataapi.html"/>
+      <item name="REST API" href="restapi.html"/>
+      <item name="CRUD" href="crud.html"/>
+      <item name="Async API" href="async.html"/>
+      <item name="OAuth Procedure" href="oauth.html"/>
+      <item name="OAuth on Android" href="oauth_android.html"/>
+      <item name="Spring" href="spring.html"/>
+      <item name="Taglib" href="taglib.html"/>
+      <item name="Android" href="android.html"/>
+      <item name="Logging" href="logging.html"/>
+      <item name="Backstage" href="backstage.html"/>
     </menu>
     <menu ref="modules"/>
     <menu ref="reports"/>
   </body>
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.4</version>
+  </skin>
 </project>
