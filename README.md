@@ -8,7 +8,7 @@ _flattr4j_ is not endorsed by or affiliated with Flattr AB.
 
 ## Important Note
 
-Flattr is currently changing its API. Because of that, some of the flattr4j calls are failing or not delivering the expected results. It is unclear to me what a future API may look like, and to what extend flattr4j is going to support it. **For the time being, I recommend not to use flattr4j in new projects.**
+Flattr is currently changing its API. Because of that, some of the flattr4j calls are failing or not delivering the expected results.
 
 Are you getting a "Received fatal alert: handshake_failure" exception? OpenJDK does not seem to support any of the Flattr server's cipher suites. Use the Oracle JDK instead!
 
