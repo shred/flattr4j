@@ -94,7 +94,10 @@ public class AndroidAuthenticator extends FlattrAuthenticator {
      *            reidentify the user between request and callback. Optional, may be
      *            {@code null}.
      * @return Created {@link Intent}
+     * @deprecated {@code state} is not returned from the Flattr server. Use
+     *             {@link #createAuthenticateIntent()}.
      */
+    @Deprecated
     public Intent createAuthenticateIntent(String state) throws FlattrException {
         String url = super.authenticate(state);
 
@@ -132,7 +135,10 @@ public class AndroidAuthenticator extends FlattrAuthenticator {
      *            {@link Uri} that was passed in with the the {@link Intent}, containing
      *            the callback URL from Flattr. It is safe to pass {@code null} here.
      * @return state, or {@code null} if no state was found
+     * @deprecated State is not supported by the Flattr server. This method always returns
+     *             {@code null}.
      */
+    @Deprecated
     public String getState(Uri uri) {
         return (uri != null ? uri.getQueryParameter("state") : null);
     }

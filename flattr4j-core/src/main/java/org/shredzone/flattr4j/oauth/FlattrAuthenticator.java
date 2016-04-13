@@ -162,12 +162,15 @@ public class FlattrAuthenticator {
      * Scope flags need to be set properly before invocation.
      *
      * @param state
-     *          A value that is passed to the callback URL, to maintain state and
-     *          reidentify the user between request and callback. Optional, may be
-     *          {@code null}.
+     *            A value that is passed to the callback URL, to maintain state and
+     *            reidentify the user between request and callback. Optional, may be
+     *            {@code null}.
      * @return The authentication URL the user must visit
      * @since 2.0
+     * @deprecated {@code state} is not supported by the Flattr server. Use
+     *             {@link #authenticate()} instead!
      */
+    @Deprecated
     public String authenticate(String state) throws FlattrException {
         try {
             StringBuilder url = new StringBuilder();
