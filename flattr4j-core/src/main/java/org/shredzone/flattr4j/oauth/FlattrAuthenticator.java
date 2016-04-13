@@ -225,7 +225,7 @@ public class FlattrAuthenticator {
         String accessToken = response.get("access_token");
         String tokenType = response.get("token_type");
 
-        if (!"bearer".equals(tokenType)) {
+        if (!"bearer".equalsIgnoreCase(tokenType)) {
             throw new FlattrException("Unknown token type " + tokenType);
         }
 
