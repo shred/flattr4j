@@ -9,7 +9,7 @@ To get access, the [OAuth Procedure](./oauth.html) needs to be taken first. It r
 With this token, a `FlattrService` instance is created:
 
 ```java
-String ACCESS_TOKEN = <user's access token>;
+String ACCESS_TOKEN = // user's access token
 
 FlattrFactory factory = FlattrFactory.getInstance();
 FlattrService service = factory.createFlattrService(ACCESS_TOKEN);

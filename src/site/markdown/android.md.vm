@@ -1,0 +1,53 @@
+How to use flattr4j on Android devices
+======================================
+
+For running _flattr4j_ v2 on Android, at least Android 3.0 "Honeycomb" is needed. Lower API levels do not work because the Flattr server makes use of SNI. I recommend to use at least _flattr4j_ v2.13, especially if you run into HTTPS certificate issues.
+
+Requirements
+------------
+
+In order to use flattr4j on Android, you need to copy the `flattr4j-core.jar` to your project's `libs` directory.
+
+flattr4j also needs the _json.org_ library. However, it is already provided by Android and does not need to be installed separately. So, you only need to copy the `flattr4j-core.jar` to your project.
+
+Since flattr4j connects to the Flattr API via HTTP, your application needs `INTERNET` permission to run.
+
+Usage
+-----
+
+The flattr4j core API can be used without restrictions on Android, including `FlattrService` and `FlattrAuthenticator`.
+
+Gradle
+------
+
+Make sure that `json` is excluded when you use build tools with dependency management.
+
+If you are using Gradle for Android development (e.g. Android Studio), add this dependency to your `build.gradle` file:
+
+```groovy
+dependencies {
+    compile('${project.groupId}:${project.artifactId}-core:${project.version}') {
+        exclude module: 'json'
+    }
+}
+```
+
+Maven
+-----
+
+If you are using Maven for Android development, add these dependency lines:
+
+```xml
+<dependency>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}-core</artifactId>
+  <version>${project.version}</version>
+  <scope>compile</scope>
+  <exclusions>
+    <exclusion>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+```

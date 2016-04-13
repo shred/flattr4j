@@ -2,6 +2,12 @@
 
 The release rate is low because _flattr4j_ is mature and stable, and there have been only very few changes to the Flattr API recently.
 
+## v2.13 (14.04.2016)
+
+* Fixed OAuth issue resulting from different Flattr server response (@antennapod)
+* Removed deprecated code
+* Marked OAuth state related code deprecated, as it is not supported by Flattr any more.
+
 ## v2.12 (09.12.2014)
 
 * Removed Apache HttpClient dependency. flattr4j now uses Java's HttpURLConnection.

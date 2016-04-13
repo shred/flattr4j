@@ -42,15 +42,14 @@
     </menu>
     <menu name="Examples and How-Tos">
       <item name="First Steps" href="firststeps.html"/>
-      <item name="Open Data API" href="opendataapi.html"/>
-      <item name="REST API" href="restapi.html"/>
-      <item name="CRUD" href="crud.html"/>
-      <item name="Async API" href="async.html"/>
+      <item name="Android" href="android.html"/>
       <item name="OAuth Procedure" href="oauth.html"/>
       <item name="OAuth on Android" href="oauth_android.html"/>
+      <item name="REST API" href="restapi.html"/>
+      <item name="Create, Update, Delete" href="crud.html"/>
+      <item name="Async API" href="async.html"/>
       <item name="Spring" href="spring.html"/>
       <item name="Taglib" href="taglib.html"/>
-      <item name="Android" href="android.html"/>
       <item name="Logging" href="logging.html"/>
       <item name="Backstage" href="backstage.html"/>
     </menu>
