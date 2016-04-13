@@ -87,8 +87,6 @@ public final class FlattrFactory {
     /**
      * Creates a {@link FlattrService} that is only able to execute commands without
      * scope.
-     * <p>
-     * This is used to merge {@link FlattrService} and {@link OpenService} in the future.
      *
      * @return Created {@link FlattrService}
      * @since 2.9

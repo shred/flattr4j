@@ -71,7 +71,7 @@ public class SearchQuery implements Serializable {
     /**
      * Adds a language to search for.
      * <p>
-     * If the collection has been changed via {@link #setLanguage(LanguageId)}, it
+     * If the collection has been changed via {@link #setLanguages(Collection)}, it
      * must be modifiable.
      *
      * @since 2.5
