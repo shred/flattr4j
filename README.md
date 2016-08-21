@@ -1,30 +1,29 @@
 # Java Flattr Client ![build status](https://jenkins.shredzone.net/project/flattr4j/builds/status.png?ref=master)
 
-_flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API and adding Flattr buttons to JSP web sites.
+_flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API. It can be used on Android apps, but also on Java based servers, web sites and desktop applications.
 
-It primarily targets for business grade Flattr integration, e.g. on servers, web sites and full-featured desktop applications, but it can also be used on Android devices.
-
-_flattr4j_ is not endorsed by or affiliated with Flattr AB.
+_flattr4j_ is not an official client. It is not endorsed by or affiliated with Flattr AB.
 
 ## Important Note
 
-Flattr is currently changing its API. Because of that, some of the flattr4j calls are failing or not delivering the expected results.
+Flattr is currently changing its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results.
 
-Are you getting a "Received fatal alert: handshake_failure" exception? OpenJDK does not seem to support any of the Flattr server's cipher suites. Use the Oracle JDK instead!
+Are you getting a "_Received fatal alert: handshake failure_" exception? OpenJDK does not seem to support any of the Flattr server's cipher suites. You need to use Oracle Java instead.
 
 ## Features
 
 * Lightweight and easy to use
 * Covers the entire Flattr API
 * Also runs on Android
-* JSP tag library for inserting static and [javascript](https://flattr.com/support/integrate/js) Flattr buttons
+* JSP tag library for inserting static and javascript Flattr buttons
 * Helps through the OAuth authentication process at Flattr, no OAuth knowledge is needed
-* With Maven and Spring support
-* [Spring Social](http://www.springsource.org/spring-social) provider available (currently beta)
+* With Maven, Gradle and Spring support
+* Stable and mature code base, started in 2010
 
 ## Usage
 
 * See the [online documentation](http://www.shredzone.org/maven/flattr4j/) about how to use _flattr4j_.
+* _flattr4j_ is available at [Maven Central](http://search.maven.org/#search|ga|1|g%3A%22org.shredzone.flattr4j%22).
 
 ## Contribute
 
