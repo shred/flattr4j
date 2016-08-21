@@ -24,6 +24,12 @@ Sadly, if you just place a `logging.properties` file into your classpath, it is 
 
 Since flattr4j v2.3, all log output is logged via `android.util.Log` on Android environments. Depending on your configuration, you will see some or all of the log levels on logcat.
 
+For debugging purposes, you can enable verbose logging by executing this command:
+
+```
+adb shell setprop log.tag.flattr4j VERBOSE
+```
+
 At flattr4j v2.2, `java.util.logging` was also used on Android, which means that log messages at `FINE` level were filtered out and not shown on logcat. If you need `FINE` level output on Android, make sure you're using at least flattr4j v2.3.
 
 ## Why `java.util.logging` instead of `log4j` or `slf4j`?
