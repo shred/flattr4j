@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -60,6 +61,8 @@ import org.shredzone.flattr4j.exception.ValidationException;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.ConsumerKey;
 
+import android.os.Build;
+
 /**
  * Default implementation of {@link Connection}.
  *
@@ -71,6 +74,7 @@ public class FlattrConnection implements Connection {
     private static final int TIMEOUT = 10000;
     private static final Pattern CHARSET = Pattern.compile(".*?charset=\"?(.*?)\"?\\s*(;.*)?", Pattern.CASE_INSENSITIVE);
     private static final String BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    private static final String USER_AGENT;
 
     private String baseUrl;
     private String call;
@@ -81,6 +85,27 @@ public class FlattrConnection implements Connection {
     private StringBuilder queryParams;
     private StringBuilder formParams;
     private RateLimit limit;
+
+    static {
+        StringBuilder agent = new StringBuilder("flattr4j");
+        try {
+            Properties prop = new Properties();
+            prop.load(FlattrConnection.class.getResourceAsStream("/org/shredzone/flattr4j/version.properties"));
+            agent.append('/').append(prop.getProperty("version"));
+        } catch (IOException ex) {
+            // Ignore, just don't use a version
+        }
+
+        try {
+            String release = Build.VERSION.RELEASE;
+            agent.append(" Android/").append(release);
+        } catch (Throwable t) {
+            // We're not running on Android...
+            agent.append(" Java/").append(System.getProperty("java.version"));
+        }
+
+        USER_AGENT = agent.toString();
+    }
 
     /**
      * Creates a new {@link FlattrConnection} for the given {@link RequestType}.
@@ -447,7 +472,7 @@ public class FlattrConnection implements Connection {
         conn.setConnectTimeout(TIMEOUT);
         conn.setReadTimeout(TIMEOUT);
         conn.setUseCaches(false);
-        conn.setRequestProperty("User-Agent", "flattr4j");
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         return conn;
     }
 

@@ -29,6 +29,17 @@
     <artifactId>flattr4j-core</artifactId>
     <name>flattr4j core</name>
     <description>Core Module of flattr4j</description>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources-filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
