@@ -1,4 +1,4 @@
-# Java Flattr Client ![build status](https://jenkins.shredzone.net/project/flattr4j/builds/status.png?ref=master)
+# Java Flattr Client ![build status](https://shredzone.org/badge/flattr4j.svg)
 
 _flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API. It can be used on Android apps, but also on Java based servers, web sites and desktop applications.
 
@@ -22,7 +22,7 @@ Are you getting a "_Received fatal alert: handshake failure_" exception? OpenJDK
 
 ## Usage
 
-* See the [online documentation](http://www.shredzone.org/maven/flattr4j/) about how to use _flattr4j_.
+* See the [online documentation](https://shredzone.org/maven/flattr4j/) about how to use _flattr4j_.
 * _flattr4j_ is available at [Maven Central](http://search.maven.org/#search|ga|1|g%3A%22org.shredzone.flattr4j%22).
 
 ## Contribute
