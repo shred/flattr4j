@@ -27,6 +27,6 @@ Requirements
 
 _flattr4j_ needs at least Java 1.6 or Android API level 11 (earlier levels do not work because they do not support SNI).
 
-_flattr4j_ version 2 requires [json.org](http://www.json.org/java/index.html). If you use Maven, the dependency is loaded automatically. Android API provides it, so `flattr4j-core` does not need additional libraries on Android devices.
+_flattr4j_ version 2 requires the [json.org reference library](https://github.com/stleary/JSON-java). If you use Maven, the dependency is loaded automatically. Android API provides it, so `flattr4j-core` does not need additional libraries on Android devices.
 
 Up to version 2.11, _flattr4j_ also required [Apache HttpComponents 4](http://hc.apache.org/).
