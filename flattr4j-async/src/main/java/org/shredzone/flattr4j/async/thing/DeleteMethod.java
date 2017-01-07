@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class DeleteMethod extends VoidFlattrCallable {
-    private static final long serialVersionUID = -2945785795008272345L;
 
     private ThingId thingId;
 

@@ -33,7 +33,6 @@ import org.shredzone.flattr4j.model.UserId;
  * @author Richard "Shred" Körber
  */
 public class GetThingsMethod extends PaginatedFlattrCallable<List<Thing>> {
-    private static final long serialVersionUID = 863322551664804183L;
 
     private UserId userId;
 

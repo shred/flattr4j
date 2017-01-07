@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class SubscribeMethod extends VoidFlattrCallable {
-    private static final long serialVersionUID = 2884650158382427571L;
 
     private ThingId thingId;
 

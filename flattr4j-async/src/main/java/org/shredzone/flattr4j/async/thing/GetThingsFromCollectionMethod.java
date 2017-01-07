@@ -34,7 +34,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class GetThingsFromCollectionMethod extends AbstractFlattrCallable<List<Thing>> {
-    private static final long serialVersionUID = -5884311517495488349L;
 
     private Collection<? extends ThingId> thingIds;
 

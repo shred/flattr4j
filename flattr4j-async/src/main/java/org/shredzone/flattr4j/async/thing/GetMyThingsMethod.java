@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.Thing;
  * @author Richard "Shred" Körber
  */
 public class GetMyThingsMethod extends PaginatedFlattrCallable<List<Thing>> {
-    private static final long serialVersionUID = -9087582562478239181L;
 
     @Override
     public List<Thing> call(FlattrService service, Integer count, Integer page)

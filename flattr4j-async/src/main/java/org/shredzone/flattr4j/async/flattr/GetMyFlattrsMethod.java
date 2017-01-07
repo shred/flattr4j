@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.Flattr;
  * @author Richard "Shred" Körber
  */
 public class GetMyFlattrsMethod extends PaginatedFlattrCallable<List<Flattr>> {
-    private static final long serialVersionUID = -6494222228581076558L;
 
     @Override
     public List<Flattr> call(FlattrService service, Integer count, Integer page)

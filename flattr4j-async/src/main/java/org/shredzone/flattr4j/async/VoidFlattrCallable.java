@@ -27,7 +27,6 @@ import org.shredzone.flattr4j.FlattrService;
  * @author Richard "Shred" Körber
  */
 public abstract class VoidFlattrCallable extends AbstractFlattrCallable<Void> {
-    private static final long serialVersionUID = 2581148424236392276L;
 
     /**
      * Calls the appropriate method at the service.

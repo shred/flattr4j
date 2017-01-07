@@ -40,7 +40,6 @@ public class PaginatedFlattrCallableTest {
 
         final FlattrService mockService = mock(FlattrService.class);
 
-        @SuppressWarnings("serial")
         PaginatedFlattrCallable<String> callable = new PaginatedFlattrCallable<String>() {
             @Override
             public String call(FlattrService service, Integer count, Integer page)
@@ -76,7 +75,6 @@ public class PaginatedFlattrCallableTest {
 
         final FlattrService mockService = mock(FlattrService.class);
 
-        @SuppressWarnings("serial")
         PaginatedFlattrCallable<String> callable = new PaginatedFlattrCallable<String>() {
             @Override
             public String call(FlattrService service, Integer count, Integer page)

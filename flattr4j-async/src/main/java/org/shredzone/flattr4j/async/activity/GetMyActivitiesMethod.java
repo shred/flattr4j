@@ -33,7 +33,6 @@ import org.shredzone.flattr4j.model.Activity;
  * @author Richard "Shred" Körber
  */
 public class GetMyActivitiesMethod extends AbstractFlattrCallable<List<Activity>> {
-    private static final long serialVersionUID = 963490622912496314L;
 
     private Activity.Type type;
 

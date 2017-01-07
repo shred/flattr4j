@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.oauth.AccessToken;
  * @author Richard "Shred" Körber
  */
 public abstract class AbstractFlattrCallable<R> implements FlattrCallable<R> {
-    private static final long serialVersionUID = 4300158666615391413L;
 
     private AccessToken token;
     private boolean full;

@@ -38,7 +38,6 @@ public class VoidFlattrCallableTest {
     public void testExecute() throws Exception {
         final FlattrService mockService = mock(FlattrService.class);
 
-        @SuppressWarnings("serial")
         VoidFlattrCallable callable = new VoidFlattrCallable() {
             @Override
             public void execute(FlattrService service) throws Exception {

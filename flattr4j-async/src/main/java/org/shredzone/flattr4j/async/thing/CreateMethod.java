@@ -31,7 +31,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class CreateMethod extends AbstractFlattrCallable<ThingId> {
-    private static final long serialVersionUID = 5156451564572525762L;
 
     private Submission submission;
 

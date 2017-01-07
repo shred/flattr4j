@@ -43,7 +43,6 @@ public class AbstractFlattrCallableTest {
         final FlattrService mockService = mock(FlattrService.class);
         when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
-        @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
@@ -81,7 +80,6 @@ public class AbstractFlattrCallableTest {
         final FlattrService mockService = mock(FlattrService.class);
         when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
-        @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
@@ -120,7 +118,6 @@ public class AbstractFlattrCallableTest {
         final FlattrService mockService = mock(FlattrService.class);
         when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
-        @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             public String call(FlattrService service) throws Exception {
@@ -156,7 +153,6 @@ public class AbstractFlattrCallableTest {
         final FlattrService mockService = mock(FlattrService.class);
         when(mockService.getLastRateLimit()).thenReturn(new RateLimit());
 
-        @SuppressWarnings("serial")
         final AbstractFlattrCallable<String> callable = new AbstractFlattrCallable<String>() {
             @Override
             protected FlattrService createFlattrService(AccessToken token) {

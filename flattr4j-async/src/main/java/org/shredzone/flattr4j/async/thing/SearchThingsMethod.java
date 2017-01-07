@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.SearchResult;
  * @author Richard "Shred" Körber
  */
 public class SearchThingsMethod extends PaginatedFlattrCallable<SearchResult> {
-    private static final long serialVersionUID = 732638938134088927L;
 
     private SearchQuery query;
 

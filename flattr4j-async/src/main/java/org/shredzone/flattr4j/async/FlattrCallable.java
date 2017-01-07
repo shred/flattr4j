@@ -18,7 +18,6 @@
  */
 package org.shredzone.flattr4j.async;
 
-import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 import org.shredzone.flattr4j.oauth.AccessToken;
@@ -29,7 +28,7 @@ import org.shredzone.flattr4j.oauth.AccessToken;
  * @author Iulius Gutberlet
  * @author Richard "Shred" Körber
  */
-public interface FlattrCallable<R> extends Callable<R>, Serializable {
+public interface FlattrCallable<R> extends Callable<R> {
 
     /**
      * Sets the {@link AccessToken} to be used if the call requires authorization.

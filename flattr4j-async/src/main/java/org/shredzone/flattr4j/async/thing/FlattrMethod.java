@@ -33,7 +33,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class FlattrMethod extends AbstractFlattrCallable<MiniThing> {
-    private static final long serialVersionUID = 8054668403264619223L;
 
     private ThingId thingId;
     private String url;

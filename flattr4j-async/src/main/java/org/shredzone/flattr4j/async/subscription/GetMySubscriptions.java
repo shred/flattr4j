@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.Subscription;
  * @author Richard "Shred" Körber
  */
 public class GetMySubscriptions extends AbstractFlattrCallable<List<Subscription>> {
-    private static final long serialVersionUID = -4241888858204054005L;
 
     @Override
     public List<Subscription> call(FlattrService service) throws Exception {

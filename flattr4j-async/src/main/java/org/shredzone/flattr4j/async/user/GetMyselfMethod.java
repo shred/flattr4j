@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.model.User;
  * @author Richard "Shred" Körber
  */
 public class GetMyselfMethod extends AbstractFlattrCallable<User> {
-    private static final long serialVersionUID = 2806011177124692273L;
 
     @Override
     public User call(FlattrService service) throws Exception {

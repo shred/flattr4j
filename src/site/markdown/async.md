@@ -40,6 +40,8 @@ There are two extensions of `AbstractFlattrCallable`: `VoidFlattrCallable` repre
 
 The other extension is `PaginatedFlattrCallable`, which represents Flattr calls with a paginated result. With the `page` and `count` property, you can select the desired page number and number of records per page. Since every `FlattrCallable` is stateful and stores its parameters, it is actually quite easy to repeat a Flattr method with a different page selection: just change the `page` property and re-queue the `FlattrCallable` instance.
 
+Note that up to _flattr4j_ v2.13, `FlattrCallable`s were serializable. However the serizalization was broken beyond repair and actually never worked, so it has been removed.
+
 ## RoboSpice
 
 [RoboSpice](https://github.com/stephanenicolas/robospice) is a framework for asynchorous execution of long-running tasks on Android.

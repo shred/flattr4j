@@ -31,7 +31,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class PauseSubscriptionMethod extends VoidFlattrCallable {
-    private static final long serialVersionUID = -2431958229246009328L;
 
     private ThingId thingId;
     private boolean paused;

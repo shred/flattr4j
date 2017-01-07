@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.Category;
  * @author Richard "Shred" Körber
  */
 public class GetCategoriesMethod extends AbstractFlattrCallable<List<Category>> {
-    private static final long serialVersionUID = -1386375905567140825L;
 
     @Override
     public List<Category> call(FlattrService service) throws Exception {

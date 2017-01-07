@@ -32,7 +32,6 @@ import org.shredzone.flattr4j.model.Language;
  * @author Richard "Shred" Körber
  */
 public class GetLanguagesMethod extends AbstractFlattrCallable<List<Language>> {
-    private static final long serialVersionUID = -5498248586006437116L;
 
     @Override
     public List<Language> call(FlattrService service) throws Exception {

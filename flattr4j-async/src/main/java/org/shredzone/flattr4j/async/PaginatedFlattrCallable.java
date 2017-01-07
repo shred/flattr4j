@@ -27,7 +27,6 @@ import org.shredzone.flattr4j.FlattrService;
  * @author Richard "Shred" Körber
  */
 public abstract class PaginatedFlattrCallable<R> extends AbstractFlattrCallable<R> {
-    private static final long serialVersionUID = -4773347390673116071L;
 
     private Integer count;
     private Integer page;

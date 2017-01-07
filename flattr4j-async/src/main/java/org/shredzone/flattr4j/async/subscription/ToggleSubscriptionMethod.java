@@ -30,7 +30,6 @@ import org.shredzone.flattr4j.model.ThingId;
  * @author Richard "Shred" Körber
  */
 public class ToggleSubscriptionMethod extends AbstractFlattrCallable<Boolean> {
-    private static final long serialVersionUID = 2687013695837476836L;
 
     private ThingId thingId;
 
