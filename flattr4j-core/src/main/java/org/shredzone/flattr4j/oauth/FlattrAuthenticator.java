@@ -142,36 +142,6 @@ public class FlattrAuthenticator {
      * @since 2.0
      */
     public String authenticate() throws FlattrException {
-        return authenticate(null);
-    }
-
-    /**
-     * Authenticates this application against Flattr. The user is required to visit the
-     * returned url and retrieve a code. The code needs to be passed to
-     * {@link #fetchAccessToken(String)} in order to complete the authorization.
-     * <p>
-     * When a callback url was set, Flattr will forward the user to this url with the
-     * following GET parameters:
-     * <ul>
-     * <li>{@code code}: the code</li>
-     * <li>{@code state}: the value of the state parameter that was given</li>
-     * </ul>
-     * This way the user only needs to log in at Flattr, but does not need to copy a code
-     * to complete the authorization.
-     * <p>
-     * Scope flags need to be set properly before invocation.
-     *
-     * @param state
-     *            A value that is passed to the callback URL, to maintain state and
-     *            reidentify the user between request and callback. Optional, may be
-     *            {@code null}.
-     * @return The authentication URL the user must visit
-     * @since 2.0
-     * @deprecated {@code state} is not supported by the Flattr server. Use
-     *             {@link #authenticate()} instead!
-     */
-    @Deprecated
-    public String authenticate(String state) throws FlattrException {
         try {
             StringBuilder url = new StringBuilder();
             url.append(requestTokenUrl);
@@ -184,10 +154,6 @@ public class FlattrAuthenticator {
 
             if (!scope.isEmpty()) {
                 url.append("&scope=").append(URLEncoder.encode(buildScopeString(), ENCODING));
-            }
-
-            if (state != null) {
-                url.append("&state=").append(URLEncoder.encode(state, ENCODING));
             }
 
             return url.toString();

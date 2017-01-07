@@ -75,31 +75,7 @@ public class AndroidAuthenticator extends FlattrAuthenticator {
      * @return Created {@link Intent}
      */
     public Intent createAuthenticateIntent() throws FlattrException {
-        return createAuthenticateIntent(null);
-    }
-
-    /**
-     * Creates an {@link Intent} for forwarding the user to the Flattr web page for
-     * authentication.
-     * <p>
-     * When the returned activity is started, a browser is opened. It shows a Flattr web
-     * page asking the user to authenticate and grant the requested scopes for your
-     * application.
-     * <p>
-     * When the authentication completes successfully, your activity is resumed with your
-     * callback URL passed in.
-     *
-     * @param state
-     *            A value that is passed to the callback URL, to maintain state and
-     *            reidentify the user between request and callback. Optional, may be
-     *            {@code null}.
-     * @return Created {@link Intent}
-     * @deprecated {@code state} is not returned from the Flattr server. Use
-     *             {@link #createAuthenticateIntent()}.
-     */
-    @Deprecated
-    public Intent createAuthenticateIntent(String state) throws FlattrException {
-        String url = super.authenticate(state);
+        String url = super.authenticate();
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
@@ -125,22 +101,6 @@ public class AndroidAuthenticator extends FlattrAuthenticator {
         }
 
         return null;
-    }
-
-    /**
-     * Returns the state passed in with the {@link Intent}. The state was set at
-     * {@link #createAuthenticateIntent(String)}.
-     *
-     * @param uri
-     *            {@link Uri} that was passed in with the the {@link Intent}, containing
-     *            the callback URL from Flattr. It is safe to pass {@code null} here.
-     * @return state, or {@code null} if no state was found
-     * @deprecated State is not supported by the Flattr server. This method always returns
-     *             {@code null}.
-     */
-    @Deprecated
-    public String getState(Uri uri) {
-        return (uri != null ? uri.getQueryParameter("state") : null);
     }
 
 }

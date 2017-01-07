@@ -20,16 +20,11 @@ package org.shredzone.flattr4j.exception;
 
 /**
  * This exception is thrown when the user has no sufficient funds for the operation.
- * <p>
- * Note: {@link NoMoneyException} extends {@link NoMeansException} for downward
- * compatibility purposes. It will extend {@link FlattrServiceException} in a future
- * release when the deprecated {@link NoMeansException} is removed.
  *
  * @since 2.11
  * @author Richard "Shred" Körber
  */
-@SuppressWarnings("deprecation")
-public class NoMoneyException extends NoMeansException {
+public class NoMoneyException extends FlattrServiceException {
     private static final long serialVersionUID = -5034022662480993764L;
 
     public NoMoneyException(String code, String msg) {
