@@ -315,7 +315,7 @@ public class Thing extends Resource implements ThingId, UserId, CategoryId, Lang
                 // Strangely, tags are expected to be joined in a comma separated string
                 StringBuilder sb = new StringBuilder();
                 for (String tag : tags) {
-                    if (tag.indexOf(',') > 0) {
+                    if (tag.indexOf(',') >= 0) {
                         throw new MarshalException("tag '" + tag + "' contains invalid character ','");
                     }
                     sb.append(',').append(tag);
