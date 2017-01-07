@@ -17,7 +17,7 @@ Are you getting a "_Received fatal alert: handshake failure_" exception? OpenJDK
 * Also runs on Android
 * JSP tag library for inserting static and javascript Flattr buttons
 * Helps through the OAuth authentication process at Flattr, no OAuth knowledge is needed
-* With Maven, Gradle and Spring support
+* With Maven and Gradle support
 * Stable and mature code base, started in 2010
 
 ## Usage

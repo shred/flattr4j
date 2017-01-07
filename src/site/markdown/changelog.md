@@ -2,6 +2,8 @@
 
 The release rate is low because _flattr4j_ is mature and stable, and there have been only very few changes to the Flattr API recently.
 
+* Flattr4j Spring Social module is not maintained any more and was removed.
+
 ## v2.13 (14.04.2016)
 
 * Fixed OAuth issue resulting from different Flattr server response (@antennapod)

@@ -37,7 +37,6 @@
       <item name="Web JavaDoc API" href="./flattr4j-web/apidocs/index.html"/>
       <item name="TagLib JavaDoc API" href="./flattr4j-web/tlddoc/index.html"/>
       <item name="Async JavaDoc API" href="./flattr4j-async/apidocs/index.html"/>
-      <item name="Spring Social JavaDoc API" href="./flattr4j-spring-social/apidocs/index.html"/>
       <item name="Changelog" href="changelog.html"/>
     </menu>
     <menu name="Examples and How-Tos">

@@ -61,14 +61,12 @@
     </developers>
     <properties>
         <json.version>20160212</json.version>
-        <spring-social.version>1.0.1.RELEASE</spring-social.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
     </properties>
     <modules>
         <module>flattr4j-core</module>
         <module>flattr4j-async</module>
         <module>flattr4j-web</module>
-        <module>flattr4j-spring-social</module>
     </modules>
     <build>
         <plugins>
