@@ -45,7 +45,7 @@ import org.shredzone.flattr4j.exception.MarshalException;
 public class FlattrObject implements Serializable, Externalizable {
     private static final long serialVersionUID = -6640392574244365803L;
 
-    private JSONObject data;
+    private transient JSONObject data;
 
     /**
      * Creates a new, empty {@link FlattrObject}.

@@ -18,10 +18,10 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -45,7 +45,9 @@ import org.shredzone.flattr4j.web.ButtonType;
  *
  * @author Richard "Shred" Körber
  */
-public class ButtonBuilder {
+public class ButtonBuilder implements Serializable {
+    private static final long serialVersionUID = -3066039824282852155L;
+
     private static final int MIN_TITLE_LENGTH = 5;
     private static final int MAX_TITLE_LENGTH = 100;
 
@@ -58,7 +60,7 @@ public class ButtonBuilder {
     private String description;
     private String category;
     private String language;
-    private List<String> tags = new ArrayList<String>();
+    private ArrayList<String> tags = new ArrayList<String>();
     private String revsharekey;
     private ButtonType type;
     private boolean hidden = false;
@@ -67,7 +69,7 @@ public class ButtonBuilder {
     private String styleClass;
     private boolean html5 = false;
     private String prefix = "data-flattr";
-    private Map<String, String> attributes = new TreeMap<String, String>();
+    private TreeMap<String, String> attributes = new TreeMap<String, String>();
 
     /**
      * Unique URL to the thing. Always required!

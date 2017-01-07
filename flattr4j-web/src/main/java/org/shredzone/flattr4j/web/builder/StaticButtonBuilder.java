@@ -18,6 +18,7 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,13 +40,15 @@ import org.shredzone.flattr4j.web.BadgeType;
  *
  * @author Richard "Shred" Körber
  */
-public class StaticButtonBuilder {
+public class StaticButtonBuilder implements Serializable {
+    private static final long serialVersionUID = 3266441765264183202L;
+
     private String url;
     private String badgeUrl;
     private BadgeType type;
     private String style;
     private String styleClass;
-    private Map<String, String> attributes = new TreeMap<String, String>();
+    private TreeMap<String, String> attributes = new TreeMap<String, String>();
 
     /**
      * Link to the Thing page at Flattr.

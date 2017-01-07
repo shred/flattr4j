@@ -38,8 +38,8 @@ public class Submission implements Serializable {
     private String title;
     private String description;
     private List<String> tags = new ArrayList<String>();
-    private CategoryId category;
-    private LanguageId language;
+    private String category;
+    private String language;
     private Boolean hidden;
 
     /**
@@ -70,14 +70,18 @@ public class Submission implements Serializable {
     /**
      * The category this Thing belongs to.
      */
-    public CategoryId getCategory()             { return category; }
-    public void setCategory(CategoryId category) { this.category = category; }
+    public CategoryId getCategory()             {
+        return category != null ? Category.withId(category) : null;
+    }
+    public void setCategory(CategoryId category) { this.category = category.getCategoryId(); }
 
     /**
      * The language this Thing is written in.
      */
-    public LanguageId getLanguage()             { return language; }
-    public void setLanguage(LanguageId language) { this.language = language; }
+    public LanguageId getLanguage()             {
+        return language != null ? Language.withId(language) : null;
+    }
+    public void setLanguage(LanguageId language) { this.language = language.getLanguageId(); }
 
     /**
      * Is the Thing hidden from the public list of Things at Flattr?
@@ -128,11 +132,11 @@ public class Submission implements Serializable {
         }
 
         if (category != null) {
-            result.put("category", category.getCategoryId());
+            result.put("category", category);
         }
 
         if (language != null) {
-            result.put("language", language.getLanguageId());
+            result.put("language", language);
         }
 
         if (tags != null && !tags.isEmpty()) {

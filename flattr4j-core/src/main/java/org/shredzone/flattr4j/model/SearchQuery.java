@@ -43,9 +43,9 @@ public class SearchQuery implements Serializable {
     private String query;
     private String tags;
     private String url;
-    private Collection<LanguageId> languageList = new ArrayList<LanguageId>();
-    private Collection<CategoryId> categoryList = new ArrayList<CategoryId>();
-    private UserId user;
+    private ArrayList<LanguageId> languageList = new ArrayList<LanguageId>();
+    private ArrayList<CategoryId> categoryList = new ArrayList<CategoryId>();
+    private String user;
     private Order sort;
 
     /**
@@ -104,14 +104,14 @@ public class SearchQuery implements Serializable {
         if (languages == null) {
             throw new IllegalArgumentException("languages list must not be null");
         }
-        languageList = languages;
+        languageList = new ArrayList<LanguageId>(languages);
     }
 
     /**
      * User to search for.
      */
-    public UserId getUser()                     { return user; }
-    public void setUser(UserId user)            { this.user = user; }
+    public UserId getUser()                     { return user != null ? User.withId(user) : null; }
+    public void setUser(UserId user)            { this.user = user.getUserId(); }
 
     /**
      * Sort order. Defaults to {@link Order#RELEVANCE}.
@@ -156,7 +156,7 @@ public class SearchQuery implements Serializable {
         if (categories == null) {
             throw new IllegalArgumentException("categories list must not be null");
         }
-        categoryList = categories;
+        categoryList = new ArrayList<CategoryId>(categories);
     }
 
 
@@ -254,7 +254,7 @@ public class SearchQuery implements Serializable {
         }
 
         if (user != null) {
-            conn.query("user", user.getUserId());
+            conn.query("user", user);
         }
 
         if (sort != null) {

@@ -18,6 +18,8 @@
  */
 package org.shredzone.flattr4j.model;
 
+import java.io.Serializable;
+
 /**
  * A {@link UserIdentifier} is used to identify a user of a web site. This user can
  * collect Flattr even when he is not registered there, and will be able to claim the
@@ -29,7 +31,7 @@ package org.shredzone.flattr4j.model;
  * @author Richard "Shred" Körber
  * @since 2.0
  */
-public interface UserIdentifier {
+public interface UserIdentifier extends Serializable {
 
     /**
      * User identifier string.

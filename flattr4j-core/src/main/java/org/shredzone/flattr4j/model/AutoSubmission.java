@@ -35,17 +35,17 @@ public class AutoSubmission extends Submission implements UserId, UserIdentifier
 
     private static final String ENCODING = "utf-8";
 
-    private UserId user;
+    private String userId;
     private UserIdentifier identifier;
 
     /**
      * The user to submit this Submission on behalf of.
      */
-    public UserId getUser()                     { return user; }
-    public void setUser(UserId user)            { this.user = user; }
+    public UserId getUser()                     { return userId != null ? User.withId(userId) : null; }
+    public void setUser(UserId user)            { this.userId = user.getUserId(); }
 
     @Override
-    public String getUserId()                   { return user != null ? user.getUserId() : null; }
+    public String getUserId()                   { return userId; }
 
     /**
      * The user identifier of the local user
@@ -70,10 +70,10 @@ public class AutoSubmission extends Submission implements UserId, UserIdentifier
      * @return Submission URL
      */
     public String toUrl() {
-        if (user == null && identifier == null) {
+        if (userId == null && identifier == null) {
             throw new IllegalArgumentException("Anonymous submissions are not allowed");
         }
-        if (user != null && identifier != null) {
+        if (userId != null && identifier != null) {
             throw new IllegalArgumentException("Either user or identifier must be set, but not both");
         }
 
@@ -81,7 +81,7 @@ public class AutoSubmission extends Submission implements UserId, UserIdentifier
             StringBuilder sb = new StringBuilder();
             sb.append("https://flattr.com/submit/auto");
 
-            if (user != null) {
+            if (getUserId() != null) {
                 sb.append("?user_id=").append(URLEncoder.encode(getUserId(), ENCODING));
             } else {
                 sb.append("?owner=").append(URLEncoder.encode(getUserIdentifier(), ENCODING));

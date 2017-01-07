@@ -18,6 +18,8 @@
  */
 package org.shredzone.flattr4j.web.builder;
 
+import java.io.Serializable;
+
 import org.shredzone.flattr4j.model.Category;
 import org.shredzone.flattr4j.model.CategoryId;
 import org.shredzone.flattr4j.model.Language;
@@ -37,7 +39,9 @@ import org.shredzone.flattr4j.web.ButtonType;
  *
  * @author Richard "Shred" Körber
  */
-public class LoaderBuilder {
+public class LoaderBuilder implements Serializable {
+    private static final long serialVersionUID = 56937818073814669L;
+
     private String baseUrl = "http://api.flattr.com";
     private String version = "0.6";
     private boolean bare = false;
