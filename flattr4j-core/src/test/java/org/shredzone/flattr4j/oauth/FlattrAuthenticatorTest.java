@@ -40,8 +40,8 @@ public class FlattrAuthenticatorTest {
         auth.getScope().add(Scope.FLATTR);
         auth.getScope().add(Scope.THING);
 
-        String url = auth.authenticate("myState");
-        assertThat(url, is("https://flattr.com/oauth/authorize?response_type=code&client_id=ck-abc&scope=flattr+thing&state=myState"));
+        String url = auth.authenticate();
+        assertThat(url, is("https://flattr.com/oauth/authorize?response_type=code&client_id=ck-abc&scope=flattr+thing"));
     }
 
     @Test
