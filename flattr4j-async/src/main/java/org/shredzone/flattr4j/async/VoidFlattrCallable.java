@@ -35,7 +35,7 @@ public abstract class VoidFlattrCallable extends AbstractFlattrCallable<Void> {
      * @param service
      *            Preconfigured {@link FlattrService} to be invoked
      */
-    public abstract void execute(FlattrService service) throws Exception;
+    public abstract void execute(FlattrService service) throws Exception; //NOSONAR: Accept all exceptions
 
     @Override
     public Void call(FlattrService service) throws Exception {

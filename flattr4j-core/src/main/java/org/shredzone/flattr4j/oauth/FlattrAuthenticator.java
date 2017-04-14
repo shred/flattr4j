@@ -193,7 +193,7 @@ public class FlattrAuthenticator {
             return url.toString();
         } catch (UnsupportedEncodingException ex) {
             // should never be thrown, as "utf-8" encoding is available on any VM
-            throw new RuntimeException(ex);
+            throw new IllegalStateException(ex);
         }
     }
 

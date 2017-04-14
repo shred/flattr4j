@@ -68,7 +68,7 @@ public class StaticButtonBuilder {
      * Link to the Thing page at Flattr.
      */
     public StaticButtonBuilder thing(Thing thing) {
-        return thing(thing.getLink().toString());
+        return thing(thing.getLink());
     }
 
     /**
@@ -160,9 +160,9 @@ public class StaticButtonBuilder {
 
         sb.append(" href=\"").append(escape(url)).append('"');
 
-        for (String attr : attributes.keySet()) {
-            sb.append(' ').append(attr).append("=\"");
-            sb.append(escape(attributes.get(attr)));
+        for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            sb.append(' ').append(entry.getKey()).append("=\"");
+            sb.append(escape(entry.getValue()));
             sb.append('"');
         }
 

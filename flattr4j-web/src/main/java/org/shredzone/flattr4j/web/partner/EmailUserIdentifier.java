@@ -73,10 +73,10 @@ public class EmailUserIdentifier implements UserIdentifier, Serializable {
             return digest.toString();
         } catch (NoSuchAlgorithmException ex) {
             // should never happen since MD5 is a standard digester
-            throw new InternalError("no md5 hashing");
+            throw new IllegalStateException("no md5 hashing", ex);
         } catch (UnsupportedEncodingException ex) {
             // should never happen since UTF-8 is a standard encoding
-            throw new InternalError("no utf-8 encoding");
+            throw new IllegalStateException("no utf-8 encoding", ex);
         }
     }
 

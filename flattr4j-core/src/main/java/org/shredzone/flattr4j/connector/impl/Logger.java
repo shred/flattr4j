@@ -49,10 +49,30 @@ public class Logger {
         try {
             // Test if Android logging is available...
             Log.isLoggable(tag, Log.INFO);
-        } catch (Throwable t) {
+        } catch (Throwable t) { //NOSONAR: Ignore and use Java's logger
             log = java.util.logging.Logger.getLogger(className);
         }
         this.logger = log;
+    }
+
+    /**
+     * Logs an exception on debug level.
+     *
+     * @param msg
+     *            Message to be logged
+     * @param ex
+     *            Exception to be logged
+     */
+    public void debug(String msg, Throwable ex) {
+        if (logger != null) {
+            if (logger.isLoggable(Level.FINER)) {
+                logger.log(Level.FINER, msg, ex);
+            }
+        } else {
+            if (Log.isLoggable(tag, Log.DEBUG)) {
+                Log.v(tag, msg, ex);
+            }
+        }
     }
 
     /**

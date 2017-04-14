@@ -84,7 +84,7 @@ public abstract class AbstractFlattrCallable<R> implements FlattrCallable<R> {
      *            Preconfigured {@link FlattrService} to be invoked
      * @return Result returned from the Flattr method.
      */
-    public abstract R call(FlattrService service) throws Exception;
+    public abstract R call(FlattrService service) throws Exception; //NOSONAR: accept all exceptions
 
     @Override
     public R call() throws Exception {
@@ -99,6 +99,6 @@ public abstract class AbstractFlattrCallable<R> implements FlattrCallable<R> {
     @Override
     public R getResult() {
         return result;
-    };
+    }
 
 }

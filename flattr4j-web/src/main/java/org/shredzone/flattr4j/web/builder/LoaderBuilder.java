@@ -236,7 +236,6 @@ public class LoaderBuilder {
 
         if (prefix != null) {
             sb.append(separator).append("html5-key-prefix=").append(prefix);
-            separator = '&';
         }
 
         sb.append("';");

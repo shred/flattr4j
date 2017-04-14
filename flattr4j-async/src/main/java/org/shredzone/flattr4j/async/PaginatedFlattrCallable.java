@@ -55,7 +55,7 @@ public abstract class PaginatedFlattrCallable<R> extends AbstractFlattrCallable<
      *            Page number, or {@code null}
      * @return Result returned from the Flattr method.
      */
-    public abstract R call(FlattrService service, Integer count, Integer page) throws Exception;
+    public abstract R call(FlattrService service, Integer count, Integer page) throws Exception; //NOSONAR: accept all exceptions
 
     @Override
     public R call(FlattrService service) throws Exception {

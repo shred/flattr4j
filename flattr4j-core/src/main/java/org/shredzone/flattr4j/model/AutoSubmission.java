@@ -114,7 +114,7 @@ public class AutoSubmission extends Submission implements UserId, UserIdentifier
 
             return sb.toString();
         } catch (UnsupportedEncodingException ex) {
-            throw new InternalError(ENCODING);
+            throw new IllegalStateException(ex);
         }
     }
 

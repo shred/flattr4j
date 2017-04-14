@@ -351,7 +351,7 @@ public class FlattrObject implements Serializable, Externalizable {
         try {
             data = new JSONObject(in.readUTF());
         } catch (JSONException ex) {
-            throw new IOException("JSON deserialization failed: " + ex.getMessage());
+            throw new IOException("JSON deserialization failed", ex);
         }
     }
 

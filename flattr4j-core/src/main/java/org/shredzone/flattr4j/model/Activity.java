@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.shredzone.flattr4j.connector.FlattrObject;
+import org.shredzone.flattr4j.connector.impl.Logger;
 import org.shredzone.flattr4j.exception.MarshalException;
 
 /**
@@ -37,6 +38,7 @@ import org.shredzone.flattr4j.exception.MarshalException;
  * @since 2.0
  */
 public class Activity extends Resource {
+    private static final Logger LOG = new Logger("flattr4j", Activity.class.getName());
     private static final long serialVersionUID = -7610676384296279814L;
 
     /**
@@ -97,6 +99,7 @@ public class Activity extends Resource {
         try {
             return data.getSubString("actor", key);
         } catch (MarshalException ex) {
+            LOG.debug("actor", ex);
             return null;
         }
     }
@@ -114,6 +117,7 @@ public class Activity extends Resource {
         try {
             return data.getSubString("object", key);
         } catch (MarshalException ex) {
+            LOG.debug("object", ex);
             return null;
         }
     }

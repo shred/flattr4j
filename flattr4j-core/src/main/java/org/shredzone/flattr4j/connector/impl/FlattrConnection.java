@@ -94,12 +94,13 @@ public class FlattrConnection implements Connection {
             agent.append('/').append(prop.getProperty("version"));
         } catch (IOException ex) {
             // Ignore, just don't use a version
+            LOG.verbose("Failed to read version number", ex);
         }
 
         try {
             String release = Build.VERSION.RELEASE;
             agent.append(" Android/").append(release);
-        } catch (Throwable t) {
+        } catch (Throwable t) { //NOSONAR: catch an Error and ignore it
             // We're not running on Android...
             agent.append(" Java/").append(System.getProperty("java.version"));
         }
@@ -151,7 +152,7 @@ public class FlattrConnection implements Connection {
             return this;
         } catch (UnsupportedEncodingException ex) {
             // should never be thrown, as "utf-8" encoding is available on any VM
-            throw new RuntimeException(ex);
+            throw new IllegalStateException(ex);
         }
     }
 
@@ -172,7 +173,7 @@ public class FlattrConnection implements Connection {
             return this;
         } catch (UnsupportedEncodingException ex) {
             // should never be thrown, as "utf-8" encoding is available on any VM
-            throw new RuntimeException(ex);
+            throw new IllegalStateException(ex);
         }
     }
 
@@ -323,7 +324,7 @@ public class FlattrConnection implements Connection {
 
             return result;
         } catch (URISyntaxException ex) {
-            throw new IllegalStateException("bad baseUrl");
+            throw new IllegalStateException("bad baseUrl", ex);
         } catch (IOException ex) {
             throw new FlattrException("API access failed: " + call, ex);
         } catch (JSONException ex) {
@@ -415,13 +416,13 @@ public class FlattrConnection implements Connection {
             desc = errorData.optString("error_description");
             LOG.error("Flattr ERROR {0}: {1}", error, desc);
         } catch (HttpRetryException ex) {
-            // Could not read error response because HttpURLConnection sucketh
+            LOG.debug("Could not read error response", ex);
         } catch (IOException ex) {
             throw new FlattrException("Could not read response", ex);
         } catch (ClassCastException ex) {
-            // An unexpected JSON type was returned, just throw a generic error
+            LOG.debug("Unexpected JSON type was returned", ex);
         } catch (JSONException ex) {
-            // No valid error message was returned, just throw a generic error
+            LOG.debug("No valid error message was returned", ex);
         }
 
         if (error != null && desc != null) {
@@ -495,7 +496,7 @@ public class FlattrConnection implements Connection {
             builder.append('=');
             builder.append(URLEncoder.encode(value, ENCODING));
         } catch (UnsupportedEncodingException ex) {
-            throw new IllegalArgumentException("Unknown encoding " + ENCODING);
+            throw new IllegalStateException(ex);
         }
     }
 
@@ -516,6 +517,7 @@ public class FlattrConnection implements Connection {
                     charset = Charset.forName(m.group(1));
                 } catch (UnsupportedCharsetException ex) {
                     // ignore and return default charset
+                    LOG.debug(m.group(1), ex);
                 }
             }
         }

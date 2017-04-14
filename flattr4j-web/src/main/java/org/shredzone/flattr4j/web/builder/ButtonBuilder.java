@@ -134,10 +134,11 @@ public class ButtonBuilder {
      * accepted length.
      */
     public ButtonBuilder descriptionTruncate(String description) {
-        if (description.length() > MAX_DESCRIPTION_LENGTH) {
-            description = description.substring(0, description.length());
+        String desc = description;
+        if (desc.length() > MAX_DESCRIPTION_LENGTH) {
+            desc = desc.substring(0, desc.length());
         }
-        return description(description);
+        return description(desc);
     }
 
     /**
@@ -352,9 +353,9 @@ public class ButtonBuilder {
         }
 
         if (!attributes.isEmpty()) {
-            for (String attr : attributes.keySet()) {
-                sb.append(' ').append(attr).append("=\"");
-                sb.append(escape(attributes.get(attr)));
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                sb.append(' ').append(entry.getKey()).append("=\"");
+                sb.append(escape(entry.getValue()));
                 sb.append('"');
             }
         }
@@ -380,7 +381,7 @@ public class ButtonBuilder {
         boolean header = false;
 
         if (uid != null) {
-            if (!header) appendAttributesHeader(sb);
+            appendAttributesHeader(sb);
             header = true;
             sb.append("uid:").append(escape(uid)).append(';');
         }
