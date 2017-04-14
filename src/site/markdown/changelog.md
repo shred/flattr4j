@@ -2,7 +2,12 @@
 
 The release rate is low because _flattr4j_ is mature and stable, and there have been only very few changes to the Flattr API recently.
 
+## v2.14 (14.04.2017)
+
 * Flattr4j Spring Social module is not maintained any more and was removed.
+* FlattrCallable is not Serializable any more.
+* Fixed that tag names with a leading comma were accepted.
+* Removed deprecated code
 
 ## v2.13 (14.04.2016)
 

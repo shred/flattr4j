@@ -2,13 +2,13 @@
 
 _flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API. It can be used on Android apps, but also on Java based servers, web sites and desktop applications.
 
-_flattr4j_ is not an official client. It is not endorsed by or affiliated with Flattr AB.
+_flattr4j_ is not an official client. It is not endorsed by or affiliated with Flattr AB or Eyeo GmbH.
 
 ## Important Note
 
-Flattr is currently changing its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results.
+Flattr is currently changing its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results any more. Sadly there is no up-to-date documentation of the current API, or about their general plans for a future API.
 
-Are you getting a "_Received fatal alert: handshake failure_" exception? OpenJDK does not seem to support any of the Flattr server's cipher suites. You need to use Oracle Java instead.
+Are you getting a "_Received fatal alert: handshake failure_" exception? Try the latest OpenJDK version, or use Oracle Java.
 
 ## Features
 

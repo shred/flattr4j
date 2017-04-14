@@ -5,7 +5,7 @@ _flattr4j_ is a free open source Java library for using the [Flattr](https://fla
 
 It primarily targets for business grade Flattr integration, e.g. on servers, web sites and full-featured desktop applications, but it can also be used on Android devices.
 
-_flattr4j_ is not endorsed by or affiliated with Flattr AB.
+_flattr4j_ is not endorsed by or affiliated with Flattr AB or Eyeo GmbH.
 
 The source code can be found at [GitHub](https://github.com/shred/flattr4j) and is distributed under the terms of [GNU General Public License Version 3](http://www.gnu.org/licenses/gpl-3.0.html), [GNU Lesser General Public License Version 3](http://www.gnu.org/licenses/lgpl-3.0.html), [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
