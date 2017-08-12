@@ -1,4 +1,4 @@
-# Java Flattr Client ![build status](https://shredzone.org/badge/flattr4j.svg)
+# Java Flattr Client ![build status](https://shredzone.org/badge/flattr4j.svg) ![maven central](https://maven-badges.herokuapp.com/maven-central/org.shredzone.flattr4j/flattr4j/badge.svg)
 
 _flattr4j_ is a free open source Java library for using the [Flattr](https://flattr.com) API. It can be used on Android apps, but also on Java based servers, web sites and desktop applications.
 
