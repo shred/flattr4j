@@ -6,9 +6,11 @@ _flattr4j_ is not an official client. It is not endorsed by or affiliated with F
 
 ## Important Note
 
-Flattr is currently changing its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results any more. Sadly there is no up-to-date documentation of the current API, or about their general plans for a future API.
+Flattr has changed its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results any more.
 
-Are you getting a "_Received fatal alert: handshake failure_" exception? Try the latest OpenJDK version, or use Oracle Java.
+## Discontinued
+
+Due to the lack of documentation, and no prospect of getting further help from Flattr, I decided to discontinue this project. I will not add functionalities or fix bugs any more. However, I will still accept pull requests, and publish updates when necessary.
 
 ## Features
 
