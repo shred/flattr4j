@@ -4,13 +4,13 @@ _flattr4j_ is a free open source Java library for using the [Flattr](https://fla
 
 _flattr4j_ is not an official client. It is not endorsed by or affiliated with Flattr AB or Eyeo GmbH.
 
+## DISCONTINUED
+
+Due to the lack of documentation, and no prospect of getting further help from Flattr, I decided to discontinue this project. Version 2.14 is the final release.
+
 ## Important Note
 
 Flattr has changed its API. Because of that, some of the _flattr4j_ calls are failing or not delivering the expected results any more.
-
-## Discontinued
-
-Due to the lack of documentation, and no prospect of getting further help from Flattr, I decided to discontinue this project. I will not add functionalities or fix bugs any more. However, I will still accept pull requests, and publish updates when necessary.
 
 ## Features
 
@@ -26,11 +26,6 @@ Due to the lack of documentation, and no prospect of getting further help from F
 
 * See the [online documentation](https://shredzone.org/maven/flattr4j/) about how to use _flattr4j_.
 * _flattr4j_ is available at [Maven Central](http://search.maven.org/#search|ga|1|g%3A%22org.shredzone.flattr4j%22).
-
-## Contribute
-
-* Fork the [Source code at GitHub](https://github.com/shred/flattr4j). Feel free to send pull requests.
-* Found a bug? [File a bug report!](https://github.com/shred/flattr4j/issues)
 
 ## License
 
